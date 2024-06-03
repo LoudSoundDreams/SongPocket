@@ -95,6 +95,6 @@ extension Album {
 	
 	final func releaseDateEstimateFormatted() -> String {
 		guard let releaseDateEstimate else { return LRString.emDash }
-		return releaseDateEstimate.formatted(date: .abbreviated, time: .omitted)
+		return releaseDateEstimate.formatted(date: .numeric, time: .omitted)
 	}
 }
