@@ -15,14 +15,14 @@ SongPocket won’t do everything for everyone, and generally, we should [remove]
 So, tentatively, Songpocket…
 
 1. Won’t offer multiple ways to do the same action. [Monotonous design is better.](https://verbnounenter.net/monotony)
-2. Won’t replace iOS’s Music app. This lets it do better what iOS Music doesn’t focus on. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for removing items from the user’s library.)
+2. Won’t replace iOS’s Music app. This lets it do better what the Music app doesn’t focus on. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for removing items from the user’s library.)
 3. Won’t show song durations, because I [consider them spoilers](https://en.wikipedia.org/wiki/Hidden_track). If this were a music app for everyone, I would add a mode; but it’s not, and [modes are bad](https://spectrum.ieee.org/of-modes-and-men). (Settings are modes too.)
 
 If you want to make different decisions, you can make your own version:
 
 # Permissions
 
-You have a Creative Commons [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0) license for this software.
+You have a Creative Commons [Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0) 4.0 International license for this software.
 
 That means you can adapt or share it, but when you do so, please…
 
@@ -45,13 +45,12 @@ For help, see [Apple’s documentation](https://developer.apple.com/documentatio
 In the Simulator, most Apple Music features are unavailable, so you’ll need to develop on a physical device. This takes a few more steps.
 
 1. Plug your iOS device into your Mac.
-2. Atop the Xcode window, choose your device.
-3. On your iOS device, [turn on Developer Mode](https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device).
-4. On your Mac, in the menu bar, choose Xcode → Settings → Accounts, then sign in to your Apple account. (Warning: you can only run your app [on 3 devices](https://stackoverflow.com/questions/44230347) unless you pay for the Apple Developer Program.)
-5. In the main Xcode window, in the left sidebar, click the folder icon, then the topmost “LavaRock” row. To the right, below “Targets”, choose “LavaRock”, then above, click “Signing & Capabilities”. For “Team”, choose the one associated with your Apple account.
-6. For “Bundle Identifier”, replace “com.loudsounddreams.LavaRockDebug” with anything else. (This is how Apple devices tell apps apart.) Below the message “Failed Registering Bundle Identifier”, click “Try Again”.
-7. Atop the Xcode window, click “play”.
-8. Xcode will say “the request to open ‘[your bundle identifier]’ failed.” Follow its instructions for your iOS device, then click “play” again.
+2. Atop the Xcode window, choose your device, then click “play”. Xcode will show an error, “Unknown Team”.
+3. In the menu bar, choose Xcode → Settings → Accounts, then sign in to your Apple account. (Warning: you can only run your app [on 3 devices](https://stackoverflow.com/questions/44230347) unless you pay for the Apple Developer Program.)
+4. In the main Xcode window, in the left sidebar, click the folder icon, then the topmost “LavaRock” row. To the right, below “Targets”, choose “LavaRock”, then above, click “Signing & Capabilities”. Below “Signing (Debug)”, for “Team”, choose the one associated with your Apple account.
+5. Xcode will show an error, “Failed Registering Bundle Identifier”. For “Bundle Identifier”, replace “com.loudsounddreams.LavaRockDebug” with anything else. (This is how Apple devices tell apps apart.) Click “Try Again”, then click “play”.
+6. Xcode will say “Developer Mode disabled”. Follow its instructions to [turn on Developer Mode](https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device) on your device. Choose your device, then click “play”.
+7. Xcode will say “the request to open ‘[your bundle identifier]’ failed.” Follow its instructions for your iOS device, then click “play”.
 
 For help, see [Apple’s documentation](https://developer.apple.com/documentation/xcode/running-your-app-in-simulator-or-on-a-device/#Connect-real-devices-to-your-Mac).
 
