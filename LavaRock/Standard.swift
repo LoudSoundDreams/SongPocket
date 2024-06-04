@@ -6,11 +6,6 @@ final class Weak<Referencee: AnyObject> {
 }
 
 extension String {
-	static func randomLowercaseLetter() -> Self {
-		let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
-		return String(character)
-	}
-	
 	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
 	func precedesInFinder(_ other: Self) -> Bool {
 		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
