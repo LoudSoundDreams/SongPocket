@@ -33,10 +33,10 @@ enum ArrangeCommand {
 						switch Int.random(in: 1...6) {
 							case 1: return "die.face.1"
 							case 2: return "die.face.2"
+							case 3: return "die.face.3"
 							case 4: return "die.face.4"
 							case 5: return "die.face.5"
-							case 6: return "die.face.6"
-							default: return "die.face.3" // Most recognizable. If we weren’t doing this little joke, we’d use this icon every time. (Second–most recognizable is 6.)
+							default: return "die.face.6"
 						}
 					case .reverse: return "arrow.up.and.down"
 					case .album_recentlyAdded: return "clock"
