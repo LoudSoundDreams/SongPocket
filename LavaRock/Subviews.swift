@@ -96,6 +96,7 @@ struct AlbumHeader: View {
 				Text(album.releaseDateEstimateFormatted())
 					.foregroundStyle(.secondary)
 					.font(.caption2)
+					.monospacedDigit()
 			}.padding(.bottom, .eight * 1/4)
 			Spacer().alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
