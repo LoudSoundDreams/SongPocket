@@ -96,9 +96,9 @@ import MediaPlayer
 	private init() {
 		refresh()
 		AudioPlayer.shared.reflectorToolbar = Weak(self)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(databaseEmptinessMaybeChanged), name: .LRMergedChanges, object: nil) // Because Media Player doesn’t post “now-playing item changed” notifications when entering or exiting the “Not Playing” state.
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(databaseChanged), name: .LRMergedChanges, object: nil) // Because Media Player doesn’t post “now-playing item changed” notifications when entering or exiting the “Not Playing” state.
 	}
-	@objc private func databaseEmptinessMaybeChanged() { refresh() }
+	@objc private func databaseChanged() { refresh() }
 	
 	func refresh() {
 #if targetEnvironment(simulator)

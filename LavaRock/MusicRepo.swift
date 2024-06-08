@@ -7,7 +7,7 @@ final class MusicRepo: ObservableObject {
 	static let shared = MusicRepo()
 	private init() {}
 	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
-	func watchMPLibrary() {
+	func observeMediaPlayerLibrary() {
 		library?.endGeneratingLibraryChangeNotifications()
 		library = MPMediaLibrary.default()
 		library?.beginGeneratingLibraryChangeNotifications()

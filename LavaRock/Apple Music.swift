@@ -21,8 +21,8 @@ import MusicKit
 	}
 	
 	static func integrate() {
-		MusicRepo.shared.watchMPLibrary()
-		AudioPlayer.shared.watchMPPlayer()
+		MusicRepo.shared.observeMediaPlayerLibrary()
+		AudioPlayer.shared.observeMediaPlayerController()
 	}
 }
 
@@ -44,7 +44,7 @@ extension MPMusicPlayerController {
 	static let shared = AudioPlayer()
 	private init() {}
 	var reflectorToolbar: Weak<__MainToolbar>? = nil
-	func watchMPPlayer() {
+	func observeMediaPlayerController() {
 		guard let __player = MPMusicPlayerController._system else { return }
 		__player.beginGeneratingPlaybackNotifications()
 		refreshToolbar()
