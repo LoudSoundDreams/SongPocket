@@ -81,11 +81,11 @@ import MediaPlayer
 		]),
 		UIDeferredMenuElement.uncached { [weak self] use in use([
 			UIAction(
-				title: InterfaceText.nowPlaying, image: UIImage(systemName: WorkingOn.inlineTracklist ? "square.stack" : "chevron.forward"),
+				title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"),
 				attributes: {
 					guard
 						SystemMusicPlayer._shared?.queue.currentEntry != nil,
-						let albumsTVC = self?.albumsTVC?.referencee, !albumsTVC.isBeneathCurrentAlbum
+						let albumsTVC = self?.albumsTVC?.referencee
 					else { return .disabled }
 					return []
 				}()

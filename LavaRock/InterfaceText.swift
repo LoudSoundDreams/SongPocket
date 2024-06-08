@@ -16,7 +16,7 @@ enum InterfaceText {
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
 	
-	static let nowPlaying = NSLocalizedString("Now Playing", comment: "Button and accessibility label")
+	static let showAlbum = NSLocalizedString("Show Album", comment: "Button and accessibility label")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
 	
 	// MARK: Toolbar

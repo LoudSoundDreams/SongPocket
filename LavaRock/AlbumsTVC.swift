@@ -50,40 +50,18 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	var isBeneathCurrentAlbum: Bool {
-		guard let pushedAlbum = (navigationController?.topViewController as? SongsTVC)?.songsViewModel.songs.first?.container else { return false }
-		return pushedAlbum.songs(sorted: false).contains { $0.isInPlayer() }
-	}
 	func goToCurrentAlbum() {
-		guard !WorkingOn.inlineTracklist else {
-			expandCurrentAlbum()
-			return
-		}
 		guard
-			!isBeneathCurrentAlbum,
 			let albumToOpen = albumsViewModel.albums.first(where: { album in
 				album.songs(sorted: false).contains { $0.isInPlayer() }
 			})
 		else { return }
 		navigationController?.popToRootViewController(animated: true)
 		let indexPath = IndexPath(row: Int(albumToOpen.index), section: 0)
-		tableView.performBatchUpdates {
-			tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-		} completion: { _ in
-			self.tableView.performBatchUpdates {
-				self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-			} completion: { _ in
-				self.pushAlbum(albumToOpen)
-			}
-		}
-	}
-	private func expandCurrentAlbum() {
-		guard let albumToOpen = albumsViewModel.albums.first(where: { album in
-			album.songs(sorted: false).contains { $0.isInPlayer() }
-		}) else { return }
-		let indexPath = IndexPath(row: Int(albumToOpen.index), section: 0)
+		// TO DO: Wait until this view appears before scrolling.
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
+	
 	private func pushAlbum(_ album: Album) {
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
