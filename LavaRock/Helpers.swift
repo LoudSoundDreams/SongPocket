@@ -1,6 +1,6 @@
 // MARK: - Standard library
 
-final class Weak<Referencee: AnyObject> {
+final class WeakRef<Referencee: AnyObject> {
 	weak var referencee: Referencee? = nil
 	init(_ referencee: Referencee) { self.referencee = referencee }
 }

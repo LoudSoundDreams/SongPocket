@@ -43,7 +43,7 @@ extension MPMusicPlayerController {
 @MainActor final class AudioPlayer {
 	static let shared = AudioPlayer()
 	private init() {}
-	var reflectorToolbar: Weak<__MainToolbar>? = nil
+	var reflectorToolbar: WeakRef<__MainToolbar>? = nil
 	func observeMediaPlayerController() {
 		guard let __player = MPMusicPlayerController._system else { return }
 		__player.beginGeneratingPlaybackNotifications()

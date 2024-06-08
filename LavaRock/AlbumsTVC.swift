@@ -23,7 +23,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: .LRShowAlbumDetail, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: .LRHideAlbumDetail, object: nil)
-		__MainToolbar.shared.albumsTVC = Weak(self)
+		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
 	@objc private func showAlbumDetail(notification: Notification) {
 		guard let album = notification.object as? Album else { return }
