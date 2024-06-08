@@ -2,6 +2,7 @@
 
 import UIKit
 import MusicKit
+import SwiftUI
 
 class LibraryTVC: UITableViewController {
 	final var libraryViewModel: LibraryViewModel {
@@ -29,7 +30,7 @@ class LibraryTVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = UIColor(LRColor.grey_oneEighth)
+		view.backgroundColor = UIColor(Color.grey_oneEighth)
 		
 		refreshEditingButtons() // For “Edit” button
 		setToolbarItems(viewingButtons, animated: false)
