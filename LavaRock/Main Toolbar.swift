@@ -152,19 +152,8 @@ import MediaPlayer
 			case .all, .none, .default: break
 			@unknown default: break
 		}
-		// As of iOS 16.2 developer beta 3, when the user first grants access to Music, Media Player can incorrectly return `.none` for 8ms or longer.
-		// That happens even if the app crashes while the permission alert is visible, and we get first access on next launch.
-		if !hasRefreshedOverflowButton {
-			hasRefreshedOverflowButton = true
-			Task {
-				try? await Task.sleep(for: .milliseconds(50))
-				
-				overflowButton.image = newOverflowButtonImage()
-			}
-		}
 		return repeatOff
 	}
-	private var hasRefreshedOverflowButton = false
 	private func showPlay() {
 		playPauseButton.title = LRString.play
 		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in
