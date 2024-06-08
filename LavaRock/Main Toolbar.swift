@@ -9,6 +9,17 @@ import MediaPlayer
 	static let shared = __MainToolbar()
 	lazy var barButtonItems: [UIBarButtonItem] = [.flexibleSpace(), playPauseButton, .flexibleSpace(), overflowButton]
 	var albumsTVC: WeakRef<AlbumsTVC>? = nil
+	func observeMediaPlayerController() {
+		refresh()
+		MPMusicPlayerController._system?.beginGeneratingPlaybackNotifications()
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
+	}
+	
+	private init() {
+		refresh()
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: .LRMergedChanges, object: nil) // Because when Media Player enters or exits the “Not Playing” state, it doesn’t post “now-playing item changed” notifications.
+	}
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	private lazy var overflowButton = UIBarButtonItem(title: InterfaceText.more, menu: UIMenu(children: [
@@ -93,14 +104,7 @@ import MediaPlayer
 		])},
 	]))
 	
-	private init() {
-		refresh()
-		AudioPlayer.shared.reflectorToolbar = WeakRef(self)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(databaseChanged), name: .LRMergedChanges, object: nil) // Because Media Player doesn’t post “now-playing item changed” notifications when entering or exiting the “Not Playing” state.
-	}
-	@objc private func databaseChanged() { refresh() }
-	
-	func refresh() {
+	@objc private func refresh() {
 #if targetEnvironment(simulator)
 		defer {
 			showPause()

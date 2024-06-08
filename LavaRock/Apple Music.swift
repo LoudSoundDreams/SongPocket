@@ -22,7 +22,7 @@ import MusicKit
 	
 	static func integrate() {
 		MusicRepo.shared.observeMediaPlayerLibrary()
-		AudioPlayer.shared.observeMediaPlayerController()
+		__MainToolbar.shared.observeMediaPlayerController()
 	}
 }
 
@@ -39,17 +39,4 @@ extension MPMusicPlayerController {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return .systemMusicPlayer
 	}
-}
-@MainActor final class AudioPlayer {
-	static let shared = AudioPlayer()
-	private init() {}
-	var reflectorToolbar: WeakRef<__MainToolbar>? = nil
-	func observeMediaPlayerController() {
-		guard let __player = MPMusicPlayerController._system else { return }
-		__player.beginGeneratingPlaybackNotifications()
-		refreshToolbar()
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshToolbar), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshToolbar), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
-	}
-	@objc private func refreshToolbar() { reflectorToolbar?.referencee?.refresh() }
 }
