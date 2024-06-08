@@ -50,24 +50,14 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	func goToCurrentAlbum() {
-		guard
-			let albumToOpen = albumsViewModel.albums.first(where: { album in
-				album.songs(sorted: false).contains { $0.isInPlayer() }
-			})
-		else { return }
+	func showCurrentAlbum() {
+		guard let currentAlbum = albumsViewModel.albums.first(where: { album in
+			album.songs(sorted: false).contains { $0.isInPlayer() }
+		}) else { return }
 		navigationController?.popToRootViewController(animated: true)
-		let indexPath = IndexPath(row: Int(albumToOpen.index), section: 0)
+		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
 		// TO DO: Wait until this view appears before scrolling.
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-	}
-	
-	private func pushAlbum(_ album: Album) {
-		navigationController?.pushViewController({
-			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-			songsTVC.songsViewModel = SongsViewModel(album: album)
-			return songsTVC
-		}(), animated: true)
 	}
 	
 	// MARK: - Editing
@@ -234,6 +224,13 @@ final class AlbumsTVC: LibraryTVC {
 			}
 		}
 		super.tableView(tableView, didSelectRowAt: indexPath)
+	}
+	private func pushAlbum(_ album: Album) {
+		navigationController?.pushViewController({
+			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+			songsTVC.songsViewModel = SongsViewModel(album: album)
+			return songsTVC
+		}(), animated: true)
 	}
 	
 	override func tableView(

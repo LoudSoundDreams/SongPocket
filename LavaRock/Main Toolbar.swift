@@ -100,7 +100,7 @@ import MediaPlayer
 					else { return .disabled }
 					return []
 				}()
-			) { [weak self] _ in self?.albumsTVC?.referencee?.goToCurrentAlbum() }
+			) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrentAlbum() }
 		])},
 	]))
 	
