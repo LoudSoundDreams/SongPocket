@@ -17,9 +17,9 @@ final class SongsTVC: LibraryTVC {
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}
 	
-	private lazy var arrangeSongsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var floatSongsButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
-	private lazy var sinkSongsButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
+	private lazy var arrangeSongsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var floatSongsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
+	private lazy var sinkSongsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	override func viewDidLoad() {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatSongsButton, .flexibleSpace(), sinkSongsButton]
 		super.viewDidLoad()
@@ -168,7 +168,7 @@ final class SongsTVC: LibraryTVC {
 			// You must eventually deselect the row in every possible scenario after this moment.
 			
 			let song = songsViewModel.songs[indexPath.row - SongsViewModel.prerowCount]
-			let startPlaying = UIAlertAction(title: LRString.startPlaying, style: .default) { _ in
+			let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
 				Task {
 					await song.playAlbumStartingHere()
 					
@@ -181,7 +181,7 @@ final class SongsTVC: LibraryTVC {
 			actionSheet.popoverPresentationController?.sourceView = selectedCell
 			actionSheet.addAction(startPlaying)
 			actionSheet.addAction(
-				UIAlertAction(title: LRString.cancel, style: .cancel) { [weak self] _ in
+				UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
 					self?.tableView.deselectAllRows(animated: true)
 				}
 			)

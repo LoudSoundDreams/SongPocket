@@ -57,7 +57,7 @@ private struct CoverArt: View {
 						.foregroundStyle(.secondary)
 						.font(.title)
 				}
-				.accessibilityLabel(LRString.albumArtwork)
+				.accessibilityLabel(InterfaceText.albumArtwork)
 				.accessibilityIgnoresInvertColors()
 			}
 			ZStack(alignment: .bottomLeading) {
@@ -88,7 +88,7 @@ struct AlbumHeader: View {
 					guard
 						let albumArtist = album.representativeSongInfo()?.albumArtistOnDisk,
 						albumArtist != ""
-					else { return LRString.unknownArtist }
+					else { return InterfaceText.unknownArtist }
 					return albumArtist
 				}())
 				.foregroundStyle(.secondary)
@@ -114,7 +114,7 @@ struct SongRow: View {
 			HStack(alignment: .firstTextBaseline) {
 				AvatarImage(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
-					Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
+					Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 						.alignmentGuide_separatorLeading()
 					let albumArtistOptional = albumRepInfo?.albumArtistOnDisk
 					if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
@@ -125,7 +125,7 @@ struct SongRow: View {
 				}.padding(.bottom, .eight * 1/4)
 				Spacer()
 				Text({
-					guard let info, let albumRepInfo else { return LRString.octothorpe }
+					guard let info, let albumRepInfo else { return InterfaceText.octothorpe }
 					return albumRepInfo.shouldShowDiscNumber
 					? info.discAndTrackFormatted()
 					: info.trackFormatted()
@@ -150,17 +150,17 @@ struct SongRow: View {
 	@ViewBuilder private var overflowMenuContent: some View {
 		Button {
 			Task { await song.play() }
-		} label: { Label(LRString.play, systemImage: "play") }
+		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
 		Button {
 			Task { await song.playLast() }
-		} label: { Label(LRString.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
+		} label: { Label(InterfaceText.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		Button {
 			Task { await song.playRestOfAlbumLast() }
 		} label: {
-			Label(LRString.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
+			Label(InterfaceText.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
 		}.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
@@ -189,8 +189,8 @@ struct AvatarImage: View {
 		.accessibilityElement()
 		.accessibilityLabel({ switch status {
 			case .notPlaying: return ""
-			case .paused: return LRString.paused
-			case .playing: return LRString.nowPlaying
+			case .paused: return InterfaceText.paused
+			case .playing: return InterfaceText.nowPlaying
 		}}())
 	}
 	private var status: Status {

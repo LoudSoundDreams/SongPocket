@@ -89,12 +89,12 @@ extension Album {
 		guard
 			let albumTitle = representativeSongInfo()?.albumTitleOnDisk,
 			albumTitle != ""
-		else { return LRString.unknownAlbum }
+		else { return InterfaceText.unknownAlbum }
 		return albumTitle
 	}
 	
 	final func releaseDateEstimateFormatted() -> String {
-		guard let releaseDateEstimate else { return LRString.emDash }
+		guard let releaseDateEstimate else { return InterfaceText.emDash }
 		return releaseDateEstimate.formatted(date: .numeric, time: .omitted)
 	}
 }

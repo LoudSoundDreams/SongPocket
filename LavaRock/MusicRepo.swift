@@ -103,7 +103,7 @@ final class MusicRepo: ObservableObject {
 		let allCollections = Collection.allFetched(sorted: true, context: context)
 		guard let firstCollection = allCollections.first else { return }
 		
-		firstCollection.title = LRString.tilde
+		firstCollection.title = InterfaceText.tilde
 		allCollections.dropFirst().forEach { laterCollection in
 			laterCollection.albums(sorted: true).forEach { album in
 				album.index = Int64(firstCollection.contents?.count ?? 0)
@@ -345,7 +345,7 @@ final class MusicRepo: ObservableObject {
 			}
 			let new = Collection(context: context)
 			new.index = 0
-			new.title = LRString.tilde
+			new.title = InterfaceText.tilde
 			return new
 		}()
 		if isFirstImport {

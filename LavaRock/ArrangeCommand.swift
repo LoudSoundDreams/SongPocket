@@ -21,12 +21,12 @@ enum ArrangeCommand {
 			// Runs each time the button presents the menu
 			let action = UIAction(
 				title: { switch self {
-					case .random: return LRString.random
-					case .reverse: return LRString.reverse
-					case .album_recentlyAdded: return LRString.recentlyAdded
-					case .album_newest: return LRString.newest
-					case .album_artist: return LRString.artist
-					case .song_track: return LRString.trackNumber
+					case .random: return InterfaceText.random
+					case .reverse: return InterfaceText.reverse
+					case .album_recentlyAdded: return InterfaceText.recentlyAdded
+					case .album_newest: return InterfaceText.newest
+					case .album_artist: return InterfaceText.artist
+					case .song_track: return InterfaceText.trackNumber
 				}}(),
 				image: UIImage(systemName: { switch self {
 					case .random:

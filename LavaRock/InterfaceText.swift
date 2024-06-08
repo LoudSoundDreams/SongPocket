@@ -1,8 +1,6 @@
-// 2020-12-05
-
 import Foundation
 
-enum LRString {
+enum InterfaceText {
 	// Don’t pass arguments other than strings to the Foundation function `NSLocalizedString`, because otherwise, when you choose “Export Localizations…”, Xcode won’t include those calls.
 	
 	// MARK: - WITHOUT VARIABLES

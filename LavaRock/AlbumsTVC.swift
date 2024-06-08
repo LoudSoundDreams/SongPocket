@@ -7,9 +7,9 @@ import MusicKit
 final class AlbumsTVC: LibraryTVC {
 	private var expandableViewModel = ExpandableViewModel()
 	var albumsViewModel = AlbumsViewModel()
-	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: LRString.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var floatAlbumsButton = UIBarButtonItem(title: LRString.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
-	private lazy var sinkAlbumsButton = UIBarButtonItem(title: LRString.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
+	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var floatAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
+	private lazy var sinkAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	
 	// MARK: - Setup
 	
@@ -181,9 +181,9 @@ final class AlbumsTVC: LibraryTVC {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
 					} description: {
-						Text(LRString.welcome_message)
+						Text(InterfaceText.welcome_message)
 					} actions: {
-						Button(LRString.welcome_button) {
+						Button(InterfaceText.welcome_button) {
 							Task { await AppleMusic.requestAccess() }
 						}
 					}
@@ -193,7 +193,7 @@ final class AlbumsTVC: LibraryTVC {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
 					} actions: {
-						Button(LRString.emptyLibrary_button) {
+						Button(InterfaceText.emptyLibrary_button) {
 							let musicURL = URL(string: "music://")!
 							UIApplication.shared.open(musicURL)
 						}
@@ -242,7 +242,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private static func configuredCellForSong(cell: UITableViewCell, song: Song) -> UITableViewCell {
 		cell.contentConfiguration = UIHostingConfiguration {
-			Text(song.songInfo()?.titleOnDisk ?? LRString.emDash)
+			Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 		}
 		return cell
 	}

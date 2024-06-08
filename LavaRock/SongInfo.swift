@@ -95,10 +95,10 @@ extension SongInfo {
 		return discCountOnDisk >= 2 || discNumberOnDisk >= 2
 	}
 	func discAndTrackFormatted() -> String {
-		return "\(discNumberOnDisk)\(LRString.interpunct)\(trackFormatted())"
+		return "\(discNumberOnDisk)\(InterfaceText.interpunct)\(trackFormatted())"
 	}
 	func trackFormatted() -> String {
-		guard trackNumberOnDisk != Self.unknownTrackNumber else { return LRString.octothorpe }
+		guard trackNumberOnDisk != Self.unknownTrackNumber else { return InterfaceText.octothorpe }
 		return String(trackNumberOnDisk)
 	}
 }
