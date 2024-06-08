@@ -157,7 +157,9 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	func refreshEditingButtons() {
 		editButtonItem.isEnabled = !libraryViewModel.isEmpty() && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
-		editButtonItem.image = UIImage(systemName: isEditing ? "checkmark.circle.fill" : "checkmark.circle")
+		editButtonItem.image = isEditing
+		? UIImage(systemName: "checkmark.circle.fill")
+		: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	}
 	final func allowsArrange() -> Bool {
 		guard !libraryViewModel.isEmpty() else { return false }

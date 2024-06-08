@@ -140,7 +140,7 @@ import MediaPlayer
 		}
 	}
 	private func newOverflowButtonImage() -> UIImage {
-		let repeatOff = UIImage(systemName: "ellipsis.circle")!
+		let repeatOff = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
 		
 		guard
 			let __player = MPMusicPlayerController._system,
@@ -167,14 +167,14 @@ import MediaPlayer
 	private var hasRefreshedOverflowButton = false
 	private func showPlay() {
 		playPauseButton.title = LRString.play
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle")) { _ in
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in
 			Task { try await SystemMusicPlayer._shared?.play() }
 		}
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
 	private func showPause() {
 		playPauseButton.title = LRString.pause
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle")) { _ in SystemMusicPlayer._shared?.pause() }
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in SystemMusicPlayer._shared?.pause() }
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
 }
