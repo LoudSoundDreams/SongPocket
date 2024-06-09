@@ -29,8 +29,12 @@ import MediaPlayer
 				UIAction(
 					title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"),
 					attributes: {
+						let albumsInDatabase = Database.viewContext.objectsFetched(for: Album.fetchRequest())
 						guard
-							SystemMusicPlayer._shared?.queue.currentEntry != nil
+							let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
+							nil != albumsInDatabase.first(where: { album in
+								currentAlbumID == album.albumPersistentID
+							})
 						else { return .disabled }
 						return []
 					}()

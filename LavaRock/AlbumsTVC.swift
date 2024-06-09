@@ -3,6 +3,7 @@
 import UIKit
 import SwiftUI
 import MusicKit
+import MediaPlayer
 
 final class AlbumsTVC: LibraryTVC {
 	private var expandableViewModel = ExpandableViewModel()
@@ -52,9 +53,13 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	func showCurrentAlbum() {
-		guard let currentAlbum = albumsViewModel.albums.first(where: { album in
-			album.songs(sorted: false).contains { $0.isInPlayer() }
-		}) else { return }
+		guard
+			let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
+			let currentAlbum = albumsViewModel.albums.first(where: { album in
+				currentAlbumID == album.albumPersistentID
+			})
+		else { return }
+		// The current song might not be in our database, but the current `Album` is.
 		navigationController?.popToRootViewController(animated: true)
 		// TO DO: Wait until this view appears before scrolling.
 		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
