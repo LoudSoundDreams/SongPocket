@@ -64,7 +64,7 @@ extension SongsViewModel: LibraryViewModel {
 	func itemIndex(forRow row: Int) -> Int { return row - Self.prerowCount }
 	func withRefreshedData() -> Self {
 		// Get the `Album` from the first non-deleted `Song`.
-		guard let album = songs.first(where: { $0.container != nil })?.container else {
+		guard let album = songs.first(where: { nil != $0.container })?.container else {
 			return Self(songs: [])
 		}
 		return Self(album: album)

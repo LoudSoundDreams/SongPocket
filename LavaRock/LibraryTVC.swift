@@ -1,8 +1,8 @@
 // 2020-04-15
 
 import UIKit
-import MusicKit
 import SwiftUI
+import MusicKit
 
 class LibraryTVC: UITableViewController {
 	final var libraryViewModel: LibraryViewModel {
@@ -38,7 +38,7 @@ class LibraryTVC: UITableViewController {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: .LRMergedChanges, object: nil)
 	}
 	@objc private func refreshLibraryItemsWhenVisible() {
-		guard view.window != nil else {
+		guard nil != view.window else {
 			needsRefreshLibraryItemsOnViewDidAppear = true
 			return
 		}

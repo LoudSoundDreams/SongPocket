@@ -56,8 +56,8 @@ final class AlbumsTVC: LibraryTVC {
 			album.songs(sorted: false).contains { $0.isInPlayer() }
 		}) else { return }
 		navigationController?.popToRootViewController(animated: true)
-		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
 		// TO DO: Wait until this view appears before scrolling.
+		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
 	
@@ -85,7 +85,7 @@ final class AlbumsTVC: LibraryTVC {
 						case .album_recentlyAdded, .album_artist: return true
 						case .album_newest:
 							let toSort = selectedOrAllIndices().map { albumsViewModel.albums[$0] }
-							return toSort.contains { $0.releaseDateEstimate != nil }
+							return toSort.contains { nil != $0.releaseDateEstimate }
 					}
 				}()) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
 			}

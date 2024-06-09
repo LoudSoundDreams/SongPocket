@@ -404,7 +404,7 @@ final class MusicRepo: ObservableObject {
 	) {
 		// Filter out infos without release dates
 		// This is pretty slow, but can save time later.
-		let infosWithReleaseDates = infos.filter { $0.releaseDateOnDisk != nil }
+		let infosWithReleaseDates = infos.filter { nil != $0.releaseDateOnDisk }
 		
 		let infosByAlbumID: [AlbumID: [SongInfo]] =
 		Dictionary(grouping: infosWithReleaseDates) { $0.albumID }

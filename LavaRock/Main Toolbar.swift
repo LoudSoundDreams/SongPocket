@@ -30,8 +30,7 @@ import MediaPlayer
 					title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"),
 					attributes: {
 						guard
-							SystemMusicPlayer._shared?.queue.currentEntry != nil,
-							let albumsTVC = self?.albumsTVC?.referencee
+							SystemMusicPlayer._shared?.queue.currentEntry != nil
 						else { return .disabled }
 						return []
 					}()
@@ -47,7 +46,7 @@ import MediaPlayer
 						attributes: {
 							guard
 								let __player = MPMusicPlayerController._system,
-								SystemMusicPlayer._shared?.queue.currentEntry != nil
+								nil != SystemMusicPlayer._shared?.queue.currentEntry
 							else { return .disabled }
 							return (__player.repeatMode == MPMusicRepeatMode.none) ? .disabled : []
 						}(),
@@ -66,7 +65,7 @@ import MediaPlayer
 						attributes: {
 							guard
 								let __player = MPMusicPlayerController._system,
-								SystemMusicPlayer._shared?.queue.currentEntry != nil
+								nil != SystemMusicPlayer._shared?.queue.currentEntry
 							else { return .disabled }
 							return (__player.repeatMode == .one) ? .disabled : []
 						}(),
@@ -119,7 +118,7 @@ import MediaPlayer
 		
 		guard
 			let __player = MPMusicPlayerController._system,
-			SystemMusicPlayer._shared?.queue.currentEntry != nil
+			nil != SystemMusicPlayer._shared?.queue.currentEntry
 		else {
 			showPlay()
 			
@@ -151,7 +150,7 @@ import MediaPlayer
 		
 		guard
 			let __player = MPMusicPlayerController._system,
-			SystemMusicPlayer._shared?.queue.currentEntry != nil
+			nil != SystemMusicPlayer._shared?.queue.currentEntry
 		else { return repeatOff }
 		switch __player.repeatMode {
 				// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
