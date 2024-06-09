@@ -22,6 +22,7 @@ final class SongsTVC: LibraryTVC {
 	private lazy var sinkSongsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
 	override func viewDidLoad() {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatSongsButton, .flexibleSpace(), sinkSongsButton]
+		arrangeSongsButton.preferredMenuElementOrder = .fixed
 		super.viewDidLoad()
 	}
 	override func refreshEditingButtons() {
@@ -36,8 +37,8 @@ final class SongsTVC: LibraryTVC {
 			[.song_track],
 			[.random, .reverse],
 		]
-		let elementsGrouped: [[UIMenuElement]] = sections.reversed().map { section in
-			section.reversed().map { command in
+		let elementsGrouped: [[UIMenuElement]] = sections.map { section in
+			section.map { command in
 				return command.createMenuElement(enabled: {
 					guard selectedOrAllIndices().count >= 2 else { return false }
 					switch command {

@@ -15,6 +15,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func viewDidLoad() {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeAlbumsButton, .flexibleSpace(), floatAlbumsButton, .flexibleSpace(), sinkAlbumsButton]
+		arrangeAlbumsButton.preferredMenuElementOrder = .fixed
 		
 		super.viewDidLoad()
 		
@@ -74,8 +75,8 @@ final class AlbumsTVC: LibraryTVC {
 			[.album_recentlyAdded, .album_newest, .album_artist],
 			[.random, .reverse],
 		]
-		let elementsGrouped: [[UIMenuElement]] = sections.reversed().map { section in
-			section.reversed().map { command in
+		let elementsGrouped: [[UIMenuElement]] = sections.map { section in
+			section.map { command in
 				command.createMenuElement(enabled: {
 					guard selectedOrAllIndices().count >= 2 else { return false }
 					switch command {
