@@ -28,8 +28,11 @@ import MediaPlayer
 		return result
 	}()
 	private func createOverflowTitle() -> String {
-		guard Collection.allFetched(sorted: false, context: Database.viewContext).isEmpty else { return "" }
-		return InterfaceText._emptyLibraryMessage
+		if
+			MusicAuthorization.currentStatus == .authorized,
+			Collection.allFetched(sorted: false, context: Database.viewContext).isEmpty
+		{ return InterfaceText._emptyLibraryMessage }
+		return ""
 	}
 	private func createOverflowMenu() -> UIMenu {
 		return UIMenu(title: createOverflowTitle(), children: [
