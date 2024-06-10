@@ -35,6 +35,9 @@ import MediaPlayer
 		return UIMenu(title: createOverflowTitle(), children: [
 			UIDeferredMenuElement.uncached { [weak self] use in use([
 				UIAction(title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"), attributes: {
+#if targetEnvironment(simulator)
+					return []
+#else
 					let albumsInDatabase = Database.viewContext.objectsFetched(for: Album.fetchRequest())
 					guard
 						let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
@@ -43,6 +46,7 @@ import MediaPlayer
 						})
 					else { return .disabled }
 					return []
+#endif
 				}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrentAlbum() }
 			])},
 			// We want to indicate which mode is active by selecting it, not disabling it.
@@ -72,11 +76,15 @@ import MediaPlayer
 					UIAction(
 						title: InterfaceText.repeat1, image: UIImage(systemName: "repeat.1"),
 						attributes: {
+#if targetEnvironment(simulator)
+							return []
+#else
 							guard
 								let __player = MPMusicPlayerController._system,
 								nil != SystemMusicPlayer._shared?.queue.currentEntry
 							else { return .disabled }
 							return (__player.repeatMode == .one) ? .disabled : []
+#endif
 						}(),
 						state: {
 							guard let __player = MPMusicPlayerController._system else { return .off }
@@ -89,30 +97,50 @@ import MediaPlayer
 				UIDeferredMenuElement.uncached { use in use([
 					// Ideally, disable this when there are no previous tracks to skip to.
 					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: {
+#if targetEnvironment(simulator)
+						return []
+#else
 						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []
+#endif
 					}()) { _ in Task { try await SystemMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
 					UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: {
+#if targetEnvironment(simulator)
+						return []
+#else
 						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []
+#endif
 					}()) { _ in SystemMusicPlayer._shared?.restartCurrentEntry() }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: {
+#if targetEnvironment(simulator)
+						return []
+#else
 						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []
+#endif
 					}()) { _ in Task { try await SystemMusicPlayer._shared?.skipToNextEntry() } }
 				])},
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: {
+#if targetEnvironment(simulator)
+						return [.keepsMenuPresented]
+#else
 						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]
+#endif
 					}()) { _ in SystemMusicPlayer._shared?.playbackTime -= 15 }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: {
+#if targetEnvironment(simulator)
+						return [.keepsMenuPresented]
+#else
 						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]
+#endif
 					}()) { _ in SystemMusicPlayer._shared?.playbackTime += 15 }
 				])},
 			]),
