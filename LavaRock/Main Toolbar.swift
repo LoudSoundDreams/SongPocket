@@ -33,21 +33,17 @@ import MediaPlayer
 	}
 	private func createOverflowMenu() -> UIMenu {
 		return UIMenu(title: createOverflowTitle(), children: [
-			// TO DO: Add hack to enable elements in Simulator as appropriate
 			UIDeferredMenuElement.uncached { [weak self] use in use([
-				UIAction(
-					title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"),
-					attributes: {
-						let albumsInDatabase = Database.viewContext.objectsFetched(for: Album.fetchRequest())
-						guard
-							let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
-							nil != albumsInDatabase.first(where: { album in
-								currentAlbumID == album.albumPersistentID
-							})
-						else { return .disabled }
-						return []
-					}()
-				) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrentAlbum() }
+				UIAction(title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"), attributes: {
+					let albumsInDatabase = Database.viewContext.objectsFetched(for: Album.fetchRequest())
+					guard
+						let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
+						nil != albumsInDatabase.first(where: { album in
+							currentAlbumID == album.albumPersistentID
+						})
+					else { return .disabled }
+					return []
+				}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrentAlbum() }
 			])},
 			// We want to indicate which mode is active by selecting it, not disabling it.
 			// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
@@ -92,26 +88,32 @@ import MediaPlayer
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					// Ideally, disable this when there are no previous tracks to skip to.
-					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []) { _ in
-						Task { try await SystemMusicPlayer._shared?.skipToPreviousEntry() }
-					}
+					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: {
+						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []
+					}()) { _ in Task { try await SystemMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-					UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []) { _ in SystemMusicPlayer._shared?.restartCurrentEntry() }
+					UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: {
+						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []
+					}()) { _ in SystemMusicPlayer._shared?.restartCurrentEntry() }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []) { _ in
-						Task { try await SystemMusicPlayer._shared?.skipToNextEntry() }
-					}
+					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: {
+						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? .disabled : []
+					}()) { _ in Task { try await SystemMusicPlayer._shared?.skipToNextEntry() } }
 				])},
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]) { _ in SystemMusicPlayer._shared?.playbackTime -= 15 }
+					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: {
+						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]
+					}()) { _ in SystemMusicPlayer._shared?.playbackTime -= 15 }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]) { _ in SystemMusicPlayer._shared?.playbackTime += 15 }
+					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: {
+						return (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]
+					}()) { _ in SystemMusicPlayer._shared?.playbackTime += 15 }
 				])},
 			]),
 		])
@@ -174,9 +176,7 @@ import MediaPlayer
 	}
 	private func showPlay() {
 		playPauseButton.title = InterfaceText.play
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in
-			Task { try await SystemMusicPlayer._shared?.play() }
-		}
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in Task { try await SystemMusicPlayer._shared?.play() } }
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
 	private func showPause() {
