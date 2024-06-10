@@ -23,7 +23,16 @@ import MediaPlayer
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	private lazy var overflowButton = {
-		let result = UIBarButtonItem(title: InterfaceText.more, menu: UIMenu(children: [
+		let result = UIBarButtonItem(title: InterfaceText.more, menu: createOverflowMenu())
+		result.preferredMenuElementOrder = .fixed
+		return result
+	}()
+	private func createOverflowTitle() -> String {
+		guard Collection.allFetched(sorted: false, context: Database.viewContext).isEmpty else { return "" }
+		return InterfaceText._emptyLibraryMessage
+	}
+	private func createOverflowMenu() -> UIMenu {
+		return UIMenu(title: createOverflowTitle(), children: [
 			// TO DO: Add hack to enable elements in Simulator as appropriate
 			UIDeferredMenuElement.uncached { [weak self] use in use([
 				UIAction(
@@ -105,10 +114,8 @@ import MediaPlayer
 					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: (SystemMusicPlayer._shared?.queue.currentEntry == nil) ? [.disabled, .keepsMenuPresented] : [.keepsMenuPresented]) { _ in SystemMusicPlayer._shared?.playbackTime += 15 }
 				])},
 			]),
-		]))
-		result.preferredMenuElementOrder = .fixed
-		return result
-	}()
+		])
+	}
 	
 	@objc private func refresh() {
 #if targetEnvironment(simulator)
@@ -119,6 +126,7 @@ import MediaPlayer
 #endif
 		
 		overflowButton.image = newOverflowButtonImage()
+		overflowButton.menu = createOverflowMenu()
 		
 		guard
 			let __player = MPMusicPlayerController._system,

@@ -167,9 +167,11 @@ final class AlbumsTVC: LibraryTVC {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
 					} actions: {
-						Button(InterfaceText.emptyLibrary_button) {
+						Button {
 							let musicURL = URL(string: "music://")!
 							UIApplication.shared.open(musicURL)
+						} label: {
+							Image(systemName: "plus")
 						}
 					}
 				}

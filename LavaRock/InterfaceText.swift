@@ -21,6 +21,8 @@ enum InterfaceText {
 	
 	// MARK: Toolbar
 	
+	static let _emptyLibraryMessage = NSLocalizedString("Your Apple Music library is empty. Add something!", comment: "Message in menu when database is empty")
+	
 	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
@@ -42,8 +44,6 @@ enum InterfaceText {
 	
 	static let welcome_message = NSLocalizedString("SongPocket views and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let welcome_button = NSLocalizedString("Continue", comment: "Button")
-	
-	static let emptyLibrary_button = NSLocalizedString("Add Music to Library", comment: "Button")
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
