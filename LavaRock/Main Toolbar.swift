@@ -221,14 +221,7 @@ import MediaPlayer
 
 import SwiftUI
 
-final class MainToolbarStatus: ObservableObject {
-	static let shared = MainToolbarStatus()
-	private init() {}
-	@Published fileprivate(set) var inSelectMode = false
-}
-
 struct MainToolbar: View {
-	@ObservedObject private var status: MainToolbarStatus = .shared
 	var body: some View {
 		Button {
 			withAnimation {
@@ -262,4 +255,11 @@ struct MainToolbar: View {
 				.menuOrder(.fixed)
 		}
 	}
+	@ObservedObject private var status: MainToolbarStatus = .shared
+}
+
+final class MainToolbarStatus: ObservableObject {
+	static let shared = MainToolbarStatus()
+	private init() {}
+	@Published fileprivate(set) var inSelectMode = false
 }
