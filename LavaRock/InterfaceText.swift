@@ -16,12 +16,13 @@ enum InterfaceText {
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
 	
-	static let showAlbum = NSLocalizedString("Show Album", comment: "Button and accessibility label")
+	static let nowPlaying = NSLocalizedString("Now Playing", comment: "Accessibility label")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
 	
 	// MARK: Toolbar
 	
 	static let _emptyLibraryMessage = NSLocalizedString("Your Apple Music library is empty. Add something!", comment: "Message in menu when database is empty")
+	static let showAlbum = NSLocalizedString("Show Album", comment: "Button and accessibility label")
 	
 	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")

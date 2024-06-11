@@ -190,7 +190,7 @@ struct AvatarImage: View {
 		.accessibilityLabel({ switch status {
 			case .notPlaying: return ""
 			case .paused: return InterfaceText.paused
-			case .playing: return InterfaceText.showAlbum
+			case .playing: return InterfaceText.nowPlaying
 		}}())
 	}
 	private var status: Status {
