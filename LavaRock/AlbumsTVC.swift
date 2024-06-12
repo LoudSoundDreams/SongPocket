@@ -23,8 +23,8 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: .LRShowAlbumDetail, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: .LRHideAlbumDetail, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: CoverArt.showDetailForAlbum, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: CoverArt.hideDetail, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
 	@objc private func showAlbumDetail(notification: Notification) {

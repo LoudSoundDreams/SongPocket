@@ -34,7 +34,7 @@ class LibraryTVC: UITableViewController {
 		refreshEditingButtons() // For “Edit” button
 		setToolbarItems(viewingButtons, animated: false)
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: .LRMergedChanges, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: MusicRepo.mergedChanges, object: nil)
 	}
 	@objc private func refreshLibraryItemsWhenVisible() {
 		guard nil != view.window else {

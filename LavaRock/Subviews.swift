@@ -24,7 +24,9 @@ struct AlbumRow: View {
 	}
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
-private struct CoverArt: View {
+struct CoverArt: View {
+	static let showDetailForAlbum = Notification.Name("LRCoverArtShowDetailForAlbum")
+	static let hideDetail = Notification.Name("LRCoverArtHideDetail")
 	let album: Album
 	let minResolution: CGFloat
 	var body: some View {
@@ -32,9 +34,9 @@ private struct CoverArt: View {
 			tappable.onTapGesture {
 				showingInfo.toggle()
 				if showingInfo {
-					NotificationCenter.default.post(name: .LRShowAlbumDetail, object: album)
+					NotificationCenter.default.post(name: Self.showDetailForAlbum, object: album)
 				} else {
-					NotificationCenter.default.post(name: .LRHideAlbumDetail, object: nil)
+					NotificationCenter.default.post(name: Self.hideDetail, object: nil)
 				}
 			}
 		} else {

@@ -1,5 +1,6 @@
 import Foundation
 
+// Reference user-facing text here to keep it consistent throughout the app.
 enum InterfaceText {
 	// Don’t pass arguments other than strings to the Foundation function `NSLocalizedString`, because otherwise, when you choose “Export Localizations…”, Xcode won’t include those calls.
 	

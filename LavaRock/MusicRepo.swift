@@ -7,6 +7,7 @@ final class MusicRepo: ObservableObject {
 	static let shared = MusicRepo()
 	private init() {}
 	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
+	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
 	func observeMediaPlayerLibrary() {
 		library?.endGeneratingLibraryChangeNotifications()
 		library = MPMediaLibrary.default()
@@ -92,7 +93,7 @@ final class MusicRepo: ObservableObject {
 		defaults.set(true, forKey: keyHasSaved)
 		
 		DispatchQueue.main.async {
-			NotificationCenter.default.post(name: .LRMergedChanges, object: nil)
+			NotificationCenter.default.post(name: Self.mergedChanges, object: nil)
 			self.signal_mergedChanges.toggle()
 		}
 	}

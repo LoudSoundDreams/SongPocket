@@ -1,5 +1,6 @@
 import SwiftUI
 
+// Reference hard-coded numbers here to keep them consistent throughout the app.
 extension Double {
 	static var oneHalf: Self { 1/2 }
 }
@@ -15,13 +16,7 @@ extension Color {
 	)
 }
 
-extension Notification.Name {
-	static let LRMergedChanges = Self("merged changes")
-	static let LRShowAlbumDetail = Self("show album detail")
-	static let LRHideAlbumDetail = Self("hide album detail")
-}
-
-// Keeping these keys in one place helps us keep them unique.
+// Keep keys here to ensure they’re unique.
 enum LRDefaultsKey: String, CaseIterable {
 	// Introduced in version ?
 	case hasSavedDatabase = "hasEverImportedFromMusic"
