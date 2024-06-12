@@ -2,7 +2,6 @@
 
 import UIKit
 import SwiftUI
-import MusicKit
 
 final class SongsTVCStatus: ObservableObject {
 	@Published fileprivate(set) var isEditing = false
