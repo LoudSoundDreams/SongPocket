@@ -33,7 +33,7 @@ final class MusicRepo: ObservableObject {
 	}
 	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
 		let defaults = UserDefaults.standard
-		let keyHasSaved = LRDefaultsKey.hasSavedDatabase.rawValue
+		let keyHasSaved = UserDefaults.Key.hasSavedDatabase.rawValue
 		
 		let hasSaved = defaults.bool(forKey: keyHasSaved) // Returns `false` if there’s no saved value
 		let isFirstImport = !hasSaved
