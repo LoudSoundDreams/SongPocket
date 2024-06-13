@@ -197,10 +197,13 @@ struct AvatarImage: View {
 		}}())
 	}
 	private var status: Status {
-		guard song.isInPlayer() else { return .notPlaying }
 #if targetEnvironment(simulator)
+		let sim_info = song.songInfo() as! Sim_SongInfo
+		guard sim_info == Sim_SongInfo.current else { return .notPlaying }
 		return .playing
 #else
+		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
+		guard song.persistentID == MPMusicPlayerController._system?.nowPlayingItem?.songID else { return .notPlaying }
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
 	}

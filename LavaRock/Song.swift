@@ -168,14 +168,4 @@ extension Song {
 		else { return nil }
 		return queriedSongs.first
 	}
-	
-	final func isInPlayer() -> Bool {
-#if targetEnvironment(simulator)
-		let sim_info = songInfo() as! Sim_SongInfo
-		return sim_info == Sim_SongInfo.current
-#else
-		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
-		return persistentID == MPMusicPlayerController._system?.nowPlayingItem?.songID
-#endif
-	}
 }
