@@ -62,8 +62,8 @@ extension Song {
 // MARK: - Apple Music
 
 @preconcurrency import MusicKit
-@MainActor extension Song {
-	final func musicKitSong() async -> MusicKit.Song? {
+extension Song {
+	@MainActor final func musicKitSong() async -> MusicKit.Song? {
 		var request = MusicLibraryRequest<MusicKit.Song>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
 		guard
@@ -73,7 +73,7 @@ extension Song {
 		return response.items.first
 	}
 	
-	final func playAlbumStartingHere() async {
+	@MainActor final func playAlbumStartingHere() async {
 		guard
 			let player = SystemMusicPlayer._shared,
 			let rowItem = await musicKitSong(),
@@ -96,7 +96,7 @@ extension Song {
 		player.state.repeatMode = MusicPlayer.RepeatMode.none
 		player.state.shuffleMode = .off
 	}
-	final func play() async {
+	@MainActor final func play() async {
 		guard
 			let player = SystemMusicPlayer._shared,
 			let musicItem = await musicKitSong()
@@ -108,7 +108,7 @@ extension Song {
 		player.state.repeatMode = MusicPlayer.RepeatMode.none
 		player.state.shuffleMode = .off
 	}
-	final func playLast() async {
+	@MainActor final func playLast() async {
 		guard
 			let player = SystemMusicPlayer._shared,
 			let musicItem = await musicKitSong()
@@ -120,8 +120,8 @@ extension Song {
 		
 		UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 	}
-	final func playRestOfAlbumLast() async {
-		guard 
+	@MainActor final func playRestOfAlbumLast() async {
+		guard
 			let player = SystemMusicPlayer._shared,
 			let rowItem = await musicKitSong(),
 			let songsInAlbum = container?.songs(sorted: true)

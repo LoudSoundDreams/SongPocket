@@ -2,14 +2,14 @@
 
 import CoreData
 
-protocol LibraryViewModel {
+@MainActor protocol LibraryViewModel {
 	func isEmpty() -> Bool // TO DO: Delete
 	func itemIndex(forRow row: Int) -> Int // TO DO: Delete
 	func withRefreshedData() -> Self
 	func rowIdentifiers() -> [AnyHashable]
 }
 
-struct ExpandableViewModel {
+@MainActor struct ExpandableViewModel {
 	var albums: [Album] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
 		didSet { Database.renumber(albums) }
 	}
@@ -41,7 +41,7 @@ struct ExpandableViewModel {
 	}
 }
 
-struct AlbumsViewModel {
+@MainActor struct AlbumsViewModel {
 	var albums: [Album] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
 		didSet { Database.renumber(albums) }
 	}

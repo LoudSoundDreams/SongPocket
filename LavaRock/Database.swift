@@ -3,7 +3,7 @@
 import CoreData
 
 enum Database {
-	static let viewContext = container.viewContext
+	@MainActor static let viewContext = container.viewContext
 	private static let container: NSPersistentContainer = {
 		let container = NSPersistentContainer(name: "LavaRock")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in

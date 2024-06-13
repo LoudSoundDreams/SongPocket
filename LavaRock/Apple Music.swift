@@ -2,8 +2,8 @@
 
 import MusicKit
 
-@MainActor enum AppleMusic {
-	static func requestAccess() async {
+enum AppleMusic {
+	@MainActor static func requestAccess() async {
 		switch MusicAuthorization.currentStatus {
 			case .authorized: break // Should never run
 			case .notDetermined:
@@ -20,14 +20,14 @@ import MusicKit
 		}
 	}
 	
-	static func integrate() {
+	@MainActor static func integrate() {
 		MusicRepo.shared.observeMediaPlayerLibrary()
 		__MainToolbar.shared.observeMediaPlayerController()
 	}
 }
 
-@MainActor extension SystemMusicPlayer {
-	static var _shared: SystemMusicPlayer? {
+extension SystemMusicPlayer {
+	@MainActor static var _shared: SystemMusicPlayer? {
 		guard MusicAuthorization.currentStatus == .authorized else { return nil }
 		return .shared
 	}

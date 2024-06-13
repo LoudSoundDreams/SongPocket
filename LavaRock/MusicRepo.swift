@@ -3,7 +3,7 @@
 import CoreData
 import MediaPlayer
 
-final class MusicRepo: ObservableObject {
+@MainActor final class MusicRepo: ObservableObject {
 	static let shared = MusicRepo()
 	private init() {}
 	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter

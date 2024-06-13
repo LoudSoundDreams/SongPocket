@@ -254,7 +254,7 @@ struct MainToolbar: View {
 	@ObservedObject private var status: MainToolbarStatus = .shared
 }
 
-final class MainToolbarStatus: ObservableObject {
+@MainActor final class MainToolbarStatus: ObservableObject {
 	static let shared = MainToolbarStatus()
 	private init() {}
 	@Published fileprivate(set) var inSelectMode = false
