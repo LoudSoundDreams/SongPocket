@@ -63,16 +63,6 @@ extension Song {
 
 @preconcurrency import MusicKit
 extension Song {
-	@MainActor final func musicKitSong() async -> MusicKit.Song? {
-		var request = MusicLibraryRequest<MusicKit.Song>()
-		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
-		guard
-			let response = try? await request.response(),
-			response.items.count == 1
-		else { return nil }
-		return response.items.first
-	}
-	
 	@MainActor final func playAlbumStartingHere() async {
 		guard
 			let player = SystemMusicPlayer._shared,
@@ -145,6 +135,16 @@ extension Song {
 		try? await Task.sleep(nanoseconds: 0_200_000_000)
 		
 		impactor.impactOccurred()
+	}
+	
+	@MainActor final func musicKitSong() async -> MusicKit.Song? {
+		var request = MusicLibraryRequest<MusicKit.Song>()
+		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
+		guard
+			let response = try? await request.response(),
+			response.items.count == 1
+		else { return nil }
+		return response.items.first
 	}
 }
 

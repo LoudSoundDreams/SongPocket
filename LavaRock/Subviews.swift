@@ -133,8 +133,8 @@ struct SongRow: View {
 					? info.discAndTrackFormatted()
 					: info.trackFormatted()
 				}())
-					.foregroundStyle(.secondary)
-					.monospacedDigit()
+				.foregroundStyle(.secondary)
+				.monospacedDigit()
 			}
 			.accessibilityElement(children: .combine)
 			.accessibilityAddTraits(.isButton)
