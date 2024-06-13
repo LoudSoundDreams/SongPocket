@@ -2,6 +2,7 @@
 
 import SwiftUI
 import MusicKit
+import MediaPlayer
 
 // MARK: - Album list
 
@@ -170,8 +171,8 @@ struct SongRow: View {
 
 struct AvatarImage: View {
 	let song: Song
-	@ObservedObject var state: MusicPlayer.State
-	@ObservedObject var queue: MusicPlayer.Queue
+	@ObservedObject var state: SystemMusicPlayer.State
+	@ObservedObject var queue: SystemMusicPlayer.Queue
 	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	var body: some View {
 		ZStack(alignment: .leading) {
