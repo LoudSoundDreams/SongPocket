@@ -4,7 +4,6 @@ import CoreData
 
 @MainActor protocol LibraryViewModel {
 	func isEmpty() -> Bool // TO DO: Delete
-	func itemIndex(forRow row: Int) -> Int // TO DO: Delete
 	func withRefreshedData() -> Self
 	func rowIdentifiers() -> [AnyHashable]
 }
@@ -48,7 +47,6 @@ import CoreData
 }
 extension AlbumsViewModel: LibraryViewModel {
 	func isEmpty() -> Bool { return albums.isEmpty }
-	func itemIndex(forRow row: Int) -> Int { return row }
 	func withRefreshedData() -> Self { return Self() }
 	func rowIdentifiers() -> [AnyHashable] {
 		return albums.map { $0.objectID }
@@ -61,7 +59,6 @@ struct SongsViewModel {
 }
 extension SongsViewModel: LibraryViewModel {
 	func isEmpty() -> Bool { return songs.isEmpty }
-	func itemIndex(forRow row: Int) -> Int { return row - Self.prerowCount }
 	func withRefreshedData() -> Self {
 		// Get the `Album` from the first non-deleted `Song`.
 		guard let album = songs.first(where: { nil != $0.container })?.container else {

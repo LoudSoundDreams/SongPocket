@@ -199,12 +199,13 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		guard WorkingOn.inlineTracklist else {
+		if WorkingOn.inlineTracklist {
+			switch expandableViewModel.itemForIndexPath(indexPath) {
+				case .album(let album): return configuredCellForAlbum(cell: cell, album: album)
+				case .song(let song): return Self.configuredCellForSong(cell: cell, song: song)
+			}
+		} else {
 			return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
-		}
-		switch expandableViewModel.itemForIndexPath(indexPath) {
-			case .album(let album): return configuredCellForAlbum(cell: cell, album: album)
-			case .song(let song): return Self.configuredCellForSong(cell: cell, song: song)
 		}
 	}
 	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
@@ -234,7 +235,8 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
-		if !WorkingOn.inlineTracklist {
+		if WorkingOn.inlineTracklist {
+		} else {
 			if !isEditing {
 				pushAlbum(albumsViewModel.albums[indexPath.row])
 			}

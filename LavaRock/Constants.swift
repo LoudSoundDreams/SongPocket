@@ -1,9 +1,6 @@
 import SwiftUI
 
 // Reference hard-coded numbers here to keep them consistent throughout the app.
-extension Double {
-	static var oneHalf: Self { 1/2 }
-}
 extension CGFloat {
 	static var oneHalf: Self { 1/2 }
 	static var eight: Self { 8 }
