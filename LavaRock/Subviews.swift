@@ -45,23 +45,23 @@ struct CoverArt: View {
 		}
 	}
 	@ViewBuilder private var tappable: some View {
-			let uiImageOptional = album.representativeSongInfo()?.coverArt(resolutionAtLeastInPoints: CGSize(width: minResolution, height: minResolution))
-			if let uiImage = uiImageOptional {
-				Image(uiImage: uiImage)
-					.resizable() // Lets 1 image point differ from 1 screen point
-					.scaledToFit() // Maintains aspect ratio
-					.accessibilityIgnoresInvertColors()
-			} else {
-				ZStack {
-					Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
-						.aspectRatio(1, contentMode: .fit)
-					Image(systemName: "music.note")
-						.foregroundStyle(.secondary)
-						.font(.title)
-				}
-				.accessibilityLabel(InterfaceText.albumArtwork)
+		let uiImageOptional = album.representativeSongInfo()?.coverArt(resolutionAtLeastInPoints: CGSize(width: minResolution, height: minResolution))
+		if let uiImage = uiImageOptional {
+			Image(uiImage: uiImage)
+				.resizable() // Lets 1 image point differ from 1 screen point
+				.scaledToFit() // Maintains aspect ratio
 				.accessibilityIgnoresInvertColors()
+		} else {
+			ZStack {
+				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
+					.aspectRatio(1, contentMode: .fit)
+				Image(systemName: "music.note")
+					.foregroundStyle(.secondary)
+					.font(.title)
 			}
+			.accessibilityLabel(InterfaceText.albumArtwork)
+			.accessibilityIgnoresInvertColors()
+		}
 	}
 	@State private var showingInfo = false
 }
