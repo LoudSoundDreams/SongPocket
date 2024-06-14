@@ -75,6 +75,13 @@ final class AlbumsTVC: LibraryTVC {
 		floatAlbumsButton.isEnabled = allowsFloatAndSink()
 		sinkAlbumsButton.isEnabled = allowsFloatAndSink()
 	}
+	
+	private func allowsArrange() -> Bool {
+		guard !albumsViewModel.isEmpty() else { return false }
+		let selected = tableView.selectedIndexPaths
+		if selected.isEmpty { return true }
+		return selected.map { $0.row }.sorted().isConsecutive()
+	}
 	private func createArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
 			[.album_recentlyAdded, .album_newest, .album_artist],
@@ -121,6 +128,7 @@ final class AlbumsTVC: LibraryTVC {
 		guard !selected.isEmpty else { return albumsViewModel.albums.indices.map { $0 } }
 		return selected.map { $0.row }
 	}
+	
 	private func allowsFloatAndSink() -> Bool {
 		guard !albumsViewModel.albums.isEmpty else { return false }
 		return !tableView.selectedIndexPaths.isEmpty

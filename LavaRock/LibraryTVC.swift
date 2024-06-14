@@ -161,14 +161,6 @@ class LibraryTVC: UITableViewController {
 		? UIImage(systemName: "checkmark.circle.fill")
 		: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	}
-	final func allowsArrange() -> Bool {
-		guard !libraryViewModel.isEmpty() else { return false }
-		let selected = tableView.selectedIndexPaths
-		if selected.isEmpty {
-			return true
-		}
-		return selected.map { $0.row }.sorted().isConsecutive()
-	}
 	
 	// MARK: - Table view
 	

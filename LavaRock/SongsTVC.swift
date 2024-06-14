@@ -24,12 +24,22 @@ final class SongsTVC: LibraryTVC {
 		arrangeSongsButton.preferredMenuElementOrder = .fixed
 		super.viewDidLoad()
 	}
+	
+	// MARK: - Editing
+	
 	override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		arrangeSongsButton.isEnabled = allowsArrange()
 		arrangeSongsButton.menu = createArrangeMenu()
 		floatSongsButton.isEnabled = allowsFloatAndSink()
 		sinkSongsButton.isEnabled = allowsFloatAndSink()
+	}
+	
+	private func allowsArrange() -> Bool {
+		guard !songsViewModel.isEmpty() else { return false }
+		let selected = tableView.selectedIndexPaths
+		if selected.isEmpty { return true }
+		return selected.map { $0.row }.sorted().isConsecutive()
 	}
 	private func createArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
@@ -74,6 +84,7 @@ final class SongsTVC: LibraryTVC {
 		guard !selected.isEmpty else { return songsViewModel.songs.indices.map { $0 } }
 		return selected.map { $0.row - SongsViewModel.prerowCount }
 	}
+	
 	private func allowsFloatAndSink() -> Bool {
 		guard !songsViewModel.songs.isEmpty else { return false }
 		return !tableView.selectedIndexPaths.isEmpty
