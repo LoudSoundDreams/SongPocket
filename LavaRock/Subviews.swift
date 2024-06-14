@@ -17,10 +17,9 @@ struct AlbumRow: View {
 				.frame(
 					maxWidth: .infinity, // Horizontally centers narrow artwork
 					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
-				.accessibilityLabel(album.titleFormatted())
-				.accessibilitySortPriority(10)
 		}
 		.accessibilityAddTraits(.isButton)
+		.accessibilityLabel(album.titleFormatted())
 		.accessibilityInputLabels([album.titleFormatted()])
 	}
 	@Environment(\.pixelLength) private var pointsPerPixel
