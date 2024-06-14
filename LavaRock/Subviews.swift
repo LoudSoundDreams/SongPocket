@@ -44,8 +44,7 @@ struct CoverArt: View {
 			tappable
 		}
 	}
-	private var tappable: some View {
-		ZStack {
+	@ViewBuilder private var tappable: some View {
 			let uiImageOptional = album.representativeSongInfo()?.coverArt(resolutionAtLeastInPoints: CGSize(width: minResolution, height: minResolution))
 			if let uiImage = uiImageOptional {
 				Image(uiImage: uiImage)
@@ -63,15 +62,6 @@ struct CoverArt: View {
 				.accessibilityLabel(InterfaceText.albumArtwork)
 				.accessibilityIgnoresInvertColors()
 			}
-			ZStack(alignment: .bottomLeading) {
-				Rectangle().foregroundStyle(.regularMaterial)
-				ScrollView {
-					AlbumHeader(album: album)
-				}.aspectRatio(1, contentMode: .fit)
-			}
-			.opacity(showingInfo ? 1 : .zero)
-			.animation(.linear(duration: pow(.oneHalf, 4)), value: showingInfo)
-		}
 	}
 	@State private var showingInfo = false
 }
