@@ -54,12 +54,7 @@ class LibraryTVC: UITableViewController {
 	}
 	private func refreshLibraryItems() {
 		Task {
-			/*
-			 The user might currently be in the middle of a content-dependent task, which refreshing would affect the consequences of.
-			 • “Sort” menu (`LibraryTVC`)
-			 • Song actions, including overflow menu (`SongsTVC`)
-			 */
-			await view.window?.rootViewController?.dismiss__async(animated: true)
+			// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 			
 			let newViewModel = libraryViewModel.withRefreshedData()
 			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else {
@@ -74,7 +69,9 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Moving rows
 	
-	// Returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
+	// If `newViewModel` is empty, this method pops `self` off the navigation controller and returns early.
+	// Otherwise, it returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
+	// If `newViewModel` is non-empty, this method also deselects all rows and refreshes editing buttons.
 	final func setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 		_ newViewModel: LibraryViewModel
 	) async -> Bool {
