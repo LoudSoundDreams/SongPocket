@@ -74,7 +74,7 @@ final class AlbumsTVC: LibraryTVC {
 				reflectNoAlbums()
 				return
 			}
-			guard await reflectViewModel(fromOldRowIdentifiers: oldRows) else { return }
+			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
@@ -141,7 +141,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
 		let selected = tableView.selectedIndexPaths
@@ -161,7 +161,7 @@ final class AlbumsTVC: LibraryTVC {
 		Database.renumber(newAlbums)
 		albumsViewModel.albums = newAlbums
 		// Don’t use `refreshLibraryItems`, because if no rows moved, that doesn’t animate deselecting the rows.
-		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
 	private func sinkSelected() {
 		let oldRows = albumsViewModel.rowIdentifiers()
@@ -170,7 +170,7 @@ final class AlbumsTVC: LibraryTVC {
 		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newAlbums.count)
 		Database.renumber(newAlbums)
 		albumsViewModel.albums = newAlbums
-		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
 	
 	// MARK: - Table view

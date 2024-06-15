@@ -33,7 +33,7 @@ final class SongsTVC: LibraryTVC {
 				reflectNoSongs()
 				return
 			}
-			guard await reflectViewModel(fromOldRowIdentifiers: oldRows) else { return }
+			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) else { return }
 			
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}
@@ -105,7 +105,7 @@ final class SongsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
 		let selected = tableView.selectedIndexPaths
@@ -124,7 +124,7 @@ final class SongsTVC: LibraryTVC {
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
-		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	private func sinkSelected() {
 		let oldRows = songsViewModel.rowIdentifiers()
@@ -133,7 +133,7 @@ final class SongsTVC: LibraryTVC {
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
-		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	
 	// MARK: - Table view
