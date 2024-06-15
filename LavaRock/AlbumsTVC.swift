@@ -6,7 +6,8 @@ import MusicKit
 import MediaPlayer
 
 final class AlbumsTVC: LibraryTVC {
-	var albumsViewModel = AlbumsViewModel()
+	private var albumsViewModel = AlbumsViewModel()
+	
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var floatAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private lazy var sinkAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })

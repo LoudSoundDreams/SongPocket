@@ -76,7 +76,7 @@ struct AlbumHeader: View {
 				Text(album.titleFormatted())
 					.fontTitle2Bold()
 					.alignmentGuide_separatorLeading()
-				Text({ () -> String in
+				Text({
 					guard
 						let albumArtist = album.representativeSongInfo()?.albumArtistOnDisk,
 						albumArtist != ""
@@ -162,7 +162,6 @@ struct AvatarImage: View {
 	let song: Song
 	@ObservedObject var state: SystemMusicPlayer.State
 	@ObservedObject var queue: SystemMusicPlayer.Queue
-	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 	var body: some View {
 		ZStack(alignment: .leading) {
 			AvatarPlayingImage().hidden()
@@ -197,6 +196,7 @@ struct AvatarImage: View {
 #endif
 	}
 	private enum Status { case notPlaying, paused, playing }
+	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 }
 struct AvatarPlayingImage: View {
 	var body: some View {

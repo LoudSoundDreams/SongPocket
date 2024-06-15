@@ -407,8 +407,7 @@ import MediaPlayer
 		// This is pretty slow, but can save time later.
 		let infosWithReleaseDates = infos.filter { nil != $0.releaseDateOnDisk }
 		
-		let infosByAlbumID: [AlbumID: [SongInfo]] =
-		Dictionary(grouping: infosWithReleaseDates) { $0.albumID }
+		let infosByAlbumID: [AlbumID: [SongInfo]] = Dictionary(grouping: infosWithReleaseDates) { $0.albumID }
 		
 		albums.forEach { album in
 			// Re-estimate release date for one `Album`
