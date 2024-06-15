@@ -39,6 +39,7 @@ final class SongsTVC: LibraryTVC {
 	
 	override func refreshEditingButtons() {
 		super.refreshEditingButtons()
+		editButtonItem.isEnabled = !songsViewModel.isEmpty()
 		arrangeSongsButton.isEnabled = allowsArrange()
 		arrangeSongsButton.menu = createArrangeMenu()
 		floatSongsButton.isEnabled = allowsFloatAndSink()
