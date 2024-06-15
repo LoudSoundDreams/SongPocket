@@ -25,6 +25,16 @@ final class SongsTVC: LibraryTVC {
 		super.viewDidLoad()
 	}
 	
+	override func refreshLibraryItems() {
+		Task {
+			let oldRows = songsViewModel.rowIdentifiers()
+			songsViewModel = songsViewModel.withRefreshedData()
+			guard await reflectViewModel(fromOldRowIdentifiers: oldRows) else { return }
+			
+			tableView.reconfigureRows(at: tableView.allIndexPaths())
+		}
+	}
+	
 	// MARK: - Editing
 	
 	override func refreshEditingButtons() {
@@ -64,8 +74,8 @@ final class SongsTVC: LibraryTVC {
 		return UIMenu(children: inlineSubmenus)
 	}
 	private func arrangeSelectedOrAll(by command: ArrangeCommand) {
-		var newViewModel = songsViewModel!
-		newViewModel.songs = {
+		let oldRows = songsViewModel.rowIdentifiers()
+		songsViewModel.songs = {
 			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
 			let toSort = subjectedIndicesInOrder.map { songsViewModel.songs[$0] }
 			let sorted = command.apply(to: toSort) as! [Song]
@@ -77,7 +87,7 @@ final class SongsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
 		let selected = tableView.selectedIndexPaths
@@ -90,20 +100,22 @@ final class SongsTVC: LibraryTVC {
 		return !tableView.selectedIndexPaths.isEmpty
 	}
 	private func floatSelected() {
-		var allSongs = songsViewModel.songs
+		let oldRows = songsViewModel.rowIdentifiers()
+		var newSongs = songsViewModel.songs
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
-		allSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
-		Database.renumber(allSongs)
-		let newViewModel = songsViewModel.withRefreshedData()
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		Database.renumber(newSongs)
+		songsViewModel.songs = newSongs
+		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
 	}
 	private func sinkSelected() {
-		var allSongs = songsViewModel.songs
+		let oldRows = songsViewModel.rowIdentifiers()
+		var newSongs = songsViewModel.songs
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
-		allSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: allSongs.count)
-		Database.renumber(allSongs)
-		let newViewModel = songsViewModel.withRefreshedData()
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
+		Database.renumber(newSongs)
+		songsViewModel.songs = newSongs
+		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
 	}
 	
 	// MARK: - Table view

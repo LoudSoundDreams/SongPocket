@@ -66,6 +66,17 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
 	
+	override func refreshLibraryItems() {
+		Task {
+			let oldRows = albumsViewModel.rowIdentifiers()
+			albumsViewModel = albumsViewModel.withRefreshedData()
+			guard await reflectViewModel(fromOldRowIdentifiers: oldRows) else { return }
+			
+			// Update the data within each row, which might be outdated.
+			tableView.reconfigureRows(at: tableView.allIndexPaths())
+		}
+	}
+	
 	// MARK: - Editing
 	
 	override func refreshEditingButtons() {
@@ -108,8 +119,8 @@ final class AlbumsTVC: LibraryTVC {
 		return UIMenu(children: inlineSubmenus)
 	}
 	private func arrangeSelectedOrAll(by command: ArrangeCommand) {
-		var newViewModel = albumsViewModel
-		newViewModel.albums = {
+		let oldRows = albumsViewModel.rowIdentifiers()
+		albumsViewModel.albums = {
 			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
 			let toSort = subjectedIndicesInOrder.map { albumsViewModel.albums[$0] }
 			let sorted = command.apply(to: toSort) as! [Album]
@@ -121,7 +132,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
 		let selected = tableView.selectedIndexPaths
@@ -134,21 +145,23 @@ final class AlbumsTVC: LibraryTVC {
 		return !tableView.selectedIndexPaths.isEmpty
 	}
 	private func floatSelected() {
-		var allAlbums = albumsViewModel.albums
+		let oldRows = albumsViewModel.rowIdentifiers()
+		var newAlbums = albumsViewModel.albums
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
-		allAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
-		Database.renumber(allAlbums)
-		// Don’t use `refreshLibraryItems`, because that deselects rows without an animation if no rows moved.
-		let newViewModel = albumsViewModel.withRefreshedData()
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		Database.renumber(newAlbums)
+		albumsViewModel.albums = newAlbums
+		// Don’t use `refreshLibraryItems`, because if no rows moved, that doesn’t animate deselecting the rows.
+		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
 	}
 	private func sinkSelected() {
-		var allAlbums = albumsViewModel.albums
+		let oldRows = albumsViewModel.rowIdentifiers()
+		var newAlbums = albumsViewModel.albums
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
-		allAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: allAlbums.count)
-		Database.renumber(allAlbums)
-		let newViewModel = albumsViewModel.withRefreshedData()
-		Task { let _ = await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) }
+		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newAlbums.count)
+		Database.renumber(newAlbums)
+		albumsViewModel.albums = newAlbums
+		Task { let _ = await reflectViewModel(fromOldRowIdentifiers: oldRows) }
 	}
 	
 	// MARK: - Table view

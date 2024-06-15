@@ -52,42 +52,30 @@ class LibraryTVC: UITableViewController {
 			refreshLibraryItems()
 		}
 	}
-	private func refreshLibraryItems() {
-		Task {
-			// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
-			
-			let newViewModel = libraryViewModel.withRefreshedData()
-			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
-			
-			// Update the data within each row, which might be outdated.
-			tableView.reconfigureRows(at: tableView.allIndexPaths())
-		}
+	func refreshLibraryItems() {
+		fatalError()
+		
+		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 	}
 	
 	// MARK: - Moving rows
 	
 	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, either (A) this view controller is about to dismiss itself, or (B) table view animations are already in progress from an earlier call of this method. In those cases, callers could disrupt animations by running further code.
-	// If `newViewModel` is empty, this method pops `self` off the navigation controller and returns early.
-	// If `newViewModel` is non-empty, this method returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
-	final func setViewModelAndMoveAndDeselectRowsAndShouldContinue(
-		_ newViewModel: LibraryViewModel
-	) async -> Bool {
+	// If `self.libraryViewModel` is empty, this method pops `self` off the navigation controller and returns early.
+	// If `self.libraryViewModel` is non-empty, this method returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
+	final func reflectViewModel(fromOldRowIdentifiers: [AnyHashable]) async -> Bool {
 		await withCheckedContinuation { continuation in
-			_setViewModelAndMoveAndDeselectRows(newViewModel) { shouldContinue in
+			_reflectViewModel(fromOldRowIdentifiers: fromOldRowIdentifiers) { shouldContinue in
 				continuation.resume(returning: shouldContinue)
 			}
 			// If necessary, include code here to run before the continuation.
 		}
 	}
-	private func _setViewModelAndMoveAndDeselectRows(
-		_ newViewModel: LibraryViewModel,
+	private func _reflectViewModel(
+		fromOldRowIdentifiers: [AnyHashable],
 		completionIfShouldRun: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
 	) {
-		let oldViewModel = libraryViewModel
-		
-		libraryViewModel = newViewModel // Can be empty
-		
-		guard !newViewModel.isEmpty() else {
+		guard !libraryViewModel.isEmpty() else {
 			completionIfShouldRun(false)
 			deleteThenExit()
 			return
@@ -95,7 +83,7 @@ class LibraryTVC: UITableViewController {
 		
 		isAnimatingBatchUpdates += 1
 		tableView.performUpdatesFromRowIdentifiers(
-			old: oldViewModel.rowIdentifiers(), new: newViewModel.rowIdentifiers()
+			old: fromOldRowIdentifiers, new: libraryViewModel.rowIdentifiers()
 		) {
 			// Completion handler
 			self.isAnimatingBatchUpdates -= 1
