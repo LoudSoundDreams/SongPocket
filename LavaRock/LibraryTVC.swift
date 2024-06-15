@@ -57,10 +57,7 @@ class LibraryTVC: UITableViewController {
 			// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 			
 			let newViewModel = libraryViewModel.withRefreshedData()
-			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else {
-				// The return value was false, meaning either (A) table view animations are already in progress from an earlier execution of this method, so we shouldn’t run the code after the `await` call this time (later, that earlier execution will), or (B) we applied an empty view model, so we don’t need to update any row contents.
-				return
-			}
+			guard await setViewModelAndMoveAndDeselectRowsAndShouldContinue(newViewModel) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
@@ -69,9 +66,9 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Moving rows
 	
+	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, either (A) this view controller is about to dismiss itself, or (B) table view animations are already in progress from an earlier call of this method. In those cases, callers could disrupt animations by running further code.
 	// If `newViewModel` is empty, this method pops `self` off the navigation controller and returns early.
-	// Otherwise, it returns after completing the animations for moving rows, with a value of whether it’s safe for the caller to continue running code after those animations. If the return value is `false`, there might be another execution of animating rows still in progress, or this view controller might be about to dismiss itself, and callers could disrupt those animations by running code at those times.
-	// If `newViewModel` is non-empty, this method also deselects all rows and refreshes editing buttons.
+	// If `newViewModel` is non-empty, this method returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
 	final func setViewModelAndMoveAndDeselectRowsAndShouldContinue(
 		_ newViewModel: LibraryViewModel
 	) async -> Bool {
