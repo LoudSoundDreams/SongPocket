@@ -29,11 +29,28 @@ final class SongsTVC: LibraryTVC {
 		Task {
 			let oldRows = songsViewModel.rowIdentifiers()
 			songsViewModel = songsViewModel.withRefreshedData()
+			guard !songsViewModel.isEmpty() else {
+				reflectNoSongs()
+				return
+			}
 			guard await reflectViewModel(fromOldRowIdentifiers: oldRows) else { return }
 			
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}
 	}
+	private func reflectNoSongs() {
+		isAnimatingReflectNoSongs += 1
+		tableView.performBatchUpdates {
+			tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
+		} completion: { _ in
+			self.isAnimatingReflectNoSongs -= 1
+			if self.isAnimatingReflectNoSongs == 0 {
+				self.navigationController?.popViewController(animated: true)
+			}
+		}
+		setEditing(false, animated: true)
+	}
+	private var isAnimatingReflectNoSongs = 0
 	
 	// MARK: - Editing
 	

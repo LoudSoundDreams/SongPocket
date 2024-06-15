@@ -70,11 +70,19 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			let oldRows = albumsViewModel.rowIdentifiers()
 			albumsViewModel = albumsViewModel.withRefreshedData()
+			guard !albumsViewModel.isEmpty() else {
+				reflectNoAlbums()
+				return
+			}
 			guard await reflectViewModel(fromOldRowIdentifiers: oldRows) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}
+	}
+	private func reflectNoAlbums() {
+		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
+		setEditing(false, animated: true) // Do this after updating the table view, not before, because this itself also updates the table view, expecting its row counts to be correct beforehand.
 	}
 	
 	// MARK: - Editing

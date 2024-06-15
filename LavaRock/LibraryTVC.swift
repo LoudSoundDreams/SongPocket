@@ -60,34 +60,27 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Moving rows
 	
-	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, either (A) this view controller is about to dismiss itself, or (B) table view animations are already in progress from an earlier call of this method. In those cases, callers could disrupt animations by running further code.
-	// If `self.libraryViewModel` is empty, this method pops `self` off the navigation controller and returns early.
-	// If `self.libraryViewModel` is non-empty, this method returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
+	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, table view animations are already in progress from an earlier call of this method, and callers could disrupt those animations by running further code.
+	// Returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
 	final func reflectViewModel(fromOldRowIdentifiers: [AnyHashable]) async -> Bool {
 		await withCheckedContinuation { continuation in
-			_reflectViewModel(fromOldRowIdentifiers: fromOldRowIdentifiers) { shouldContinue in
+			_moveRows(fromOldRowIdentifiers: fromOldRowIdentifiers) { shouldContinue in
 				continuation.resume(returning: shouldContinue)
 			}
 			// If necessary, include code here to run before the continuation.
 		}
 	}
-	private func _reflectViewModel(
+	private func _moveRows(
 		fromOldRowIdentifiers: [AnyHashable],
 		completionIfShouldRun: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
 	) {
-		guard !libraryViewModel.isEmpty() else {
-			completionIfShouldRun(false)
-			deleteThenExit()
-			return
-		}
-		
-		isAnimatingBatchUpdates += 1
+		isAnimatingReflectViewModel += 1
 		tableView.performUpdatesFromRowIdentifiers(
 			old: fromOldRowIdentifiers, new: libraryViewModel.rowIdentifiers()
 		) {
 			// Completion handler
-			self.isAnimatingBatchUpdates -= 1
-			if self.isAnimatingBatchUpdates == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).
+			self.isAnimatingReflectViewModel -= 1
+			if self.isAnimatingReflectViewModel == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).
 				completionIfShouldRun(true)
 			} else {
 				completionIfShouldRun(false)
@@ -97,22 +90,7 @@ class LibraryTVC: UITableViewController {
 		tableView.deselectAllRows(animated: true)
 		refreshEditingButtons()
 	}
-	private func deleteThenExit() {
-		isAnimatingBatchUpdates += 1
-		tableView.performBatchUpdates {
-			tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
-		} completion: { _ in
-			self.isAnimatingBatchUpdates -= 1
-			if self.isAnimatingBatchUpdates == 0 {
-				self.dismiss(animated: true) {
-					self.navigationController?.popViewController(animated: true)
-				}
-			}
-		}
-		
-		setEditing(false, animated: true)
-	}
-	private var isAnimatingBatchUpdates = 0
+	private var isAnimatingReflectViewModel = 0
 	
 	// MARK: - Editing
 	
