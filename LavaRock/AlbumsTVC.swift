@@ -241,12 +241,6 @@ final class AlbumsTVC: LibraryTVC {
 		}.margins(.all, .zero)
 		return cell
 	}
-	private static func configuredCellForSong(cell: UITableViewCell, song: Song) -> UITableViewCell {
-		cell.contentConfiguration = UIHostingConfiguration {
-			Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
-		}
-		return cell
-	}
 	
 	override func tableView(
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
