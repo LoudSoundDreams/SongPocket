@@ -29,7 +29,7 @@ final class SongsTVC: LibraryTVC {
 		Task {
 			let oldRows = songsViewModel.rowIdentifiers()
 			songsViewModel = songsViewModel.withRefreshedData()
-			guard !songsViewModel.isEmpty() else {
+			guard !songsViewModel.songs.isEmpty else {
 				reflectNoSongs()
 				return
 			}
@@ -56,7 +56,7 @@ final class SongsTVC: LibraryTVC {
 	
 	override func refreshEditingButtons() {
 		super.refreshEditingButtons()
-		editButtonItem.isEnabled = !songsViewModel.isEmpty()
+		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
 		arrangeSongsButton.isEnabled = allowsArrange()
 		arrangeSongsButton.menu = createArrangeMenu()
 		floatSongsButton.isEnabled = allowsFloatAndSink()
@@ -64,7 +64,7 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	private func allowsArrange() -> Bool {
-		guard !songsViewModel.isEmpty() else { return false }
+		guard !songsViewModel.songs.isEmpty else { return false }
 		let selected = tableView.selectedIndexPaths
 		if selected.isEmpty { return true }
 		return selected.map { $0.row }.sorted().isConsecutive()

@@ -6,7 +6,6 @@ import MusicKit
 import MediaPlayer
 
 final class AlbumsTVC: LibraryTVC {
-	private var expandableViewModel = ExpandableViewModel()
 	var albumsViewModel = AlbumsViewModel()
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var floatAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
@@ -28,11 +27,9 @@ final class AlbumsTVC: LibraryTVC {
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
 	@objc private func showAlbumDetail(notification: Notification) {
-		guard let album = notification.object as? Album else { return }
-		expandableViewModel.collapseAllThenExpand(album)
+		guard let _ = notification.object as? Album else { return }
 	}
 	@objc private func hideAlbumDetail(notification: Notification) {
-		expandableViewModel.collapseAll()
 	}
 	
 	override func viewWillTransition(
@@ -70,7 +67,7 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			let oldRows = albumsViewModel.rowIdentifiers()
 			albumsViewModel = albumsViewModel.withRefreshedData()
-			guard !albumsViewModel.isEmpty() else {
+			guard !albumsViewModel.albums.isEmpty else {
 				reflectNoAlbums()
 				return
 			}
@@ -89,7 +86,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func refreshEditingButtons() {
 		super.refreshEditingButtons()
-		editButtonItem.isEnabled = !albumsViewModel.isEmpty() && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+		editButtonItem.isEnabled = !albumsViewModel.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 		arrangeAlbumsButton.isEnabled = allowsArrange()
 		arrangeAlbumsButton.menu = createArrangeMenu()
 		floatAlbumsButton.isEnabled = allowsFloatAndSink()
@@ -97,7 +94,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func allowsArrange() -> Bool {
-		guard !albumsViewModel.isEmpty() else { return false }
+		guard !albumsViewModel.albums.isEmpty else { return false }
 		let selected = tableView.selectedIndexPaths
 		if selected.isEmpty { return true }
 		return selected.map { $0.row }.sorted().isConsecutive()
@@ -222,10 +219,7 @@ final class AlbumsTVC: LibraryTVC {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		if WorkingOn.inlineTracklist {
-			switch expandableViewModel.itemForIndexPath(indexPath) {
-				case .album(let album): return configuredCellForAlbum(cell: cell, album: album)
-				case .song(let song): return Self.configuredCellForSong(cell: cell, song: song)
-			}
+			return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
 		} else {
 			return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
 		}
