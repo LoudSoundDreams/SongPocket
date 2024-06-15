@@ -12,7 +12,7 @@ import CoreData
 	}
 }
 
-struct SongsViewModel {
+@MainActor struct SongsViewModel {
 	static let prerowCount = 1
 	var songs: [Song] { didSet { Database.renumber(songs) } }
 	func withRefreshedData() -> Self {
