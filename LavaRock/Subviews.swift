@@ -68,17 +68,17 @@ struct CoverArt: View {
 // MARK: - Song list
 
 struct AlbumHeader: View {
-	let album: Album
+	let albumPersistentID: Int64
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
 			AvatarPlayingImage().hidden()
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
-				Text(musicRepo.musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
+				Text(musicRepo.musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 					.fontTitle2Bold()
 					.alignmentGuide_separatorLeading()
 				Text({
 					guard
-						let albumArtist = musicRepo.musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artistName,
+						let albumArtist = musicRepo.musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName,
 						albumArtist != ""
 					else { return InterfaceText.unknownArtist }
 					return albumArtist
@@ -86,7 +86,7 @@ struct AlbumHeader: View {
 				.foregroundStyle(.secondary)
 				.fontCaption2Bold()
 				Text({
-					guard let date = musicRepo.musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.releaseDate else {
+					guard let date = musicRepo.musicKitAlbums[MusicItemID(String(albumPersistentID))]?.releaseDate else {
 						return InterfaceText.emDash
 					}
 					return date.formatted(date: .numeric, time: .omitted)

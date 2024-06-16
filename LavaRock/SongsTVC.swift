@@ -172,7 +172,7 @@ final class SongsTVC: LibraryTVC {
 				cell.selectionStyle = .none // So the user can’t even highlight the cell
 				cell.backgroundColor = .clear
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumHeader(album: album)
+					AlbumHeader(albumPersistentID: album.albumPersistentID)
 				}.margins(.all, .zero)
 				return cell
 			default:
