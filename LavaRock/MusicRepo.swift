@@ -1,6 +1,7 @@
 // 2020-08-10
 
 import CoreData
+@preconcurrency import MusicKit
 import MediaPlayer
 
 @MainActor final class MusicRepo: ObservableObject {
@@ -15,6 +16,7 @@ import MediaPlayer
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
+	@Published private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
 	
 	private var library: MPMediaLibrary? = nil
 	let context = Database.viewContext
@@ -28,6 +30,16 @@ import MediaPlayer
 			context.performAndWait {
 				mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
 			}
+		}
+		
+		let musicKitRequest = MusicKit.MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
+		Task {
+			guard let response = try? await musicKitRequest.response() else { return }
+			
+			musicKitAlbums = {
+				let tuples = response.sections.map { section in (section.id, section) }
+				return Dictionary(uniqueKeysWithValues: tuples)
+			}()
 		}
 #endif
 	}

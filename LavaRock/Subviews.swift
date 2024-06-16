@@ -73,26 +73,34 @@ struct AlbumHeader: View {
 		HStack(spacing: .eight * 5/4) {
 			AvatarPlayingImage().hidden()
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
-				Text(album.titleFormatted())
+				Text(musicRepo.musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 					.fontTitle2Bold()
 					.alignmentGuide_separatorLeading()
 				Text({
 					guard
-						let albumArtist = album.representativeSongInfo()?.albumArtistOnDisk,
+						let albumArtist = musicRepo.musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artistName,
 						albumArtist != ""
 					else { return InterfaceText.unknownArtist }
 					return albumArtist
 				}())
 				.foregroundStyle(.secondary)
 				.fontCaption2Bold()
-				Text(album.releaseDateEstimateFormatted())
-					.foregroundStyle(.secondary)
-					.font(.caption2)
-					.monospacedDigit()
-			}.padding(.bottom, .eight * 1/4)
+				Text({
+					guard let date = musicRepo.musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.releaseDate else {
+						return InterfaceText.emDash
+					}
+					return date.formatted(date: .numeric, time: .omitted)
+				}())
+				.foregroundStyle(.secondary)
+				.font(.caption2)
+				.monospacedDigit()
+			}
+			.padding(.bottom, .eight * 1/4)
+			.animation(.default, value: musicRepo.musicKitAlbums)
 			Spacer().alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
+	@ObservedObject private var musicRepo: MusicRepo = .shared
 }
 
 struct SongRow: View {
