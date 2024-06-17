@@ -125,10 +125,12 @@ struct SongRow: View {
 				}.padding(.bottom, .eight * 1/4)
 				Spacer()
 				Text({
-					guard let info, let albumRepInfo = album.representativeSongInfo() else { return InterfaceText.octothorpe }
-					return albumRepInfo.shouldShowDiscNumber
-					? info.discAndTrackFormatted()
-					: info.trackFormatted()
+					guard let info else { return InterfaceText.octothorpe }
+					return (
+						info.shouldShowDiscNumber
+						? info.discAndTrackFormatted()
+						: info.trackFormatted()
+					)
 				}())
 				.foregroundStyle(.secondary)
 				.monospacedDigit()
