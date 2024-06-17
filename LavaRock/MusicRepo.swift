@@ -1,7 +1,7 @@
 // 2020-08-10
 
 import CoreData
-@preconcurrency import MusicKit
+import MusicKit
 import MediaPlayer
 
 @MainActor @Observable final class MusicRepo {
@@ -34,15 +34,7 @@ extension MusicRepo {
 			}
 		}
 		
-		let musicKitRequest = MusicKit.MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
-		Task {
-			guard let response = try? await musicKitRequest.response() else { return }
-			
-			musicKitAlbums = {
-				let tuples = response.sections.map { section in (section.id, section) }
-				return Dictionary(uniqueKeysWithValues: tuples)
-			}()
-		}
+		Task { musicKitAlbums = await AppleMusic.albums() }
 #endif
 	}
 	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {

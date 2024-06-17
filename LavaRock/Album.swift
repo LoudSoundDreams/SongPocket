@@ -82,15 +82,4 @@ extension Album {
 		else { return nil }
 		return queriedAlbums.first
 	}
-	
-	// MARK: - Formatted attributes
-	
-	// TO DO: Delete
-	final func titleFormatted() -> String {
-		guard
-			let albumTitle = representativeSongInfo()?.albumTitleOnDisk,
-			albumTitle != ""
-		else { return InterfaceText.unknownAlbum }
-		return albumTitle
-	}
 }

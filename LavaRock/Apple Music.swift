@@ -24,6 +24,14 @@ enum AppleMusic {
 		MusicRepo.shared.observeMediaPlayerLibrary()
 		__MainToolbar.shared.observeMediaPlayerController()
 	}
+	
+	static func albums() async -> [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] {
+		let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
+		guard let response = try? await request.response() else { return [:] }
+		
+		let tuples = response.sections.map { section in (section.id, section) }
+		return Dictionary(uniqueKeysWithValues: tuples)
+	}
 }
 
 extension SystemMusicPlayer {

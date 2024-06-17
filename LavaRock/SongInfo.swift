@@ -10,7 +10,7 @@ protocol SongInfo {
 	var songID: SongID { get }
 	
 	var albumArtistOnDisk: String? { get }
-	var albumTitleOnDisk: String? { get }
+	var albumTitleOnDisk: String? { get } // TO DO: Delete
 	var discCountOnDisk: Int { get }
 	var discNumberOnDisk: Int { get }
 	var trackNumberOnDisk: Int { get }

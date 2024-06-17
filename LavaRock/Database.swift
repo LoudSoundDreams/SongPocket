@@ -1,6 +1,7 @@
 // 2020-08-22
 
 import CoreData
+import MusicKit
 
 enum Database {
 	@MainActor static let viewContext = container.viewContext
@@ -57,11 +58,13 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
-	final func printLibrary() {
+	final func printLibrary() async {
+		let musicKitAlbums = await AppleMusic.albums()
+		
 		Collection.allFetched(sorted: true, context: self).forEach { collection in
 			print(collection.index, collection.title ?? "")
 			collection.albums(sorted: true).forEach { album in
-				print(" ", album.index, album.titleFormatted())
+				print(" ", album.index, musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 				album.songs(sorted: true).forEach { song in
 					print("   ", song.index, song.songInfo()?.titleOnDisk ?? "")
 				}
