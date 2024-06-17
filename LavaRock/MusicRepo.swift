@@ -6,20 +6,23 @@ import MediaPlayer
 
 @MainActor final class MusicRepo: ObservableObject {
 	static let shared = MusicRepo()
-	private init() {}
-	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
-	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
+	@Published private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
 	func observeMediaPlayerLibrary() {
-		library?.endGeneratingLibraryChangeNotifications()
-		library = MPMediaLibrary.default()
-		library?.beginGeneratingLibraryChangeNotifications()
+		let library = MPMediaLibrary.default()
+		library.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
-	@Published private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
+	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
+	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
 	
-	private var library: MPMediaLibrary? = nil
-	let context = Database.viewContext
+	private init() {}
+	private let context = Database.viewContext
+}
+
+// MARK: - Private
+
+extension MusicRepo {
 	@objc private func mergeChanges() {
 #if targetEnvironment(simulator)
 		context.performAndWait {
