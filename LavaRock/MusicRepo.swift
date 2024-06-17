@@ -3,6 +3,7 @@
 import CoreData
 import MusicKit
 import MediaPlayer
+import SwiftUI
 
 @MainActor @Observable final class MusicRepo {
 	static let shared = MusicRepo()
@@ -34,7 +35,13 @@ extension MusicRepo {
 			}
 		}
 		
-		Task { musicKitAlbums = await AppleMusic.albums() }
+		Task {
+			let albums = await AppleMusic.albums()
+			
+			withAnimation { // Spooky action at a distance
+				musicKitAlbums = albums
+			}
+		}
 #endif
 	}
 	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {

@@ -45,7 +45,8 @@ final class AlbumsTVC: LibraryTVC {
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
 					album: album,
-					maxHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+					viewportWidth: size.width,
+					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 			}.margins(.all, .zero)
 		}
 	}
@@ -233,12 +234,16 @@ final class AlbumsTVC: LibraryTVC {
 			return result
 		}()
 		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumRow(album: album, maxHeight: {
-				let height = view.frame.height
-				let topInset = view.safeAreaInsets.top
-				let bottomInset = view.safeAreaInsets.bottom
-				return height - topInset - bottomInset
-			}())
+			AlbumRow(
+				album: album,
+				viewportWidth: view.frame.width,
+				viewportHeight: {
+					let height = view.frame.height
+					let topInset = view.safeAreaInsets.top
+					let bottomInset = view.safeAreaInsets.bottom
+					return height - topInset - bottomInset
+				}()
+			)
 		}.margins(.all, .zero)
 		return cell
 	}

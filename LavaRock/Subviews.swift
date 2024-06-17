@@ -8,15 +8,15 @@ import MediaPlayer
 
 @MainActor struct AlbumRow: View {
 	let album: Album
-	let maxHeight: CGFloat
+	let viewportWidth: CGFloat
+	let viewportHeight: CGFloat
 	var body: some View {
 		VStack(spacing: 0) {
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
-			// TO DO: Redraw when artwork changes
-			CoverArt(album: album, minResolution: maxHeight)
-				.frame(
-					maxWidth: .infinity, // Horizontally centers narrow artwork
-					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
+			CoverArt(
+				album: album,
+				maxSideLength: min(viewportWidth, viewportHeight)
+			)
 		}
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
@@ -25,11 +25,11 @@ import MediaPlayer
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
-struct CoverArt: View {
+@MainActor struct CoverArt: View {
 	static let showDetailForAlbum = Notification.Name("LRCoverArtShowDetailForAlbum")
 	static let hideDetail = Notification.Name("LRCoverArtHideDetail")
 	let album: Album
-	let minResolution: CGFloat
+	let maxSideLength: CGFloat
 	var body: some View {
 		if WorkingOn.inlineTracklist {
 			tappable.onTapGesture {
@@ -45,16 +45,19 @@ struct CoverArt: View {
 		}
 	}
 	@ViewBuilder private var tappable: some View {
-		let uiImageOptional = album.representativeSongInfo()?.coverArt(resolutionAtLeastInPoints: CGSize(width: minResolution, height: minResolution))
-		if let uiImage = uiImageOptional {
-			Image(uiImage: uiImage)
-				.resizable() // Lets 1 image point differ from 1 screen point
-				.scaledToFit() // Maintains aspect ratio
-				.accessibilityIgnoresInvertColors()
+		if let artwork = musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artwork {
+			/*
+			 As of iOS 17.5.1:
+			 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
+			 • If you pass only width or only height, the view will always be square.
+			 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
+			 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
+			 */
+			ArtworkImage(artwork, width: maxSideLength)
 		} else {
 			ZStack {
 				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
-					.aspectRatio(1, contentMode: .fit)
+					.frame(width: maxSideLength, height: maxSideLength)
 				Image(systemName: "music.note")
 					.foregroundStyle(.secondary)
 					.font(.title)
@@ -64,6 +67,7 @@ struct CoverArt: View {
 		}
 	}
 	@State private var showingInfo = false
+	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
 // MARK: - Song list
