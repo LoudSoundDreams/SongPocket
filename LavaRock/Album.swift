@@ -92,9 +92,4 @@ extension Album {
 		else { return InterfaceText.unknownAlbum }
 		return albumTitle
 	}
-	
-	final func releaseDateEstimateFormatted() -> String {
-		guard let releaseDateEstimate else { return InterfaceText.emDash }
-		return releaseDateEstimate.formatted(date: .numeric, time: .omitted)
-	}
 }

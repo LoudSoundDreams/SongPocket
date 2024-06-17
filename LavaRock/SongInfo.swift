@@ -18,7 +18,7 @@ protocol SongInfo {
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
-	var releaseDateOnDisk: Date? { get }
+	var releaseDateOnDisk: Date? { get } // TO DO: Delete
 	func coverArt(resolutionAtLeastInPoints: CGSize) -> UIImage?
 }
 extension SongInfo {
