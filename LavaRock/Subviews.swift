@@ -110,14 +110,13 @@ struct SongRow: View {
 	@ObservedObject var tvcStatus: SongsTVCStatus
 	var body: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
-		let albumRepInfo = album.representativeSongInfo() // Can be `nil` too
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
 				NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 						.alignmentGuide_separatorLeading()
-					let albumArtistOptional = albumRepInfo?.albumArtistOnDisk
+					let albumArtistOptional = musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artistName
 					if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 						Text(songArtist)
 							.foregroundStyle(.secondary)
@@ -126,7 +125,7 @@ struct SongRow: View {
 				}.padding(.bottom, .eight * 1/4)
 				Spacer()
 				Text({
-					guard let info, let albumRepInfo else { return InterfaceText.octothorpe }
+					guard let info, let albumRepInfo = album.representativeSongInfo() else { return InterfaceText.octothorpe }
 					return albumRepInfo.shouldShowDiscNumber
 					? info.discAndTrackFormatted()
 					: info.trackFormatted()
@@ -164,6 +163,7 @@ struct SongRow: View {
 		}.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
+	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
 struct NowPlayingIndicator: View {
