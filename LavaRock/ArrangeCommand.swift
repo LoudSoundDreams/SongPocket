@@ -2,6 +2,7 @@
 
 import UIKit
 import CoreData
+import MusicKit
 
 enum ArrangeCommand {
 	case random
@@ -53,7 +54,7 @@ enum ArrangeCommand {
 		}
 	}
 	
-	func apply(to items: [NSManagedObject]) -> [NSManagedObject] {
+	@MainActor func apply(to items: [NSManagedObject]) -> [NSManagedObject] {
 		switch self {
 			case .random: return items.inAnyOtherOrder()
 			case .reverse: return items.reversed()
@@ -83,11 +84,11 @@ enum ArrangeCommand {
 				}
 			case .album_artist:
 				guard let albums = items as? [Album] else { return items }
-				let albumsAndReps = albums.map {
-					(album: $0,
-					 artist: $0.representativeSongInfo()?.albumArtistOnDisk)
-				}
-				let sorted = albumsAndReps.sortedMaintainingOrderWhen {
+				let albumsAndArtists: [(album: Album, artist: String?)] = albums.map {(
+					album: $0,
+					artist: MusicRepo.shared.musicKitAlbums[MusicItemID(String($0.albumPersistentID))]?.artistName
+				)}
+				let sorted = albumsAndArtists.sortedMaintainingOrderWhen {
 					$0.artist == $1.artist
 				} areInOrder: { leftTuple, rightTuple in
 					guard let rightArtist = rightTuple.artist else { return true }
