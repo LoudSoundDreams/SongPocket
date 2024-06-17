@@ -19,7 +19,6 @@ protocol SongInfo {
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
 	var releaseDateOnDisk: Date? { get } // TO DO: Delete
-	func coverArt(resolutionAtLeastInPoints: CGSize) -> UIImage?
 }
 extension SongInfo {
 	// MARK: - Sorting
@@ -121,9 +120,6 @@ extension MPMediaItem: SongInfo {
 	final var artistOnDisk: String? { artist }
 	final var dateAddedOnDisk: Date { dateAdded }
 	final var releaseDateOnDisk: Date? { releaseDate }
-	final func coverArt(resolutionAtLeastInPoints: CGSize) -> UIImage? {
-		return artwork?.image(at: resolutionAtLeastInPoints)
-	}
 }
 
 // MARK: - Simulator
@@ -145,13 +141,9 @@ struct Sim_SongInfo: SongInfo {
 	let artistOnDisk: String?
 	let dateAddedOnDisk: Date
 	let releaseDateOnDisk: Date?
-	func coverArt(resolutionAtLeastInPoints: CGSize) -> UIImage? {
-		guard let fileName = coverArtFileName else { return nil }
-		return UIImage(named: fileName)
-	}
 	
 	// Not protocol requirements
-	private let coverArtFileName: String?
+	let coverArtFileName: String?
 }
 extension Sim_SongInfo: Equatable {}
 extension Sim_SongInfo {

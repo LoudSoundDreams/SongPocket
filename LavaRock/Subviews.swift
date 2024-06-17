@@ -45,6 +45,19 @@ import MediaPlayer
 		}
 	}
 	@ViewBuilder private var tappable: some View {
+#if targetEnvironment(simulator)
+		if
+			let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName,
+			let uiImage = UIImage(named: fileName)
+		{
+			Image(uiImage: uiImage)
+				.resizable()
+				.scaledToFit()
+				.frame(width: maxSideLength, height: maxSideLength)
+		} else {
+			Color.red
+		}
+#else
 		if let artwork = musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artwork {
 			/*
 			 As of iOS 17.5.1:
@@ -65,6 +78,7 @@ import MediaPlayer
 			.accessibilityLabel(InterfaceText.albumArtwork)
 			.accessibilityIgnoresInvertColors()
 		}
+#endif
 	}
 	@State private var showingInfo = false
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
