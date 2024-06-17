@@ -67,18 +67,18 @@ struct CoverArt: View {
 
 // MARK: - Song list
 
-struct AlbumHeader: View {
+@MainActor struct AlbumHeader: View {
 	let albumPersistentID: Int64
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
 			AvatarPlayingImage().hidden()
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
-				Text(musicRepo.musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
+				Text(musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 					.fontTitle2Bold()
 					.alignmentGuide_separatorLeading()
 				Text({
 					guard
-						let albumArtist = musicRepo.musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName,
+						let albumArtist = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName,
 						albumArtist != ""
 					else { return InterfaceText.unknownArtist }
 					return albumArtist
@@ -86,7 +86,7 @@ struct AlbumHeader: View {
 				.foregroundStyle(.secondary)
 				.fontCaption2Bold()
 				Text({
-					guard let date = musicRepo.musicKitAlbums[MusicItemID(String(albumPersistentID))]?.releaseDate else {
+					guard let date = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.releaseDate else {
 						return InterfaceText.emDash
 					}
 					return date.formatted(date: .numeric, time: .omitted)
@@ -96,11 +96,11 @@ struct AlbumHeader: View {
 				.monospacedDigit()
 			}
 			.padding(.bottom, .eight * 1/4)
-			.animation(.default, value: musicRepo.musicKitAlbums)
+			.animation(.default, value: musicKitAlbums)
 			Spacer().alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
-	@ObservedObject private var musicRepo: MusicRepo = .shared
+	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
 struct SongRow: View {
@@ -204,7 +204,6 @@ struct AvatarImage: View {
 #endif
 	}
 	private enum Status { case notPlaying, paused, playing }
-	@ObservedObject private var musicRepo: MusicRepo = .shared // In case the user added or deleted the current song. Currently, even if the view body never actually mentions this, merely including this property refreshes the view at the right times.
 }
 struct AvatarPlayingImage: View {
 	var body: some View {

@@ -4,16 +4,15 @@ import CoreData
 @preconcurrency import MusicKit
 import MediaPlayer
 
-@MainActor final class MusicRepo: ObservableObject {
+@MainActor @Observable final class MusicRepo {
 	static let shared = MusicRepo()
-	@Published private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
+	private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
 	func observeMediaPlayerLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
-	@Published private(set) var signal_mergedChanges = false // Value doesn’t actually matter
 	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
 	
 	private init() {}
@@ -109,7 +108,6 @@ extension MusicRepo {
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(name: Self.mergedChanges, object: nil)
-			self.signal_mergedChanges.toggle()
 		}
 	}
 	
