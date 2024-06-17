@@ -59,27 +59,3 @@ extension Album {
 		return myDate > otherDate
 	}
 }
-
-// MARK: - Apple Music
-
-import MediaPlayer
-extension Album {
-	final func representativeSongInfo() -> SongInfo? {
-#if targetEnvironment(simulator)
-		return songs(sorted: true).first?.songInfo()
-#else
-		return mpMediaItemCollection()?.representativeItem
-#endif
-	}
-	private func mpMediaItemCollection() -> MPMediaItemCollection? {
-		let albumsQuery = MPMediaQuery.albums()
-		albumsQuery.addFilterPredicate(MPMediaPropertyPredicate(
-			value: albumPersistentID,
-			forProperty: MPMediaItemPropertyAlbumPersistentID))
-		guard
-			let queriedAlbums = albumsQuery.collections,
-			queriedAlbums.count == 1
-		else { return nil }
-		return queriedAlbums.first
-	}
-}
