@@ -71,7 +71,7 @@ struct CoverArt: View {
 	let albumPersistentID: Int64
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
-			AvatarPlayingImage().hidden()
+			NowPlayingImage().hidden()
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 					.fontTitle2Bold()
@@ -112,7 +112,7 @@ struct SongRow: View {
 		let albumRepInfo = album.representativeSongInfo() // Can be `nil` too
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
-				AvatarImage(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
+				NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 						.alignmentGuide_separatorLeading()
@@ -136,16 +136,15 @@ struct SongRow: View {
 			.accessibilityElement(children: .combine)
 			.accessibilityAddTraits(.isButton)
 			.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
-			Menu { overflowMenuContent } label: { overflowMenuLabel }
-				.disabled(tvcStatus.isEditing)
-				.onTapGesture { signal_tappedMenu.toggle() }
-				.alignmentGuide_separatorTrailing()
+			Menu { overflowMenuContent } label: {
+				Image(systemName: "ellipsis.circle.fill")
+					.fontBody_dynamicTypeSizeUpToXxxLarge()
+					.symbolRenderingMode(.hierarchical)
+			}
+			.disabled(tvcStatus.isEditing)
+			.onTapGesture { signal_tappedMenu.toggle() }
+			.alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
-	}
-	private var overflowMenuLabel: some View {
-		Image(systemName: "ellipsis.circle.fill")
-			.fontBody_dynamicTypeSizeUpToXxxLarge()
-			.symbolRenderingMode(.hierarchical)
 	}
 	@ViewBuilder private var overflowMenuContent: some View {
 		Button {
@@ -166,13 +165,13 @@ struct SongRow: View {
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
 }
 
-struct AvatarImage: View {
+struct NowPlayingIndicator: View {
 	let song: Song
 	@ObservedObject var state: SystemMusicPlayer.State
 	@ObservedObject var queue: SystemMusicPlayer.Queue
 	var body: some View {
 		ZStack(alignment: .leading) {
-			AvatarPlayingImage().hidden()
+			NowPlayingImage().hidden()
 			switch status {
 				case .notPlaying: EmptyView()
 				case .paused:
@@ -180,7 +179,7 @@ struct AvatarImage: View {
 						.fontBody_dynamicTypeSizeUpToXxxLarge()
 						.imageScale(.small)
 				case .playing:
-					AvatarPlayingImage()
+					NowPlayingImage()
 						.symbolRenderingMode(.hierarchical)
 			}
 		}
@@ -205,7 +204,7 @@ struct AvatarImage: View {
 	}
 	private enum Status { case notPlaying, paused, playing }
 }
-struct AvatarPlayingImage: View {
+struct NowPlayingImage: View {
 	var body: some View {
 		Image(systemName: "speaker.wave.2.fill")
 			.fontBody_dynamicTypeSizeUpToXxxLarge()
