@@ -85,6 +85,7 @@ extension Album {
 	
 	// MARK: - Formatted attributes
 	
+	// TO DO: Delete
 	final func titleFormatted() -> String {
 		guard
 			let albumTitle = representativeSongInfo()?.albumTitleOnDisk,

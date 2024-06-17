@@ -6,7 +6,7 @@ import MediaPlayer
 
 // MARK: - Album list
 
-struct AlbumRow: View {
+@MainActor struct AlbumRow: View {
 	let album: Album
 	let maxHeight: CGFloat
 	var body: some View {
@@ -19,9 +19,10 @@ struct AlbumRow: View {
 					maxHeight: maxHeight) // Prevents artwork from becoming taller than viewport
 		}
 		.accessibilityAddTraits(.isButton)
-		.accessibilityLabel(album.titleFormatted())
-		.accessibilityInputLabels([album.titleFormatted()])
+		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
+		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
 	}
+	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
 struct CoverArt: View {
