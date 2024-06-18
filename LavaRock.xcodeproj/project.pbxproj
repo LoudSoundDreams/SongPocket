@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		071A0B9E277E76510017F76D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* App.swift */; };
 		0736E3EA24B95FD600A15420 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0736E3E924B95FD600A15420 /* Album.swift */; };
-		0751DE3926C5C6E800AA14DA /* View Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0751DE3826C5C6E800AA14DA /* View Models.swift */; };
 		075218A2257C498D0077AE9B /* InterfaceText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* InterfaceText.swift */; };
 		075FC9042B46765D00219146 /* Sample Artwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Sample Artwork.xcassets */; };
 		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
@@ -57,7 +56,6 @@
 		071A0B9D277E76510017F76D /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		0736E3E924B95FD600A15420 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		0751DE3826C5C6E800AA14DA /* View Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View Models.swift"; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* InterfaceText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceText.swift; sourceTree = "<group>"; };
 		075FC9032B46765D00219146 /* Sample Artwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Sample Artwork.xcassets"; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,7 +145,6 @@
 				076830C024B42E3F0033E3CC /* SongsTVC.swift */,
 				07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */,
 				07934CF727CDBE04002B2444 /* SongsTVC.storyboard */,
-				0751DE3826C5C6E800AA14DA /* View Models.swift */,
 				07FB52CA2813909400CCCBA5 /* ArrangeCommand.swift */,
 				07755A57294821860056E90C /* Subviews.swift */,
 				07CBB6FE2BBEA9DE008B0BB5 /* Experimental Album View.swift */,
@@ -318,7 +315,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0751DE3926C5C6E800AA14DA /* View Models.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Helpers.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
 				07755A58294821860056E90C /* Subviews.swift in Sources */,
