@@ -4,6 +4,17 @@ import UIKit
 import SwiftUI
 import MusicKit
 import MediaPlayer
+import CoreData
+
+@MainActor private struct AlbumsViewModel {
+	var albums: [Album] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
+		didSet { Database.renumber(albums) }
+	}
+	func withRefreshedData() -> Self { return Self() }
+	func rowIdentifiers() -> [AnyHashable] {
+		return albums.map { $0.objectID }
+	}
+}
 
 final class AlbumsTVC: LibraryTVC {
 	private var albumsViewModel = AlbumsViewModel()
