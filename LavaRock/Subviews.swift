@@ -15,8 +15,8 @@ import MediaPlayer
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
 			CoverArt(
 				album: album,
-				maxSideLength: min(viewportWidth, viewportHeight)
-			)
+				maxSideLength: min(viewportWidth, viewportHeight))
+			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
 		}
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
