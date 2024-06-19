@@ -10,6 +10,7 @@ import MediaPlayer
 	let album: Album
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
+	let albumsTVCStatus: AlbumsTVCStatus
 	var body: some View {
 		VStack(spacing: 0) {
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
@@ -17,6 +18,7 @@ import MediaPlayer
 				album: album,
 				maxSideLength: min(viewportWidth, viewportHeight))
 			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
+			.opacity(albumsTVCStatus.isEditing ? pow(.oneHalf, 2) : 1)
 		}
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)

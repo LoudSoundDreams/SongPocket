@@ -16,8 +16,17 @@ import CoreData
 	}
 }
 
+@Observable final class AlbumsTVCStatus {
+	fileprivate(set) var isEditing = false
+}
 final class AlbumsTVC: LibraryTVC {
 	private var albumsViewModel = AlbumsViewModel()
+	
+	private let tvcStatus = AlbumsTVCStatus()
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		tvcStatus.isEditing = editing
+	}
 	
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var floatAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
@@ -57,7 +66,8 @@ final class AlbumsTVC: LibraryTVC {
 				AlbumRow(
 					album: album,
 					viewportWidth: size.width,
-					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
+					albumsTVCStatus: tvcStatus)
 			}.margins(.all, .zero)
 		}
 	}
@@ -253,7 +263,8 @@ final class AlbumsTVC: LibraryTVC {
 					let topInset = view.safeAreaInsets.top
 					let bottomInset = view.safeAreaInsets.bottom
 					return height - topInset - bottomInset
-				}())
+				}(),
+				albumsTVCStatus: tvcStatus)
 		}.margins(.all, .zero)
 		return cell
 	}
