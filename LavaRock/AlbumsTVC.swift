@@ -253,8 +253,7 @@ final class AlbumsTVC: LibraryTVC {
 					let topInset = view.safeAreaInsets.top
 					let bottomInset = view.safeAreaInsets.bottom
 					return height - topInset - bottomInset
-				}()
-			)
+				}())
 		}.margins(.all, .zero)
 		return cell
 	}
