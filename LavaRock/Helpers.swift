@@ -228,13 +228,13 @@ extension UITableView {
 			var moves: [(Int, Int)] = []
 			difference.forEach { change in switch change {
 					// If a `Change`’s `associatedWith:` value is non-`nil`, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
-				case .remove(let offset, _, let associatedOffset):
+				case let .remove(offset, _, associatedOffset):
 					if let associatedOffset = associatedOffset {
 						moves.append((old: offset, new: associatedOffset))
 					} else {
 						deletes.append(offset)
 					}
-				case .insert(let offset, _, let associatedOffset):
+				case let .insert(offset, _, associatedOffset):
 					if associatedOffset == nil {
 						inserts.append(offset)
 					}
