@@ -44,7 +44,7 @@ enum InterfaceText {
 	
 	// MARK: Albums view
 	
-	static let welcome_message = NSLocalizedString("SongPocket views and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
+	static let welcome_message = NSLocalizedString("SongPocket shows and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let welcome_button = NSLocalizedString("Continue", comment: "Button")
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")

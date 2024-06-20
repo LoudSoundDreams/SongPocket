@@ -504,7 +504,7 @@
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SongPocket;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "SongPocket views and plays your Apple Music library.";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "SongPocket shows and plays your Apple Music library.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -534,7 +534,7 @@
 				INFOPLIST_FILE = LavaRock/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SongPocket;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "SongPocket views and plays your Apple Music library.";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "SongPocket shows and plays your Apple Music library.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
