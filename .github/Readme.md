@@ -2,25 +2,6 @@ SongPocket is a library-focused music player.
 
 It’s on the [App Store](https://apps.apple.com/us/app/songpocket/id1538037231).
 
-You shouldn’t need to be a rocket scientist to play with this. If anything’s unclear, [contact me](mailto:linus@loudsounddreams.com)!
-
-# Expectations
-
-Think of this repo like a backstage tour. Please report or fix bugs. I welcome suggestions too, but I make the final call on decisions.
-
-## Non-goals
-
-SongPocket won’t do everything for everyone, and generally, we should [remove](https://ignorethecode.net/blog/2010/02/02/removing-features) and [say no](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) to features more often, for a simpler experience.
-
-So Songpocket tentatively…
-
-1. Won’t offer multiple ways to do the same action. [Monotonous design is better.](https://verbnounenter.net/monotony)
-2. Won’t replace iOS’s Music app. This lets it do better what the Music app doesn’t focus on. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for removing items from the user’s library.)
-3. Won’t show song durations, because I [consider them spoilers](https://en.wikipedia.org/wiki/Hidden_track). If this were a music app for everyone, I would add a mode; but it’s not, and [modes are bad](https://spectrum.ieee.org/of-modes-and-men). (Settings are modes too.)
-4. Won’t include appearance options like accent color or app icon, because they distract from the key experience. Focus means spending your full attention on what actually matters, and preventing yourself from fiddling. For example, SongPocket offers a single grey theme instead of light and dark modes.
-
-If you want to make different decisions, you can make your own version:
-
 # Permissions
 
 You have a Creative Commons [Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0) 4.0 International license for this software.
@@ -31,7 +12,20 @@ That means you can adapt or share it, but when you do so, please…
 2. Don’t sell it.
 3. Apply these same rules to the resulting work.
 
-Be reasonable. Contact me with any questions.
+Be reasonable. [Contact me](mailto:linus@loudsounddreams.com) with any questions.
+
+# Non-goals
+
+SongPocket won’t do everything for everyone, and generally, we should [remove](https://ignorethecode.net/blog/2010/02/02/removing-features) and [say no](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) to features more often, for a simpler experience.
+
+So Songpocket tentatively…
+
+1. Won’t offer multiple ways to do the same action. [Monotonous design is better.](https://verbnounenter.net/monotony)
+2. Won’t replace iOS’s Music app. This lets it do better what the Music app doesn’t focus on. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for removing items from the user’s library.)
+3. Won’t show song durations, because I [consider them spoilers](https://en.wikipedia.org/wiki/Hidden_track). If this were a music app for everyone, I would add a mode; but it’s not, and [modes are bad](https://spectrum.ieee.org/of-modes-and-men). (Settings are modes too.)
+4. Won’t include appearance options like dark mode or accent color, because they distract from the key experience. Focus means spending your full attention on what actually matters, and preventing yourself from fiddling.
+
+Want to make different decisions? You can make your own version:
 
 # Compiling
 
