@@ -1,6 +1,6 @@
 // 2022-05-09
 
-import UIKit
+@preconcurrency import UIKit
 @preconcurrency import MusicKit
 import MediaPlayer
 
