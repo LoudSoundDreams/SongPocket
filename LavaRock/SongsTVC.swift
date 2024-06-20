@@ -23,8 +23,8 @@ extension SongsViewModel {
 	init(album: Album) { songs = album.songs(sorted: true) }
 }
 
-final class SongsTVCStatus: ObservableObject {
-	@Published fileprivate(set) var isEditing = false
+@Observable final class SongsTVCStatus {
+	fileprivate(set) var isEditing = false
 }
 final class SongsTVC: LibraryTVC {
 	var songsViewModel: SongsViewModel! = nil
@@ -206,7 +206,7 @@ final class SongsTVC: LibraryTVC {
 					return result
 				}()
 				cell.contentConfiguration = UIHostingConfiguration {
-					SongRow(song: song, album: album, tvcStatus: tvcStatus)
+					SongRow(song: song, album: album, songsTVCStatus: tvcStatus)
 				}.margins(.all, .zero)
 				return cell
 		}

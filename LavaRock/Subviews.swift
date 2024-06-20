@@ -124,10 +124,10 @@ import MediaPlayer
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
-struct SongRow: View {
+@MainActor struct SongRow: View {
 	let song: Song
 	let album: Album
-	@ObservedObject var tvcStatus: SongsTVCStatus
+	let songsTVCStatus: SongsTVCStatus
 	var body: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		HStack(alignment: .firstTextBaseline) {
@@ -163,7 +163,7 @@ struct SongRow: View {
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 					.symbolRenderingMode(.hierarchical)
 			}
-			.disabled(tvcStatus.isEditing)
+			.disabled(songsTVCStatus.isEditing)
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
