@@ -94,22 +94,38 @@ import MediaPlayer
 		HStack(spacing: .eight * 5/4) {
 			NowPlayingImage().hidden()
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
-				Text(musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
-					.fontTitle2Bold()
-					.alignmentGuide_separatorLeading()
 				Text({
+#if targetEnvironment(simulator)
+					return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
+#else
+					return musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum
+#endif
+				}())
+				.fontTitle2Bold()
+				.alignmentGuide_separatorLeading()
+				Text({
+#if targetEnvironment(simulator)
+					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
+#else
 					guard
 						let albumArtist = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName,
 						albumArtist != ""
 					else { return InterfaceText.unknownArtist }
 					return albumArtist
+#endif
 				}())
 				.foregroundStyle(.secondary)
 				.fontCaption2Bold()
 				Text({
+#if targetEnvironment(simulator)
+					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else {
+						return InterfaceText.emDash
+					}
+#else
 					guard let date = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.releaseDate else {
 						return InterfaceText.emDash
 					}
+#endif
 					return date.formatted(date: .numeric, time: .omitted)
 				}())
 				.foregroundStyle(.secondary)
