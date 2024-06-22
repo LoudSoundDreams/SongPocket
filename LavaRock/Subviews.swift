@@ -12,7 +12,7 @@ import MediaPlayer
 	let viewportHeight: CGFloat
 	let albumsTVCStatus: AlbumsTVCStatus
 	var body: some View {
-		VStack(spacing: 0) {
+		VStack(spacing: .zero) {
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
 			CoverArt(
 				album: album,
