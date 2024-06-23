@@ -119,6 +119,7 @@ final class SongsTVC: LibraryTVC {
 		}
 	}
 	private func reflectNoSongs() {
+		dismiss(animated: true) // In case “confirm play” action sheet is presented
 		isAnimatingReflectNoSongs += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
