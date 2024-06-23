@@ -39,8 +39,8 @@ enum InterfaceText {
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
-	static let moveToTop = NSLocalizedString("Move to top", comment: "Accessibility label, button")
-	static let moveToBottom = NSLocalizedString("Move to bottom", comment: "Accessibility label, button")
+	static let moveToTop = NSLocalizedString("To Top", comment: "Button")
+	static let moveToBottom = NSLocalizedString("To Bottom", comment: "Button")
 	static let moveUp = NSLocalizedString("Move up", comment: "Accessibility label")
 	static let moveDown = NSLocalizedString("Move down", comment: "Accessibility label")
 	

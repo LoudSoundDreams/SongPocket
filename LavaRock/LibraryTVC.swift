@@ -72,9 +72,6 @@ class LibraryTVC: UITableViewController {
 				completionIfShouldRun(false)
 			}
 		}
-		
-		tableView.deselectAllRows(animated: true)
-		refreshEditingButtons()
 	}
 	private var isAnimatingReflectViewModel = 0
 	

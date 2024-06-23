@@ -24,8 +24,11 @@ extension SongsViewModel {
 }
 
 @Observable final class SongsTVCStatus {
+	static let changedSongsForEditing = Notification.Name("LRChangedSongsForEditing")
 	fileprivate(set) var isEditing = false
-	var editingSongIndices: Set<Int> = [] // Should only contain elements if `isEditing`. This should be an optional set, but as of Xcode 15.4, the compiler can’t type-check that.
+	var editingSongIndices: Set<Int> = [] { // Should only contain elements if `isEditing`. This should be an optional set, but as of Xcode 15.4, the compiler can’t type-check that.
+		didSet { NotificationCenter.default.post(name: Self.changedSongsForEditing, object: nil) }
+	}
 }
 
 // MARK: - Table view controller
@@ -46,19 +49,18 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var floatButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.float() })
-	private lazy var sinkButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sink() })
-	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() })
-	private lazy var demoteButton = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.demote() })
+	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up"), primaryAction: UIAction { [weak self] _ in self?.promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float() }]))
+	private lazy var demoteButton = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down"), primaryAction: UIAction { [weak self] _ in self?.demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sink() }]))
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), floatButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton, .flexibleSpace(), sinkButton]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
 		arrangeButton.preferredMenuElementOrder = .fixed
 		super.viewDidLoad()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedSong), name: SongRow.activatedSong, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: SongsTVCStatus.changedSongsForEditing, object: nil)
 	}
 	@objc private func activatedSong(notification: Notification) {
 		guard
@@ -105,7 +107,17 @@ final class SongsTVC: LibraryTVC {
 				reflectNoSongs()
 				return
 			}
-			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) else { return }
+			guard await moveRows(
+				oldIdentifiers: oldRows,
+				newIdentifiers: songsViewModel.rowIdentifiers(),
+				runningBeforeContinuation: {
+					if self.tvcStatus.isEditing {
+						self.tvcStatus.editingSongIndices = []
+					}
+					self.tableView.deselectAllRows(animated: true)
+					self.refreshEditingButtons()
+				}
+			) else { return }
 			
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}
@@ -126,13 +138,13 @@ final class SongsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	override func refreshEditingButtons() {
+	@objc override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
 		arrangeButton.isEnabled = canArrange()
 		arrangeButton.menu = newArrangeMenu()
-		floatButton.isEnabled = !tableView.selectedIndexPaths.isEmpty
-		sinkButton.isEnabled = !tableView.selectedIndexPaths.isEmpty
+		promoteButton.isEnabled = !tvcStatus.editingSongIndices.isEmpty
+		demoteButton.isEnabled = !tvcStatus.editingSongIndices.isEmpty
 	}
 	
 	private func canArrange() -> Bool {
@@ -176,7 +188,15 @@ final class SongsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
+		Task {
+			let _ = await moveRows(
+				oldIdentifiers: oldRows,
+				newIdentifiers: songsViewModel.rowIdentifiers(),
+				runningBeforeContinuation: {
+					self.tableView.deselectAllRows(animated: true)
+					self.refreshEditingButtons()
+				})
+		}
 	}
 	private func selectedOrAllIndices() -> [Int] {
 		let selected = tableView.selectedIndexPaths
@@ -187,7 +207,9 @@ final class SongsTVC: LibraryTVC {
 	private func float() {
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
+		let unorderedIndices = tvcStatus.editingSongIndices
+		
+		tvcStatus.editingSongIndices = []
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
@@ -196,7 +218,9 @@ final class SongsTVC: LibraryTVC {
 	private func sink() {
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
+		let unorderedIndices = tvcStatus.editingSongIndices
+		
+		tvcStatus.editingSongIndices = []
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
