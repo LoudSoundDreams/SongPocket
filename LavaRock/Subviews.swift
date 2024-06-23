@@ -226,7 +226,9 @@ import MediaPlayer
 					songsTVCStatus.editingSongIndices.contains(Int(song.index))
 					? .oneHalf
 					: .zero)
-				.animation(.default, value: songsTVCStatus.isEditing) // Exiting editing mode deselects songs
+				.animation( // Animates for deselecting, whether by user or programmatically, or whether individually or by exiting editing mode. Never animates for selecting.
+					songsTVCStatus.editingSongIndices.contains(Int(song.index)) ? nil : .default,
+					value: songsTVCStatus.editingSongIndices)
 		}
 		.contentShape(Rectangle())
 		.onTapGesture {
