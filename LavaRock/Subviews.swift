@@ -142,7 +142,7 @@ import MediaPlayer
 
 @MainActor struct SongRow: View {
 	let song: Song
-	let album: Album
+	let albumPersistentID: Int64
 	let songsTVCStatus: SongsTVCStatus
 	var body: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
@@ -152,7 +152,7 @@ import MediaPlayer
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 						.alignmentGuide_separatorLeading()
-					let albumArtistOptional = musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artistName
+					let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName
 					if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 						Text(songArtist)
 							.foregroundStyle(.secondary)

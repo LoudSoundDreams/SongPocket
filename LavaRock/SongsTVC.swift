@@ -206,7 +206,7 @@ final class SongsTVC: LibraryTVC {
 					return result
 				}()
 				cell.contentConfiguration = UIHostingConfiguration {
-					SongRow(song: song, album: album, songsTVCStatus: tvcStatus)
+					SongRow(song: song, albumPersistentID: album.albumPersistentID, songsTVCStatus: tvcStatus)
 				}.margins(.all, .zero)
 				return cell
 		}
