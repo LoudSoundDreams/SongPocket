@@ -34,12 +34,12 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var floatAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private lazy var sinkAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
-	private lazy var shiftUpButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.shiftUpSelected() })
+	private lazy var upButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.shiftUp() })
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeAlbumsButton, .flexibleSpace(), floatAlbumsButton, .flexibleSpace(), shiftUpButton, .flexibleSpace(), sinkAlbumsButton]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeAlbumsButton, .flexibleSpace(), floatAlbumsButton, .flexibleSpace(), upButton, .flexibleSpace(), sinkAlbumsButton]
 		arrangeAlbumsButton.preferredMenuElementOrder = .fixed
 		
 		super.viewDidLoad()
@@ -202,15 +202,16 @@ final class AlbumsTVC: LibraryTVC {
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
 	
-	private func shiftUpSelected() {
-		let indices = Array(tvcStatus.editingAlbumIndices ?? [])
-		guard let frontmostIndex = indices.sorted().first else { return }
+	private func shiftUp() {
+		let indicesSorted = Array(tvcStatus.editingAlbumIndices ?? []).sorted()
+		guard let frontmostIndex = indicesSorted.first else { return }
 		let oldRows = albumsViewModel.rowIdentifiers()
-		let targetIndex = max(0, frontmostIndex - 1)
+		let targetIndex = indicesSorted.isConsecutive() ? max(0, frontmostIndex - 1) : frontmostIndex
 		
-		tvcStatus.editingAlbumIndices = Set(targetIndex ... (targetIndex + indices.count - 1))
+		tvcStatus.editingAlbumIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
 		var newAlbums = albumsViewModel.albums
-		newAlbums.move(fromOffsets: IndexSet(indices), toOffset: targetIndex) // No need to sort argument for `IndexSet`
+		// Actually, `IndexSet` works with an unsorted argument, but we need to sort it anyway.
+		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
 		Database.renumber(newAlbums)
 		albumsViewModel.albums = newAlbums
 		Task {
