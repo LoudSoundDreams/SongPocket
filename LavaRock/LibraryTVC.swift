@@ -99,21 +99,4 @@ class LibraryTVC: UITableViewController {
 		? UIImage(systemName: "checkmark.circle.fill")
 		: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	}
-	
-	// MARK: - Table view
-	
-	override func tableView( // TO DO: Delete
-		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
-	) {
-		// As of iOS 17.5 RC, UIKit calls this when the user selects a row, but not when our program calls `selectRow`.
-		if isEditing {
-			refreshEditingButtons()
-		}
-	}
-	final override func tableView( // TO DO: Delete
-		_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath
-	) {
-		// As of iOS 17.5 RC, UIKit calls this when the user deselects a row, but not when our program calls `deselectRow`.
-		refreshEditingButtons()
-	}
 }

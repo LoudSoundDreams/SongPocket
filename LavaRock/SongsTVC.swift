@@ -326,29 +326,4 @@ final class SongsTVC: LibraryTVC {
 		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
 		return false
 	}
-	override func tableView( // TO DO: Delete
-		_ tableView: UITableView,
-		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
-		toProposedIndexPath proposedDestinationIndexPath: IndexPath
-	) -> IndexPath {
-		if proposedDestinationIndexPath.row < SongsViewModel.prerowCount {
-			return IndexPath(row: SongsViewModel.prerowCount, section: proposedDestinationIndexPath.section)
-		}
-		return proposedDestinationIndexPath
-	}
-	override func tableView( // TO DO: Delete
-		_ tableView: UITableView,
-		moveRowAt source: IndexPath,
-		to destination: IndexPath
-	) {
-		let fromIndex = source.row - SongsViewModel.prerowCount
-		let toIndex = destination.row - SongsViewModel.prerowCount
-		
-		var newItems = songsViewModel.songs
-		let passenger = newItems.remove(at: fromIndex)
-		newItems.insert(passenger, at: toIndex)
-		songsViewModel.songs = newItems
-		
-		refreshEditingButtons()
-	}
 }

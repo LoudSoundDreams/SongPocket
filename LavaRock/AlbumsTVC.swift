@@ -339,19 +339,4 @@ final class AlbumsTVC: LibraryTVC {
 	) -> Bool {
 		return false
 	}
-	override func tableView( // TO DO: Delete
-		_ tableView: UITableView,
-		moveRowAt source: IndexPath,
-		to destination: IndexPath
-	) {
-		let fromIndex = source.row
-		let toIndex = destination.row
-		
-		var newItems = albumsViewModel.albums
-		let passenger = newItems.remove(at: fromIndex)
-		newItems.insert(passenger, at: toIndex)
-		albumsViewModel.albums = newItems
-		
-		refreshEditingButtons() // If you made selected rows non-contiguous, that should disable the “Sort” button. If you made all the selected rows contiguous, that should enable the “Sort” button.
-	}
 }
