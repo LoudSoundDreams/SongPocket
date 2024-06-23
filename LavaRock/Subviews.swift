@@ -4,7 +4,7 @@ import SwiftUI
 import MusicKit
 import MediaPlayer
 
-// MARK: - Album list
+// MARK: - Album row
 
 @MainActor struct AlbumRow: View {
 	let album: Album
@@ -34,7 +34,7 @@ import MediaPlayer
 	let maxSideLength: CGFloat
 	var body: some View {
 		if WorkingOn.inlineTracklist {
-			tappable.onTapGesture {
+			art.onTapGesture {
 				showingInfo.toggle()
 				if showingInfo {
 					NotificationCenter.default.post(name: Self.showDetailForAlbum, object: album)
@@ -43,10 +43,10 @@ import MediaPlayer
 				}
 			}
 		} else {
-			tappable
+			art
 		}
 	}
-	@ViewBuilder private var tappable: some View {
+	@ViewBuilder private var art: some View {
 #if targetEnvironment(simulator)
 		if
 			let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName,
@@ -86,7 +86,7 @@ import MediaPlayer
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
-// MARK: - Song list
+// MARK: - Album header
 
 @MainActor struct AlbumHeader: View {
 	let albumPersistentID: Int64
@@ -139,6 +139,8 @@ import MediaPlayer
 	}
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
+
+// MARK: - Song row
 
 @MainActor struct SongRow: View {
 	static let activatedSong = Notification.Name("LRActivatedSong")
@@ -206,18 +208,17 @@ import MediaPlayer
 				.animation(.default, value: songsTVCStatus.isEditing)
 		}
 		.contentShape(Rectangle())
-		.onTapGesture { tapped() }
-	}
-	private func tapped() {
-		if songsTVCStatus.isEditing {
-			let songIndex = Int(song.index)
-			if songsTVCStatus.editingSongIndices.contains(songIndex) {
-				songsTVCStatus.editingSongIndices.remove(songIndex)
+		.onTapGesture {
+			if songsTVCStatus.isEditing {
+				let songIndex = Int(song.index)
+				if songsTVCStatus.editingSongIndices.contains(songIndex) {
+					songsTVCStatus.editingSongIndices.remove(songIndex)
+				} else {
+					songsTVCStatus.editingSongIndices.insert(songIndex)
+				}
 			} else {
-				songsTVCStatus.editingSongIndices.insert(songIndex)
+				NotificationCenter.default.post(name: Self.activatedSong, object: song)
 			}
-		} else {
-			NotificationCenter.default.post(name: Self.activatedSong, object: song)
 		}
 	}
 	@ViewBuilder private var overflowMenuContent: some View {
@@ -239,6 +240,8 @@ import MediaPlayer
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
+
+// MARK: - Now-playing indicator
 
 struct NowPlayingIndicator: View {
 	let song: Song

@@ -25,8 +25,11 @@ extension SongsViewModel {
 
 @Observable final class SongsTVCStatus {
 	fileprivate(set) var isEditing = false
-	var editingSongIndices: Set<Int> = [] // Should only contain elements if `isEditing`. This should be an optional set, but as of Xcode 15.4, Xcode can’t type-check that.
+	var editingSongIndices: Set<Int> = [] // Should only contain elements if `isEditing`. This should be an optional set, but as of Xcode 15.4, the compiler can’t type-check that.
 }
+
+// MARK: - Table view controller
+
 final class SongsTVC: LibraryTVC {
 	var songsViewModel: SongsViewModel! = nil
 	

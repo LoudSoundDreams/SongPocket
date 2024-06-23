@@ -19,6 +19,9 @@ import CoreData
 @Observable final class AlbumsTVCStatus {
 	fileprivate(set) var isEditing = false
 }
+
+// MARK: - Table view controller
+
 final class AlbumsTVC: LibraryTVC {
 	private var albumsViewModel = AlbumsViewModel()
 	
