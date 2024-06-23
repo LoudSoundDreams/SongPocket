@@ -15,10 +15,7 @@ import MediaPlayer
 	var body: some View {
 		VStack(spacing: .zero) {
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
-			CoverArt(
-				album: album,
-				maxSideLength: min(viewportWidth, viewportHeight),
-				albumsTVCStatus: albumsTVCStatus)
+			art
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
 		.opacity(albumsTVCStatus.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
@@ -66,14 +63,7 @@ import MediaPlayer
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
 	}
-	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
-	@Environment(\.pixelLength) private var pointsPerPixel
-}
-@MainActor struct CoverArt: View {
-	let album: Album
-	let maxSideLength: CGFloat
-	let albumsTVCStatus: AlbumsTVCStatus
-	var body: some View {
+	@ViewBuilder private var art: some View {
 #if targetEnvironment(simulator)
 		if
 			let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName,
@@ -109,7 +99,9 @@ import MediaPlayer
 		}
 #endif
 	}
+	private var maxSideLength: CGFloat { min(viewportWidth, viewportHeight) }
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
+	@Environment(\.pixelLength) private var pointsPerPixel
 }
 
 // MARK: - Album header
