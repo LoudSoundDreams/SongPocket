@@ -53,6 +53,13 @@ final class AlbumsTVC: LibraryTVC {
 		guard let activated = notification.object as? Album else { return }
 		pushAlbum(activated)
 	}
+	private func pushAlbum(_ album: Album) {
+		navigationController?.pushViewController({
+			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+			songsTVC.songsViewModel = SongsViewModel(album: album)
+			return songsTVC
+		}(), animated: true)
+	}
 	
 	override func viewWillTransition(
 		to size: CGSize,
@@ -264,14 +271,6 @@ final class AlbumsTVC: LibraryTVC {
 				albumsTVCStatus: tvcStatus)
 		}.margins(.all, .zero)
 		return cell
-	}
-	
-	private func pushAlbum(_ album: Album) {
-		navigationController?.pushViewController({
-			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-			songsTVC.songsViewModel = SongsViewModel(album: album)
-			return songsTVC
-		}(), animated: true)
 	}
 	
 	override func tableView(

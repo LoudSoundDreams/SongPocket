@@ -65,6 +65,33 @@ final class SongsTVC: LibraryTVC {
 		else { return }
 		confirmPlay(IndexPath(row: SongsViewModel.prerowCount + songIndex, section: 0))
 	}
+	private func confirmPlay(_ activated: IndexPath) {
+		guard let activatedCell = tableView.cellForRow(at: activated) else { return }
+		
+		tableView.selectRow(at: activated, animated: false, scrollPosition: .none)
+		// The UI is clearer if we leave the row selected while the action sheet is onscreen.
+		// You must eventually deselect the row in every possible scenario after this moment.
+		
+		let song = songsViewModel.songs[activated.row - SongsViewModel.prerowCount]
+		let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
+			Task {
+				await song.playAlbumStartingHere()
+				
+				self.tableView.deselectAllRows(animated: true)
+			}
+		}
+		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		
+		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		actionSheet.popoverPresentationController?.sourceView = activatedCell
+		actionSheet.addAction(startPlaying)
+		actionSheet.addAction(
+			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
+				self?.tableView.deselectAllRows(animated: true)
+			}
+		)
+		present(actionSheet, animated: true)
+	}
 	
 	override func refreshLibraryItems() {
 		Task {
@@ -260,41 +287,13 @@ final class SongsTVC: LibraryTVC {
 		return nil
 	}
 	
-	private func confirmPlay(_ activated: IndexPath) {
-			guard let activatedCell = tableView.cellForRow(at: activated) else { return }
-			
-			tableView.selectRow(at: activated, animated: false, scrollPosition: .none)
-			// The UI is clearer if we leave the row selected while the action sheet is onscreen.
-			// You must eventually deselect the row in every possible scenario after this moment.
-			
-			let song = songsViewModel.songs[activated.row - SongsViewModel.prerowCount]
-			let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
-				Task {
-					await song.playAlbumStartingHere()
-					
-					self.tableView.deselectAllRows(animated: true)
-				}
-			}
-			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
-			
-			let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-			actionSheet.popoverPresentationController?.sourceView = activatedCell
-			actionSheet.addAction(startPlaying)
-			actionSheet.addAction(
-				UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
-					self?.tableView.deselectAllRows(animated: true)
-				}
-			)
-			present(actionSheet, animated: true)
-	}
-	
 	override func tableView(
 		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
 	) -> Bool {
 		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
 		return false
 	}
-	override func tableView(
+	override func tableView( // TO DO: Delete
 		_ tableView: UITableView,
 		targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath,
 		toProposedIndexPath proposedDestinationIndexPath: IndexPath
@@ -304,7 +303,7 @@ final class SongsTVC: LibraryTVC {
 		}
 		return proposedDestinationIndexPath
 	}
-	override func tableView(
+	override func tableView( // TO DO: Delete
 		_ tableView: UITableView,
 		moveRowAt source: IndexPath,
 		to destination: IndexPath
