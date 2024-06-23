@@ -102,7 +102,7 @@ class LibraryTVC: UITableViewController {
 	
 	// MARK: - Table view
 	
-	override func tableView(
+	override func tableView( // TO DO: Delete
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
 		// As of iOS 17.5 RC, UIKit calls this when the user selects a row, but not when our program calls `selectRow`.
@@ -110,7 +110,7 @@ class LibraryTVC: UITableViewController {
 			refreshEditingButtons()
 		}
 	}
-	final override func tableView(
+	final override func tableView( // TO DO: Delete
 		_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath
 	) {
 		// As of iOS 17.5 RC, UIKit calls this when the user deselects a row, but not when our program calls `deselectRow`.

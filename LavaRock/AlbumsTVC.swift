@@ -106,15 +106,11 @@ final class AlbumsTVC: LibraryTVC {
 				reflectNoAlbums()
 				return
 			}
-			guard await moveRows(
-				oldIdentifiers: oldRows,
-				newIdentifiers: albumsViewModel.rowIdentifiers(),
-				runningBeforeContinuation: {
-					if nil != self.tvcStatus.editingAlbumIndices {
-						self.tvcStatus.editingAlbumIndices = []
-					}
-				}
-			) else { return }
+			if nil != self.tvcStatus.editingAlbumIndices {
+				self.tvcStatus.editingAlbumIndices = [] // If in editing mode, deselect everything
+			}
+			refreshEditingButtons() // If old view model was empty, enable “Edit” button
+			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
@@ -149,7 +145,10 @@ final class AlbumsTVC: LibraryTVC {
 		let elementsGrouped: [[UIMenuElement]] = sections.map { section in
 			section.map { command in
 				command.newMenuElement(enabled: {
-					guard selectedOrAllIndices().count >= 2 else { return false }
+					guard
+						selectedOrAllIndices().count >= 2,
+						!albumsViewModel.albums.isEmpty
+					else { return false }
 					switch command {
 						case .random, .reverse: return true
 						case .song_track: return false
