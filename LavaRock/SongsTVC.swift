@@ -72,7 +72,12 @@ final class SongsTVC: LibraryTVC {
 		confirmPlay(IndexPath(row: SongsViewModel.prerowCount + songIndex, section: 0))
 	}
 	private func confirmPlay(_ activated: IndexPath) {
-		guard let activatedCell = tableView.cellForRow(at: activated) else { return }
+		guard
+			let activatedCell = tableView.cellForRow(at: activated),
+			presentedViewController == nil // As of iOS 17.6 developer beta 1, if a `UIMenu` or SwiftUI `Menu` is open, `present` does nothing.
+				// We could call `dismiss` and wait until completion to `present`, but that would be a worse user experience, because tapping outside the menu to close it could open this action sheet. So it’s better to do nothing here and simply let the tap close the menu.
+				// Technically this is inconsistent because we still select and deselect items and open albums when dismissing a menu; and because toolbar buttons do nothing when dismissing a menu. But at least this prevents the most annoying behavior.
+		else { return }
 		
 		tvcStatus.highlightedIndices.insert(activated.row - SongsViewModel.prerowCount)
 		// The UI is clearer if we leave the row selected while the action sheet is onscreen.
