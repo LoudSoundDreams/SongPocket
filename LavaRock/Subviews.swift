@@ -19,6 +19,7 @@ import MediaPlayer
 				album: album,
 				maxSideLength: min(viewportWidth, viewportHeight),
 				albumsTVCStatus: albumsTVCStatus)
+		}
 			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
 			.opacity(albumsTVCStatus.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
 			.background {
@@ -49,10 +50,6 @@ import MediaPlayer
 					}
 				}
 			}
-		}
-		.accessibilityAddTraits(.isButton)
-		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
-		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
 		.onTapGesture {
 			if let editing = albumsTVCStatus.editingAlbumIndices {
 				let albumIndex = Int(album.index)
@@ -65,6 +62,9 @@ import MediaPlayer
 				NotificationCenter.default.post(name: Self.activatedAlbum, object: album)
 			}
 		}
+		.accessibilityAddTraits(.isButton)
+		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
+		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
 	}
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	@Environment(\.pixelLength) private var pointsPerPixel
