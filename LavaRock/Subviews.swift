@@ -20,36 +20,36 @@ import MediaPlayer
 				maxSideLength: min(viewportWidth, viewportHeight),
 				albumsTVCStatus: albumsTVCStatus)
 		}
-			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
-			.opacity(albumsTVCStatus.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
-			.background {
-				Color.accentColor
-					.opacity({
-						if
-							let editing = albumsTVCStatus.editingAlbumIndices,
-							editing.contains(Int(album.index))
-						{
-							return .oneHalf
-						} else {
-							return .zero
-						}
-					}())
-				// Can we animate removing the background when exiting editing mode, like for song rows?
-			}
-			.overlay(alignment: .bottomLeading) {
-				if let editing = albumsTVCStatus.editingAlbumIndices {
-					if editing.contains(Int(album.index)) {
-						Image(systemName: "checkmark.circle.fill")
-							.symbolRenderingMode(.palette)
-							.foregroundStyle(.white, Color.accentColor)
-							.padding()
+		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
+		.opacity(albumsTVCStatus.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
+		.background {
+			Color.accentColor
+				.opacity({
+					if
+						let editing = albumsTVCStatus.editingAlbumIndices,
+						editing.contains(Int(album.index))
+					{
+						return .oneHalf
 					} else {
-						Image(systemName: "circle")
-							.foregroundStyle(.secondary)
-							.padding()
+						return .zero
 					}
+				}())
+			// Can we animate removing the background when exiting editing mode, like for song rows?
+		}
+		.overlay(alignment: .bottomLeading) {
+			if let editing = albumsTVCStatus.editingAlbumIndices {
+				if editing.contains(Int(album.index)) {
+					Image(systemName: "checkmark.circle.fill")
+						.symbolRenderingMode(.palette)
+						.foregroundStyle(.white, Color.accentColor)
+						.padding()
+				} else {
+					Image(systemName: "circle")
+						.foregroundStyle(.secondary)
+						.padding()
 				}
 			}
+		}
 		.onTapGesture {
 			if let editing = albumsTVCStatus.editingAlbumIndices {
 				let albumIndex = Int(album.index)
