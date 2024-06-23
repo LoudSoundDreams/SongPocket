@@ -38,9 +38,14 @@ import MediaPlayer
 			.overlay(alignment: .bottomLeading) {
 				if let editing = albumsTVCStatus.editingAlbumIndices {
 					if editing.contains(Int(album.index)) {
-						Image(systemName: "hare.fill")
+						Image(systemName: "checkmark.circle.fill")
+							.symbolRenderingMode(.palette)
+							.foregroundStyle(.white, Color.accentColor)
+							.padding()
 					} else {
-						Image(systemName: "hare")
+						Image(systemName: "circle")
+							.foregroundStyle(.secondary)
+							.padding()
 					}
 				}
 			}
