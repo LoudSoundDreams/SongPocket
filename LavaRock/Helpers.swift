@@ -192,11 +192,6 @@ extension UITableView {
 		}
 	}
 	
-	final var selectedIndexPaths: [IndexPath] { indexPathsForSelectedRows ?? [] }
-	final func deselectAllRows(animated: Bool) {
-		selectedIndexPaths.forEach { deselectRow(at: $0, animated: animated) }
-	}
-	
 	final func performUpdatesFromRowIdentifiers<Identifier: Hashable>(
 		old: [Identifier], new: [Identifier],
 		completion: @escaping () -> Void

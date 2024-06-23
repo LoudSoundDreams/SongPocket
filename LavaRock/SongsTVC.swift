@@ -24,10 +24,10 @@ extension SongsViewModel {
 }
 
 @Observable final class SongsTVCStatus {
-	static let changedSongsForEditing = Notification.Name("LRChangedSongsForEditing")
+	static let changeHighlights = Notification.Name("LRChangeSongHighlights")
 	fileprivate(set) var isEditing = false
-	var editingSongIndices: Set<Int> = [] { // Should only contain elements if `isEditing`. This should be an optional set, but as of Xcode 15.4, the compiler can’t type-check that.
-		didSet { NotificationCenter.default.post(name: Self.changedSongsForEditing, object: nil) }
+	var highlightedIndices: Set<Int> = [] {
+		didSet { NotificationCenter.default.post(name: Self.changeHighlights, object: nil) }
 	}
 }
 
@@ -43,7 +43,7 @@ final class SongsTVC: LibraryTVC {
 			tvcStatus.isEditing = true
 		} else {
 			tvcStatus.isEditing = false
-			tvcStatus.editingSongIndices = []
+			tvcStatus.highlightedIndices = []
 		}
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}
@@ -60,7 +60,7 @@ final class SongsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedSong), name: SongRow.activatedSong, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: SongsTVCStatus.changedSongsForEditing, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: SongsTVCStatus.changeHighlights, object: nil)
 	}
 	@objc private func activatedSong(notification: Notification) {
 		guard
@@ -74,7 +74,7 @@ final class SongsTVC: LibraryTVC {
 	private func confirmPlay(_ activated: IndexPath) {
 		guard let activatedCell = tableView.cellForRow(at: activated) else { return }
 		
-		tableView.selectRow(at: activated, animated: false, scrollPosition: .none)
+		tvcStatus.highlightedIndices.insert(activated.row - SongsViewModel.prerowCount)
 		// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 		// You must eventually deselect the row in every possible scenario after this moment.
 		
@@ -83,7 +83,7 @@ final class SongsTVC: LibraryTVC {
 			Task {
 				await song.playAlbumStartingHere()
 				
-				self.tableView.deselectAllRows(animated: true)
+				self.tvcStatus.highlightedIndices = []
 			}
 		}
 		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -93,7 +93,7 @@ final class SongsTVC: LibraryTVC {
 		actionSheet.addAction(startPlaying)
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
-				self?.tableView.deselectAllRows(animated: true)
+				self?.tvcStatus.highlightedIndices = []
 			}
 		)
 		present(actionSheet, animated: true)
@@ -107,17 +107,8 @@ final class SongsTVC: LibraryTVC {
 				reflectNoSongs()
 				return
 			}
-			guard await moveRows(
-				oldIdentifiers: oldRows,
-				newIdentifiers: songsViewModel.rowIdentifiers(),
-				runningBeforeContinuation: {
-					if self.tvcStatus.isEditing {
-						self.tvcStatus.editingSongIndices = []
-					}
-					self.tableView.deselectAllRows(animated: true)
-					self.refreshEditingButtons()
-				}
-			) else { return }
+			tvcStatus.highlightedIndices = []
+			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) else { return }
 			
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}
@@ -143,14 +134,14 @@ final class SongsTVC: LibraryTVC {
 		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
 		arrangeButton.isEnabled = canArrange()
 		arrangeButton.menu = newArrangeMenu()
-		promoteButton.isEnabled = !tvcStatus.editingSongIndices.isEmpty
-		demoteButton.isEnabled = !tvcStatus.editingSongIndices.isEmpty
+		promoteButton.isEnabled = !tvcStatus.highlightedIndices.isEmpty
+		demoteButton.isEnabled = !tvcStatus.highlightedIndices.isEmpty
 	}
 	
 	private func canArrange() -> Bool {
-		let selected = tableView.selectedIndexPaths
+		let selected = tvcStatus.highlightedIndices
 		if selected.isEmpty { return true }
-		return selected.map { $0.row }.sorted().isConsecutive()
+		return selected.sorted().isConsecutive()
 	}
 	private func newArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
@@ -176,6 +167,7 @@ final class SongsTVC: LibraryTVC {
 	}
 	private func arrange(by command: ArrangeCommand) {
 		let oldRows = songsViewModel.rowIdentifiers()
+		
 		songsViewModel.songs = {
 			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
 			let toSort = subjectedIndicesInOrder.map { songsViewModel.songs[$0] }
@@ -188,28 +180,21 @@ final class SongsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		Task {
-			let _ = await moveRows(
-				oldIdentifiers: oldRows,
-				newIdentifiers: songsViewModel.rowIdentifiers(),
-				runningBeforeContinuation: {
-					self.tableView.deselectAllRows(animated: true)
-					self.refreshEditingButtons()
-				})
-		}
+		tvcStatus.highlightedIndices = []
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
-		let selected = tableView.selectedIndexPaths
-		guard !selected.isEmpty else { return songsViewModel.songs.indices.map { $0 } }
-		return selected.map { $0.row - SongsViewModel.prerowCount }
+		let selected = tvcStatus.highlightedIndices
+		if !selected.isEmpty { return Array(selected) }
+		return Array(songsViewModel.songs.indices)
 	}
 	
 	private func float() {
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let unorderedIndices = tvcStatus.editingSongIndices
+		let unorderedIndices = tvcStatus.highlightedIndices
 		
-		tvcStatus.editingSongIndices = []
+		tvcStatus.highlightedIndices = []
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
@@ -218,9 +203,9 @@ final class SongsTVC: LibraryTVC {
 	private func sink() {
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let unorderedIndices = tvcStatus.editingSongIndices
+		let unorderedIndices = tvcStatus.highlightedIndices
 		
-		tvcStatus.editingSongIndices = []
+		tvcStatus.highlightedIndices = []
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
@@ -228,13 +213,13 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	private func promote() {
-		let indicesSorted = Array(tvcStatus.editingSongIndices).sorted()
+		let indicesSorted = Array(tvcStatus.highlightedIndices).sorted()
 		guard let frontmostIndex = indicesSorted.first else { return }
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
 		let targetIndex = indicesSorted.isConsecutive() ? max(0, frontmostIndex - 1) : frontmostIndex
 		
-		tvcStatus.editingSongIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
+		tvcStatus.highlightedIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
@@ -248,13 +233,13 @@ final class SongsTVC: LibraryTVC {
 		}
 	}
 	func demote() {
-		let indicesSorted = Array(tvcStatus.editingSongIndices).sorted()
+		let indicesSorted = Array(tvcStatus.highlightedIndices).sorted()
 		guard let backmostIndex = indicesSorted.last else { return }
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
 		let targetIndex = indicesSorted.isConsecutive() ? min(songsViewModel.songs.count - 1, backmostIndex + 1) : backmostIndex
 		
-		tvcStatus.editingSongIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
+		tvcStatus.highlightedIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs

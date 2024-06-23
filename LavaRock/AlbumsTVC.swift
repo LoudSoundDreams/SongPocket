@@ -113,8 +113,6 @@ final class AlbumsTVC: LibraryTVC {
 					if nil != self.tvcStatus.editingAlbumIndices {
 						self.tvcStatus.editingAlbumIndices = []
 					}
-					self.tableView.deselectAllRows(animated: true)
-					self.refreshEditingButtons()
 				}
 			) else { return }
 			
@@ -139,9 +137,9 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func canArrange() -> Bool {
-		let selected = tableView.selectedIndexPaths
+		let selected = tvcStatus.editingAlbumIndices ?? []
 		if selected.isEmpty { return true }
-		return selected.map { $0.row }.sorted().isConsecutive()
+		return selected.sorted().isConsecutive()
 	}
 	private func newArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
@@ -170,6 +168,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func arrange(by command: ArrangeCommand) {
 		let oldRows = albumsViewModel.rowIdentifiers()
+		
 		albumsViewModel.albums = {
 			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
 			let toSort = subjectedIndicesInOrder.map { albumsViewModel.albums[$0] }
@@ -182,20 +181,13 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		Task {
-			let _ = await moveRows(
-				oldIdentifiers: oldRows,
-				newIdentifiers: albumsViewModel.rowIdentifiers(),
-				runningBeforeContinuation: {
-					self.tableView.deselectAllRows(animated: true)
-					self.refreshEditingButtons()
-				})
-		}
+		tvcStatus.editingAlbumIndices = []
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
-		let selected = tableView.selectedIndexPaths
-		guard !selected.isEmpty else { return albumsViewModel.albums.indices.map { $0 } }
-		return selected.map { $0.row }
+		let selected = tvcStatus.editingAlbumIndices ?? []
+		if !selected.isEmpty { return Array(selected) }
+		return Array(albumsViewModel.albums.indices)
 	}
 	
 	private func float() {

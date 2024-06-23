@@ -173,7 +173,7 @@ import MediaPlayer
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
 				if songsTVCStatus.isEditing {
-					if songsTVCStatus.editingSongIndices.contains(Int(song.index)) {
+					if songsTVCStatus.highlightedIndices.contains(Int(song.index)) {
 						Image(systemName: "checkmark.circle.fill")
 							.symbolRenderingMode(.palette)
 							.foregroundStyle(.white, Color.accentColor)
@@ -223,21 +223,21 @@ import MediaPlayer
 		.background {
 			Color.accentColor
 				.opacity(
-					songsTVCStatus.editingSongIndices.contains(Int(song.index))
-					? .oneHalf
+					songsTVCStatus.highlightedIndices.contains(Int(song.index))
+					? .oneHalf // Can be for activated song when not in editing mode
 					: .zero)
-				.animation( // Animates for deselecting, whether by user or programmatically, or whether individually or by exiting editing mode. Never animates for selecting.
-					songsTVCStatus.editingSongIndices.contains(Int(song.index)) ? nil : .default,
-					value: songsTVCStatus.editingSongIndices)
+				.animation( // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
+					songsTVCStatus.highlightedIndices.contains(Int(song.index)) ? nil : .default,
+					value: songsTVCStatus.highlightedIndices)
 		}
 		.contentShape(Rectangle())
 		.onTapGesture {
 			if songsTVCStatus.isEditing {
 				let songIndex = Int(song.index)
-				if songsTVCStatus.editingSongIndices.contains(songIndex) {
-					songsTVCStatus.editingSongIndices.remove(songIndex)
+				if songsTVCStatus.highlightedIndices.contains(songIndex) {
+					songsTVCStatus.highlightedIndices.remove(songIndex)
 				} else {
-					songsTVCStatus.editingSongIndices.insert(songIndex)
+					songsTVCStatus.highlightedIndices.insert(songIndex)
 				}
 			} else {
 				NotificationCenter.default.post(name: Self.activatedSong, object: song)
