@@ -17,9 +17,9 @@ import CoreData
 }
 
 @Observable final class AlbumsTVCStatus {
-	static let changedAlbumsForEditing = Notification.Name("LRChangedAlbumsForEditing")
+	static let changeEditingAlbums = Notification.Name("LRChangeAlbumsForEditing")
 	var editingAlbumIndices: Set<Int>? = nil {
-		didSet { NotificationCenter.default.post(name: Self.changedAlbumsForEditing, object: nil) }
+		didSet { NotificationCenter.default.post(name: Self.changeEditingAlbums, object: nil) }
 	}
 }
 
@@ -50,7 +50,7 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedAlbum), name: AlbumRow.activatedAlbum, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: AlbumsTVCStatus.changedAlbumsForEditing, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: AlbumsTVCStatus.changeEditingAlbums, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
 	@objc private func activatedAlbum(notification: Notification) {
