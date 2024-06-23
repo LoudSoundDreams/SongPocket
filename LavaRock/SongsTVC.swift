@@ -131,12 +131,11 @@ final class SongsTVC: LibraryTVC {
 		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
 		arrangeButton.isEnabled = canArrange()
 		arrangeButton.menu = newArrangeMenu()
-		floatButton.isEnabled = canFloatAndSink()
-		sinkButton.isEnabled = canFloatAndSink()
+		floatButton.isEnabled = !tableView.selectedIndexPaths.isEmpty
+		sinkButton.isEnabled = !tableView.selectedIndexPaths.isEmpty
 	}
 	
 	private func canArrange() -> Bool {
-		guard !songsViewModel.songs.isEmpty else { return false }
 		let selected = tableView.selectedIndexPaths
 		if selected.isEmpty { return true }
 		return selected.map { $0.row }.sorted().isConsecutive()
@@ -185,10 +184,6 @@ final class SongsTVC: LibraryTVC {
 		return selected.map { $0.row - SongsViewModel.prerowCount }
 	}
 	
-	private func canFloatAndSink() -> Bool {
-		guard !songsViewModel.songs.isEmpty else { return false }
-		return !tableView.selectedIndexPaths.isEmpty
-	}
 	private func float() {
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs

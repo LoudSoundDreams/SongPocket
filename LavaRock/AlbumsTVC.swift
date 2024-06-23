@@ -122,12 +122,11 @@ final class AlbumsTVC: LibraryTVC {
 		editButtonItem.isEnabled = !albumsViewModel.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 		arrangeButton.isEnabled = canArrange()
 		arrangeButton.menu = newArrangeMenu()
-		floatButton.isEnabled = canFloatAndSink()
-		sinkButton.isEnabled = canFloatAndSink()
+		floatButton.isEnabled = !tableView.selectedIndexPaths.isEmpty
+		sinkButton.isEnabled = !tableView.selectedIndexPaths.isEmpty
 	}
 	
 	private func canArrange() -> Bool {
-		guard !albumsViewModel.albums.isEmpty else { return false }
 		let selected = tableView.selectedIndexPaths
 		if selected.isEmpty { return true }
 		return selected.map { $0.row }.sorted().isConsecutive()
@@ -179,10 +178,6 @@ final class AlbumsTVC: LibraryTVC {
 		return selected.map { $0.row }
 	}
 	
-	private func canFloatAndSink() -> Bool {
-		guard !albumsViewModel.albums.isEmpty else { return false }
-		return !tableView.selectedIndexPaths.isEmpty
-	}
 	private func float() {
 		let oldRows = albumsViewModel.rowIdentifiers()
 		var newAlbums = albumsViewModel.albums
