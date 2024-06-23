@@ -244,11 +244,7 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		if WorkingOn.inlineTracklist {
-			return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
-		} else {
-			return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
-		}
+		return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
 	}
 	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
 		cell.backgroundColor = .clear
@@ -275,8 +271,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
 	) {
-		if WorkingOn.inlineTracklist {
-		} else {
+		if !CoverArt.handlesTaps {
 			if !isEditing {
 				pushAlbum(albumsViewModel.albums[indexPath.row])
 			}

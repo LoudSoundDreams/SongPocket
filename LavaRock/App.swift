@@ -4,7 +4,6 @@ import SwiftUI
 import MusicKit
 
 enum WorkingOn {
-	static let inlineTracklist = 10 == 1
 	static let mainToolbar = 10 == 1
 }
 

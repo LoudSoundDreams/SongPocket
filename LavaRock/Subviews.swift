@@ -28,12 +28,13 @@ import MediaPlayer
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
 @MainActor struct CoverArt: View {
+	static let handlesTaps = 10 == 1
 	static let showDetailForAlbum = Notification.Name("LRCoverArtShowDetailForAlbum")
 	static let hideDetail = Notification.Name("LRCoverArtHideDetail")
 	let album: Album
 	let maxSideLength: CGFloat
 	var body: some View {
-		if WorkingOn.inlineTracklist {
+		if Self.handlesTaps {
 			art.onTapGesture {
 				showingInfo.toggle()
 				if showingInfo {
