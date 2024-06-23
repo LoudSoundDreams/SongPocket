@@ -20,6 +20,29 @@ import MediaPlayer
 				albumsTVCStatus: albumsTVCStatus)
 			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
 			.opacity(albumsTVCStatus.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
+			.background {
+				Color.accentColor
+					.opacity({
+						if
+							let editing = albumsTVCStatus.editingAlbumIndices,
+							editing.contains(Int(album.index))
+						{
+							return .oneHalf
+						} else {
+							return .zero
+						}
+					}())
+				// Can we animate removing the background when exiting editing mode, like for song rows?
+			}
+			.overlay(alignment: .bottomLeading) {
+				if let editing = albumsTVCStatus.editingAlbumIndices {
+					if editing.contains(Int(album.index)) {
+						Image(systemName: "hare.fill")
+					} else {
+						Image(systemName: "hare")
+					}
+				}
+			}
 		}
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)

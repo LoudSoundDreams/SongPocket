@@ -274,6 +274,17 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	override func tableView(
+		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		return nil
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
+	) -> Bool {
+		return false
+	}
+	override func tableView( // TO DO: Delete
 		_ tableView: UITableView,
 		moveRowAt source: IndexPath,
 		to destination: IndexPath
