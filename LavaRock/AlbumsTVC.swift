@@ -35,11 +35,12 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var floatButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.float() })
 	private lazy var sinkButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sink() })
 	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() })
+	private lazy var demoteButton = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.demote() })
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), floatButton, .flexibleSpace(), promoteButton, .flexibleSpace(), sinkButton]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), floatButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton, .flexibleSpace(), sinkButton]
 		arrangeButton.preferredMenuElementOrder = .fixed
 		
 		super.viewDidLoad()
@@ -212,6 +213,27 @@ final class AlbumsTVC: LibraryTVC {
 		var newAlbums = albumsViewModel.albums
 		// Actually, `IndexSet` works with an unsorted argument, but we need to sort it anyway.
 		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
+		Database.renumber(newAlbums)
+		albumsViewModel.albums = newAlbums
+		Task {
+			let _ = await moveRows(
+				oldIdentifiers: oldRows,
+				newIdentifiers: albumsViewModel.rowIdentifiers(),
+				runningBeforeContinuation: {
+					self.tableView.scrollToRow(at: IndexPath(row: targetIndex, section: 0), at: .middle, animated: true)
+				})
+		}
+	}
+	private func demote() {
+		let indicesSorted = Array(tvcStatus.editingAlbumIndices ?? []).sorted()
+		guard let backmostIndex = indicesSorted.last else { return }
+		let oldRows = albumsViewModel.rowIdentifiers()
+		let targetIndex = indicesSorted.isConsecutive() ? min(albumsViewModel.albums.count - 1, backmostIndex + 1) : backmostIndex
+		
+		tvcStatus.editingAlbumIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
+		var newAlbums = albumsViewModel.albums
+		print(backmostIndex, targetIndex)
+		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1) // This method puts the elements before the `toOffset` index.
 		Database.renumber(newAlbums)
 		albumsViewModel.albums = newAlbums
 		Task {

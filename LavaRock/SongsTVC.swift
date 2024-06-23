@@ -49,8 +49,12 @@ final class SongsTVC: LibraryTVC {
 	private lazy var floatButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.float() })
 	private lazy var sinkButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sink() })
 	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() })
+	private lazy var demoteButton = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.demote() })
+	
+	// MARK: - Setup
+	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), floatButton, .flexibleSpace(), promoteButton, .flexibleSpace(), sinkButton]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), floatButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton, .flexibleSpace(), sinkButton]
 		arrangeButton.preferredMenuElementOrder = .fixed
 		super.viewDidLoad()
 		
@@ -213,6 +217,26 @@ final class SongsTVC: LibraryTVC {
 		
 		tvcStatus.editingSongIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
+		Database.renumber(newSongs)
+		songsViewModel.songs = newSongs
+		Task {
+			let _ = await moveRows(
+				oldIdentifiers: oldRows,
+				newIdentifiers: songsViewModel.rowIdentifiers(),
+				runningBeforeContinuation: {
+					self.tableView.scrollToRow(at: IndexPath(row: SongsViewModel.prerowCount + targetIndex, section: 0), at: .middle, animated: true)
+				})
+		}
+	}
+	func demote() {
+		let indicesSorted = Array(tvcStatus.editingSongIndices).sorted()
+		guard let backmostIndex = indicesSorted.last else { return }
+		let oldRows = songsViewModel.rowIdentifiers()
+		var newSongs = songsViewModel.songs
+		let targetIndex = indicesSorted.isConsecutive() ? min(songsViewModel.songs.count - 1, backmostIndex + 1) : backmostIndex
+		
+		tvcStatus.editingSongIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
+		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
 		Task {
