@@ -165,16 +165,6 @@ extension View {
 
 import UIKit
 
-extension UIViewController {
-	final func dismiss__async(animated: Bool) async {
-		await withCheckedContinuation { continuation in
-			dismiss(animated: animated) {
-				continuation.resume()
-			}
-		}
-	}
-}
-
 extension UITableView {
 	final func allIndexPaths() -> [IndexPath] {
 		return Array(0 ..< numberOfSections).flatMap { section in
