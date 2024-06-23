@@ -80,16 +80,12 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
-			// As of iOS 17.3 developer beta 1, by default, `UITableViewController` deselects rows during `setEditing`, but without animating them.
-			// As of iOS 17.3 developer beta 1, to animate deselecting rows, you must do so before `super.setEditing`, not after.
-			tableView.deselectAllRows(animated: true)
-			
 			Database.viewContext.tryToSave()
 		}
 		
 		super.setEditing(editing, animated: animated)
 		
-		refreshEditingButtons()
+		refreshEditingButtons() // For “Edit” button
 		setToolbarItems(editing ? editingButtons : viewingButtons, animated: animated)
 		
 		// As of iOS 17.5 developer beta 1, we still have to do this to resize cells in case text wrapped. During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
