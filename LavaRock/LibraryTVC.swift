@@ -45,12 +45,16 @@ class LibraryTVC: UITableViewController {
 	
 	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, table view animations are already in progress from an earlier call of this method, and callers could disrupt those animations by running further code.
 	// Returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
-	final func moveRows(oldIdentifiers: [AnyHashable], newIdentifiers: [AnyHashable]) async -> Bool {
+	final func moveRows(
+		oldIdentifiers: [AnyHashable],
+		newIdentifiers: [AnyHashable],
+		runningBeforeContinuation: (() -> Void)? = nil
+	) async -> Bool {
 		await withCheckedContinuation { continuation in
 			_moveRows(oldIdentifiers: oldIdentifiers, newIdentifiers: newIdentifiers) { shouldContinue in
 				continuation.resume(returning: shouldContinue)
 			}
-			// If necessary, include code here to run before the continuation.
+			runningBeforeContinuation?()
 		}
 	}
 	private func _moveRows(
