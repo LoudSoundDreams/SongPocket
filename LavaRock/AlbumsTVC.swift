@@ -46,7 +46,7 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedAlbum), name: CoverArt.activatedAlbum, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedAlbum), name: AlbumRow.activatedAlbum, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
 	@objc private func activatedAlbum(notification: Notification) {

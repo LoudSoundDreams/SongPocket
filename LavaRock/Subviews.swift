@@ -7,6 +7,7 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
+	static let activatedAlbum = Notification.Name("LRActivatedAlbum")
 	let album: Album
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
@@ -47,17 +48,7 @@ import MediaPlayer
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
-	}
-	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
-	@Environment(\.pixelLength) private var pointsPerPixel
-}
-@MainActor struct CoverArt: View {
-	static let activatedAlbum = Notification.Name("LRActivatedAlbum")
-	let album: Album
-	let maxSideLength: CGFloat
-	let albumsTVCStatus: AlbumsTVCStatus
-	var body: some View {
-		art.onTapGesture {
+		.onTapGesture {
 			if let editing = albumsTVCStatus.editingAlbumIndices {
 				let albumIndex = Int(album.index)
 				if editing.contains(albumIndex) {
@@ -70,7 +61,14 @@ import MediaPlayer
 			}
 		}
 	}
-	@ViewBuilder private var art: some View {
+	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
+	@Environment(\.pixelLength) private var pointsPerPixel
+}
+@MainActor struct CoverArt: View {
+	let album: Album
+	let maxSideLength: CGFloat
+	let albumsTVCStatus: AlbumsTVCStatus
+	var body: some View {
 #if targetEnvironment(simulator)
 		if
 			let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName,
