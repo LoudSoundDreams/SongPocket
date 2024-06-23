@@ -141,13 +141,26 @@ import MediaPlayer
 }
 
 @MainActor struct SongRow: View {
+	static let activatedSong = Notification.Name("LRActivatedSong")
 	let song: Song
 	let albumPersistentID: Int64
-	let songsTVCStatus: SongsTVCStatus
+	var songsTVCStatus: SongsTVCStatus
 	var body: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
+				if songsTVCStatus.isEditing {
+					if songsTVCStatus.editingSongIndices.contains(Int(song.index)) {
+						Image(systemName: "checkmark.circle.fill")
+							.symbolRenderingMode(.palette)
+							.foregroundStyle(.white, Color.accentColor)
+							.padding(.trailing)
+					} else {
+						Image(systemName: "circle")
+							.foregroundStyle(.secondary)
+							.padding(.trailing)
+					}
+				}
 				NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 				VStack(alignment: .leading, spacing: .eight * 1/2) {
 					Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
@@ -182,7 +195,30 @@ import MediaPlayer
 			.disabled(songsTVCStatus.isEditing)
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.alignmentGuide_separatorTrailing()
-		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
+		}
+		.padding(.horizontal).padding(.vertical, .eight * 3/2)
+		.background {
+			Color.accentColor
+				.opacity(
+					songsTVCStatus.editingSongIndices.contains(Int(song.index))
+					? .oneHalf
+					: .zero)
+				.animation(.default, value: songsTVCStatus.isEditing)
+		}
+		.contentShape(Rectangle())
+		.onTapGesture { tapped() }
+	}
+	private func tapped() {
+		if songsTVCStatus.isEditing {
+			let songIndex = Int(song.index)
+			if songsTVCStatus.editingSongIndices.contains(songIndex) {
+				songsTVCStatus.editingSongIndices.remove(songIndex)
+			} else {
+				songsTVCStatus.editingSongIndices.insert(songIndex)
+			}
+		} else {
+			NotificationCenter.default.post(name: Self.activatedSong, object: song)
+		}
 	}
 	@ViewBuilder private var overflowMenuContent: some View {
 		Button {

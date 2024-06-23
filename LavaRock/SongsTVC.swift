@@ -25,6 +25,7 @@ extension SongsViewModel {
 
 @Observable final class SongsTVCStatus {
 	fileprivate(set) var isEditing = false
+	var editingSongIndices: Set<Int> = [] // Should only contain elements if `isEditing`. This should be an optional set, but as of Xcode 15.4, Xcode can’t type-check that.
 }
 final class SongsTVC: LibraryTVC {
 	var songsViewModel: SongsViewModel! = nil
@@ -32,17 +33,34 @@ final class SongsTVC: LibraryTVC {
 	private let tvcStatus = SongsTVCStatus()
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		tvcStatus.isEditing = editing
+		if editing {
+			tvcStatus.isEditing = true
+		} else {
+			tvcStatus.isEditing = false
+			tvcStatus.editingSongIndices = []
+		}
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}
 	
 	private lazy var arrangeSongsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var floatSongsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
 	private lazy var sinkSongsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
+	private lazy var shiftUpButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.shiftUpSelected() })
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatSongsButton, .flexibleSpace(), sinkSongsButton]
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatSongsButton, .flexibleSpace(), shiftUpButton, .flexibleSpace(), sinkSongsButton]
 		arrangeSongsButton.preferredMenuElementOrder = .fixed
 		super.viewDidLoad()
+		
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedSong), name: SongRow.activatedSong, object: nil)
+	}
+	@objc private func activatedSong(notification: Notification) {
+		guard
+			let activated = notification.object as? Song,
+			let songIndex = songsViewModel.songs.firstIndex(where: { song in
+				activated.objectID == song.objectID
+			})
+		else { return }
+		confirmPlay(IndexPath(row: SongsViewModel.prerowCount + songIndex, section: 0))
 	}
 	
 	override func refreshLibraryItems() {
@@ -156,6 +174,27 @@ final class SongsTVC: LibraryTVC {
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	
+	private func shiftUpSelected() {
+		let indices = Array(tvcStatus.editingSongIndices)
+		guard let frontmostIndex = indices.sorted().first else { return }
+		let oldRows = songsViewModel.rowIdentifiers()
+		var newSongs = songsViewModel.songs
+		let targetIndex = max(0, frontmostIndex - 1)
+		
+		tvcStatus.editingSongIndices = Set(targetIndex ... (targetIndex + indices.count - 1))
+		newSongs.move(fromOffsets: IndexSet(indices), toOffset: targetIndex)
+		Database.renumber(newSongs)
+		songsViewModel.songs = newSongs
+		Task {
+			let _ = await moveRows(
+				oldIdentifiers: oldRows,
+				newIdentifiers: songsViewModel.rowIdentifiers(),
+				runningBeforeContinuation: {
+					self.tableView.scrollToRow(at: IndexPath(row: SongsViewModel.prerowCount + targetIndex, section: 0), at: .middle, animated: true)
+				})
+		}
+	}
+	
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
@@ -215,31 +254,28 @@ final class SongsTVC: LibraryTVC {
 	override func tableView(
 		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
 	) -> IndexPath? {
-		guard indexPath.row >= SongsViewModel.prerowCount else { return nil }
-		return indexPath
+		return nil
 	}
-	override func tableView(
-		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
-	) {
-		if
-			!isEditing,
-			let selectedCell = tableView.cellForRow(at: indexPath)
-		{
+	
+	private func confirmPlay(_ activated: IndexPath) {
+			guard let activatedCell = tableView.cellForRow(at: activated) else { return }
+			
+			tableView.selectRow(at: activated, animated: false, scrollPosition: .none)
 			// The UI is clearer if we leave the row selected while the action sheet is onscreen.
 			// You must eventually deselect the row in every possible scenario after this moment.
 			
-			let song = songsViewModel.songs[indexPath.row - SongsViewModel.prerowCount]
+			let song = songsViewModel.songs[activated.row - SongsViewModel.prerowCount]
 			let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
 				Task {
 					await song.playAlbumStartingHere()
 					
-					tableView.deselectAllRows(animated: true)
+					self.tableView.deselectAllRows(animated: true)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 			
 			let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-			actionSheet.popoverPresentationController?.sourceView = selectedCell
+			actionSheet.popoverPresentationController?.sourceView = activatedCell
 			actionSheet.addAction(startPlaying)
 			actionSheet.addAction(
 				UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
@@ -247,15 +283,13 @@ final class SongsTVC: LibraryTVC {
 				}
 			)
 			present(actionSheet, animated: true)
-		}
-		
-		super.tableView(tableView, didSelectRowAt: indexPath)
 	}
 	
 	override func tableView(
 		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
 	) -> Bool {
-		return indexPath.row >= SongsViewModel.prerowCount
+		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
+		return false
 	}
 	override func tableView(
 		_ tableView: UITableView,
