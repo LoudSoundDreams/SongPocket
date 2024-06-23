@@ -45,13 +45,13 @@ final class SongsTVC: LibraryTVC {
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}
 	
-	private lazy var arrangeSongsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var floatSongsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
-	private lazy var sinkSongsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
-	private lazy var upButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.shiftUp() })
+	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var floatButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.float() })
+	private lazy var sinkButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sink() })
+	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() })
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeSongsButton, .flexibleSpace(), floatSongsButton, .flexibleSpace(), upButton, .flexibleSpace(), sinkSongsButton]
-		arrangeSongsButton.preferredMenuElementOrder = .fixed
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), floatButton, .flexibleSpace(), promoteButton, .flexibleSpace(), sinkButton]
+		arrangeButton.preferredMenuElementOrder = .fixed
 		super.viewDidLoad()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedSong), name: SongRow.activatedSong, object: nil)
@@ -125,33 +125,33 @@ final class SongsTVC: LibraryTVC {
 	override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
-		arrangeSongsButton.isEnabled = allowsArrange()
-		arrangeSongsButton.menu = createArrangeMenu()
-		floatSongsButton.isEnabled = allowsFloatAndSink()
-		sinkSongsButton.isEnabled = allowsFloatAndSink()
+		arrangeButton.isEnabled = canArrange()
+		arrangeButton.menu = newArrangeMenu()
+		floatButton.isEnabled = canFloatAndSink()
+		sinkButton.isEnabled = canFloatAndSink()
 	}
 	
-	private func allowsArrange() -> Bool {
+	private func canArrange() -> Bool {
 		guard !songsViewModel.songs.isEmpty else { return false }
 		let selected = tableView.selectedIndexPaths
 		if selected.isEmpty { return true }
 		return selected.map { $0.row }.sorted().isConsecutive()
 	}
-	private func createArrangeMenu() -> UIMenu {
+	private func newArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
 			[.song_track],
 			[.random, .reverse],
 		]
 		let elementsGrouped: [[UIMenuElement]] = sections.map { section in
 			section.map { command in
-				return command.createMenuElement(enabled: {
+				return command.newMenuElement(enabled: {
 					guard selectedOrAllIndices().count >= 2 else { return false }
 					switch command {
 						case .random, .reverse: return true
 						case .album_recentlyAdded, .album_newest, .album_artist: return false
 						case .song_track: return true
 					}
-				}()) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
+				}()) { [weak self] in self?.arrange(by: command) }
 			}
 		}
 		let inlineSubmenus = elementsGrouped.map {
@@ -159,7 +159,7 @@ final class SongsTVC: LibraryTVC {
 		}
 		return UIMenu(children: inlineSubmenus)
 	}
-	private func arrangeSelectedOrAll(by command: ArrangeCommand) {
+	private func arrange(by command: ArrangeCommand) {
 		let oldRows = songsViewModel.rowIdentifiers()
 		songsViewModel.songs = {
 			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
@@ -181,11 +181,11 @@ final class SongsTVC: LibraryTVC {
 		return selected.map { $0.row - SongsViewModel.prerowCount }
 	}
 	
-	private func allowsFloatAndSink() -> Bool {
+	private func canFloatAndSink() -> Bool {
 		guard !songsViewModel.songs.isEmpty else { return false }
 		return !tableView.selectedIndexPaths.isEmpty
 	}
-	private func floatSelected() {
+	private func float() {
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
@@ -194,7 +194,7 @@ final class SongsTVC: LibraryTVC {
 		songsViewModel.songs = newSongs
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
-	private func sinkSelected() {
+	private func sink() {
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row - SongsViewModel.prerowCount }
@@ -204,7 +204,7 @@ final class SongsTVC: LibraryTVC {
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	
-	private func shiftUp() {
+	private func promote() {
 		let indicesSorted = Array(tvcStatus.editingSongIndices).sorted()
 		guard let frontmostIndex = indicesSorted.first else { return }
 		let oldRows = songsViewModel.rowIdentifiers()

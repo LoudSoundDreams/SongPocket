@@ -23,19 +23,19 @@ import MediaPlayer
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	private lazy var overflowButton = {
-		let result = UIBarButtonItem(title: InterfaceText.more, menu: createOverflowMenu())
+		let result = UIBarButtonItem(title: InterfaceText.more, menu: newOverflowMenu())
 		result.preferredMenuElementOrder = .fixed
 		return result
 	}()
-	private func createOverflowTitle() -> String {
+	private func newOverflowTitle() -> String {
 		if
 			MusicAuthorization.currentStatus == .authorized,
 			Collection.allFetched(sorted: false, context: Database.viewContext).isEmpty
 		{ return InterfaceText._emptyLibraryMessage }
 		return ""
 	}
-	private func createOverflowMenu() -> UIMenu {
-		return UIMenu(title: createOverflowTitle(), children: [
+	private func newOverflowMenu() -> UIMenu {
+		return UIMenu(title: newOverflowTitle(), children: [
 			UIDeferredMenuElement.uncached { [weak self] use in use([
 				UIAction(title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"), attributes: {
 #if targetEnvironment(simulator)
@@ -50,7 +50,7 @@ import MediaPlayer
 					else { return .disabled }
 					return []
 #endif
-				}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrentAlbum() }
+				}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrent() }
 			])},
 			// We want to indicate which mode is active by selecting it, not disabling it.
 			// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
@@ -158,7 +158,7 @@ import MediaPlayer
 		}
 #endif
 		
-		overflowButton.menu = createOverflowMenu()
+		overflowButton.menu = newOverflowMenu()
 		let repeatOff = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
 		
 		guard

@@ -31,16 +31,16 @@ final class AlbumsTVC: LibraryTVC {
 		tvcStatus.editingAlbumIndices = editing ? [] : nil
 	}
 	
-	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var floatAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.floatSelected() })
-	private lazy var sinkAlbumsButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sinkSelected() })
-	private lazy var upButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.shiftUp() })
+	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var floatButton = UIBarButtonItem(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line"), primaryAction: UIAction { [weak self] _ in self?.float() })
+	private lazy var sinkButton = UIBarButtonItem(title: InterfaceText.moveToBottom, image: UIImage(systemName: "arrow.down.to.line"), primaryAction: UIAction { [weak self] _ in self?.sink() })
+	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() })
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeAlbumsButton, .flexibleSpace(), floatAlbumsButton, .flexibleSpace(), upButton, .flexibleSpace(), sinkAlbumsButton]
-		arrangeAlbumsButton.preferredMenuElementOrder = .fixed
+		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), floatButton, .flexibleSpace(), promoteButton, .flexibleSpace(), sinkButton]
+		arrangeButton.preferredMenuElementOrder = .fixed
 		
 		super.viewDidLoad()
 		
@@ -52,9 +52,9 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	@objc private func activatedAlbum(notification: Notification) {
 		guard let activated = notification.object as? Album else { return }
-		pushAlbum(activated)
+		push(activated)
 	}
-	private func pushAlbum(_ album: Album) {
+	private func push(_ album: Album) {
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
 			songsTVC.songsViewModel = SongsViewModel(album: album)
@@ -81,7 +81,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	func showCurrentAlbum() {
+	func showCurrent() {
 		guard
 			let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
 			let currentAlbum = albumsViewModel.albums.first(where: { album in
@@ -119,26 +119,26 @@ final class AlbumsTVC: LibraryTVC {
 	override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		editButtonItem.isEnabled = !albumsViewModel.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
-		arrangeAlbumsButton.isEnabled = allowsArrange()
-		arrangeAlbumsButton.menu = createArrangeMenu()
-		floatAlbumsButton.isEnabled = allowsFloatAndSink()
-		sinkAlbumsButton.isEnabled = allowsFloatAndSink()
+		arrangeButton.isEnabled = canArrange()
+		arrangeButton.menu = newArrangeMenu()
+		floatButton.isEnabled = canFloatAndSink()
+		sinkButton.isEnabled = canFloatAndSink()
 	}
 	
-	private func allowsArrange() -> Bool {
+	private func canArrange() -> Bool {
 		guard !albumsViewModel.albums.isEmpty else { return false }
 		let selected = tableView.selectedIndexPaths
 		if selected.isEmpty { return true }
 		return selected.map { $0.row }.sorted().isConsecutive()
 	}
-	private func createArrangeMenu() -> UIMenu {
+	private func newArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
 			[.album_recentlyAdded, .album_newest, .album_artist],
 			[.random, .reverse],
 		]
 		let elementsGrouped: [[UIMenuElement]] = sections.map { section in
 			section.map { command in
-				command.createMenuElement(enabled: {
+				command.newMenuElement(enabled: {
 					guard selectedOrAllIndices().count >= 2 else { return false }
 					switch command {
 						case .random, .reverse: return true
@@ -148,7 +148,7 @@ final class AlbumsTVC: LibraryTVC {
 							let toSort = selectedOrAllIndices().map { albumsViewModel.albums[$0] }
 							return toSort.contains { nil != $0.releaseDateEstimate }
 					}
-				}()) { [weak self] in self?.arrangeSelectedOrAll(by: command) }
+				}()) { [weak self] in self?.arrange(by: command) }
 			}
 		}
 		let inlineSubmenus = elementsGrouped.map {
@@ -156,7 +156,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		return UIMenu(children: inlineSubmenus)
 	}
-	private func arrangeSelectedOrAll(by command: ArrangeCommand) {
+	private func arrange(by command: ArrangeCommand) {
 		let oldRows = albumsViewModel.rowIdentifiers()
 		albumsViewModel.albums = {
 			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
@@ -178,11 +178,11 @@ final class AlbumsTVC: LibraryTVC {
 		return selected.map { $0.row }
 	}
 	
-	private func allowsFloatAndSink() -> Bool {
+	private func canFloatAndSink() -> Bool {
 		guard !albumsViewModel.albums.isEmpty else { return false }
 		return !tableView.selectedIndexPaths.isEmpty
 	}
-	private func floatSelected() {
+	private func float() {
 		let oldRows = albumsViewModel.rowIdentifiers()
 		var newAlbums = albumsViewModel.albums
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
@@ -192,7 +192,7 @@ final class AlbumsTVC: LibraryTVC {
 		// Don’t use `refreshLibraryItems`, because if no rows moved, that doesn’t animate deselecting the rows.
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
-	private func sinkSelected() {
+	private func sink() {
 		let oldRows = albumsViewModel.rowIdentifiers()
 		var newAlbums = albumsViewModel.albums
 		let unorderedIndices = tableView.selectedIndexPaths.map { $0.row }
@@ -202,7 +202,7 @@ final class AlbumsTVC: LibraryTVC {
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
 	
-	private func shiftUp() {
+	private func promote() {
 		let indicesSorted = Array(tvcStatus.editingAlbumIndices ?? []).sorted()
 		guard let frontmostIndex = indicesSorted.first else { return }
 		let oldRows = albumsViewModel.rowIdentifiers()

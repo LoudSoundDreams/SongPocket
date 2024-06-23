@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct AlbumShelf: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.createDemoArray() {
+	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() {
 		didSet { FakeAlbum.renumber(albums) }
 	}
 	@State private var visibleIndex: Int? = 2
@@ -63,7 +63,7 @@ struct AlbumShelf: View {
 
 // If this were a struct, `[FakeAlbum].didSet` would loop infinitely when you set one of `FakeAlbum`’s properties.
 final class FakeAlbum: Identifiable {
-	static func createDemoArray() -> [FakeAlbum] {
+	static func newDemoArray() -> [FakeAlbum] {
 		return (0...3).map {
 			FakeAlbum(position: $0, title: .randomLowercaseLetter())
 		}
@@ -97,7 +97,7 @@ extension FakeAlbum: Hashable {
 }
 
 struct AlbumList: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.createDemoArray() {
+	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() {
 		didSet { FakeAlbum.renumber(albums) }
 	}
 	@State private var selectedAlbums: Set<FakeAlbum> = []

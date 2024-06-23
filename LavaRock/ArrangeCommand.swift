@@ -14,7 +14,7 @@ enum ArrangeCommand {
 	
 	case song_track
 	
-	@MainActor func createMenuElement(
+	@MainActor func newMenuElement(
 		enabled: Bool,
 		handler: @escaping () -> Void
 	) -> UIMenuElement {
