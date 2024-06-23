@@ -17,7 +17,7 @@ import CoreData
 }
 
 @Observable final class AlbumsTVCStatus {
-	fileprivate(set) var isEditing = false
+	var editingAlbumIndices: Set<Int>? = nil
 }
 
 // MARK: - Table view controller
@@ -28,7 +28,7 @@ final class AlbumsTVC: LibraryTVC {
 	private let tvcStatus = AlbumsTVCStatus()
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		tvcStatus.isEditing = editing
+		tvcStatus.editingAlbumIndices = editing ? [] : nil
 	}
 	
 	private lazy var arrangeAlbumsButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
@@ -46,14 +46,12 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(showAlbumDetail), name: CoverArt.showDetailForAlbum, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(hideAlbumDetail), name: CoverArt.hideDetail, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedAlbum), name: CoverArt.activatedAlbum, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
-	@objc private func showAlbumDetail(notification: Notification) {
-		guard let _ = notification.object as? Album else { return }
-	}
-	@objc private func hideAlbumDetail(notification: Notification) {
+	@objc private func activatedAlbum(notification: Notification) {
+		guard let activated = notification.object as? Album else { return }
+		pushAlbum(activated)
 	}
 	
 	override func viewWillTransition(
@@ -268,16 +266,6 @@ final class AlbumsTVC: LibraryTVC {
 		return cell
 	}
 	
-	override func tableView(
-		_ tableView: UITableView, didSelectRowAt indexPath: IndexPath
-	) {
-		if !CoverArt.handlesTaps {
-			if !isEditing {
-				pushAlbum(albumsViewModel.albums[indexPath.row])
-			}
-		}
-		super.tableView(tableView, didSelectRowAt: indexPath)
-	}
 	private func pushAlbum(_ album: Album) {
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC

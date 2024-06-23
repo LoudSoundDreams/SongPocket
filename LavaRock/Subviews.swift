@@ -16,9 +16,10 @@ import MediaPlayer
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
 			CoverArt(
 				album: album,
-				maxSideLength: min(viewportWidth, viewportHeight))
+				maxSideLength: min(viewportWidth, viewportHeight),
+				albumsTVCStatus: albumsTVCStatus)
 			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
-			.opacity(albumsTVCStatus.isEditing ? pow(.oneHalf, 2) : 1)
+			.opacity(albumsTVCStatus.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
 		}
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
@@ -28,23 +29,22 @@ import MediaPlayer
 	@Environment(\.pixelLength) private var pointsPerPixel
 }
 @MainActor struct CoverArt: View {
-	static let handlesTaps = 10 == 1
-	static let showDetailForAlbum = Notification.Name("LRCoverArtShowDetailForAlbum")
-	static let hideDetail = Notification.Name("LRCoverArtHideDetail")
+	static let activatedAlbum = Notification.Name("LRActivatedAlbum")
 	let album: Album
 	let maxSideLength: CGFloat
+	let albumsTVCStatus: AlbumsTVCStatus
 	var body: some View {
-		if Self.handlesTaps {
-			art.onTapGesture {
-				showingInfo.toggle()
-				if showingInfo {
-					NotificationCenter.default.post(name: Self.showDetailForAlbum, object: album)
+		art.onTapGesture {
+			if let editing = albumsTVCStatus.editingAlbumIndices {
+				let albumIndex = Int(album.index)
+				if editing.contains(albumIndex) {
+					albumsTVCStatus.editingAlbumIndices?.remove(albumIndex)
 				} else {
-					NotificationCenter.default.post(name: Self.hideDetail, object: nil)
+					albumsTVCStatus.editingAlbumIndices?.insert(albumIndex)
 				}
+			} else {
+				NotificationCenter.default.post(name: Self.activatedAlbum, object: album)
 			}
-		} else {
-			art
 		}
 	}
 	@ViewBuilder private var art: some View {
@@ -83,7 +83,6 @@ import MediaPlayer
 		}
 #endif
 	}
-	@State private var showingInfo = false
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
