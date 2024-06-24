@@ -11,19 +11,19 @@ import MediaPlayer
 	let album: Album
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
-	let albumsTVCStatus: AlbumsTVCStatus
+	let albumListState: AlbumListState
 	var body: some View {
 		VStack(spacing: .zero) {
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
 			art
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
-		.opacity(albumsTVCStatus.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
+		.opacity(albumListState.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
 		.background {
 			Color.accentColor
 				.opacity({
 					if
-						let editing = albumsTVCStatus.editingAlbumIndices,
+						let editing = albumListState.editingAlbumIndices,
 						editing.contains(Int(album.index))
 					{
 						return .oneHalf
@@ -34,7 +34,7 @@ import MediaPlayer
 			// Can we animate removing the background when exiting editing mode, like for song rows?
 		}
 		.overlay(alignment: .bottomLeading) {
-			if let editing = albumsTVCStatus.editingAlbumIndices {
+			if let editing = albumListState.editingAlbumIndices {
 				if editing.contains(Int(album.index)) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
@@ -48,12 +48,12 @@ import MediaPlayer
 			}
 		}
 		.onTapGesture {
-			if let editing = albumsTVCStatus.editingAlbumIndices {
+			if let editing = albumListState.editingAlbumIndices {
 				let albumIndex = Int(album.index)
 				if editing.contains(albumIndex) {
-					albumsTVCStatus.editingAlbumIndices?.remove(albumIndex)
+					albumListState.editingAlbumIndices?.remove(albumIndex)
 				} else {
-					albumsTVCStatus.editingAlbumIndices?.insert(albumIndex)
+					albumListState.editingAlbumIndices?.insert(albumIndex)
 				}
 			} else {
 				NotificationCenter.default.post(name: Self.activatedAlbum, object: album)
@@ -164,13 +164,13 @@ import MediaPlayer
 	static let activatedSong = Notification.Name("LRActivatedSong")
 	let song: Song
 	let albumPersistentID: Int64
-	var songsTVCStatus: SongsTVCStatus
+	var songListState: SongListState
 	var body: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		HStack(alignment: .firstTextBaseline) {
 			HStack(alignment: .firstTextBaseline) {
-				if songsTVCStatus.isEditing {
-					if songsTVCStatus.highlightedIndices.contains(Int(song.index)) {
+				if songListState.isEditing {
+					if songListState.highlightedIndices.contains(Int(song.index)) {
 						Image(systemName: "checkmark.circle.fill")
 							.symbolRenderingMode(.palette)
 							.foregroundStyle(.white, Color.accentColor)
@@ -212,7 +212,7 @@ import MediaPlayer
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 					.symbolRenderingMode(.hierarchical)
 			}
-			.disabled(songsTVCStatus.isEditing)
+			.disabled(songListState.isEditing)
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.alignmentGuide_separatorTrailing()
 		}
@@ -220,21 +220,21 @@ import MediaPlayer
 		.background {
 			Color.accentColor
 				.opacity(
-					songsTVCStatus.highlightedIndices.contains(Int(song.index))
+					songListState.highlightedIndices.contains(Int(song.index))
 					? .oneHalf // Can be for activated song when not in editing mode
 					: .zero)
 				.animation( // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
-					songsTVCStatus.highlightedIndices.contains(Int(song.index)) ? nil : .default,
-					value: songsTVCStatus.highlightedIndices)
+					songListState.highlightedIndices.contains(Int(song.index)) ? nil : .default,
+					value: songListState.highlightedIndices)
 		}
 		.contentShape(Rectangle())
 		.onTapGesture {
-			if songsTVCStatus.isEditing {
+			if songListState.isEditing {
 				let songIndex = Int(song.index)
-				if songsTVCStatus.highlightedIndices.contains(songIndex) {
-					songsTVCStatus.highlightedIndices.remove(songIndex)
+				if songListState.highlightedIndices.contains(songIndex) {
+					songListState.highlightedIndices.remove(songIndex)
 				} else {
-					songsTVCStatus.highlightedIndices.insert(songIndex)
+					songListState.highlightedIndices.insert(songIndex)
 				}
 			} else {
 				NotificationCenter.default.post(name: Self.activatedSong, object: song)

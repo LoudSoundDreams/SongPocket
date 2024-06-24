@@ -16,7 +16,7 @@ import CoreData
 	}
 }
 
-@Observable final class AlbumsTVCStatus {
+@Observable final class AlbumListState {
 	static let changeEditingAlbums = Notification.Name("LRChangeAlbumsForEditing")
 	var editingAlbumIndices: Set<Int>? = nil {
 		didSet { NotificationCenter.default.post(name: Self.changeEditingAlbums, object: nil) }
@@ -28,10 +28,10 @@ import CoreData
 final class AlbumsTVC: LibraryTVC {
 	private var albumsViewModel = AlbumsViewModel()
 	
-	private let tvcStatus = AlbumsTVCStatus()
+	private let albumListState = AlbumListState()
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		tvcStatus.editingAlbumIndices = editing ? [] : nil
+		albumListState.editingAlbumIndices = editing ? [] : nil
 	}
 	
 	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
@@ -50,7 +50,7 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedAlbum), name: AlbumRow.activatedAlbum, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: AlbumsTVCStatus.changeEditingAlbums, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: AlbumListState.changeEditingAlbums, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
 	@objc private func activatedAlbum(notification: Notification) {
@@ -79,7 +79,7 @@ final class AlbumsTVC: LibraryTVC {
 					album: album,
 					viewportWidth: size.width,
 					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
-					albumsTVCStatus: tvcStatus)
+					albumListState: albumListState)
 			}.margins(.all, .zero)
 		}
 	}
@@ -106,8 +106,8 @@ final class AlbumsTVC: LibraryTVC {
 				reflectNoAlbums()
 				return
 			}
-			if nil != self.tvcStatus.editingAlbumIndices {
-				self.tvcStatus.editingAlbumIndices = [] // If in editing mode, deselect everything
+			if nil != self.albumListState.editingAlbumIndices {
+				self.albumListState.editingAlbumIndices = [] // If in editing mode, deselect everything
 			}
 			refreshEditingButtons() // If old view model was empty, enable “Edit” button
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) else { return }
@@ -128,12 +128,12 @@ final class AlbumsTVC: LibraryTVC {
 		editButtonItem.isEnabled = !albumsViewModel.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 		arrangeButton.isEnabled = canArrange()
 		arrangeButton.menu = newArrangeMenu()
-		promoteButton.isEnabled = !(tvcStatus.editingAlbumIndices ?? []).isEmpty
-		demoteButton.isEnabled = !(tvcStatus.editingAlbumIndices ?? []).isEmpty
+		promoteButton.isEnabled = !(albumListState.editingAlbumIndices ?? []).isEmpty
+		demoteButton.isEnabled = !(albumListState.editingAlbumIndices ?? []).isEmpty
 	}
 	
 	private func canArrange() -> Bool {
-		let selected = tvcStatus.editingAlbumIndices ?? []
+		let selected = albumListState.editingAlbumIndices ?? []
 		if selected.isEmpty { return true }
 		return selected.sorted().isConsecutive()
 	}
@@ -180,11 +180,11 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		tvcStatus.editingAlbumIndices = []
+		albumListState.editingAlbumIndices = []
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
-		let selected = tvcStatus.editingAlbumIndices ?? []
+		let selected = albumListState.editingAlbumIndices ?? []
 		if !selected.isEmpty { return Array(selected) }
 		return Array(albumsViewModel.albums.indices)
 	}
@@ -192,9 +192,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func float() {
 		let oldRows = albumsViewModel.rowIdentifiers()
 		var newAlbums = albumsViewModel.albums
-		let unorderedIndices = tvcStatus.editingAlbumIndices ?? []
+		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
-		tvcStatus.editingAlbumIndices = []
+		albumListState.editingAlbumIndices = []
 		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(newAlbums)
 		albumsViewModel.albums = newAlbums
@@ -204,9 +204,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func sink() {
 		let oldRows = albumsViewModel.rowIdentifiers()
 		var newAlbums = albumsViewModel.albums
-		let unorderedIndices = tvcStatus.editingAlbumIndices ?? []
+		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
-		tvcStatus.editingAlbumIndices = []
+		albumListState.editingAlbumIndices = []
 		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newAlbums.count)
 		Database.renumber(newAlbums)
 		albumsViewModel.albums = newAlbums
@@ -214,12 +214,12 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func promote() {
-		let indicesSorted = Array(tvcStatus.editingAlbumIndices ?? []).sorted()
+		let indicesSorted = Array(albumListState.editingAlbumIndices ?? []).sorted()
 		guard let frontmostIndex = indicesSorted.first else { return }
 		let oldRows = albumsViewModel.rowIdentifiers()
 		let targetIndex = indicesSorted.isConsecutive() ? max(0, frontmostIndex - 1) : frontmostIndex
 		
-		tvcStatus.editingAlbumIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
+		albumListState.editingAlbumIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
 		var newAlbums = albumsViewModel.albums
 		// Actually, `IndexSet` works with an unsorted argument, but we need to sort it anyway.
 		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
@@ -235,12 +235,12 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private func demote() {
-		let indicesSorted = Array(tvcStatus.editingAlbumIndices ?? []).sorted()
+		let indicesSorted = Array(albumListState.editingAlbumIndices ?? []).sorted()
 		guard let backmostIndex = indicesSorted.last else { return }
 		let oldRows = albumsViewModel.rowIdentifiers()
 		let targetIndex = indicesSorted.isConsecutive() ? min(albumsViewModel.albums.count - 1, backmostIndex + 1) : backmostIndex
 		
-		tvcStatus.editingAlbumIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
+		albumListState.editingAlbumIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
 		var newAlbums = albumsViewModel.albums
 		print(backmostIndex, targetIndex)
 		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1) // This method puts the elements before the `toOffset` index.
@@ -323,7 +323,7 @@ final class AlbumsTVC: LibraryTVC {
 					let bottomInset = view.safeAreaInsets.bottom
 					return height - topInset - bottomInset
 				}(),
-				albumsTVCStatus: tvcStatus)
+				albumListState: albumListState)
 		}.margins(.all, .zero)
 		return cell
 	}
