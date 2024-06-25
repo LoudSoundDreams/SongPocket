@@ -27,12 +27,10 @@ extension Sequence {
 		return compactMap { $0 }
 	}
 	
-	func compactedAndFormattedAsNarrowList() -> String
-	where Element == String?
+	func formattedAsNarrowList() -> String
+	where Element == String
 	{
-		return self
-			.compacted()
-			.formatted(.list(type: .and, width: .narrow))
+		return formatted(.list(type: .and, width: .narrow))
 	}
 }
 

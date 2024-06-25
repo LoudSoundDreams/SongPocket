@@ -23,7 +23,7 @@ import MediaPlayer
 	
 	private lazy var playPauseButton = UIBarButtonItem()
 	private lazy var overflowButton = {
-		let result = UIBarButtonItem(title: InterfaceText.more, menu: newOverflowMenu())
+		let result = UIBarButtonItem()
 		result.preferredMenuElementOrder = .fixed
 		return result
 	}()
@@ -36,8 +36,7 @@ import MediaPlayer
 		}
 #endif
 		
-		overflowButton.menu = newOverflowMenu()
-		let repeatOff = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
+		refreshOverflow()
 		
 		guard
 			let __player = MPMusicPlayerController._system,
@@ -45,23 +44,14 @@ import MediaPlayer
 		else {
 			showPlay()
 			
-			// Disable everything
-			barButtonItems.forEach {
-				$0.isEnabled = false
-				$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
-			}
-			overflowButton.isEnabled = true
-			overflowButton.accessibilityTraits.subtract(.notEnabled)
-			overflowButton.image = repeatOff
+			playPauseButton.isEnabled = false
+			playPauseButton.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
 			
 			return
 		}
 		
-		// Enable everything
-		barButtonItems.forEach {
-			$0.isEnabled = true
-			$0.accessibilityTraits.subtract(.notEnabled)
-		}
+		playPauseButton.isEnabled = true
+		playPauseButton.accessibilityTraits.subtract(.notEnabled)
 		
 		if __player.playbackState == .playing {
 			showPause()
@@ -69,15 +59,7 @@ import MediaPlayer
 			showPlay()
 		}
 		
-		overflowButton.image = {
-			switch __player.repeatMode {
-					// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
-				case .one: return UIImage(systemName: "repeat.1.circle.fill")!
-				case .all, .none, .default: break
-				@unknown default: break
-			}
-			return repeatOff
-		}()
+		
 	}
 	
 	private func showPlay() {
@@ -91,6 +73,35 @@ import MediaPlayer
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
 	
+	private func refreshOverflow() {
+		overflowButton.menu = newOverflowMenu()
+		
+		let newImage: UIImage
+		let newLabel: String
+		defer {
+			overflowButton.image = newImage
+			overflowButton.accessibilityLabel = newLabel
+		}
+		let regularImage = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
+		let regularLabel = InterfaceText.more
+		guard
+			let __player = MPMusicPlayerController._system,
+			nil != SystemMusicPlayer._shared?.queue.currentEntry
+		else {
+			newImage = regularImage
+			newLabel = regularLabel
+			return
+		}
+		newImage = {
+			switch __player.repeatMode {
+				case .one: return UIImage(systemName: "repeat.1.circle.fill")!
+				case .all, .none, .default: break
+				@unknown default: break
+			}
+			return regularImage
+		}()
+		newLabel = [InterfaceText.repeat1, regularLabel].formattedAsNarrowList()
+	}
 	private func newOverflowTitle() -> String {
 		if
 			MusicAuthorization.currentStatus == .authorized,

@@ -92,7 +92,6 @@ final class AlbumsTVC: LibraryTVC {
 		else { return }
 		// The current song might not be in our database, but the current `Album` is.
 		navigationController?.popToRootViewController(animated: true)
-		// TO DO: Wait until this view appears before scrolling.
 		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
