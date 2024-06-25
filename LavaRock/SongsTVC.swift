@@ -46,7 +46,7 @@ final class SongsTVC: LibraryTVC {
 			songListState.isEditing = true
 		} else {
 			songListState.isEditing = false
-			songListState.highlightedIndices = []
+			songListState.highlightedIndices.removeAll()
 		}
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}
@@ -91,7 +91,7 @@ final class SongsTVC: LibraryTVC {
 			Task {
 				await song.playAlbumStartingHere()
 				
-				self.songListState.highlightedIndices = []
+				self.songListState.highlightedIndices.removeAll()
 			}
 		}
 		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -101,7 +101,7 @@ final class SongsTVC: LibraryTVC {
 		actionSheet.addAction(startPlaying)
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
-				self?.songListState.highlightedIndices = []
+				self?.songListState.highlightedIndices.removeAll()
 			}
 		)
 		present(actionSheet, animated: true)
@@ -115,7 +115,7 @@ final class SongsTVC: LibraryTVC {
 				reflectNoSongs()
 				return
 			}
-			songListState.highlightedIndices = [] // Unhighlights all rows, but doesn’t touch `isEditing`
+			songListState.highlightedIndices.removeAll() // Unhighlights all rows, but doesn’t touch `isEditing`
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) else { return }
 			
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
@@ -189,7 +189,7 @@ final class SongsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		songListState.highlightedIndices = []
+		songListState.highlightedIndices.removeAll()
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
@@ -203,7 +203,7 @@ final class SongsTVC: LibraryTVC {
 		var newSongs = songsViewModel.songs
 		let unorderedIndices = songListState.highlightedIndices
 		
-		songListState.highlightedIndices = []
+		songListState.highlightedIndices.removeAll()
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
@@ -214,7 +214,7 @@ final class SongsTVC: LibraryTVC {
 		var newSongs = songsViewModel.songs
 		let unorderedIndices = songListState.highlightedIndices
 		
-		songListState.highlightedIndices = []
+		songListState.highlightedIndices.removeAll()
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
 		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs

@@ -105,7 +105,7 @@ final class AlbumsTVC: LibraryTVC {
 				return
 			}
 			if nil != self.albumListState.editingAlbumIndices {
-				self.albumListState.editingAlbumIndices = [] // If in editing mode, deselects everything and stays in editing mode
+				self.albumListState.editingAlbumIndices?.removeAll() // If in editing mode, deselects everything and stays in editing mode
 			}
 			refreshEditingButtons() // If old view model was empty, enable “Edit” button
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
@@ -178,7 +178,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		albumListState.editingAlbumIndices = []
+		albumListState.editingAlbumIndices?.removeAll()
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
@@ -192,7 +192,7 @@ final class AlbumsTVC: LibraryTVC {
 		var newAlbums = albumListState.albums
 		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
-		albumListState.editingAlbumIndices = []
+		albumListState.editingAlbumIndices?.removeAll()
 		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(newAlbums)
 		albumListState.albums = newAlbums
@@ -204,7 +204,7 @@ final class AlbumsTVC: LibraryTVC {
 		var newAlbums = albumListState.albums
 		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
-		albumListState.editingAlbumIndices = []
+		albumListState.editingAlbumIndices?.removeAll()
 		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newAlbums.count)
 		Database.renumber(newAlbums)
 		albumListState.albums = newAlbums
