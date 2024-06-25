@@ -27,6 +27,70 @@ import MediaPlayer
 		result.preferredMenuElementOrder = .fixed
 		return result
 	}()
+	
+	@objc private func refresh() {
+#if targetEnvironment(simulator)
+		defer {
+			showPause()
+			playPauseButton.isEnabled = true
+		}
+#endif
+		
+		overflowButton.menu = newOverflowMenu()
+		let repeatOff = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
+		
+		guard
+			let __player = MPMusicPlayerController._system,
+			nil != SystemMusicPlayer._shared?.queue.currentEntry
+		else {
+			showPlay()
+			
+			// Disable everything
+			barButtonItems.forEach {
+				$0.isEnabled = false
+				$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
+			}
+			overflowButton.isEnabled = true
+			overflowButton.accessibilityTraits.subtract(.notEnabled)
+			overflowButton.image = repeatOff
+			
+			return
+		}
+		
+		// Enable everything
+		barButtonItems.forEach {
+			$0.isEnabled = true
+			$0.accessibilityTraits.subtract(.notEnabled)
+		}
+		
+		if __player.playbackState == .playing {
+			showPause()
+		} else {
+			showPlay()
+		}
+		
+		overflowButton.image = {
+			switch __player.repeatMode {
+					// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
+				case .one: return UIImage(systemName: "repeat.1.circle.fill")!
+				case .all, .none, .default: break
+				@unknown default: break
+			}
+			return repeatOff
+		}()
+	}
+	
+	private func showPlay() {
+		playPauseButton.title = InterfaceText.play
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in Task { try await SystemMusicPlayer._shared?.play() } }
+		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
+	}
+	private func showPause() {
+		playPauseButton.title = InterfaceText.pause
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in SystemMusicPlayer._shared?.pause() }
+		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
+	}
+	
 	private func newOverflowTitle() -> String {
 		if
 			MusicAuthorization.currentStatus == .authorized,
@@ -148,68 +212,6 @@ import MediaPlayer
 				])},
 			]),
 		])
-	}
-	
-	@objc private func refresh() {
-#if targetEnvironment(simulator)
-		defer {
-			showPause()
-			playPauseButton.isEnabled = true
-		}
-#endif
-		
-		overflowButton.menu = newOverflowMenu()
-		let repeatOff = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
-		
-		guard
-			let __player = MPMusicPlayerController._system,
-			nil != SystemMusicPlayer._shared?.queue.currentEntry
-		else {
-			showPlay()
-			
-			// Disable everything
-			barButtonItems.forEach {
-				$0.isEnabled = false
-				$0.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
-			}
-			overflowButton.isEnabled = true
-			overflowButton.accessibilityTraits.subtract(.notEnabled)
-			overflowButton.image = repeatOff
-			
-			return
-		}
-		
-		// Enable everything
-		barButtonItems.forEach {
-			$0.isEnabled = true
-			$0.accessibilityTraits.subtract(.notEnabled)
-		}
-		
-		if __player.playbackState == .playing {
-			showPause()
-		} else {
-			showPlay()
-		}
-		
-		overflowButton.image = {
-			switch __player.repeatMode {
-					// TO DO: Add accessibility labels or values when Repeat is on. What does the Photos app do with its overflow button when filtering to Shared Library?
-				case .one: return UIImage(systemName: "repeat.1.circle.fill")!
-				case .all, .none, .default: break
-				@unknown default: break
-			}
-			return repeatOff
-		}()
-	}
-	private func showPlay() {
-		playPauseButton.title = InterfaceText.play
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in Task { try await SystemMusicPlayer._shared?.play() } }
-		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
-	}
-	private func showPause() {
-		playPauseButton.title = InterfaceText.pause
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in SystemMusicPlayer._shared?.pause() }
-		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
 }
 
