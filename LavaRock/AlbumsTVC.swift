@@ -10,13 +10,15 @@ import CoreData
 	var albums: [Album] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
 		didSet { Database.renumber(albums) }
 	}
+	init() {}
+	
 	func withRefreshedData() -> Self { return Self() }
 	func rowIdentifiers() -> [AnyHashable] {
 		return albums.map { $0.objectID }
 	}
 }
 
-@Observable final class AlbumListState {
+@MainActor @Observable final class AlbumListState {
 	static let changeEditingAlbums = Notification.Name("LRChangeAlbumsForEditing")
 	var editingAlbumIndices: Set<Int>? = nil {
 		didSet { NotificationCenter.default.post(name: Self.changeEditingAlbums, object: nil) }
@@ -242,7 +244,6 @@ final class AlbumsTVC: LibraryTVC {
 		
 		albumListState.editingAlbumIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
 		var newAlbums = albumsViewModel.albums
-		print(backmostIndex, targetIndex)
 		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1) // This method puts the elements before the `toOffset` index.
 		Database.renumber(newAlbums)
 		albumsViewModel.albums = newAlbums

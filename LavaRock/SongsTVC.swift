@@ -7,6 +7,7 @@ import CoreData
 @MainActor struct SongsViewModel {
 	static let prerowCount = 1
 	var songs: [Song] { didSet { Database.renumber(songs) } }
+	
 	func withRefreshedData() -> Self {
 		// Get the `Album` from the first non-deleted `Song`.
 		guard let album = songs.first(where: { nil != $0.container })?.container else {
@@ -23,7 +24,7 @@ extension SongsViewModel {
 	init(album: Album) { songs = album.songs(sorted: true) }
 }
 
-@Observable final class SongListState {
+@MainActor @Observable final class SongListState {
 	static let changeHighlights = Notification.Name("LRChangeSongHighlights")
 	fileprivate(set) var isEditing = false
 	var highlightedIndices: Set<Int> = [] {
