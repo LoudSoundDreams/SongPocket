@@ -47,6 +47,7 @@ import MediaPlayer
 				}
 			}
 		}
+		.contentShape(Rectangle())
 		.onTapGesture {
 			if let editing = albumListState.editingAlbumIndices {
 				let albumIndex = Int(album.index)
