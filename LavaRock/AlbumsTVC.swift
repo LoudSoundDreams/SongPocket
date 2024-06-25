@@ -6,30 +6,27 @@ import MusicKit
 import MediaPlayer
 import CoreData
 
-@MainActor private struct AlbumsViewModel {
-	var albums: [Album] = Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? [] {
+@MainActor @Observable final class AlbumListState {
+	@ObservationIgnored var albums: [Album] = AlbumListState.freshAlbums() {
 		didSet { Database.renumber(albums) }
 	}
-	init() {}
-	
-	func withRefreshedData() -> Self { return Self() }
+	var editingAlbumIndices: Set<Int>? = nil {
+		didSet { NotificationCenter.default.post(name: Self.changeEditingAlbums, object: nil) }
+	}
+}
+extension AlbumListState {
+	static let changeEditingAlbums = Notification.Name("LRChangeAlbumsForEditing")
 	func rowIdentifiers() -> [AnyHashable] {
 		return albums.map { $0.objectID }
 	}
-}
-
-@MainActor @Observable final class AlbumListState {
-	static let changeEditingAlbums = Notification.Name("LRChangeAlbumsForEditing")
-	var editingAlbumIndices: Set<Int>? = nil {
-		didSet { NotificationCenter.default.post(name: Self.changeEditingAlbums, object: nil) }
+	static func freshAlbums() -> [Album] {
+		return Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? []
 	}
 }
 
 // MARK: - Table view controller
 
 final class AlbumsTVC: LibraryTVC {
-	private var albumsViewModel = AlbumsViewModel()
-	
 	private let albumListState = AlbumListState()
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
@@ -75,7 +72,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
 			guard let cell = tableView.cellForRow(at: indexPath) else { return }
-			let album = albumsViewModel.albums[indexPath.row]
+			let album = albumListState.albums[indexPath.row]
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
 					album: album,
@@ -89,7 +86,7 @@ final class AlbumsTVC: LibraryTVC {
 	func showCurrent() {
 		guard
 			let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
-			let currentAlbum = albumsViewModel.albums.first(where: { album in
+			let currentAlbum = albumListState.albums.first(where: { album in
 				currentAlbumID == album.albumPersistentID
 			})
 		else { return }
@@ -102,17 +99,17 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func refreshLibraryItems() {
 		Task {
-			let oldRows = albumsViewModel.rowIdentifiers()
-			albumsViewModel = albumsViewModel.withRefreshedData()
-			guard !albumsViewModel.albums.isEmpty else {
+			let oldRows = albumListState.rowIdentifiers()
+			albumListState.albums = AlbumListState.freshAlbums()
+			guard !albumListState.albums.isEmpty else {
 				reflectNoAlbums()
 				return
 			}
 			if nil != self.albumListState.editingAlbumIndices {
-				self.albumListState.editingAlbumIndices = [] // If in editing mode, deselect everything
+				self.albumListState.editingAlbumIndices = [] // If in editing mode, deselects everything and stays in editing mode
 			}
 			refreshEditingButtons() // If old view model was empty, enable “Edit” button
-			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) else { return }
+			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
@@ -127,7 +124,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	@objc override func refreshEditingButtons() {
 		super.refreshEditingButtons()
-		editButtonItem.isEnabled = !albumsViewModel.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+		editButtonItem.isEnabled = !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 		arrangeButton.isEnabled = canArrange()
 		arrangeButton.menu = newArrangeMenu()
 		promoteButton.isEnabled = !(albumListState.editingAlbumIndices ?? []).isEmpty
@@ -149,14 +146,14 @@ final class AlbumsTVC: LibraryTVC {
 				command.newMenuElement(enabled: {
 					guard
 						selectedOrAllIndices().count >= 2,
-						!albumsViewModel.albums.isEmpty
+						!albumListState.albums.isEmpty
 					else { return false }
 					switch command {
 						case .random, .reverse: return true
 						case .song_track: return false
 						case .album_recentlyAdded, .album_artist: return true
 						case .album_newest:
-							let toSort = selectedOrAllIndices().map { albumsViewModel.albums[$0] }
+							let toSort = selectedOrAllIndices().map { albumListState.albums[$0] }
 							return toSort.contains { nil != $0.releaseDateEstimate }
 					}
 				}()) { [weak self] in self?.arrange(by: command) }
@@ -168,13 +165,13 @@ final class AlbumsTVC: LibraryTVC {
 		return UIMenu(children: inlineSubmenus)
 	}
 	private func arrange(by command: ArrangeCommand) {
-		let oldRows = albumsViewModel.rowIdentifiers()
+		let oldRows = albumListState.rowIdentifiers()
 		
-		albumsViewModel.albums = {
+		albumListState.albums = {
 			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
-			let toSort = subjectedIndicesInOrder.map { albumsViewModel.albums[$0] }
+			let toSort = subjectedIndicesInOrder.map { albumListState.albums[$0] }
 			let sorted = command.apply(to: toSort) as! [Album]
-			var result = albumsViewModel.albums
+			var result = albumListState.albums
 			subjectedIndicesInOrder.indices.forEach { counter in
 				let replaceAt = subjectedIndicesInOrder[counter]
 				let newItem = sorted[counter]
@@ -183,54 +180,54 @@ final class AlbumsTVC: LibraryTVC {
 			return result
 		}()
 		albumListState.editingAlbumIndices = []
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func selectedOrAllIndices() -> [Int] {
 		let selected = albumListState.editingAlbumIndices ?? []
 		if !selected.isEmpty { return Array(selected) }
-		return Array(albumsViewModel.albums.indices)
+		return Array(albumListState.albums.indices)
 	}
 	
 	private func float() {
-		let oldRows = albumsViewModel.rowIdentifiers()
-		var newAlbums = albumsViewModel.albums
+		let oldRows = albumListState.rowIdentifiers()
+		var newAlbums = albumListState.albums
 		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
 		albumListState.editingAlbumIndices = []
 		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
 		Database.renumber(newAlbums)
-		albumsViewModel.albums = newAlbums
+		albumListState.albums = newAlbums
 		// Don’t use `refreshLibraryItems`, because if no rows moved, that doesn’t animate deselecting the rows.
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func sink() {
-		let oldRows = albumsViewModel.rowIdentifiers()
-		var newAlbums = albumsViewModel.albums
+		let oldRows = albumListState.rowIdentifiers()
+		var newAlbums = albumListState.albums
 		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
 		albumListState.editingAlbumIndices = []
 		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newAlbums.count)
 		Database.renumber(newAlbums)
-		albumsViewModel.albums = newAlbums
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumsViewModel.rowIdentifiers()) }
+		albumListState.albums = newAlbums
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	
 	private func promote() {
 		let indicesSorted = Array(albumListState.editingAlbumIndices ?? []).sorted()
 		guard let frontmostIndex = indicesSorted.first else { return }
-		let oldRows = albumsViewModel.rowIdentifiers()
+		let oldRows = albumListState.rowIdentifiers()
 		let targetIndex = indicesSorted.isConsecutive() ? max(0, frontmostIndex - 1) : frontmostIndex
 		
 		albumListState.editingAlbumIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
-		var newAlbums = albumsViewModel.albums
+		var newAlbums = albumListState.albums
 		// Actually, `IndexSet` works with an unsorted argument, but we need to sort it anyway.
 		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
 		Database.renumber(newAlbums)
-		albumsViewModel.albums = newAlbums
+		albumListState.albums = newAlbums
 		Task {
 			let _ = await moveRows(
 				oldIdentifiers: oldRows,
-				newIdentifiers: albumsViewModel.rowIdentifiers(),
+				newIdentifiers: albumListState.rowIdentifiers(),
 				runningBeforeContinuation: {
 					self.tableView.scrollToRow(at: IndexPath(row: targetIndex, section: 0), at: .middle, animated: true)
 				})
@@ -239,18 +236,18 @@ final class AlbumsTVC: LibraryTVC {
 	private func demote() {
 		let indicesSorted = Array(albumListState.editingAlbumIndices ?? []).sorted()
 		guard let backmostIndex = indicesSorted.last else { return }
-		let oldRows = albumsViewModel.rowIdentifiers()
-		let targetIndex = indicesSorted.isConsecutive() ? min(albumsViewModel.albums.count - 1, backmostIndex + 1) : backmostIndex
+		let oldRows = albumListState.rowIdentifiers()
+		let targetIndex = indicesSorted.isConsecutive() ? min(albumListState.albums.count - 1, backmostIndex + 1) : backmostIndex
 		
 		albumListState.editingAlbumIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
-		var newAlbums = albumsViewModel.albums
+		var newAlbums = albumListState.albums
 		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1) // This method puts the elements before the `toOffset` index.
 		Database.renumber(newAlbums)
-		albumsViewModel.albums = newAlbums
+		albumListState.albums = newAlbums
 		Task {
 			let _ = await moveRows(
 				oldIdentifiers: oldRows,
-				newIdentifiers: albumsViewModel.rowIdentifiers(),
+				newIdentifiers: albumListState.rowIdentifiers(),
 				runningBeforeContinuation: {
 					self.tableView.scrollToRow(at: IndexPath(row: targetIndex, section: 0), at: .middle, animated: true)
 				})
@@ -277,7 +274,7 @@ final class AlbumsTVC: LibraryTVC {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if albumsViewModel.albums.isEmpty {
+			if albumListState.albums.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
 					} actions: {
@@ -297,7 +294,7 @@ final class AlbumsTVC: LibraryTVC {
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
 		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
-		return albumsViewModel.albums.count
+		return albumListState.albums.count
 	}
 	
 	override func tableView(
@@ -305,7 +302,7 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		return configuredCellForAlbum(cell: cell, album: albumsViewModel.albums[indexPath.row])
+		return configuredCellForAlbum(cell: cell, album: albumListState.albums[indexPath.row])
 	}
 	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
 		cell.backgroundColor = .clear

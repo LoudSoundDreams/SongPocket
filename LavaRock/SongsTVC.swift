@@ -6,18 +6,20 @@ import CoreData
 
 @MainActor struct SongsViewModel {
 	static let prerowCount = 1
-	var songs: [Song] { didSet { Database.renumber(songs) } }
 	
-	func withRefreshedData() -> Self {
+	var songs: [Song] {
+		didSet { Database.renumber(songs) }
+	}
+	func rowIdentifiers() -> [AnyHashable] {
+		let itemRowIDs = songs.map { AnyHashable($0.objectID) }
+		return [42] + itemRowIDs
+	}
+	func withRefreshedData() -> Self { // TO DO: Refactor to match `AlbumListState.freshAlbums`
 		// Get the `Album` from the first non-deleted `Song`.
 		guard let album = songs.first(where: { nil != $0.container })?.container else {
 			return Self(songs: [])
 		}
 		return Self(album: album)
-	}
-	func rowIdentifiers() -> [AnyHashable] {
-		let itemRowIDs = songs.map { AnyHashable($0.objectID) }
-		return [42] + itemRowIDs
 	}
 }
 extension SongsViewModel {
@@ -113,7 +115,7 @@ final class SongsTVC: LibraryTVC {
 				reflectNoSongs()
 				return
 			}
-			songListState.highlightedIndices = []
+			songListState.highlightedIndices = [] // Unhighlights all rows, but doesn’t touch `isEditing`
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) else { return }
 			
 			tableView.reconfigureRows(at: tableView.allIndexPaths())

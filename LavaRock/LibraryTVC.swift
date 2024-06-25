@@ -62,18 +62,18 @@ class LibraryTVC: UITableViewController {
 		newIdentifiers: [AnyHashable],
 		completionIfShouldRun: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
 	) {
-		isAnimatingReflectViewModel += 1
+		isAnimatingRows += 1
 		tableView.performUpdatesFromRowIdentifiers(old: oldIdentifiers, new: newIdentifiers) {
 			// Completion handler
-			self.isAnimatingReflectViewModel -= 1
-			if self.isAnimatingReflectViewModel == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).
+			self.isAnimatingRows -= 1
+			if self.isAnimatingRows == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).
 				completionIfShouldRun(true)
 			} else {
 				completionIfShouldRun(false)
 			}
 		}
 	}
-	private var isAnimatingReflectViewModel = 0
+	private var isAnimatingRows = 0
 	
 	// MARK: - Editing
 	
