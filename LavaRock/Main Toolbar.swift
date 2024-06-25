@@ -29,15 +29,15 @@ import MediaPlayer
 	}()
 	
 	@objc private func refresh() {
-#if targetEnvironment(simulator)
-		defer {
-			showPause()
-			playPauseButton.isEnabled = true
-		}
-#endif
-		
+		refreshPlayPause()
 		refreshOverflow()
-		
+	}
+	
+	private func refreshPlayPause() {
+#if targetEnvironment(simulator)
+		showPause()
+		playPauseButton.isEnabled = true
+#else
 		guard
 			let __player = MPMusicPlayerController._system,
 			nil != SystemMusicPlayer._shared?.queue.currentEntry
@@ -58,10 +58,8 @@ import MediaPlayer
 		} else {
 			showPlay()
 		}
-		
-		
+#endif
 	}
-	
 	private func showPlay() {
 		playPauseButton.title = InterfaceText.play
 		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in Task { try await SystemMusicPlayer._shared?.play() } }
