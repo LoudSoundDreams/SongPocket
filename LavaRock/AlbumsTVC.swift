@@ -202,34 +202,8 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func float() {
-		guard case let .editIndices(selected) = albumListState.current else { return }
-		
-		let oldRows = albumListState.rowIdentifiers()
-		var newAlbums = albumListState.albums
-		
-		albumListState.current = .editIndices([])
-		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: 0)
-		Database.renumber(newAlbums)
-		albumListState.albums = newAlbums
-		// Don’t use `refreshLibraryItems`, because if no rows moved, that doesn’t animate deselecting the rows.
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
-	}
-	private func sink() {
-		guard case let .editIndices(selected) = albumListState.current else { return }
-		
-		let oldRows = albumListState.rowIdentifiers()
-		var newAlbums = albumListState.albums
-		
-		albumListState.current = .editIndices([])
-		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: newAlbums.count)
-		Database.renumber(newAlbums)
-		albumListState.albums = newAlbums
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
-	}
-	
 	private func promote() {
-		guard 
+		guard
 			case let .editIndices(selected) = albumListState.current,
 			let frontmostIndex = selected.min()
 		else { return }
@@ -273,6 +247,32 @@ final class AlbumsTVC: LibraryTVC {
 					self.tableView.scrollToRow(at: IndexPath(row: targetIndex, section: 0), at: .middle, animated: true)
 				})
 		}
+	}
+	
+	private func float() {
+		guard case let .editIndices(selected) = albumListState.current else { return }
+		
+		let oldRows = albumListState.rowIdentifiers()
+		var newAlbums = albumListState.albums
+		
+		albumListState.current = .editIndices([])
+		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: 0)
+		Database.renumber(newAlbums)
+		albumListState.albums = newAlbums
+		// Don’t use `refreshLibraryItems`, because if no rows moved, that doesn’t animate deselecting the rows.
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+	}
+	private func sink() {
+		guard case let .editIndices(selected) = albumListState.current else { return }
+		
+		let oldRows = albumListState.rowIdentifiers()
+		var newAlbums = albumListState.albums
+		
+		albumListState.current = .editIndices([])
+		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: newAlbums.count)
+		Database.renumber(newAlbums)
+		albumListState.albums = newAlbums
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	
 	// MARK: - Table view

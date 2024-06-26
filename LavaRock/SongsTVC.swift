@@ -198,29 +198,6 @@ final class SongsTVC: LibraryTVC {
 		return Array(songsViewModel.songs.indices)
 	}
 	
-	private func float() {
-		let oldRows = songsViewModel.rowIdentifiers()
-		var newSongs = songsViewModel.songs
-		let unorderedIndices = songListState.highlightedIndices
-		
-		songListState.highlightedIndices.removeAll()
-		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
-		Database.renumber(newSongs)
-		songsViewModel.songs = newSongs
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
-	}
-	private func sink() {
-		let oldRows = songsViewModel.rowIdentifiers()
-		var newSongs = songsViewModel.songs
-		let unorderedIndices = songListState.highlightedIndices
-		
-		songListState.highlightedIndices.removeAll()
-		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
-		Database.renumber(newSongs)
-		songsViewModel.songs = newSongs
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
-	}
-	
 	private func promote() {
 		let indicesSorted = Array(songListState.highlightedIndices).sorted()
 		guard let frontmostIndex = indicesSorted.first else { return }
@@ -260,6 +237,29 @@ final class SongsTVC: LibraryTVC {
 					self.tableView.scrollToRow(at: IndexPath(row: SongsViewModel.prerowCount + targetIndex, section: 0), at: .middle, animated: true)
 				})
 		}
+	}
+	
+	private func float() {
+		let oldRows = songsViewModel.rowIdentifiers()
+		var newSongs = songsViewModel.songs
+		let unorderedIndices = songListState.highlightedIndices
+		
+		songListState.highlightedIndices.removeAll()
+		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		Database.renumber(newSongs)
+		songsViewModel.songs = newSongs
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
+	}
+	private func sink() {
+		let oldRows = songsViewModel.rowIdentifiers()
+		var newSongs = songsViewModel.songs
+		let unorderedIndices = songListState.highlightedIndices
+		
+		songListState.highlightedIndices.removeAll()
+		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
+		Database.renumber(newSongs)
+		songsViewModel.songs = newSongs
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	
 	// MARK: - Table view
