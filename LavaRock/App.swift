@@ -10,6 +10,8 @@ enum WorkingOn {
 @main
 struct LavaRock: App {
 	init() {
+		Database.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
+		
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
 		let toKeep = Set(UserDefaults.Key.allCases.map { $0.rawValue })

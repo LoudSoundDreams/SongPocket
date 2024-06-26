@@ -51,8 +51,6 @@ extension MusicRepo {
 		let hasSaved = defaults.bool(forKey: keyHasSaved) // Returns `false` if there’s no saved value
 		let isFirstImport = !hasSaved
 		
-		smooshAllCollections()
-		
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
 		let toUpdate: [(existing: Song, fresh: SongInfo)]
@@ -108,22 +106,6 @@ extension MusicRepo {
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(name: Self.mergedChanges, object: nil)
 		}
-	}
-	
-	// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
-	// Moves all `Album`s into the first `Collection`, and gives it the default title.
-	private func smooshAllCollections() {
-		let allCollections = Collection.allFetched(sorted: true, context: context)
-		guard let firstCollection = allCollections.first else { return }
-		
-		firstCollection.title = InterfaceText.tilde
-		allCollections.dropFirst().forEach { laterCollection in
-			laterCollection.albums(sorted: true).forEach { album in
-				album.index = Int64(firstCollection.contents?.count ?? 0)
-				album.container = firstCollection
-			}
-		}
-		context.deleteEmptyCollections()
 	}
 	
 	// MARK: - Update
