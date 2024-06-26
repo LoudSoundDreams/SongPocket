@@ -3,28 +3,6 @@
 import CoreData
 
 extension Album {
-	convenience init?(atEndOf collection: Collection, albumID: AlbumID) {
-		guard let context = collection.managedObjectContext else { return nil }
-		self.init(context: context)
-		index = Int64(collection.contents?.count ?? 0)
-		container = collection
-		albumPersistentID = albumID
-	}
-	
-	// Use `init(atEndOf:albumID:)` if possible. It’s faster.
-	convenience init?(atBeginningOf collection: Collection, albumID: AlbumID) {
-		guard let context = collection.managedObjectContext else { return nil }
-		
-		collection.albums(sorted: false).forEach { $0.index += 1 }
-		
-		self.init(context: context)
-		index = 0
-		container = collection
-		albumPersistentID = albumID
-	}
-	
-	// MARK: - Fetching
-	
 	// Similar to `Collection.allFetched`.
 	static func allFetched(
 		sorted: Bool,
@@ -45,6 +23,26 @@ extension Album {
 		guard sorted else { return unsorted }
 		
 		return unsorted.sorted { $0.index < $1.index }
+	}
+	
+	convenience init?(atEndOf collection: Collection, albumID: AlbumID) {
+		guard let context = collection.managedObjectContext else { return nil }
+		self.init(context: context)
+		index = Int64(collection.contents?.count ?? 0)
+		container = collection
+		albumPersistentID = albumID
+	}
+	
+	// Use `init(atEndOf:albumID:)` if possible. It’s faster.
+	convenience init?(atBeginningOf collection: Collection, albumID: AlbumID) {
+		guard let context = collection.managedObjectContext else { return nil }
+		
+		collection.albums(sorted: false).forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		index = 0
+		container = collection
+		albumPersistentID = albumID
 	}
 	
 	// MARK: - Sorting

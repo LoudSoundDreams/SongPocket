@@ -51,17 +51,6 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	final func savePlease() {
-		performAndWait {
-			guard hasChanges else { return }
-			do {
-				try save()
-			} catch {
-				fatalError("Crashed while trying to save changes synchronously: \(error)")
-			}
-		}
-	}
-	
 	final func objectsFetched<T>(for request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		performAndWait {
@@ -72,6 +61,17 @@ extension NSManagedObjectContext {
 			}
 		}
 		return result
+	}
+	
+	final func savePlease() {
+		performAndWait {
+			guard hasChanges else { return }
+			do {
+				try save()
+			} catch {
+				fatalError("Crashed while trying to save changes synchronously: \(error)")
+			}
+		}
 	}
 	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
