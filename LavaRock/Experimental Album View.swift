@@ -54,6 +54,25 @@ struct AlbumShelf: View {
 	}
 }
 
+struct AlbumList: View {
+	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() {
+		didSet { FakeAlbum.renumber(albums) }
+	}
+	@State private var selectedAlbums: Set<FakeAlbum> = []
+	var body: some View {
+		List(selection: $selectedAlbums) {
+			ForEach($albums, editActions: .move) { $album in
+				FakeAlbumCover(album: album)
+					.listRowInsets(EdgeInsets(top: .zero, leading: .zero, bottom: .zero, trailing: .zero))
+			}.onMove { from, to in
+				albums.move(fromOffsets: from, toOffset: to)
+			}
+		}.listStyle(.plain)
+	}
+}
+
+// MARK: Subviews
+
 struct FakeAlbumCover: View {
 	let album: FakeAlbum
 	var body: some View {
@@ -64,6 +83,8 @@ struct FakeAlbumCover: View {
 		}.aspectRatio(1, contentMode: .fit)
 	}
 }
+
+// MARK: - Model
 
 // If this were a struct, `[FakeAlbum].didSet` would loop infinitely when you set one of `FakeAlbum`’s properties.
 final class FakeAlbum: Identifiable {
@@ -100,22 +121,7 @@ extension FakeAlbum: Hashable {
 	}
 }
 
-struct AlbumList: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() {
-		didSet { FakeAlbum.renumber(albums) }
-	}
-	@State private var selectedAlbums: Set<FakeAlbum> = []
-	var body: some View {
-		List(selection: $selectedAlbums) {
-			ForEach($albums, editActions: .move) { $album in
-				FakeAlbumCover(album: album)
-					.listRowInsets(EdgeInsets(top: .zero, leading: .zero, bottom: .zero, trailing: .zero))
-			}.onMove { from, to in
-				albums.move(fromOffsets: from, toOffset: to)
-			}
-		}.listStyle(.plain)
-	}
-}
+// MARK: - Helpers
 
 private extension String {
     static func randomLowercaseLetter() -> Self {
