@@ -3,16 +3,11 @@
 import CoreData
 
 extension Album {
-	// Similar to `Collection.allFetched`.
-	static func allFetched(
-		sorted: Bool,
-		context: NSManagedObjectContext
-	) -> [Album] {
-		let fetchRequest = fetchRequest()
-		if sorted {
-			fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		}
-		return context.objectsFetched(for: fetchRequest)
+	// Similar to `Collection.fetchRequest_sorted`.
+	static func fetchRequest_sorted() -> NSFetchRequest<Album> {
+		let result = fetchRequest()
+		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		return result
 	}
 	
 	// Similar to `Collection.albums`.

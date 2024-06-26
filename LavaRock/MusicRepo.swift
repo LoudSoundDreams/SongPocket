@@ -64,7 +64,7 @@ extension MusicRepo {
 				let tuples = freshInAnyOrder.map { info in (info.songID, info) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let existingSongs: [Song] = context.objectsFetched(for: Song.fetchRequest()) // Not sorted
+			let existingSongs: [Song] = context.fetchPlease(Song.fetchRequest()) // Not sorted
 			existingSongs.forEach { existingSong in
 				let songID = existingSong.persistentID
 				if let freshInfo = freshInfos[songID] {
@@ -129,7 +129,7 @@ extension MusicRepo {
 		// To merge `Album`s with the same `albumPersistentID`, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
 		// The one `Album` we’ll keep is the uppermost in the user’s custom order.
 		let topmostUniqueAlbums: [AlbumID: Album] = {
-			let allAlbums = Album.allFetched(sorted: true, context: context)
+			let allAlbums = context.fetchPlease(Album.fetchRequest_sorted())
 			let tuplesForAllAlbums = allAlbums.map { album in
 				(album.albumPersistentID, album)
 			}
@@ -230,7 +230,7 @@ extension MusicRepo {
 		}()
 		
 		var existingAlbums: [AlbumID: Album] = {
-			let allAlbums = Album.allFetched(sorted: false, context: context)
+			let allAlbums = context.fetchPlease(Album.fetchRequest())
 			let tuples = allAlbums.map { ($0.albumPersistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
@@ -334,8 +334,7 @@ extension MusicRepo {
 	}
 	private func createAlbum(albumID: AlbumID, isFirstImport: Bool) -> Album {
 		let collection: Collection = {
-			if let existing = Collection.allFetched(sorted: false, context: context).first {
-				// Order doesn’t matter, because our database should contain exactly 0 or 1 `Collection`s at this point.
+			if let existing = context.fetchPlease(Collection.fetchRequest()).first { // Order doesn’t matter, because our database should contain exactly 0 or 1 `Collection`s at this point.
 				return existing
 			}
 			let new = Collection(context: context)
@@ -364,11 +363,11 @@ extension MusicRepo {
 		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
 		context.deleteEmptyCollections()
 		
-		let allAlbums = Album.allFetched(sorted: false, context: context) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
+		let allAlbums = context.fetchPlease(Album.fetchRequest()) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
 		
 		recalculateReleaseDateEstimates(for: allAlbums, considering: allInfos)
 		
-		Collection.allFetched(sorted: false, context: context).forEach { collection in
+		context.fetchPlease(Collection.fetchRequest()).forEach { collection in
 			// If this is the first import, sort `Album`s by newest first.
 			// Always reindex all `Album`s, because we might have deleted some, which leaves gaps in the indices.
 			let albums: [Album] = {

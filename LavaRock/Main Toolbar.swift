@@ -103,7 +103,7 @@ import MediaPlayer
 	private func newOverflowTitle() -> String {
 		if
 			MusicAuthorization.currentStatus == .authorized,
-			Collection.allFetched(sorted: false, context: Database.viewContext).isEmpty
+			Database.viewContext.fetchPlease(Collection.fetchRequest()).isEmpty
 		{ return InterfaceText._emptyLibraryMessage }
 		return ""
 	}
@@ -114,7 +114,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 					return []
 #else
-					let albumsInDatabase = Database.viewContext.objectsFetched(for: Album.fetchRequest())
+					let albumsInDatabase = Database.viewContext.fetchPlease(Album.fetchRequest())
 					guard
 						let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
 						nil != albumsInDatabase.first(where: { album in

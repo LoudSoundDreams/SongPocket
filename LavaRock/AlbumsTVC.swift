@@ -24,7 +24,7 @@ extension AlbumListState {
 		return albums.map { $0.objectID }
 	}
 	static func freshAlbums() -> [Album] {
-		return Collection.allFetched(sorted: false, context: Database.viewContext).first?.albums(sorted: true) ?? []
+		return Database.viewContext.fetchPlease(Album.fetchRequest_sorted())
 	}
 }
 

@@ -38,7 +38,7 @@ extension NSManagedObjectContext {
 	final func printLibrary(
 		referencing: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>]
 	) {
-		Collection.allFetched(sorted: true, context: self).forEach { collection in
+		fetchPlease(Collection.fetchRequest_sorted()).forEach { collection in
 			print(collection.index, collection.title ?? "")
 			
 			collection.albums(sorted: true).forEach { album in
@@ -51,7 +51,7 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	final func objectsFetched<T>(for request: NSFetchRequest<T>) -> [T] {
+	final func fetchPlease<T>(_ request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		performAndWait {
 			do {
@@ -76,15 +76,14 @@ extension NSManagedObjectContext {
 	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
-		let all = Album.allFetched(sorted: false, context: self)
-		all.forEach { album in
+		fetchPlease(Album.fetchRequest()).forEach { album in
 			if album.contents?.count == 0 {
 				delete(album)
 			}
 		}
 	}
 	final func deleteEmptyCollections() {
-		var all = Collection.allFetched(sorted: true, context: self)
+		var all = fetchPlease(Collection.fetchRequest_sorted())
 		all.enumerated().reversed().forEach { (index, collection) in
 			if collection.contents?.count == 0 {
 				delete(collection)
@@ -103,7 +102,7 @@ extension NSManagedObjectContext {
 #endif
 		// Move all `Album`s into the first `Collection`, and give it the default title.
 		
-		let all = Collection.allFetched(sorted: true, context: self)
+		let all = fetchPlease(Collection.fetchRequest_sorted())
 		guard let top = all.first else { return }
 		
 		let rest = all.dropFirst()
@@ -122,9 +121,9 @@ extension NSManagedObjectContext {
 		savePlease()
 	}
 	private func mockMulticollection() {
-		objectsFetched(for: Song.fetchRequest()).forEach { delete($0) }
-		objectsFetched(for: Album.fetchRequest()).forEach { delete($0) }
-		objectsFetched(for: Collection.fetchRequest()).forEach { delete($0) }
+		fetchPlease(Song.fetchRequest()).forEach { delete($0) }
+		fetchPlease(Album.fetchRequest()).forEach { delete($0) }
+		fetchPlease(Collection.fetchRequest()).forEach { delete($0) }
 		
 		let one = Collection(context: self)
 		one.index = Int64(0)
