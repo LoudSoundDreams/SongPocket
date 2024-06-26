@@ -99,7 +99,7 @@ extension MusicRepo {
 			allInfos: freshInAnyOrder,
 			isFirstImport: isFirstImport)
 		
-		context.tryToSave()
+		context.savePlease()
 		
 		defaults.set(true, forKey: keyHasSaved)
 		

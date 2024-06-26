@@ -80,7 +80,7 @@ class LibraryTVC: UITableViewController {
 	// Overrides should call super (this implementation).
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
-			Database.viewContext.tryToSave()
+			Database.viewContext.savePlease()
 		}
 		
 		super.setEditing(editing, animated: animated)

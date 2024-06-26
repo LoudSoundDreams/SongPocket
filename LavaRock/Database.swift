@@ -51,7 +51,7 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	final func tryToSave() {
+	final func savePlease() {
 		performAndWait {
 			guard hasChanges else { return }
 			do {
@@ -119,7 +119,7 @@ extension NSManagedObjectContext {
 			}
 		}
 		deleteEmptyCollections()
-		tryToSave()
+		savePlease()
 	}
 	private func mockMulticollection() {
 		objectsFetched(for: Song.fetchRequest()).forEach { delete($0) }
