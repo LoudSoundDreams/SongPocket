@@ -10,8 +10,12 @@ import CoreData
 	@ObservationIgnored var albums: [Album] = AlbumListState.freshAlbums() {
 		didSet { Database.renumber(albums) }
 	}
-	var editingAlbumIndices: Set<Int>? = nil {
+	var current: State = .view {
 		didSet { NotificationCenter.default.post(name: Self.changeEditingAlbums, object: nil) }
+	}
+	enum State {
+		case view
+		case editIndices(Set<Int>)
 	}
 }
 extension AlbumListState {
@@ -30,7 +34,7 @@ final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		albumListState.editingAlbumIndices = editing ? [] : nil
+		albumListState.current = editing ? .editIndices([]) : .view
 	}
 	
 	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
@@ -104,8 +108,9 @@ final class AlbumsTVC: LibraryTVC {
 				reflectNoAlbums()
 				return
 			}
-			if nil != self.albumListState.editingAlbumIndices {
-				self.albumListState.editingAlbumIndices?.removeAll() // If in editing mode, deselects everything and stays in editing mode
+			switch albumListState.current {
+				case .view: break
+				case .editIndices: albumListState.current = .editIndices([]) // If in editing mode, deselects everything and stays in editing mode
 			}
 			refreshEditingButtons() // If old view model was empty, enable “Edit” button
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
@@ -124,17 +129,24 @@ final class AlbumsTVC: LibraryTVC {
 	@objc override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		editButtonItem.isEnabled = !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
-		arrangeButton.isEnabled = canArrange()
+		arrangeButton.isEnabled = {
+			switch albumListState.current {
+				case .view: return false
+				case .editIndices(let selected):
+					if selected.isEmpty { return true }
+					return selected.sorted().isConsecutive()
+			}
+		}()
 		arrangeButton.menu = newArrangeMenu()
-		promoteButton.isEnabled = !(albumListState.editingAlbumIndices ?? []).isEmpty
-		demoteButton.isEnabled = !(albumListState.editingAlbumIndices ?? []).isEmpty
+		promoteButton.isEnabled = {
+			switch albumListState.current {
+				case .view: return false
+				case .editIndices(let selected): return !selected.isEmpty
+			}
+		}()
+		demoteButton.isEnabled = promoteButton.isEnabled
 	}
 	
-	private func canArrange() -> Bool {
-		let selected = albumListState.editingAlbumIndices ?? []
-		if selected.isEmpty { return true }
-		return selected.sorted().isConsecutive()
-	}
 	private func newArrangeMenu() -> UIMenu {
 		let sections: [[ArrangeCommand]] = [
 			[.album_recentlyAdded, .album_newest, .album_artist],
@@ -144,7 +156,7 @@ final class AlbumsTVC: LibraryTVC {
 			section.map { command in
 				command.newMenuElement(enabled: {
 					guard
-						selectedOrAllIndices().count >= 2,
+						indicesToArrange().count >= 2,
 						!albumListState.albums.isEmpty
 					else { return false }
 					switch command {
@@ -152,7 +164,7 @@ final class AlbumsTVC: LibraryTVC {
 						case .song_track: return false
 						case .album_recentlyAdded, .album_artist: return true
 						case .album_newest:
-							let toSort = selectedOrAllIndices().map { albumListState.albums[$0] }
+							let toSort = indicesToArrange().map { albumListState.albums[$0] }
 							return toSort.contains { nil != $0.releaseDateEstimate }
 					}
 				}()) { [weak self] in self?.arrange(by: command) }
@@ -167,7 +179,7 @@ final class AlbumsTVC: LibraryTVC {
 		let oldRows = albumListState.rowIdentifiers()
 		
 		albumListState.albums = {
-			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
+			let subjectedIndicesInOrder = indicesToArrange().sorted()
 			let toSort = subjectedIndicesInOrder.map { albumListState.albums[$0] }
 			let sorted = command.apply(to: toSort) as! [Album]
 			var result = albumListState.albums
@@ -178,49 +190,56 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			return result
 		}()
-		albumListState.editingAlbumIndices?.removeAll()
+		albumListState.current = .editIndices([])
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
-	private func selectedOrAllIndices() -> [Int] {
-		let selected = albumListState.editingAlbumIndices ?? []
-		if !selected.isEmpty { return Array(selected) }
-		return Array(albumListState.albums.indices)
+	private func indicesToArrange() -> [Int] {
+		switch albumListState.current {
+			case .view: return []
+			case .editIndices(let selected):
+				guard selected.isEmpty else { return Array(selected) }
+				return Array(albumListState.albums.indices)
+		}
 	}
 	
 	private func float() {
+		guard case let .editIndices(selected) = albumListState.current else { return }
+		
 		let oldRows = albumListState.rowIdentifiers()
 		var newAlbums = albumListState.albums
-		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
-		albumListState.editingAlbumIndices?.removeAll()
-		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		albumListState.current = .editIndices([])
+		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: 0)
 		Database.renumber(newAlbums)
 		albumListState.albums = newAlbums
 		// Don’t use `refreshLibraryItems`, because if no rows moved, that doesn’t animate deselecting the rows.
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func sink() {
+		guard case let .editIndices(selected) = albumListState.current else { return }
+		
 		let oldRows = albumListState.rowIdentifiers()
 		var newAlbums = albumListState.albums
-		let unorderedIndices = albumListState.editingAlbumIndices ?? []
 		
-		albumListState.editingAlbumIndices?.removeAll()
-		newAlbums.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newAlbums.count)
+		albumListState.current = .editIndices([])
+		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: newAlbums.count)
 		Database.renumber(newAlbums)
 		albumListState.albums = newAlbums
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	
 	private func promote() {
-		let indicesSorted = Array(albumListState.editingAlbumIndices ?? []).sorted()
-		guard let frontmostIndex = indicesSorted.first else { return }
-		let oldRows = albumListState.rowIdentifiers()
-		let targetIndex = indicesSorted.isConsecutive() ? max(0, frontmostIndex - 1) : frontmostIndex
+		guard 
+			case let .editIndices(selected) = albumListState.current,
+			let frontmostIndex = selected.min()
+		else { return }
 		
-		albumListState.editingAlbumIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
+		let oldRows = albumListState.rowIdentifiers()
+		let targetIndex = selected.sorted().isConsecutive() ? max(frontmostIndex - 1, 0) : frontmostIndex
+		
+		albumListState.current = .editIndices(Set(targetIndex ... (targetIndex + selected.count - 1)))
 		var newAlbums = albumListState.albums
-		// Actually, `IndexSet` works with an unsorted argument, but we need to sort it anyway.
-		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
+		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: targetIndex)
 		Database.renumber(newAlbums)
 		albumListState.albums = newAlbums
 		Task {
@@ -233,14 +252,17 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private func demote() {
-		let indicesSorted = Array(albumListState.editingAlbumIndices ?? []).sorted()
-		guard let backmostIndex = indicesSorted.last else { return }
-		let oldRows = albumListState.rowIdentifiers()
-		let targetIndex = indicesSorted.isConsecutive() ? min(albumListState.albums.count - 1, backmostIndex + 1) : backmostIndex
+		guard
+			case let .editIndices(selected) = albumListState.current,
+			let backmostIndex = selected.max()
+		else { return }
 		
-		albumListState.editingAlbumIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
+		let oldRows = albumListState.rowIdentifiers()
+		let targetIndex = selected.sorted().isConsecutive() ? min(backmostIndex + 1, albumListState.albums.count - 1) : backmostIndex
+		
+		albumListState.current = .editIndices(Set((targetIndex - selected.count + 1) ... targetIndex))
 		var newAlbums = albumListState.albums
-		newAlbums.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1) // This method puts the elements before the `toOffset` index.
+		newAlbums.move(fromOffsets: IndexSet(selected), toOffset: targetIndex + 1) // This method puts the elements before the `toOffset` index.
 		Database.renumber(newAlbums)
 		albumListState.albums = newAlbums
 		Task {

@@ -160,7 +160,7 @@ final class SongsTVC: LibraryTVC {
 		let elementsGrouped: [[UIMenuElement]] = sections.map { section in
 			section.map { command in
 				return command.newMenuElement(enabled: {
-					guard selectedOrAllIndices().count >= 2 else { return false }
+					guard indicesToArrange().count >= 2 else { return false }
 					switch command {
 						case .random, .reverse: return true
 						case .album_recentlyAdded, .album_newest, .album_artist: return false
@@ -178,7 +178,7 @@ final class SongsTVC: LibraryTVC {
 		let oldRows = songsViewModel.rowIdentifiers()
 		
 		songsViewModel.songs = {
-			let subjectedIndicesInOrder = selectedOrAllIndices().sorted()
+			let subjectedIndicesInOrder = indicesToArrange().sorted()
 			let toSort = subjectedIndicesInOrder.map { songsViewModel.songs[$0] }
 			let sorted = command.apply(to: toSort) as! [Song]
 			var result = songsViewModel.songs
@@ -192,7 +192,7 @@ final class SongsTVC: LibraryTVC {
 		songListState.highlightedIndices.removeAll()
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
-	private func selectedOrAllIndices() -> [Int] {
+	private func indicesToArrange() -> [Int] {
 		let selected = songListState.highlightedIndices
 		if !selected.isEmpty { return Array(selected) }
 		return Array(songsViewModel.songs.indices)

@@ -18,48 +18,42 @@ import MediaPlayer
 			art
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
-		.opacity(albumListState.editingAlbumIndices == nil ? 1 : pow(.oneHalf, 2))
+		.opacity({
+			switch albumListState.current {
+				case .view: return 1
+				case .editIndices: return pow(.oneHalf, 2)
+			}
+		}())
 		.background {
 			Color.accentColor
 				.opacity({
-					if
-						let editing = albumListState.editingAlbumIndices,
-						editing.contains(Int(album.index))
-					{
-						return .oneHalf
-					} else {
-						return .zero
+					switch albumListState.current {
+						case .view: return .zero
+						case .editIndices(let selected):
+							guard selected.contains(Int(album.index)) else { return .zero }
+							return .oneHalf
 					}
 				}())
 			// Can we animate removing the background when exiting editing mode, like for song rows?
 		}
 		.overlay(alignment: .bottomLeading) {
-			if let editing = albumListState.editingAlbumIndices {
-				if editing.contains(Int(album.index)) {
-					Image(systemName: "checkmark.circle.fill")
-						.symbolRenderingMode(.palette)
-						.foregroundStyle(.white, Color.accentColor)
-						.padding()
-				} else {
-					Image(systemName: "circle")
-						.foregroundStyle(.secondary)
-						.padding()
-				}
+			switch albumListState.current {
+				case .view: EmptyView()
+				case .editIndices(let selected):
+					if selected.contains(Int(album.index)) {
+						Image(systemName: "checkmark.circle.fill")
+							.symbolRenderingMode(.palette)
+							.foregroundStyle(.white, Color.accentColor)
+							.padding()
+					} else {
+						Image(systemName: "circle")
+							.foregroundStyle(.secondary)
+							.padding()
+					}
 			}
 		}
 		.contentShape(Rectangle())
-		.onTapGesture {
-			if let editing = albumListState.editingAlbumIndices {
-				let albumIndex = Int(album.index)
-				if editing.contains(albumIndex) {
-					albumListState.editingAlbumIndices?.remove(albumIndex)
-				} else {
-					albumListState.editingAlbumIndices?.insert(albumIndex)
-				}
-			} else {
-				NotificationCenter.default.post(name: Self.activatedAlbum, object: album)
-			}
-		}
+		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
@@ -103,6 +97,20 @@ import MediaPlayer
 	private var maxSideLength: CGFloat { min(viewportWidth, viewportHeight) }
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	@Environment(\.pixelLength) private var pointsPerPixel
+	private func tapped() {
+		switch albumListState.current {
+			case .view: NotificationCenter.default.post(name: Self.activatedAlbum, object: album)
+			case .editIndices(let selected):
+				var newSelected = selected
+				let albumIndex = Int(album.index)
+				if selected.contains(albumIndex) {
+					newSelected.remove(albumIndex)
+				} else {
+					newSelected.insert(albumIndex)
+				}
+				albumListState.current = .editIndices(newSelected)
+		}
+	}
 }
 
 // MARK: - Album header
