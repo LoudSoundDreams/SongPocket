@@ -35,13 +35,29 @@ enum Database {
 }
 
 extension NSManagedObjectContext {
+	final func printLibrary(
+		referencing: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>]
+	) {
+		Collection.allFetched(sorted: true, context: self).forEach { collection in
+			print(collection.index, collection.title ?? "")
+			
+			collection.albums(sorted: true).forEach { album in
+				print(" ", album.index, referencing[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
+				
+				album.songs(sorted: true).forEach { song in
+					print("   ", song.index, song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
+				}
+			}
+		}
+	}
+	
 	final func tryToSave() {
 		performAndWait {
 			guard hasChanges else { return }
 			do {
 				try save()
 			} catch {
-				fatalError("Crashed while trying to save changes synchronously.")
+				fatalError("Crashed while trying to save changes synchronously: \(error)")
 			}
 		}
 	}
@@ -56,20 +72,6 @@ extension NSManagedObjectContext {
 			}
 		}
 		return result
-	}
-	
-	final func printLibrary() async {
-		let musicKitAlbums = await AppleMusic.albums()
-		
-		Collection.allFetched(sorted: true, context: self).forEach { collection in
-			print(collection.index, collection.title ?? "")
-			collection.albums(sorted: true).forEach { album in
-				print(" ", album.index, musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
-				album.songs(sorted: true).forEach { song in
-					print("   ", song.index, song.songInfo()?.titleOnDisk ?? "")
-				}
-			}
-		}
 	}
 	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
