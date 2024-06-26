@@ -11,7 +11,7 @@ struct AlbumShelf: View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
 				LazyHStack { ForEach(albums) { album in
-					FakeAlbumImage(album)
+					FakeAlbumCover(album: album)
 						.containerRelativeFrame(.horizontal)
 						.id(album.position)
 				}}.scrollTargetLayout()
@@ -52,7 +52,11 @@ struct AlbumShelf: View {
 			}}
 		}
 	}
-	@ViewBuilder private func FakeAlbumImage(_ album: FakeAlbum) -> some View {
+}
+
+struct FakeAlbumCover: View {
+	let album: FakeAlbum
+	var body: some View {
 		ZStack {
 			Rectangle().foregroundStyle(album.squareColor)
 			Circle().foregroundStyle(album.circleColor)
@@ -104,11 +108,12 @@ struct AlbumList: View {
 	var body: some View {
 		List(selection: $selectedAlbums) {
 			ForEach($albums, editActions: .move) { $album in
-				Text(album.title)
+				FakeAlbumCover(album: album)
+					.listRowInsets(EdgeInsets(top: .zero, leading: .zero, bottom: .zero, trailing: .zero))
 			}.onMove { from, to in
 				albums.move(fromOffsets: from, toOffset: to)
 			}
-		}
+		}.listStyle(.plain)
 	}
 }
 
