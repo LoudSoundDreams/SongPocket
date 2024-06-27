@@ -45,7 +45,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func viewDidLoad() {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
-		arrangeButton.preferredMenuElementOrder = .fixed
 		
 		super.viewDidLoad()
 		
@@ -137,6 +136,7 @@ final class AlbumsTVC: LibraryTVC {
 					return selected.sorted().isConsecutive()
 			}
 		}()
+		arrangeButton.preferredMenuElementOrder = .fixed
 		arrangeButton.menu = newArrangeMenu()
 		promoteButton.isEnabled = {
 			switch albumListState.current {

@@ -34,7 +34,7 @@ extension Sequence {
 	}
 }
 
-extension Array where Element == Int {
+extension Array where Element: BinaryInteger {
 	// Whether the integers are increasing and contiguous.
 	func isConsecutive() -> Bool {
 		return allNeighborsSatisfy { $0 + 1 == $1 }

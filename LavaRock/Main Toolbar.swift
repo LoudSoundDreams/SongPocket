@@ -22,11 +22,7 @@ import MediaPlayer
 	}
 	
 	private lazy var playPauseButton = UIBarButtonItem()
-	private lazy var overflowButton = {
-		let result = UIBarButtonItem()
-		result.preferredMenuElementOrder = .fixed
-		return result
-	}()
+	private lazy var overflowButton = UIBarButtonItem()
 	
 	@objc private func refresh() {
 		refreshPlayPause()
@@ -72,6 +68,7 @@ import MediaPlayer
 	}
 	
 	private func refreshOverflow() {
+		overflowButton.preferredMenuElementOrder = .fixed
 		overflowButton.menu = newOverflowMenu()
 		
 		let newImage: UIImage

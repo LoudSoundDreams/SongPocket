@@ -59,7 +59,6 @@ final class SongsTVC: LibraryTVC {
 	
 	override func viewDidLoad() {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
-		arrangeButton.preferredMenuElementOrder = .fixed
 		super.viewDidLoad()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedSong), name: SongRow.activatedSong, object: nil)
@@ -142,6 +141,7 @@ final class SongsTVC: LibraryTVC {
 		super.refreshEditingButtons()
 		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
 		arrangeButton.isEnabled = canArrange()
+		arrangeButton.preferredMenuElementOrder = .fixed
 		arrangeButton.menu = newArrangeMenu()
 		promoteButton.isEnabled = !songListState.highlightedIndices.isEmpty
 		demoteButton.isEnabled = !songListState.highlightedIndices.isEmpty
