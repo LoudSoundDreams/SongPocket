@@ -18,19 +18,14 @@ import MediaPlayer
 			art
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
-		.opacity({
-			switch albumListState.current {
-				case .view: return 1
-				case .editIndices: return pow(.oneHalf, 2)
-			}
-		}())
+		.opacity(foregroundOpacity)
 		.background {
 			Color.accentColor
 				.opacity({
 					switch albumListState.current {
 						case .view: return .zero
-						case .editIndices(let selected):
-							guard selected.contains(Int(album.index)) else { return .zero }
+						case .edit(let selected):
+							guard selected.contains(album.albumPersistentID) else { return .zero }
 							return .oneHalf
 					}
 				}())
@@ -39,8 +34,8 @@ import MediaPlayer
 		.overlay(alignment: .bottomLeading) {
 			switch albumListState.current {
 				case .view: EmptyView()
-				case .editIndices(let selected):
-					if selected.contains(Int(album.index)) {
+				case .edit(let selected):
+					if selected.contains(album.albumPersistentID) {
 						Image(systemName: "checkmark.circle.fill")
 							.symbolRenderingMode(.palette)
 							.foregroundStyle(.white, Color.accentColor)
@@ -97,18 +92,24 @@ import MediaPlayer
 	private var maxSideLength: CGFloat { min(viewportWidth, viewportHeight) }
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	@Environment(\.pixelLength) private var pointsPerPixel
+	private var foregroundOpacity: Double {
+		switch albumListState.current {
+			case .view: return 1
+			case .edit: return pow(.oneHalf, 2)
+		}
+	}
 	private func tapped() {
 		switch albumListState.current {
 			case .view: NotificationCenter.default.post(name: Self.activatedAlbum, object: album)
-			case .editIndices(let selected):
+			case .edit(let selected):
 				var newSelected = selected
-				let albumIndex = Int(album.index)
-				if selected.contains(albumIndex) {
-					newSelected.remove(albumIndex)
+				let albumID = album.albumPersistentID
+				if selected.contains(albumID) {
+					newSelected.remove(albumID)
 				} else {
-					newSelected.insert(albumIndex)
+					newSelected.insert(albumID)
 				}
-				albumListState.current = .editIndices(newSelected)
+				albumListState.current = .edit(newSelected)
 		}
 	}
 }

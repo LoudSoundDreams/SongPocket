@@ -163,7 +163,6 @@ final class SongsTVC: LibraryTVC {
 					guard indicesToArrange().count >= 2 else { return false }
 					switch command {
 						case .random, .reverse: return true
-						case .album_recentlyAdded, .album_newest, .album_artist: return false
 						case .song_track: return true
 					}
 				}()) { [weak self] in self?.arrange(by: command) }

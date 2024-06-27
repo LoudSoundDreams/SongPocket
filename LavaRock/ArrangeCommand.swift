@@ -1,16 +1,98 @@
 // 2022-04-22
 
+// TO DO: Rename file
+
 import UIKit
 import CoreData
 import MusicKit
 
-enum ArrangeCommand {
+enum AlbumOrder {
 	case random
 	case reverse
 	
-	case album_recentlyAdded
-	case album_newest
-	case album_artist
+	case recentlyAdded
+	case newest
+	case artist
+	
+	@MainActor func newUIAction(
+		handler: @escaping () -> Void
+	) -> UIAction {
+		return UIAction(
+			title: { switch self {
+				case .random: return InterfaceText.random
+				case .reverse: return InterfaceText.reverse
+				case .recentlyAdded: return InterfaceText.recentlyAdded
+				case .newest: return InterfaceText.newest
+				case .artist: return InterfaceText.artist
+			}}(),
+			image: UIImage(systemName: { switch self {
+				case .random:
+					switch Int.random(in: 1...6) {
+						case 1: return "die.face.1"
+						case 2: return "die.face.2"
+						case 3: return "die.face.3"
+						case 4: return "die.face.4"
+						case 5: return "die.face.5"
+						default: return "die.face.6"
+					}
+				case .reverse: return "arrow.up.and.down"
+				case .recentlyAdded: return "clock"
+				case .newest: return "sparkles"
+				case .artist: return "music.mic"
+			}}()),
+			handler: { _ in handler() })
+	}
+	
+	@MainActor func reindex(_ toArrange: [Album]) {
+		let replaceAt: [Int64] = toArrange.map { $0.index }
+		let arranged: [Album] = { switch self {
+			case .random: return toArrange.inAnyOtherOrder()
+			case .reverse: return toArrange.reversed()
+				
+			case .recentlyAdded:
+				let albumsAndDates = toArrange.map {(
+					album: $0,
+					dateFirstAdded:
+						$0.songs(sorted: false)
+						.compactMap { $0.songInfo()?.dateAddedOnDisk }
+						.reduce(into: Date.now) { oldestSoFar, dateAdded in
+							oldestSoFar = min(oldestSoFar, dateAdded)
+						}
+				)}
+				let sorted = albumsAndDates.sorted { leftTuple, rightTuple in
+					leftTuple.dateFirstAdded > rightTuple.dateFirstAdded
+				}
+				return sorted.map { $0.album }
+			case .newest:
+				return toArrange.sortedMaintainingOrderWhen {
+					$0.releaseDateEstimate == $1.releaseDateEstimate
+				} areInOrder: {
+					$0.precedesByNewestFirst($1)
+				}
+			case .artist:
+				let albumsAndArtists: [(album: Album, artist: String?)] = toArrange.map {(
+					album: $0,
+					artist: MusicRepo.shared.musicKitAlbums[MusicItemID(String($0.albumPersistentID))]?.artistName
+				)}
+				let sorted = albumsAndArtists.sortedMaintainingOrderWhen {
+					$0.artist == $1.artist
+				} areInOrder: { leftTuple, rightTuple in
+					guard let rightArtist = rightTuple.artist else { return true }
+					guard let leftArtist = leftTuple.artist else { return false }
+					return leftArtist.precedesInFinder(rightArtist)
+				}
+				return sorted.map { $0.album }
+		}}()
+		arranged.indices.forEach { counter in
+			let arrangedAlbum = arranged[counter]
+			let newIndex = replaceAt[counter]
+			arrangedAlbum.index = newIndex
+		}
+	}
+}
+enum ArrangeCommand {
+	case random
+	case reverse
 	
 	case song_track
 	
@@ -24,9 +106,6 @@ enum ArrangeCommand {
 				title: { switch self {
 					case .random: return InterfaceText.random
 					case .reverse: return InterfaceText.reverse
-					case .album_recentlyAdded: return InterfaceText.recentlyAdded
-					case .album_newest: return InterfaceText.newest
-					case .album_artist: return InterfaceText.artist
 					case .song_track: return InterfaceText.trackNumber
 				}}(),
 				image: UIImage(systemName: { switch self {
@@ -40,9 +119,6 @@ enum ArrangeCommand {
 							default: return "die.face.6"
 						}
 					case .reverse: return "arrow.up.and.down"
-					case .album_recentlyAdded: return "clock"
-					case .album_newest: return "sparkles"
-					case .album_artist: return "music.mic"
 					case .song_track: return "number"
 				}}())
 			) { _ in handler() }
@@ -58,44 +134,6 @@ enum ArrangeCommand {
 		switch self {
 			case .random: return items.inAnyOtherOrder()
 			case .reverse: return items.reversed()
-				
-			case .album_recentlyAdded:
-				guard let albums = items as? [Album] else { return items }
-				let albumsAndDates = albums.map {
-					(
-						album: $0,
-						dateFirstAdded: $0.songs(sorted: false)
-							.compactMap { $0.songInfo()?.dateAddedOnDisk }
-							.reduce(into: Date.now) { oldestSoFar, dateAdded in
-								oldestSoFar = min(oldestSoFar, dateAdded)
-							}
-					)
-				}
-				let sorted = albumsAndDates.sorted { leftTuple, rightTuple in
-					leftTuple.dateFirstAdded > rightTuple.dateFirstAdded
-				}
-				return sorted.map { $0.album }
-			case .album_newest:
-				guard let albums = items as? [Album] else { return items }
-				return albums.sortedMaintainingOrderWhen {
-					$0.releaseDateEstimate == $1.releaseDateEstimate
-				} areInOrder: {
-					$0.precedesByNewestFirst($1)
-				}
-			case .album_artist:
-				guard let albums = items as? [Album] else { return items }
-				let albumsAndArtists: [(album: Album, artist: String?)] = albums.map {(
-					album: $0,
-					artist: MusicRepo.shared.musicKitAlbums[MusicItemID(String($0.albumPersistentID))]?.artistName
-				)}
-				let sorted = albumsAndArtists.sortedMaintainingOrderWhen {
-					$0.artist == $1.artist
-				} areInOrder: { leftTuple, rightTuple in
-					guard let rightArtist = rightTuple.artist else { return true }
-					guard let leftArtist = leftTuple.artist else { return false }
-					return leftArtist.precedesInFinder(rightArtist)
-				}
-				return sorted.map { $0.album }
 				
 			case .song_track:
 				guard let songs = items as? [Song] else { return items }
