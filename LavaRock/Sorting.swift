@@ -1,7 +1,5 @@
 // 2022-04-22
 
-// TO DO: Rename file
-
 import UIKit
 import CoreData
 import MusicKit
