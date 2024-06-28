@@ -172,85 +172,99 @@ import MediaPlayer
 // MARK: - Song row
 
 @MainActor struct SongRow: View {
-	static let activatedSong = Notification.Name("LRActivatedSong")
+	static let activateIndex = Notification.Name("LRActivateSongIndex")
 	let song: Song
 	let albumPersistentID: Int64
 	var songListState: SongListState
 	var body: some View {
-		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		HStack(alignment: .firstTextBaseline) {
-			HStack(alignment: .firstTextBaseline) {
-				if songListState.isEditing {
-					if songListState.highlightedIndices.contains(Int(song.index)) {
-						Image(systemName: "checkmark.circle.fill")
-							.symbolRenderingMode(.palette)
-							.foregroundStyle(.white, Color.accentColor)
-							.padding(.trailing)
-					} else {
-						Image(systemName: "circle")
-							.foregroundStyle(.secondary)
-							.padding(.trailing)
-					}
-				}
-				NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
-				VStack(alignment: .leading, spacing: .eight * 1/2) {
-					Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
-						.alignmentGuide_separatorLeading()
-					let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName
-					if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
-						Text(songArtist)
-							.foregroundStyle(.secondary)
-							.fontFootnote()
-					}
-				}.padding(.bottom, .eight * 1/4)
-				Spacer()
-				Text({
-					guard let info else { return InterfaceText.octothorpe }
-					return (
-						info.shouldShowDiscNumber
-						? info.discAndTrackFormatted()
-						: info.trackFormatted()
-					)
-				}())
-				.foregroundStyle(.secondary)
-				.monospacedDigit()
-			}
-			.accessibilityElement(children: .combine)
-			.accessibilityAddTraits(.isButton)
-			.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
+			songInfoStack
 			Menu { overflowMenuContent } label: {
 				Image(systemName: "ellipsis.circle.fill")
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 					.symbolRenderingMode(.hierarchical)
 			}
-			.disabled(songListState.isEditing)
+			.disabled({ switch songListState.current {
+				case .view: return false
+				case .edit: return true
+			}}())
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.alignmentGuide_separatorTrailing()
 		}
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
 		.background {
 			Color.accentColor
-				.opacity(
-					songListState.highlightedIndices.contains(Int(song.index))
-					? .oneHalf // Can be for activated song when not in editing mode
-					: .zero)
-				.animation( // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
-					songListState.highlightedIndices.contains(Int(song.index)) ? nil : .default,
-					value: songListState.highlightedIndices)
+				.opacity(shouldHighlight ? .oneHalf : .zero)
+				.animation(shouldHighlight ? nil : .default, value: shouldHighlight) // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
 		}
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
+	@ViewBuilder private var selectionIndicator: some View {
+		switch songListState.current {
+			case .view: EmptyView()
+			case .edit(let selected):
+				if selected.contains(song.index) {
+					Image(systemName: "checkmark.circle.fill")
+						.symbolRenderingMode(.palette)
+						.foregroundStyle(.white, Color.accentColor)
+						.padding(.trailing)
+				} else {
+					Image(systemName: "circle")
+						.foregroundStyle(.secondary)
+						.padding(.trailing)
+				}
+		}
+	}
+	@ViewBuilder private var songInfoStack: some View {
+		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
+		HStack(alignment: .firstTextBaseline) {
+			selectionIndicator // TO DO: Animate inserting and removing
+			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
+			VStack(alignment: .leading, spacing: .eight * 1/2) {
+				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
+					.alignmentGuide_separatorLeading()
+				let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName
+				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
+					Text(songArtist)
+						.foregroundStyle(.secondary)
+						.fontFootnote()
+				}
+			}.padding(.bottom, .eight * 1/4)
+			Spacer()
+			Text({
+				guard let info else { return InterfaceText.octothorpe }
+				return (
+					info.shouldShowDiscNumber
+					? info.discAndTrackFormatted()
+					: info.trackFormatted()
+				)
+			}())
+			.foregroundStyle(.secondary)
+			.monospacedDigit()
+		}
+		.accessibilityElement(children: .combine)
+		.accessibilityAddTraits(.isButton)
+		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
+	}
+	private var shouldHighlight: Bool {
+		switch songListState.current {
+			case .view(let activated): return activated == song.index
+			case .edit(let selected): return selected.contains(song.index)
+		}
+	}
 	private func tapped() {
-		if songListState.isEditing {
-			let songIndex = Int(song.index)
-			if songListState.highlightedIndices.contains(songIndex) {
-				songListState.highlightedIndices.remove(songIndex)
-			} else {
-				songListState.highlightedIndices.insert(songIndex)
-			}
-		} else {
-			NotificationCenter.default.post(name: Self.activatedSong, object: song)
+		switch songListState.current {
+			case .view: NotificationCenter.default.post(name: Self.activateIndex, object: song.index)
+			case .edit(let selected):
+				var newSelected = selected
+				let index = song.index
+				if selected.contains(index) {
+					newSelected.remove(index)
+				} else {
+					newSelected.insert(index)
+				}
+				songListState.current = .edit(newSelected)
 		}
 	}
 	@ViewBuilder private var overflowMenuContent: some View {

@@ -27,13 +27,16 @@ extension SongsViewModel {
 }
 
 @MainActor @Observable final class SongListState {
-	fileprivate(set) var isEditing = false
-	var highlightedIndices: Set<Int> = [] {
-		didSet { NotificationCenter.default.post(name: Self.changeHighlights, object: nil) }
+	var current: State = .view(nil) {
+		didSet { NotificationCenter.default.post(name: Self.changed, object: self) }
+	}
+	enum State {
+		case view(Int64?)
+		case edit(Set<Int64>)
 	}
 }
 extension SongListState {
-	static let changeHighlights = Notification.Name("LRChangeSongHighlights")
+	static let changed = Notification.Name("LRSongListStateChanged")
 }
 
 // MARK: - Table view controller
@@ -52,46 +55,36 @@ final class SongsTVC: LibraryTVC {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
 		super.viewDidLoad()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedSong), name: SongRow.activatedSong, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: SongListState.changeHighlights, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: SongListState.changed, object: songListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.activateIndex, object: nil)
 	}
-	@objc private func activatedSong(notification: Notification) {
+	@objc private func confirmPlay(notification: Notification) {
 		guard
-			let activated = notification.object as? Song,
-			let songIndex = songsViewModel.songs.firstIndex(where: { song in
-				activated.objectID == song.objectID
-			})
-		else { return }
-		confirmPlay(IndexPath(row: SongsViewModel.prerowCount + songIndex, section: 0))
-	}
-	private func confirmPlay(_ activated: IndexPath) {
-		guard
-			let activatedCell = tableView.cellForRow(at: activated),
+			let songIndex = notification.object as? Int64,
+			let popoverSource = tableView.cellForRow(at: IndexPath(row: SongsViewModel.prerowCount + Int(songIndex), section: 0)),
 			presentedViewController == nil // As of iOS 17.6 developer beta 1, if a `UIMenu` or SwiftUI `Menu` is open, `present` does nothing.
 				// We could call `dismiss` and wait until completion to `present`, but that would be a worse user experience, because tapping outside the menu to close it could open this action sheet. So it’s better to do nothing here and simply let the tap close the menu.
 				// Technically this is inconsistent because we still select and deselect items and open albums when dismissing a menu; and because toolbar buttons do nothing when dismissing a menu. But at least this prevents the most annoying behavior.
 		else { return }
 		
-		songListState.highlightedIndices.insert(activated.row - SongsViewModel.prerowCount)
-		// The UI is clearer if we leave the row selected while the action sheet is onscreen.
-		// You must eventually deselect the row in every possible scenario after this moment.
+		songListState.current = .view(songIndex) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
-		let song = songsViewModel.songs[activated.row - SongsViewModel.prerowCount]
-		let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
+		let song = songsViewModel.songs[Int(songIndex)]
+		let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { [weak self] _ in
 			Task {
 				await song.playAlbumStartingHere()
 				
-				self.songListState.highlightedIndices.removeAll()
+				self?.songListState.current = .view(nil)
 			}
 		}
 		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		actionSheet.popoverPresentationController?.sourceView = activatedCell
+		actionSheet.popoverPresentationController?.sourceView = popoverSource
 		actionSheet.addAction(startPlaying)
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
-				self?.songListState.highlightedIndices.removeAll()
+				self?.songListState.current = .view(nil)
 			}
 		)
 		present(actionSheet, animated: true)
@@ -102,7 +95,10 @@ final class SongsTVC: LibraryTVC {
 			let oldRows = songsViewModel.rowIdentifiers()
 			songsViewModel = songsViewModel.withRefreshedData()
 			dismiss(animated: true) // In case “confirm play” action sheet is presented
-			songListState.highlightedIndices.removeAll() // Unhighlights all rows, but doesn’t touch `isEditing`
+			switch songListState.current {
+				case .view: songListState.current = .view(nil) // In case song was activated
+				case .edit: songListState.current = .edit([])
+			}
 			guard !songsViewModel.songs.isEmpty else {
 				reflectNoSongs()
 				return
@@ -130,30 +126,32 @@ final class SongsTVC: LibraryTVC {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		if editing {
-			songListState.isEditing = true
-		} else {
-			songListState.isEditing = false
-			songListState.highlightedIndices.removeAll()
-		}
+		songListState.current = editing ? .edit([]) : .view(nil)
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}
 	
 	@objc override func refreshEditingButtons() {
 		super.refreshEditingButtons()
 		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
-		arrangeButton.isEnabled = canArrange()
+		arrangeButton.isEnabled = {
+			switch songListState.current {
+				case .view: return false
+				case .edit(let selected):
+					if selected.isEmpty { return true }
+					return selected.sorted().isConsecutive()
+			}
+		}()
 		arrangeButton.preferredMenuElementOrder = .fixed
 		arrangeButton.menu = newArrangeMenu()
-		promoteButton.isEnabled = !songListState.highlightedIndices.isEmpty
-		demoteButton.isEnabled = !songListState.highlightedIndices.isEmpty
+		promoteButton.isEnabled = {
+			switch songListState.current {
+				case .view: return false
+				case .edit(let selected): return !selected.isEmpty
+			}
+		}()
+		demoteButton.isEnabled = promoteButton.isEnabled
 	}
 	
-	private func canArrange() -> Bool {
-		let selected = songListState.highlightedIndices
-		if selected.isEmpty { return true }
-		return selected.sorted().isConsecutive()
-	}
 	private func newArrangeMenu() -> UIMenu {
 		let groups: [[SongOrder]] = [
 			[.track],
@@ -180,27 +178,32 @@ final class SongsTVC: LibraryTVC {
 		
 		order.reindex(toArrange())
 		songsViewModel = songsViewModel.withRefreshedData()
-		songListState.highlightedIndices.removeAll()
+		songListState.current = .edit([])
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	private func toArrange() -> [Song] {
-		guard songListState.isEditing else { return [] }
-		let selected = songListState.highlightedIndices
-		if selected.isEmpty {
-			return songsViewModel.songs
+		switch songListState.current {
+			case .view: return []
+			case .edit(let selected):
+				if selected.isEmpty {
+					return songsViewModel.songs
+				}
+				return selected.map { songsViewModel.songs[Int($0)] }.sorted { $0.index < $1.index }
 		}
-		return selected.map { songsViewModel.songs[$0] }
 	}
 	
 	private func promote() {
-		let indicesSorted = Array(songListState.highlightedIndices).sorted()
+		guard case let .edit(selected) = songListState.current else { return }
+		let indicesSorted = selected.sorted().map { Int($0) }
 		guard let frontmostIndex = indicesSorted.first else { return }
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let targetIndex = indicesSorted.isConsecutive() ? max(0, frontmostIndex - 1) : frontmostIndex
+		let targetIndex: Int = indicesSorted.isConsecutive() ? max(0, frontmostIndex - 1) : frontmostIndex
 		
-		songListState.highlightedIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
-		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
+		songListState.current = .edit(Set(
+			Int64(targetIndex) ... Int64((targetIndex + indicesSorted.count - 1))
+		))
+		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: Int(targetIndex))
 		songsViewModel.songs = newSongs
 		Task {
 			let _ = await moveRows(
@@ -212,13 +215,16 @@ final class SongsTVC: LibraryTVC {
 		}
 	}
 	func demote() {
-		let indicesSorted = Array(songListState.highlightedIndices).sorted()
+		guard case let .edit(selected) = songListState.current else { return }
+		let indicesSorted = selected.sorted().map { Int($0) }
 		guard let backmostIndex = indicesSorted.last else { return }
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let targetIndex = indicesSorted.isConsecutive() ? min(songsViewModel.songs.count - 1, backmostIndex + 1) : backmostIndex
+		let targetIndex: Int = indicesSorted.isConsecutive() ? min(songsViewModel.songs.count - 1, backmostIndex + 1) : backmostIndex
 		
-		songListState.highlightedIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
+		songListState.current = .edit(Set(
+			Int64(targetIndex - indicesSorted.count + 1) ... Int64(targetIndex)
+		))
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1)
 		songsViewModel.songs = newSongs
 		Task {
@@ -232,22 +238,24 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	private func float() {
+		guard case let .edit(selected) = songListState.current else { return }
+		let selectedUnordered = selected.map { Int($0) }
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let unorderedIndices = songListState.highlightedIndices
 		
-		songListState.highlightedIndices.removeAll()
-		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
+		songListState.current = .edit([])
+		newSongs.move(fromOffsets: IndexSet(selectedUnordered), toOffset: 0)
 		songsViewModel.songs = newSongs
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
 	private func sink() {
+		guard case let .edit(selected) = songListState.current else { return }
+		let selectedUnordered = selected.map { Int($0) }
 		let oldRows = songsViewModel.rowIdentifiers()
 		var newSongs = songsViewModel.songs
-		let unorderedIndices = songListState.highlightedIndices
 		
-		songListState.highlightedIndices.removeAll()
-		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
+		songListState.current = .edit([])
+		newSongs.move(fromOffsets: IndexSet(selectedUnordered), toOffset: newSongs.count)
 		songsViewModel.songs = newSongs
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}

@@ -85,7 +85,6 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
-		refreshEditingButtons() // For “Edit” button
 		setToolbarItems(editing ? editingButtons : viewingButtons, animated: animated)
 		
 		// As of iOS 17.5 developer beta 1, we still have to do this to resize cells in case text wrapped. During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
