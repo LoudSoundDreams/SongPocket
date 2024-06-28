@@ -34,10 +34,6 @@ extension AlbumListState {
 
 final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		albumListState.current = editing ? .edit([]) : .view
-	}
 	
 	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float() }]))
@@ -105,6 +101,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func refreshLibraryItems() {
 		Task {
+			// TO DO: Does this need to be in a `Task`?
 			let oldRows = albumListState.rowIdentifiers()
 			albumListState.albums = AlbumListState.freshAlbums()
 			guard !albumListState.albums.isEmpty else {
@@ -128,6 +125,11 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	// MARK: - Editing
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		albumListState.current = editing ? .edit([]) : .view
+	}
 	
 	@objc override func refreshEditingButtons() {
 		super.refreshEditingButtons()

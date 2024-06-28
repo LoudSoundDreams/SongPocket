@@ -20,6 +20,7 @@ import MediaPlayer
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
 		.opacity(foregroundOpacity)
 		.background {
+			// TO DO: Animate removing, like for song rows
 			Color.accentColor
 				.opacity({
 					switch albumListState.current {
@@ -29,24 +30,8 @@ import MediaPlayer
 							return .oneHalf
 					}
 				}())
-			// Can we animate removing the background when exiting editing mode, like for song rows?
 		}
-		.overlay(alignment: .bottomLeading) {
-			switch albumListState.current {
-				case .view: EmptyView()
-				case .edit(let selected):
-					if selected.contains(album.albumPersistentID) {
-						Image(systemName: "checkmark.circle.fill")
-							.symbolRenderingMode(.palette)
-							.foregroundStyle(.white, Color.accentColor)
-							.padding()
-					} else {
-						Image(systemName: "circle")
-							.foregroundStyle(.secondary)
-							.padding()
-					}
-			}
-		}
+		.overlay(alignment: .bottomLeading) { selectionOverlay }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
@@ -96,6 +81,22 @@ import MediaPlayer
 		switch albumListState.current {
 			case .view: return 1
 			case .edit: return pow(.oneHalf, 2)
+		}
+	}
+	@ViewBuilder private var selectionOverlay: some View {
+		switch albumListState.current {
+			case .view: EmptyView()
+			case .edit(let selected):
+				if selected.contains(album.albumPersistentID) {
+					Image(systemName: "checkmark.circle.fill")
+						.symbolRenderingMode(.palette)
+						.foregroundStyle(.white, Color.accentColor)
+						.padding()
+				} else {
+					Image(systemName: "circle")
+						.foregroundStyle(.secondary)
+						.padding()
+				}
 		}
 	}
 	private func tapped() {
@@ -238,17 +239,18 @@ import MediaPlayer
 					value: songListState.highlightedIndices)
 		}
 		.contentShape(Rectangle())
-		.onTapGesture {
-			if songListState.isEditing {
-				let songIndex = Int(song.index)
-				if songListState.highlightedIndices.contains(songIndex) {
-					songListState.highlightedIndices.remove(songIndex)
-				} else {
-					songListState.highlightedIndices.insert(songIndex)
-				}
+		.onTapGesture { tapped() }
+	}
+	private func tapped() {
+		if songListState.isEditing {
+			let songIndex = Int(song.index)
+			if songListState.highlightedIndices.contains(songIndex) {
+				songListState.highlightedIndices.remove(songIndex)
 			} else {
-				NotificationCenter.default.post(name: Self.activatedSong, object: song)
+				songListState.highlightedIndices.insert(songIndex)
 			}
+		} else {
+			NotificationCenter.default.post(name: Self.activatedSong, object: song)
 		}
 	}
 	@ViewBuilder private var overflowMenuContent: some View {

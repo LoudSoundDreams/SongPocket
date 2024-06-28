@@ -27,29 +27,20 @@ extension SongsViewModel {
 }
 
 @MainActor @Observable final class SongListState {
-	static let changeHighlights = Notification.Name("LRChangeSongHighlights")
 	fileprivate(set) var isEditing = false
 	var highlightedIndices: Set<Int> = [] {
 		didSet { NotificationCenter.default.post(name: Self.changeHighlights, object: nil) }
 	}
+}
+extension SongListState {
+	static let changeHighlights = Notification.Name("LRChangeSongHighlights")
 }
 
 // MARK: - Table view controller
 
 final class SongsTVC: LibraryTVC {
 	var songsViewModel: SongsViewModel! = nil
-	
 	private let songListState = SongListState()
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		super.setEditing(editing, animated: animated)
-		if editing {
-			songListState.isEditing = true
-		} else {
-			songListState.isEditing = false
-			songListState.highlightedIndices.removeAll()
-		}
-		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
-	}
 	
 	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float() }]))
@@ -136,6 +127,17 @@ final class SongsTVC: LibraryTVC {
 	private var isAnimatingReflectNoSongs = 0
 	
 	// MARK: - Editing
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		if editing {
+			songListState.isEditing = true
+		} else {
+			songListState.isEditing = false
+			songListState.highlightedIndices.removeAll()
+		}
+		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
+	}
 	
 	@objc override func refreshEditingButtons() {
 		super.refreshEditingButtons()
