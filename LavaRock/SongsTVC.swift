@@ -201,7 +201,6 @@ final class SongsTVC: LibraryTVC {
 		
 		songListState.highlightedIndices = Set(targetIndex ... (targetIndex + indicesSorted.count - 1))
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex)
-		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
 		Task {
 			let _ = await moveRows(
@@ -221,7 +220,6 @@ final class SongsTVC: LibraryTVC {
 		
 		songListState.highlightedIndices = Set((targetIndex - indicesSorted.count + 1) ... targetIndex)
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1)
-		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
 		Task {
 			let _ = await moveRows(
@@ -240,7 +238,6 @@ final class SongsTVC: LibraryTVC {
 		
 		songListState.highlightedIndices.removeAll()
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: 0)
-		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
@@ -251,7 +248,6 @@ final class SongsTVC: LibraryTVC {
 		
 		songListState.highlightedIndices.removeAll()
 		newSongs.move(fromOffsets: IndexSet(unorderedIndices), toOffset: newSongs.count)
-		Database.renumber(newSongs)
 		songsViewModel.songs = newSongs
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
