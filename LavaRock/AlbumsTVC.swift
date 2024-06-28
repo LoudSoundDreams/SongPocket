@@ -200,7 +200,7 @@ final class AlbumsTVC: LibraryTVC {
 				if selected.isEmpty {
 					return albumListState.albums.values.sorted { $0.index < $1.index }
 				}
-				return selected.compactMap { albumListState.albums[$0] }
+				return selected.compactMap { albumListState.albums[$0] }.sorted { $0.index < $1.index }
 		}
 	}
 	
