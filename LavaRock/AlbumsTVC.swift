@@ -9,7 +9,7 @@ import CoreData
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
 	var current: State = .view {
-		didSet { NotificationCenter.default.post(name: Self.changeEditingAlbums, object: nil) }
+		didSet { NotificationCenter.default.post(name: Self.changed, object: self) }
 	}
 	enum State {
 		case view
@@ -17,7 +17,7 @@ import CoreData
 	}
 }
 extension AlbumListState {
-	static let changeEditingAlbums = Notification.Name("LRChangeAlbumsForEditing")
+	static let changed = Notification.Name("LRAlbumListStateChanged")
 	func rowIdentifiers() -> [AnyHashable] {
 		// 10,000 albums takes 22ms in 2024.
 		return albums.values.sorted { $0.index < $1.index }.map { $0.objectID }
@@ -49,11 +49,11 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(activatedAlbum), name: AlbumRow.activatedAlbum, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: AlbumListState.changeEditingAlbums, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(activateAlbum), name: AlbumRow.activateAlbum, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: AlbumListState.changed, object: albumListState)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
-	@objc private func activatedAlbum(notification: Notification) {
+	@objc private func activateAlbum(notification: Notification) {
 		guard let activated = notification.object as? Album else { return }
 		push(activated)
 	}
