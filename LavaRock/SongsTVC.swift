@@ -110,6 +110,7 @@ final class SongsTVC: LibraryTVC {
 		Task {
 			let oldRows = songsViewModel.rowIdentifiers()
 			songsViewModel = songsViewModel.withRefreshedData()
+			dismiss(animated: true) // In case “confirm play” action sheet is presented
 			songListState.highlightedIndices.removeAll() // Unhighlights all rows, but doesn’t touch `isEditing`
 			guard !songsViewModel.songs.isEmpty else {
 				reflectNoSongs()
@@ -121,7 +122,6 @@ final class SongsTVC: LibraryTVC {
 		}
 	}
 	private func reflectNoSongs() {
-		dismiss(animated: true) // In case “confirm play” action sheet is presented
 		isAnimatingReflectNoSongs += 1
 		tableView.performBatchUpdates {
 			tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
