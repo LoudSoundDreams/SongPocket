@@ -110,11 +110,11 @@ final class SongsTVC: LibraryTVC {
 		Task {
 			let oldRows = songsViewModel.rowIdentifiers()
 			songsViewModel = songsViewModel.withRefreshedData()
+			songListState.highlightedIndices.removeAll() // Unhighlights all rows, but doesn’t touch `isEditing`
 			guard !songsViewModel.songs.isEmpty else {
 				reflectNoSongs()
 				return
 			}
-			songListState.highlightedIndices.removeAll() // Unhighlights all rows, but doesn’t touch `isEditing`
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) else { return }
 			
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
@@ -153,48 +153,41 @@ final class SongsTVC: LibraryTVC {
 		return selected.sorted().isConsecutive()
 	}
 	private func newArrangeMenu() -> UIMenu {
-		let sections: [[ArrangeCommand]] = [
-			[.song_track],
+		let groups: [[SongOrder]] = [
+			[.track],
 			[.random, .reverse],
 		]
-		let elementsGrouped: [[UIMenuElement]] = sections.map { section in
-			section.map { command in
-				return command.newMenuElement(enabled: {
-					guard indicesToArrange().count >= 2 else { return false }
-					switch command {
-						case .random, .reverse: return true
-						case .song_track: return true
+		let submenus: [UIMenu] = groups.map { group in
+			UIMenu(options: .displayInline, children: group.map { order in
+				UIDeferredMenuElement.uncached { [weak self] useElements in
+					guard let self else { return }
+					let action = order.newUIAction(handler: { [weak self] in
+						self?.arrange(by: order)
+					})
+					if toArrange().count <= 1 {
+						action.attributes.formUnion(.disabled)
 					}
-				}()) { [weak self] in self?.arrange(by: command) }
-			}
+					useElements([action])
+				}
+			})
 		}
-		let inlineSubmenus = elementsGrouped.map {
-			return UIMenu(options: .displayInline, children: $0)
-		}
-		return UIMenu(children: inlineSubmenus)
+		return UIMenu(children: submenus)
 	}
-	private func arrange(by command: ArrangeCommand) {
+	private func arrange(by order: SongOrder) {
 		let oldRows = songsViewModel.rowIdentifiers()
 		
-		songsViewModel.songs = {
-			let subjectedIndicesInOrder = indicesToArrange().sorted()
-			let toSort = subjectedIndicesInOrder.map { songsViewModel.songs[$0] }
-			let sorted = command.apply(to: toSort) as! [Song]
-			var result = songsViewModel.songs
-			subjectedIndicesInOrder.indices.forEach { counter in
-				let replaceAt = subjectedIndicesInOrder[counter]
-				let newItem = sorted[counter]
-				result[replaceAt] = newItem
-			}
-			return result
-		}()
+		order.reindex(toArrange())
+		songsViewModel = songsViewModel.withRefreshedData()
 		songListState.highlightedIndices.removeAll()
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
 	}
-	private func indicesToArrange() -> [Int] {
+	private func toArrange() -> [Song] {
+		guard songListState.isEditing else { return [] }
 		let selected = songListState.highlightedIndices
-		if !selected.isEmpty { return Array(selected) }
-		return Array(songsViewModel.songs.indices)
+		if selected.isEmpty {
+			return songsViewModel.songs
+		}
+		return selected.map { songsViewModel.songs[$0] }
 	}
 	
 	private func promote() {
