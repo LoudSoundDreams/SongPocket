@@ -28,7 +28,10 @@ extension SongsViewModel {
 
 @MainActor @Observable final class SongListState {
 	var current: State = .view(nil) { didSet {
-		NotificationCenter.default.post(name: Self.changed, object: self)
+		switch current {
+			case .view: break
+			case .edit: NotificationCenter.default.post(name: Self.editingItems, object: self)
+		}
 	}}
 	enum State {
 		case view(Int64?)
@@ -36,7 +39,7 @@ extension SongsViewModel {
 	}
 }
 extension SongListState {
-	static let changed = Notification.Name("LRSongListStateChanged")
+	static let editingItems = Notification.Name("LRSongListStateEditingItems")
 }
 
 // MARK: - Table view controller
@@ -56,7 +59,7 @@ final class SongsTVC: LibraryTVC {
 		
 		super.viewDidLoad()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: SongListState.changed, object: songListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectEditingItems), name: SongListState.editingItems, object: songListState)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.activateIndex, object: nil)
 	}
 	@objc private func confirmPlay(notification: Notification) {
@@ -200,9 +203,7 @@ final class SongsTVC: LibraryTVC {
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}
 	
-	@objc override func refreshEditingButtons() {
-		super.refreshEditingButtons()
-		editButtonItem.isEnabled = !songsViewModel.songs.isEmpty
+	@objc private func reflectEditingItems() {
 		arrangeButton.isEnabled = {
 			switch songListState.current {
 				case .view: return false

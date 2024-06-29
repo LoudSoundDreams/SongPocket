@@ -14,7 +14,7 @@ class LibraryTVC: UITableViewController {
 		
 		view.backgroundColor = UIColor(.grey_oneEighth)
 		
-		refreshEditingButtons() // For “Edit” button
+		editButtonItem.image = Self.beginEditing
 		setToolbarItems(viewingButtons, animated: false)
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: MusicRepo.mergedChanges, object: nil)
@@ -78,6 +78,7 @@ class LibraryTVC: UITableViewController {
 	// MARK: - Editing
 	
 	// Overrides should call super (this implementation).
+	private static let beginEditing = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		if !editing {
 			Database.viewContext.savePlease()
@@ -85,17 +86,11 @@ class LibraryTVC: UITableViewController {
 		
 		super.setEditing(editing, animated: animated)
 		
+		editButtonItem.image = editing ? UIImage(systemName: "checkmark.circle.fill") : Self.beginEditing
 		setToolbarItems(editing ? editingButtons : viewingButtons, animated: animated)
 		
 		// As of iOS 17.5 developer beta 1, we still have to do this to resize cells in case text wrapped. During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
 		// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
 		tableView.performBatchUpdates(nil)
-	}
-	
-	// Overrides should call super (this implementation).
-	func refreshEditingButtons() {
-		editButtonItem.image = isEditing
-		? UIImage(systemName: "checkmark.circle.fill")
-		: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	}
 }

@@ -9,7 +9,10 @@ import CoreData
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
 	var current: State = .view { didSet {
-		NotificationCenter.default.post(name: Self.changed, object: self)
+		switch current {
+			case .view: break
+			case .edit: NotificationCenter.default.post(name: Self.editingItems, object: self)
+		}
 	}}
 	enum State {
 		case view
@@ -17,7 +20,7 @@ import CoreData
 	}
 }
 extension AlbumListState {
-	static let changed = Notification.Name("LRAlbumListStateChanged")
+	static let editingItems = Notification.Name("LRAlbumListStateEditingItems")
 	func rowIdentifiers() -> [AnyHashable] {
 		// 10,000 albums takes 22ms in 2024.
 		return albums.values.sorted { $0.index < $1.index }.map { $0.objectID }
@@ -43,6 +46,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func viewDidLoad() {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
+		editButtonItem.isEnabled = allowsEdit()
 		
 		super.viewDidLoad()
 		
@@ -50,7 +54,7 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(activateAlbum), name: AlbumRow.activateAlbum, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: AlbumListState.changed, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectEditingItems), name: AlbumListState.editingItems, object: albumListState)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
 	@objc private func activateAlbum(notification: Notification) {
@@ -104,6 +108,7 @@ final class AlbumsTVC: LibraryTVC {
 			// TO DO: Does this need to be in a `Task`?
 			let oldRows = albumListState.rowIdentifiers()
 			albumListState.albums = AlbumListState.freshAlbums()
+			editButtonItem.isEnabled = allowsEdit()
 			guard !albumListState.albums.isEmpty else {
 				reflectNoAlbums()
 				return
@@ -112,7 +117,6 @@ final class AlbumsTVC: LibraryTVC {
 				case .view: break
 				case .edit: albumListState.current = .edit([]) // If in editing mode, deselects everything and stays in editing mode
 			}
-			refreshEditingButtons() // If old view model was empty, enable “Edit” button
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
@@ -219,9 +223,11 @@ final class AlbumsTVC: LibraryTVC {
 		albumListState.current = editing ? .edit([]) : .view
 	}
 	
-	@objc override func refreshEditingButtons() {
-		super.refreshEditingButtons()
-		editButtonItem.isEnabled = !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+	private func allowsEdit() -> Bool {
+		return !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+	}
+		
+	@objc private func reflectEditingItems() {
 		arrangeButton.isEnabled = {
 			switch albumListState.current {
 				case .view: return false
