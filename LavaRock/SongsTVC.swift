@@ -7,9 +7,9 @@ import CoreData
 @MainActor struct SongsViewModel {
 	static let prerowCount = 1
 	
-	var songs: [Song] {
-		didSet { Database.renumber(songs) }
-	}
+	var songs: [Song] { didSet {
+		Database.renumber(songs)
+	}}
 	func rowIdentifiers() -> [AnyHashable] {
 		let itemRowIDs = songs.map { AnyHashable($0.objectID) }
 		return [42] + itemRowIDs
@@ -27,9 +27,9 @@ extension SongsViewModel {
 }
 
 @MainActor @Observable final class SongListState {
-	var current: State = .view(nil) {
-		didSet { NotificationCenter.default.post(name: Self.changed, object: self) }
-	}
+	var current: State = .view(nil) { didSet {
+		NotificationCenter.default.post(name: Self.changed, object: self)
+	}}
 	enum State {
 		case view(Int64?)
 		case edit(Set<Int64>)
@@ -53,6 +53,7 @@ final class SongsTVC: LibraryTVC {
 	
 	override func viewDidLoad() {
 		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
+		
 		super.viewDidLoad()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshEditingButtons), name: SongListState.changed, object: songListState)
@@ -121,6 +122,75 @@ final class SongsTVC: LibraryTVC {
 		setEditing(false, animated: true)
 	}
 	private var isAnimatingReflectNoSongs = 0
+	
+	// MARK: - Table view
+	
+	override func numberOfSections(in tableView: UITableView) -> Int {
+		if songsViewModel.songs.isEmpty {
+			contentUnavailableConfiguration = UIHostingConfiguration {
+				Image(systemName: "music.note")
+					.foregroundStyle(.secondary)
+					.font(.title)
+			}
+		} else {
+			contentUnavailableConfiguration = nil
+		}
+		
+		return 1
+	}
+	override func tableView(
+		_ tableView: UITableView, numberOfRowsInSection section: Int
+	) -> Int {
+		if songsViewModel.songs.isEmpty {
+			return 0 // Without `prerowCount`
+		} else {
+			return SongsViewModel.prerowCount + songsViewModel.songs.count
+		}
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
+	) -> UITableViewCell {
+		let album = songsViewModel.songs.first!.container!
+		switch indexPath.row {
+			case 0:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
+				cell.selectionStyle = .none // So the user can’t even highlight the cell
+				cell.backgroundColor = .clear
+				cell.contentConfiguration = UIHostingConfiguration {
+					AlbumHeader(albumPersistentID: album.albumPersistentID)
+				}.margins(.all, .zero)
+				return cell
+			default:
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
+				let song = songsViewModel.songs[indexPath.row - SongsViewModel.prerowCount]
+				cell.backgroundColor = .clear
+				cell.selectedBackgroundView = {
+					let result = UIView()
+					result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+					return result
+				}()
+				cell.contentConfiguration = UIHostingConfiguration {
+					SongRow(song: song, albumPersistentID: album.albumPersistentID, songListState: songListState)
+				}.margins(.all, .zero)
+				return cell
+		}
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		return nil
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
+	) -> Bool {
+		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
+		return false
+	}
 	
 	// MARK: - Editing
 	
@@ -258,74 +328,5 @@ final class SongsTVC: LibraryTVC {
 		newSongs.move(fromOffsets: IndexSet(selectedUnordered), toOffset: newSongs.count)
 		songsViewModel.songs = newSongs
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
-	}
-	
-	// MARK: - Table view
-	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		if songsViewModel.songs.isEmpty {
-			contentUnavailableConfiguration = UIHostingConfiguration {
-				Image(systemName: "music.note")
-					.foregroundStyle(.secondary)
-					.font(.title)
-			}
-		} else {
-			contentUnavailableConfiguration = nil
-		}
-		
-		return 1
-	}
-	override func tableView(
-		_ tableView: UITableView, numberOfRowsInSection section: Int
-	) -> Int {
-		if songsViewModel.songs.isEmpty {
-			return 0 // Without `prerowCount`
-		} else {
-			return SongsViewModel.prerowCount + songsViewModel.songs.count
-		}
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
-	) -> UITableViewCell {
-		let album = songsViewModel.songs.first!.container!
-		switch indexPath.row {
-			case 0:
-				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Header", for: indexPath)
-				cell.selectionStyle = .none // So the user can’t even highlight the cell
-				cell.backgroundColor = .clear
-				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumHeader(albumPersistentID: album.albumPersistentID)
-				}.margins(.all, .zero)
-				return cell
-			default:
-				// The cell in the storyboard is completely default except for the reuse identifier.
-				let cell = tableView.dequeueReusableCell(withIdentifier: "Song", for: indexPath)
-				let song = songsViewModel.songs[indexPath.row - SongsViewModel.prerowCount]
-				cell.backgroundColor = .clear
-				cell.selectedBackgroundView = {
-					let result = UIView()
-					result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
-					return result
-				}()
-				cell.contentConfiguration = UIHostingConfiguration {
-					SongRow(song: song, albumPersistentID: album.albumPersistentID, songListState: songListState)
-				}.margins(.all, .zero)
-				return cell
-		}
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		return nil
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
-	) -> Bool {
-		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
-		return false
 	}
 }

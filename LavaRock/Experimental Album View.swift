@@ -3,9 +3,9 @@
 import SwiftUI
 
 struct AlbumShelf: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() {
-		didSet { FakeAlbum.renumber(albums) }
-	}
+	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() { didSet {
+		FakeAlbum.renumber(albums)
+	}}
 	@State private var visibleIndex: Int? = 2
 	var body: some View {
 		ScrollViewReader { proxy in
@@ -55,9 +55,9 @@ struct AlbumShelf: View {
 }
 
 struct AlbumList: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() {
-		didSet { FakeAlbum.renumber(albums) }
-	}
+	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() { didSet {
+		FakeAlbum.renumber(albums)
+	}}
 	@State private var selectedAlbums: Set<FakeAlbum> = []
 	var body: some View {
 		List(selection: $selectedAlbums) {

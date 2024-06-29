@@ -8,9 +8,9 @@ import CoreData
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
-	var current: State = .view {
-		didSet { NotificationCenter.default.post(name: Self.changed, object: self) }
-	}
+	var current: State = .view { didSet {
+		NotificationCenter.default.post(name: Self.changed, object: self)
+	}}
 	enum State {
 		case view
 		case edit(Set<AlbumID>)
@@ -122,6 +122,94 @@ final class AlbumsTVC: LibraryTVC {
 	private func reflectNoAlbums() {
 		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
 		setEditing(false, animated: true) // Do this after updating the table view, not before, because this itself also updates the table view, expecting its row counts to be correct beforehand.
+	}
+	
+	// MARK: - Table view
+	
+	override func numberOfSections(in tableView: UITableView) -> Int {
+		refreshPlaceholder()
+		return 1
+	}
+	private func refreshPlaceholder() {
+		contentUnavailableConfiguration = {
+			guard MusicAuthorization.currentStatus == .authorized else {
+				return UIHostingConfiguration {
+					ContentUnavailableView {
+					} description: {
+						Text(InterfaceText.welcome_message)
+					} actions: {
+						Button(InterfaceText.welcome_button) {
+							Task { await AppleMusic.requestAccess() }
+						}
+					}
+				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
+			}
+			if albumListState.albums.isEmpty {
+				return UIHostingConfiguration {
+					ContentUnavailableView {
+					} actions: {
+						Button {
+							let musicURL = URL(string: "music://")!
+							UIApplication.shared.open(musicURL)
+						} label: {
+							Image(systemName: "plus")
+						}
+					}
+				}
+			}
+			return nil
+		}()
+	}
+	override func tableView(
+		_ tableView: UITableView, numberOfRowsInSection section: Int
+	) -> Int {
+		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
+		return albumListState.albums.count
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
+	) -> UITableViewCell {
+		// The cell in the storyboard is completely default except for the reuse identifier.
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
+		guard let rowAlbum = albumListState.albums.values.first(where: { album in
+			// Bad time complexity, but scanning among 10,000 albums takes 0.6ms at worst and 0.3ms on average in 2024.
+			indexPath.row == album.index
+		}) else { return UITableViewCell() }
+		return configuredCellForAlbum(cell: cell, album: rowAlbum)
+	}
+	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
+		cell.backgroundColor = .clear
+		cell.selectedBackgroundView = {
+			let result = UIView()
+			result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+			return result
+		}()
+		cell.contentConfiguration = UIHostingConfiguration {
+			AlbumRow(
+				album: album,
+				viewportWidth: view.frame.width,
+				viewportHeight: {
+					let height = view.frame.height
+					let topInset = view.safeAreaInsets.top
+					let bottomInset = view.safeAreaInsets.bottom
+					return height - topInset - bottomInset
+				}(),
+				albumListState: albumListState)
+		}.margins(.all, .zero)
+		return cell
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
+	) -> IndexPath? {
+		return nil
+	}
+	
+	override func tableView(
+		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
+	) -> Bool {
+		return false
 	}
 	
 	// MARK: - Editing
@@ -322,93 +410,5 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock[offset].index = front + Int64(offset)
 		}
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
-	}
-	
-	// MARK: - Table view
-	
-	override func numberOfSections(in tableView: UITableView) -> Int {
-		refreshPlaceholder()
-		return 1
-	}
-	private func refreshPlaceholder() {
-		contentUnavailableConfiguration = {
-			guard MusicAuthorization.currentStatus == .authorized else {
-				return UIHostingConfiguration {
-					ContentUnavailableView {
-					} description: {
-						Text(InterfaceText.welcome_message)
-					} actions: {
-						Button(InterfaceText.welcome_button) {
-							Task { await AppleMusic.requestAccess() }
-						}
-					}
-				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
-			}
-			if albumListState.albums.isEmpty {
-				return UIHostingConfiguration {
-					ContentUnavailableView {
-					} actions: {
-						Button {
-							let musicURL = URL(string: "music://")!
-							UIApplication.shared.open(musicURL)
-						} label: {
-							Image(systemName: "plus")
-						}
-					}
-				}
-			}
-			return nil
-		}()
-	}
-	override func tableView(
-		_ tableView: UITableView, numberOfRowsInSection section: Int
-	) -> Int {
-		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
-		return albumListState.albums.count
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
-	) -> UITableViewCell {
-		// The cell in the storyboard is completely default except for the reuse identifier.
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		guard let rowAlbum = albumListState.albums.values.first(where: { album in
-			// Bad time complexity, but scanning among 10,000 albums takes 0.6ms at worst and 0.3ms on average in 2024.
-			indexPath.row == album.index
-		}) else { return UITableViewCell() }
-		return configuredCellForAlbum(cell: cell, album: rowAlbum)
-	}
-	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
-		cell.backgroundColor = .clear
-		cell.selectedBackgroundView = {
-			let result = UIView()
-			result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
-			return result
-		}()
-		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumRow(
-				album: album,
-				viewportWidth: view.frame.width,
-				viewportHeight: {
-					let height = view.frame.height
-					let topInset = view.safeAreaInsets.top
-					let bottomInset = view.safeAreaInsets.bottom
-					return height - topInset - bottomInset
-				}(),
-				albumListState: albumListState)
-		}.margins(.all, .zero)
-		return cell
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		return nil
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
-	) -> Bool {
-		return false
 	}
 }
