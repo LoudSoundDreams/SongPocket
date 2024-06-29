@@ -7,11 +7,11 @@ import MediaPlayer
 import CoreData
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
+	@ObservationIgnored fileprivate(set) var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
 	var current: State = .view { didSet {
 		switch current {
 			case .view: break
-			case .edit: NotificationCenter.default.post(name: Self.editingItems, object: self)
+			case .edit: NotificationCenter.default.post(name: Self.editing, object: self)
 		}
 	}}
 	enum State {
@@ -20,7 +20,7 @@ import CoreData
 	}
 }
 extension AlbumListState {
-	static let editingItems = Notification.Name("LRAlbumListStateEditingItems")
+	static let editing = Notification.Name("LRAlbumsEditing")
 	func rowIdentifiers() -> [AnyHashable] {
 		// 10,000 albums takes 22ms in 2024.
 		return albums.values.sorted { $0.index < $1.index }.map { $0.objectID }
@@ -53,18 +53,18 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(activateAlbum), name: AlbumRow.activateAlbum, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectEditingItems), name: AlbumListState.editingItems, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbum), name: AlbumRow.openAlbum, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectEditingItems), name: AlbumListState.editing, object: albumListState)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
-	@objc private func activateAlbum(notification: Notification) {
-		guard let activated = notification.object as? Album else { return }
-		push(activated)
-	}
-	private func push(_ album: Album) {
+	@objc private func openAlbum(notification: Notification) {
+		guard let albumIDToOpen = notification.object as? AlbumID else { return }
+		guard let albumToOpen = albumListState.albums.values.first(where: { album in
+			album.albumPersistentID == albumIDToOpen
+		}) else { return }
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-			songsTVC.songsViewModel = SongsViewModel(album: album)
+			songsTVC.songsViewModel = SongsViewModel(album: albumToOpen)
 			return songsTVC
 		}(), animated: true)
 	}
@@ -180,9 +180,9 @@ final class AlbumsTVC: LibraryTVC {
 			// Bad time complexity, but scanning among 10,000 albums takes 0.6ms at worst and 0.3ms on average in 2024.
 			indexPath.row == album.index
 		}) else { return UITableViewCell() }
-		return configuredCellForAlbum(cell: cell, album: rowAlbum)
+		return cellForAlbum(cell: cell, album: rowAlbum)
 	}
-	private func configuredCellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
+	private func cellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
 		cell.backgroundColor = .clear
 		cell.selectedBackgroundView = {
 			let result = UIView()

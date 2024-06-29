@@ -7,7 +7,7 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	static let activateAlbum = Notification.Name("LRActivateAlbum")
+	static let openAlbum = Notification.Name("LRActivateAlbumID")
 	let album: Album
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
@@ -101,7 +101,7 @@ import MediaPlayer
 	}
 	private func tapped() {
 		switch albumListState.current {
-			case .view: NotificationCenter.default.post(name: Self.activateAlbum, object: album)
+			case .view: NotificationCenter.default.post(name: Self.openAlbum, object: album.albumPersistentID)
 			case .edit(let selected):
 				var newSelected = selected
 				let albumID = album.albumPersistentID

@@ -30,7 +30,7 @@ extension SongsViewModel {
 	var current: State = .view(nil) { didSet {
 		switch current {
 			case .view: break
-			case .edit: NotificationCenter.default.post(name: Self.editingItems, object: self)
+			case .edit: NotificationCenter.default.post(name: Self.editing, object: self)
 		}
 	}}
 	enum State {
@@ -39,7 +39,7 @@ extension SongsViewModel {
 	}
 }
 extension SongListState {
-	static let editingItems = Notification.Name("LRSongListStateEditingItems")
+	static let editing = Notification.Name("LRSongsEditing")
 }
 
 // MARK: - Table view controller
@@ -59,7 +59,7 @@ final class SongsTVC: LibraryTVC {
 		
 		super.viewDidLoad()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectEditingItems), name: SongListState.editingItems, object: songListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectEditingItems), name: SongListState.editing, object: songListState)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.activateIndex, object: nil)
 	}
 	@objc private func confirmPlay(notification: Notification) {
