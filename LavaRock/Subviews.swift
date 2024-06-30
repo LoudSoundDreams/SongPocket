@@ -17,7 +17,7 @@ import MediaPlayer
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
 			art
 		}
-		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
+		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.opacity(foregroundOpacity) // TO DO: Animate
 		.background { highlight } // TO DO: Animate removing, like for song rows
 		.overlay(alignment: .bottomLeading) { selectionOverlay } // TO DO: Animate
@@ -33,16 +33,13 @@ import MediaPlayer
 			case .select: return pow(.oneHalf, 2)
 		}
 	}
-	private var highlight: some View {
+	@ViewBuilder private var highlight: some View {
+		let highlighting: Bool = { switch albumListState.selectMode {
+			case .view: return false
+			case .select(let selected): return selected.contains(album.albumPersistentID)
+		}}()
 		Color.accentColor
-			.opacity({
-				switch albumListState.selectMode {
-					case .view: return .zero
-					case .select(let selected):
-						guard selected.contains(album.albumPersistentID) else { return .zero }
-						return .oneHalf
-				}
-			}())
+			.opacity(highlighting ? .oneHalf : .zero)
 	}
 	@ViewBuilder private var selectionOverlay: some View {
 		switch albumListState.selectMode {
