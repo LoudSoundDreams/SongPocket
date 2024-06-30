@@ -122,7 +122,6 @@ final class SongsTVC: LibraryTVC {
 				self.navigationController?.popViewController(animated: true)
 			}
 		}
-		setEditing(false, animated: true)
 	}
 	private var isAnimatingReflectNoSongs = 0
 	
