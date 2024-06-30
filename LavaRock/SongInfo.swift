@@ -147,7 +147,7 @@ struct Sim_SongInfo: SongInfo {
 }
 extension Sim_SongInfo: Equatable {}
 extension Sim_SongInfo {
-	static var selectMode: Self? = nil
+	static var current: Self? = nil
 	init(
 		asCurrent: Bool = false,
 		albumID: AlbumID,
@@ -178,7 +178,7 @@ extension Sim_SongInfo {
 				return Date.lateNight(iso8601_10Char: released)
 			}(),
 			coverArtFileName: coverArt)
-		if asCurrent { Self.selectMode = self }
+		if asCurrent { Self.current = self }
 	}
 	static var everyInfo: [SongID: Self] = {
 		var result: [SongID: Self] = [:]

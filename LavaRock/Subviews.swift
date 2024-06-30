@@ -122,7 +122,7 @@ import MediaPlayer
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text({
 #if targetEnvironment(simulator)
-					return Sim_SongInfo.selectMode?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
+					return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
 #else
 					return musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum
 #endif
@@ -131,7 +131,7 @@ import MediaPlayer
 				.alignmentGuide_separatorLeading()
 				Text({
 #if targetEnvironment(simulator)
-					return Sim_SongInfo.selectMode?.albumArtistOnDisk ?? InterfaceText.unknownArtist
+					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
 #else
 					guard
 						let albumArtist = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName,
@@ -144,7 +144,7 @@ import MediaPlayer
 				.fontCaption2Bold()
 				Text({
 #if targetEnvironment(simulator)
-					guard let date = Sim_SongInfo.selectMode?.releaseDateOnDisk else {
+					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else {
 						return InterfaceText.emDash
 					}
 #else
@@ -240,7 +240,7 @@ import MediaPlayer
 		}
 	}
 	@ViewBuilder private var selectionIndicator: some View {
-		switch songListState.selectMode { // TO DO: Animate
+		switch songListState.selectMode {
 			case .view: EmptyView()
 			case .select(let selected):
 				if selected.contains(song.index) {
@@ -264,7 +264,7 @@ import MediaPlayer
 				.symbolRenderingMode(.hierarchical)
 		}
 		.onTapGesture { signal_tappedMenu.toggle() }
-		.disabled({ switch songListState.selectMode { // TO DO: Animate
+		.disabled({ switch songListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
 			case .view: return false
 			case .select: return true
 		}}())
@@ -319,7 +319,7 @@ struct NowPlayingIndicator: View {
 	private var status: Status {
 #if targetEnvironment(simulator)
 		let sim_info = song.songInfo() as! Sim_SongInfo
-		guard sim_info == Sim_SongInfo.selectMode else { return .notPlaying }
+		guard sim_info == Sim_SongInfo.current else { return .notPlaying }
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
