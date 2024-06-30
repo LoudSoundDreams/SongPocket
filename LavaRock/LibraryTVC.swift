@@ -88,9 +88,5 @@ class LibraryTVC: UITableViewController {
 		
 		editButtonItem.image = editing ? UIImage(systemName: "checkmark.circle.fill") : Self.beginEditing
 		setToolbarItems(editing ? editingButtons : viewingButtons, animated: animated)
-		
-		// As of iOS 17.5 developer beta 1, we still have to do this to resize cells in case text wrapped. During a WWDC 2021 lab, a UIKit engineer told me that this is the best practice for doing that.
-		// As of iOS 15.4 developer beta 1, you must do this after `super.setEditing`, not before.
-		tableView.performBatchUpdates(nil)
 	}
 }
