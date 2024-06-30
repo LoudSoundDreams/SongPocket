@@ -7,7 +7,7 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	static let openAlbum = Notification.Name("LRActivateAlbumID")
+	static let openAlbumID = Notification.Name("LROpenAlbumID")
 	let album: Album
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
@@ -23,15 +23,15 @@ import MediaPlayer
 			// TO DO: Animate removing, like for song rows
 			Color.accentColor
 				.opacity({
-					switch albumListState.current {
+					switch albumListState.selectMode {
 						case .view: return .zero
-						case .edit(let selected):
+						case .select(let selected):
 							guard selected.contains(album.albumPersistentID) else { return .zero }
 							return .oneHalf
 					}
 				}())
 		}
-		.overlay(alignment: .bottomLeading) { selectionOverlay }
+		.overlay(alignment: .bottomLeading) { overlay }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
@@ -78,15 +78,15 @@ import MediaPlayer
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	@Environment(\.pixelLength) private var pointsPerPixel
 	private var foregroundOpacity: Double {
-		switch albumListState.current {
+		switch albumListState.selectMode {
 			case .view: return 1
-			case .edit: return pow(.oneHalf, 2)
+			case .select: return pow(.oneHalf, 2)
 		}
 	}
-	@ViewBuilder private var selectionOverlay: some View {
-		switch albumListState.current {
+	@ViewBuilder private var overlay: some View {
+		switch albumListState.selectMode {
 			case .view: EmptyView()
-			case .edit(let selected):
+			case .select(let selected):
 				if selected.contains(album.albumPersistentID) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
@@ -100,9 +100,9 @@ import MediaPlayer
 		}
 	}
 	private func tapped() {
-		switch albumListState.current {
-			case .view: NotificationCenter.default.post(name: Self.openAlbum, object: album.albumPersistentID)
-			case .edit(let selected):
+		switch albumListState.selectMode {
+			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: album.albumPersistentID)
+			case .select(let selected):
 				var newSelected = selected
 				let albumID = album.albumPersistentID
 				if selected.contains(albumID) {
@@ -110,7 +110,7 @@ import MediaPlayer
 				} else {
 					newSelected.insert(albumID)
 				}
-				albumListState.current = .edit(newSelected)
+				albumListState.selectMode = .select(newSelected)
 		}
 	}
 }
@@ -125,7 +125,7 @@ import MediaPlayer
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text({
 #if targetEnvironment(simulator)
-					return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
+					return Sim_SongInfo.selectMode?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
 #else
 					return musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum
 #endif
@@ -134,7 +134,7 @@ import MediaPlayer
 				.alignmentGuide_separatorLeading()
 				Text({
 #if targetEnvironment(simulator)
-					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
+					return Sim_SongInfo.selectMode?.albumArtistOnDisk ?? InterfaceText.unknownArtist
 #else
 					guard
 						let albumArtist = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName,
@@ -147,7 +147,7 @@ import MediaPlayer
 				.fontCaption2Bold()
 				Text({
 #if targetEnvironment(simulator)
-					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else {
+					guard let date = Sim_SongInfo.selectMode?.releaseDateOnDisk else {
 						return InterfaceText.emDash
 					}
 #else
@@ -184,9 +184,9 @@ import MediaPlayer
 					.fontBody_dynamicTypeSizeUpToXxxLarge()
 					.symbolRenderingMode(.hierarchical)
 			}
-			.disabled({ switch songListState.current {
+			.disabled({ switch songListState.selectMode {
 				case .view: return false
-				case .edit: return true
+				case .select: return true
 			}}())
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.alignmentGuide_separatorTrailing()
@@ -201,9 +201,9 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var selectionIndicator: some View {
-		switch songListState.current {
+		switch songListState.selectMode {
 			case .view: EmptyView()
-			case .edit(let selected):
+			case .select(let selected):
 				if selected.contains(song.index) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
@@ -248,15 +248,15 @@ import MediaPlayer
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 	}
 	private var shouldHighlight: Bool {
-		switch songListState.current {
+		switch songListState.selectMode {
 			case .view(let activated): return activated == song.index
-			case .edit(let selected): return selected.contains(song.index)
+			case .select(let selected): return selected.contains(song.index)
 		}
 	}
 	private func tapped() {
-		switch songListState.current {
+		switch songListState.selectMode {
 			case .view: NotificationCenter.default.post(name: Self.activateIndex, object: song.index)
-			case .edit(let selected):
+			case .select(let selected):
 				var newSelected = selected
 				let index = song.index
 				if selected.contains(index) {
@@ -264,7 +264,7 @@ import MediaPlayer
 				} else {
 					newSelected.insert(index)
 				}
-				songListState.current = .edit(newSelected)
+				songListState.selectMode = .select(newSelected)
 		}
 	}
 	@ViewBuilder private var overflowMenuContent: some View {
@@ -318,7 +318,7 @@ struct NowPlayingIndicator: View {
 	private var status: Status {
 #if targetEnvironment(simulator)
 		let sim_info = song.songInfo() as! Sim_SongInfo
-		guard sim_info == Sim_SongInfo.current else { return .notPlaying }
+		guard sim_info == Sim_SongInfo.selectMode else { return .notPlaying }
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.

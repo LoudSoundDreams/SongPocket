@@ -8,19 +8,19 @@ import CoreData
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate(set) var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
-	var current: State = .view { didSet {
-		switch current {
+	var selectMode: SelectMode = .view { didSet {
+		switch selectMode {
 			case .view: break
-			case .edit: NotificationCenter.default.post(name: Self.editing, object: self)
+			case .select: NotificationCenter.default.post(name: Self.selected, object: self)
 		}
 	}}
-	enum State {
+	enum SelectMode {
 		case view
-		case edit(Set<AlbumID>)
+		case select(Set<AlbumID>)
 	}
 }
 extension AlbumListState {
-	static let editing = Notification.Name("LRAlbumsEditing")
+	static let selected = Notification.Name("LRAlbumsSelected")
 	func rowIdentifiers() -> [AnyHashable] {
 		// 10,000 albums takes 22ms in 2024.
 		return albums.values.sorted { $0.index < $1.index }.map { $0.objectID }
@@ -53,15 +53,17 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbum), name: AlbumRow.openAlbum, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectEditingItems), name: AlbumListState.editing, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbumID), name: AlbumRow.openAlbumID, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: AlbumListState.selected, object: albumListState)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
-	@objc private func openAlbum(notification: Notification) {
-		guard let albumIDToOpen = notification.object as? AlbumID else { return }
-		guard let albumToOpen = albumListState.albums.values.first(where: { album in
-			album.albumPersistentID == albumIDToOpen
-		}) else { return }
+	@objc private func openAlbumID(notification: Notification) {
+		guard
+			let albumIDToOpen = notification.object as? AlbumID,
+			let albumToOpen = albumListState.albums.values.first(where: { album in
+				album.albumPersistentID == albumIDToOpen
+			})
+		else { return }
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
 			songsTVC.songsViewModel = SongsViewModel(album: albumToOpen)
@@ -113,9 +115,9 @@ final class AlbumsTVC: LibraryTVC {
 				reflectNoAlbums()
 				return
 			}
-			switch albumListState.current {
+			switch albumListState.selectMode {
 				case .view: break
-				case .edit: albumListState.current = .edit([]) // If in editing mode, deselects everything and stays in editing mode
+				case .select: albumListState.selectMode = .select([]) // If in editing mode, deselects everything and stays in editing mode
 			}
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
@@ -176,10 +178,10 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		guard let rowAlbum = albumListState.albums.values.first(where: { album in
+		let rowAlbum = albumListState.albums.values.first(where: { album in
 			// Bad time complexity, but scanning among 10,000 albums takes 0.6ms at worst and 0.3ms on average in 2024.
 			indexPath.row == album.index
-		}) else { return UITableViewCell() }
+		})!
 		return cellForAlbum(cell: cell, album: rowAlbum)
 	}
 	private func cellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
@@ -220,18 +222,18 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		albumListState.current = editing ? .edit([]) : .view
+		albumListState.selectMode = editing ? .select([]) : .view
 	}
 	
 	private func allowsEdit() -> Bool {
 		return !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 	}
 		
-	@objc private func reflectEditingItems() {
+	@objc private func reflectSelected() {
 		arrangeButton.isEnabled = {
-			switch albumListState.current {
+			switch albumListState.selectMode {
 				case .view: return false
-				case .edit(let selected):
+				case .select(let selected):
 					if selected.isEmpty { return true }
 					return selected.compactMap { albumListState.albums[$0]?.index }.sorted().isConsecutive()
 			}
@@ -239,9 +241,9 @@ final class AlbumsTVC: LibraryTVC {
 		arrangeButton.preferredMenuElementOrder = .fixed
 		arrangeButton.menu = newArrangeMenu()
 		promoteButton.isEnabled = {
-			switch albumListState.current {
+			switch albumListState.selectMode {
 				case .view: return false
-				case .edit(let selected): return !selected.isEmpty
+				case .select(let selected): return !selected.isEmpty
 			}
 		}()
 		demoteButton.isEnabled = promoteButton.isEnabled
@@ -284,13 +286,13 @@ final class AlbumsTVC: LibraryTVC {
 		let oldRows = albumListState.rowIdentifiers()
 		
 		order.reindex(toArrange())
-		albumListState.current = .edit([])
+		albumListState.selectMode = .select([])
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func toArrange() -> [Album] {
-		switch albumListState.current {
+		switch albumListState.selectMode {
 			case .view: return []
-			case .edit(let selected):
+			case .select(let selected):
 				if selected.isEmpty {
 					return albumListState.albums.values.sorted { $0.index < $1.index }
 				}
@@ -299,7 +301,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func promote() {
-		guard case let .edit(selected) = albumListState.current else { return }
+		guard case let .select(selected) = albumListState.selectMode else { return }
 		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
 		guard
 			let front = selectedIndicesSorted.first,
@@ -333,7 +335,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private func demote() {
-		guard case let .edit(selected) = albumListState.current else { return }
+		guard case let .select(selected) = albumListState.selectMode else { return }
 		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
 		guard
 			let front = selectedIndicesSorted.first,
@@ -368,7 +370,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func float() {
-		guard case let .edit(selected) = albumListState.current else { return }
+		guard case let .select(selected) = albumListState.selectMode else { return }
 		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
 		guard let back = selectedIndicesSorted.last else { return }
 		
@@ -386,14 +388,14 @@ final class AlbumsTVC: LibraryTVC {
 		let newBlock = toPromote + toDisplace
 		let oldRows = albumListState.rowIdentifiers()
 		
-		albumListState.current = .edit([])
+		albumListState.selectMode = .select([])
 		newBlock.indices.forEach { offset in
 			newBlock[offset].index = target + Int64(offset)
 		}
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func sink() {
-		guard case let .edit(selected) = albumListState.current else { return }
+		guard case let .select(selected) = albumListState.selectMode else { return }
 		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
 		guard let front = selectedIndicesSorted.first else { return }
 		
@@ -411,7 +413,7 @@ final class AlbumsTVC: LibraryTVC {
 		let newBlock = toDisplace + toDemote
 		let oldRows = albumListState.rowIdentifiers()
 		
-		albumListState.current = .edit([])
+		albumListState.selectMode = .select([])
 		newBlock.indices.forEach { offset in
 			newBlock[offset].index = front + Int64(offset)
 		}
