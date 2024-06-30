@@ -263,11 +263,11 @@ import MediaPlayer
 				.fontBody_dynamicTypeSizeUpToXxxLarge()
 				.symbolRenderingMode(.hierarchical)
 		}
+		.onTapGesture { signal_tappedMenu.toggle() }
 		.disabled({ switch songListState.selectMode { // TO DO: Animate
 			case .view: return false
 			case .select: return true
 		}}())
-		.onTapGesture { signal_tappedMenu.toggle() }
 	}
 	@ViewBuilder private var menuContent: some View {
 		Button {
