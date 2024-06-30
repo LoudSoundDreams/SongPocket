@@ -188,9 +188,13 @@ import MediaPlayer
 		}
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
 		.background {
+			let highlighting: Bool = { switch songListState.selectMode {
+				case .view(let activated): return activated == song.index
+				case .select(let selected): return selected.contains(song.index)
+			}}()
 			Color.accentColor
-				.opacity(shouldHighlight ? .oneHalf : .zero)
-				.animation(shouldHighlight ? nil : .default, value: shouldHighlight) // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
+				.opacity(highlighting ? .oneHalf : .zero)
+				.animation(highlighting ? nil : .default, value: highlighting) // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
 		}
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
@@ -241,12 +245,6 @@ import MediaPlayer
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
-	}
-	private var shouldHighlight: Bool {
-		switch songListState.selectMode {
-			case .view(let activated): return activated == song.index
-			case .select(let selected): return selected.contains(song.index)
-		}
 	}
 	private func tapped() {
 		switch songListState.selectMode {
