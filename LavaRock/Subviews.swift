@@ -173,52 +173,46 @@ import MediaPlayer
 	var songListState: SongListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			songInfoStack
-			Menu { overflowMenuContent } label: {
-				Image(systemName: "ellipsis.circle.fill")
-					.fontBody_dynamicTypeSizeUpToXxxLarge()
-					.symbolRenderingMode(.hierarchical)
-			}
-			.disabled({ switch songListState.selectMode {
-				case .view: return false
-				case .select: return true
-			}}())
-			.onTapGesture { signal_tappedMenu.toggle() }
-			.alignmentGuide_separatorTrailing()
+			mainStack
+				.accessibilityElement(children: .combine)
+				.accessibilityAddTraits(.isButton)
+				.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
+			overflowMenu
 		}
+		.alignmentGuide_separatorTrailing()
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
-		.background {
-			let highlighting: Bool = { switch songListState.selectMode {
-				case .view(let activated): return activated == song.index
-				case .select(let selected): return selected.contains(song.index)
-			}}()
-			Color.accentColor
-				.opacity(highlighting ? .oneHalf : .zero)
-				.animation(highlighting ? nil : .default, value: highlighting) // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
-		}
+		.background { highlight }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	@ViewBuilder private var selectionIndicator: some View {
+	@ViewBuilder private var highlight: some View {
+		let highlighting: Bool = { switch songListState.selectMode {
+			case .view(let activated): return activated == song.index
+			case .select(let selected): return selected.contains(song.index)
+		}}()
+		Color.accentColor
+			.opacity(highlighting ? .oneHalf : .zero)
+			.animation(highlighting ? nil : .default, value: highlighting) // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
+	}
+	private func tapped() {
 		switch songListState.selectMode {
-			case .view: EmptyView()
+			case .view: NotificationCenter.default.post(name: Self.activateIndex, object: song.index)
 			case .select(let selected):
-				if selected.contains(song.index) {
-					Image(systemName: "checkmark.circle.fill")
-						.symbolRenderingMode(.palette)
-						.foregroundStyle(.white, Color.accentColor)
-						.padding(.trailing)
+				var newSelected = selected
+				let index = song.index
+				if selected.contains(index) {
+					newSelected.remove(index)
 				} else {
-					Image(systemName: "circle")
-						.foregroundStyle(.secondary)
-						.padding(.trailing)
+					newSelected.insert(index)
 				}
+				songListState.selectMode = .select(newSelected)
 		}
 	}
-	@ViewBuilder private var songInfoStack: some View {
+	
+	@ViewBuilder private var mainStack: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		HStack(alignment: .firstTextBaseline) {
-			selectionIndicator // TO DO: Animate inserting and removing
+			selectionIndicator
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
@@ -242,25 +236,38 @@ import MediaPlayer
 			.foregroundStyle(.secondary)
 			.monospacedDigit()
 		}
-		.accessibilityElement(children: .combine)
-		.accessibilityAddTraits(.isButton)
-		.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 	}
-	private func tapped() {
-		switch songListState.selectMode {
-			case .view: NotificationCenter.default.post(name: Self.activateIndex, object: song.index)
+	@ViewBuilder private var selectionIndicator: some View {
+		switch songListState.selectMode { // TO DO: Animate
+			case .view: EmptyView()
 			case .select(let selected):
-				var newSelected = selected
-				let index = song.index
-				if selected.contains(index) {
-					newSelected.remove(index)
+				if selected.contains(song.index) {
+					Image(systemName: "checkmark.circle.fill")
+						.symbolRenderingMode(.palette)
+						.foregroundStyle(.white, Color.accentColor)
+						.padding(.trailing)
 				} else {
-					newSelected.insert(index)
+					Image(systemName: "circle")
+						.foregroundStyle(.secondary)
+						.padding(.trailing)
 				}
-				songListState.selectMode = .select(newSelected)
 		}
 	}
-	@ViewBuilder private var overflowMenuContent: some View {
+	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
+	
+	private var overflowMenu: some View {
+		Menu { menuContent } label: {
+			Image(systemName: "ellipsis.circle.fill")
+				.fontBody_dynamicTypeSizeUpToXxxLarge()
+				.symbolRenderingMode(.hierarchical)
+		}
+		.disabled({ switch songListState.selectMode { // TO DO: Animate
+			case .view: return false
+			case .select: return true
+		}}())
+		.onTapGesture { signal_tappedMenu.toggle() }
+	}
+	@ViewBuilder private var menuContent: some View {
 		Button {
 			Task { await song.play() }
 		} label: { Label(InterfaceText.play, systemImage: "play") }
@@ -277,7 +284,6 @@ import MediaPlayer
 		}.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
-	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
 // MARK: - Now-playing indicator
