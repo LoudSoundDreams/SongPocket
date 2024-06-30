@@ -18,27 +18,66 @@ import MediaPlayer
 			art
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport
-		.opacity(foregroundOpacity)
-		.background {
-			// TO DO: Animate removing, like for song rows
-			Color.accentColor
-				.opacity({
-					switch albumListState.selectMode {
-						case .view: return .zero
-						case .select(let selected):
-							guard selected.contains(album.albumPersistentID) else { return .zero }
-							return .oneHalf
-					}
-				}())
-		}
-		.overlay(alignment: .bottomLeading) { overlay }
+		.opacity(foregroundOpacity) // TO DO: Animate
+		.background { highlight } // TO DO: Animate removing, like for song rows
+		.overlay(alignment: .bottomLeading) { selectionOverlay } // TO DO: Animate
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
 		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
 	}
+	private var foregroundOpacity: Double {
+		switch albumListState.selectMode {
+			case .view: return 1
+			case .select: return pow(.oneHalf, 2)
+		}
+	}
+	private var highlight: some View {
+		Color.accentColor
+			.opacity({
+				switch albumListState.selectMode {
+					case .view: return .zero
+					case .select(let selected):
+						guard selected.contains(album.albumPersistentID) else { return .zero }
+						return .oneHalf
+				}
+			}())
+	}
+	@ViewBuilder private var selectionOverlay: some View {
+		switch albumListState.selectMode {
+			case .view: EmptyView()
+			case .select(let selected):
+				if selected.contains(album.albumPersistentID) {
+					Image(systemName: "checkmark.circle.fill")
+						.symbolRenderingMode(.palette)
+						.foregroundStyle(.white, Color.accentColor)
+						.padding()
+				} else {
+					Image(systemName: "circle")
+						.foregroundStyle(.secondary)
+						.padding()
+				}
+		}
+	}
+	private func tapped() {
+		switch albumListState.selectMode {
+			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: album.albumPersistentID)
+			case .select(let selected):
+				var newSelected = selected
+				let albumID = album.albumPersistentID
+				if selected.contains(albumID) {
+					newSelected.remove(albumID)
+				} else {
+					newSelected.insert(albumID)
+				}
+				albumListState.selectMode = .select(newSelected)
+		}
+	}
+	@Environment(\.pixelLength) private var pointsPerPixel
+
 	@ViewBuilder private var art: some View {
+		let maxSideLength = min(viewportWidth, viewportHeight)
 #if targetEnvironment(simulator)
 		if let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName, let uiImage = UIImage(named: fileName) {
 			Image(uiImage: uiImage)
@@ -69,45 +108,8 @@ import MediaPlayer
 		}
 #endif
 	}
-	private var maxSideLength: CGFloat { min(viewportWidth, viewportHeight) }
+	
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
-	@Environment(\.pixelLength) private var pointsPerPixel
-	private var foregroundOpacity: Double {
-		switch albumListState.selectMode {
-			case .view: return 1
-			case .select: return pow(.oneHalf, 2)
-		}
-	}
-	@ViewBuilder private var overlay: some View {
-		switch albumListState.selectMode {
-			case .view: EmptyView()
-			case .select(let selected):
-				if selected.contains(album.albumPersistentID) {
-					Image(systemName: "checkmark.circle.fill")
-						.symbolRenderingMode(.palette)
-						.foregroundStyle(.white, Color.accentColor)
-						.padding()
-				} else {
-					Image(systemName: "circle")
-						.foregroundStyle(.secondary)
-						.padding()
-				}
-		}
-	}
-	private func tapped() {
-		switch albumListState.selectMode {
-			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: album.albumPersistentID)
-			case .select(let selected):
-				var newSelected = selected
-				let albumID = album.albumPersistentID
-				if selected.contains(albumID) {
-					newSelected.remove(albumID)
-				} else {
-					newSelected.insert(albumID)
-				}
-				albumListState.selectMode = .select(newSelected)
-		}
-	}
 }
 
 // MARK: - Album header
