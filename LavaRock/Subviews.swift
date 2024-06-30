@@ -40,17 +40,12 @@ import MediaPlayer
 	}
 	@ViewBuilder private var art: some View {
 #if targetEnvironment(simulator)
-		if
-			let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName,
-			let uiImage = UIImage(named: fileName)
-		{
+		if let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName, let uiImage = UIImage(named: fileName) {
 			Image(uiImage: uiImage)
 				.resizable()
 				.scaledToFit()
 				.frame(width: maxSideLength, height: maxSideLength)
-		} else {
-			Color.red
-		}
+		} else { Color.red }
 #else
 		if let artwork = musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artwork {
 			/*
@@ -162,7 +157,7 @@ import MediaPlayer
 				.monospacedDigit()
 			}
 			.padding(.bottom, .eight * 1/4)
-			.animation(.default, value: musicKitAlbums)
+			.animation(.default, value: musicKitAlbums) // TO DO: Distracting when loading for the first time
 			Spacer().alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
