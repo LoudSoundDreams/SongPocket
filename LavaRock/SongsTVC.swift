@@ -55,9 +55,11 @@ final class SongsTVC: LibraryTVC {
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
-		
 		super.viewDidLoad()
+		
+		view.backgroundColor = UIColor(.grey_oneEighth)
+		setToolbarItems([editButtonItem] + __MainToolbar.shared.barButtonItems, animated: false)
+		editButtonItem.image = Self.beginEditingImage
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selected, object: songListState)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.activateIndex, object: nil)
@@ -197,7 +199,19 @@ final class SongsTVC: LibraryTVC {
 	// MARK: - Editing
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
+		if !editing {
+			Database.viewContext.savePlease()
+		}
+		
 		super.setEditing(editing, animated: animated)
+		
+		editButtonItem.image = editing ? Self.endEditingImage : Self.beginEditingImage
+		setToolbarItems(
+			editing
+			? [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
+			: [editButtonItem] + __MainToolbar.shared.barButtonItems,
+			animated: animated)
+		
 		songListState.selectMode = editing ? .select([]) : .view(nil)
 		navigationItem.setLeftBarButtonItems(editing ? [.flexibleSpace()]/*Removes “Back” button*/ : [], animated: animated)
 	}

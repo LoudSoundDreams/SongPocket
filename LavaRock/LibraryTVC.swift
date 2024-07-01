@@ -4,19 +4,13 @@ import UIKit
 import MusicKit
 
 class LibraryTVC: UITableViewController {
-	private var viewingButtons: [UIBarButtonItem] { [editButtonItem] + __MainToolbar.shared.barButtonItems }
-	final var editingButtons: [UIBarButtonItem] = []
+	static let beginEditingImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
+	static let endEditingImage = UIImage(systemName: "checkmark.circle.fill")
 	
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		view.backgroundColor = UIColor(.grey_oneEighth)
-		
-		editButtonItem.image = Self.beginEditing
-		setToolbarItems(viewingButtons, animated: false)
-		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: MusicRepo.mergedChanges, object: nil)
 	}
 	@objc private func refreshLibraryItemsWhenVisible() {
@@ -74,19 +68,4 @@ class LibraryTVC: UITableViewController {
 		}
 	}
 	private var isAnimatingRows = 0
-	
-	// MARK: - Editing
-	
-	// Overrides should call super (this implementation).
-	private static let beginEditing = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		if !editing {
-			Database.viewContext.savePlease()
-		}
-		
-		super.setEditing(editing, animated: animated)
-		
-		editButtonItem.image = editing ? UIImage(systemName: "checkmark.circle.fill") : Self.beginEditing
-		setToolbarItems(editing ? editingButtons : viewingButtons, animated: animated)
-	}
 }

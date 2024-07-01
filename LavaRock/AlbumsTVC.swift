@@ -45,11 +45,13 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Setup
 	
 	override func viewDidLoad() {
-		editingButtons = [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
-		editButtonItem.isEnabled = allowsEdit()
-		
 		super.viewDidLoad()
 		
+		view.backgroundColor = UIColor(.grey_oneEighth)
+		setToolbarItems([editButtonItem] + __MainToolbar.shared.barButtonItems, animated: false)
+		editButtonItem.image = Self.beginEditingImage
+		
+		editButtonItem.isEnabled = allowsEdit()
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
@@ -221,7 +223,19 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Editing
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
+		if !editing {
+			Database.viewContext.savePlease()
+		}
+		
 		super.setEditing(editing, animated: animated)
+		
+		editButtonItem.image = editing ? Self.endEditingImage : Self.beginEditingImage
+		setToolbarItems(
+			editing
+			? [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
+			: [editButtonItem] + __MainToolbar.shared.barButtonItems,
+			animated: animated)
+		
 		withAnimation {
 			albumListState.selectMode = editing ? .select([]) : .view
 		}
