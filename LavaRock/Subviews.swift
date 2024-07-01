@@ -8,7 +8,7 @@ import MediaPlayer
 
 @MainActor struct AlbumRow: View {
 	static let openAlbumID = Notification.Name("LROpenAlbumID")
-	let album: Album
+	let albumPersistentID: AlbumID
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
 	let albumListState: AlbumListState
@@ -24,8 +24,8 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
-		.accessibilityLabel(musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
-		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
+		.accessibilityLabel(musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
+		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
 	}
 	private var foregroundOpacity: Double {
 		switch albumListState.selectMode {
@@ -36,7 +36,7 @@ import MediaPlayer
 	@ViewBuilder private var highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .view: return false
-			case .select(let selected): return selected.contains(album.albumPersistentID)
+			case .select(let selected): return selected.contains(albumPersistentID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
@@ -45,7 +45,7 @@ import MediaPlayer
 		switch albumListState.selectMode {
 			case .view: EmptyView()
 			case .select(let selected):
-				if selected.contains(album.albumPersistentID) {
+				if selected.contains(albumPersistentID) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
 						.foregroundStyle(.white, Color.accentColor)
@@ -59,10 +59,10 @@ import MediaPlayer
 	}
 	private func tapped() {
 		switch albumListState.selectMode {
-			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: album.albumPersistentID)
+			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: albumPersistentID)
 			case .select(let selected):
 				var newSelected = selected
-				let albumID = album.albumPersistentID
+				let albumID = albumPersistentID
 				if selected.contains(albumID) {
 					newSelected.remove(albumID)
 				} else {
@@ -83,7 +83,7 @@ import MediaPlayer
 				.frame(width: maxSideLength, height: maxSideLength)
 		} else { Color.red }
 #else
-		if let artwork = musicKitAlbums[MusicItemID(String(album.albumPersistentID))]?.artwork {
+		if let artwork = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artwork {
 			/*
 			 As of iOS 17.5.1:
 			 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
@@ -112,7 +112,7 @@ import MediaPlayer
 // MARK: - Album header
 
 @MainActor struct AlbumHeader: View {
-	let albumPersistentID: Int64
+	let albumPersistentID: AlbumID
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
 			NowPlayingImage().hidden()
@@ -168,7 +168,7 @@ import MediaPlayer
 @MainActor struct SongRow: View {
 	static let activateIndex = Notification.Name("LRActivateSongIndex")
 	let song: Song
-	let albumPersistentID: Int64
+	let albumPersistentID: AlbumID
 	var songListState: SongListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
