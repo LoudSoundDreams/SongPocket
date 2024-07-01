@@ -18,9 +18,9 @@ import MediaPlayer
 			art
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
-		.opacity(foregroundOpacity) // TO DO: Animate
-		.background { highlight } // TO DO: Animate removing, like for song rows
-		.overlay(alignment: .bottomLeading) { selectionOverlay } // TO DO: Animate
+		.opacity(foregroundOpacity) // `withAnimation` animates this when toggling select mode.
+		.background { highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay(alignment: .bottomLeading) { selectionOverlay } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
@@ -191,7 +191,12 @@ import MediaPlayer
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
-			.animation(highlighting ? nil : .default, value: highlighting) // Animates for deselecting, whether by user or programmatically. Never animates for selecting.
+			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
+				{ switch songListState.selectMode {
+					case .view(let activated): return activated == song.index ? nil : .default
+					case .select: return nil
+				}}(),
+				value: songListState.selectMode)
 	}
 	private func tapped() {
 		switch songListState.selectMode {
@@ -237,20 +242,24 @@ import MediaPlayer
 		}
 	}
 	@ViewBuilder private var selectionIndicator: some View {
-		switch songListState.selectMode {
-			case .view: EmptyView()
-			case .select(let selected):
-				if selected.contains(song.index) {
-					Image(systemName: "checkmark.circle.fill")
-						.symbolRenderingMode(.palette)
-						.foregroundStyle(.white, Color.accentColor)
-						.padding(.trailing)
-				} else {
-					Image(systemName: "circle")
-						.foregroundStyle(.secondary)
-						.padding(.trailing)
-				}
-		}
+		ZStack {
+			switch songListState.selectMode {
+				case .view: EmptyView()
+				case .select(let selected):
+					ZStack {
+						Image(systemName: "circle")
+							.foregroundStyle(.secondary)
+							.padding(.trailing)
+						if selected.contains(song.index) {
+							Image(systemName: "checkmark.circle.fill")
+								.symbolRenderingMode(.palette)
+								.foregroundStyle(.white, Color.accentColor)
+								.padding(.trailing)
+								.transition(.identity) // Prevents animation when selecting or deselecting (but not when inserting or removing entire stack)
+						}
+					}
+			}
+		}.animation(.default, value: songListState.selectMode)
 	}
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	

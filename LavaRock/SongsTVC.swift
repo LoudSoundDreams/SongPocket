@@ -33,7 +33,7 @@ extension SongsViewModel {
 			case .select: NotificationCenter.default.post(name: Self.selected, object: self)
 		}
 	}}
-	enum SelectMode {
+	enum SelectMode: Equatable {
 		case view(Int64?)
 		case select(Set<Int64>)
 	}

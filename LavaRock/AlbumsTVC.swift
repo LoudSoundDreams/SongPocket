@@ -222,7 +222,9 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
-		albumListState.selectMode = editing ? .select([]) : .view
+		withAnimation {
+			albumListState.selectMode = editing ? .select([]) : .view
+		}
 	}
 	
 	private func allowsEdit() -> Bool {
