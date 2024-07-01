@@ -6,35 +6,7 @@ import MusicKit
 class LibraryTVC: UITableViewController {
 	static let beginEditingImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	static let endEditingImage = UIImage(systemName: "checkmark.circle.fill")
-	
-	// MARK: - Setup
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: MusicRepo.mergedChanges, object: nil)
-	}
-	@objc private func refreshLibraryItemsWhenVisible() {
-		guard nil != view.window else {
-			needsRefreshLibraryItemsOnViewDidAppear = true
-			return
-		}
-		refreshLibraryItems()
-	}
-	private var needsRefreshLibraryItemsOnViewDidAppear = false
-	
-	final override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		if needsRefreshLibraryItemsOnViewDidAppear {
-			needsRefreshLibraryItemsOnViewDidAppear = false
-			refreshLibraryItems()
-		}
-	}
-	func refreshLibraryItems() {
-		fatalError()
 		
-		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
-	}
-	
 	// MARK: - Moving rows
 	
 	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, table view animations are already in progress from an earlier call of this method, and callers could disrupt those animations by running further code.

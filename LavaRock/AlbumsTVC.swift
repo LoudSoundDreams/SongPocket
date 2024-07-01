@@ -55,10 +55,28 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbumID), name: AlbumRow.openAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: AlbumListState.selected, object: albumListState)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
+	@objc private func refreshLibraryItemsWhenVisible() {
+		guard nil != view.window else {
+			needsRefreshLibraryItems = true
+			return
+		}
+		refreshLibraryItems()
+	}
+	private var needsRefreshLibraryItems = false
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		if needsRefreshLibraryItems {
+			needsRefreshLibraryItems = false
+			refreshLibraryItems()
+		}
+	}
+	
 	@objc private func openAlbumID(notification: Notification) {
 		guard
 			let albumIDToOpen = notification.object as? AlbumID,
@@ -107,7 +125,9 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
 	
-	override func refreshLibraryItems() {
+	private func refreshLibraryItems() {
+		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
+		
 		Task {
 			// TO DO: Does this need to be in a `Task`?
 			let oldRows = albumListState.rowIdentifiers()

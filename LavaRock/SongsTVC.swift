@@ -61,6 +61,7 @@ final class SongsTVC: LibraryTVC {
 		setToolbarItems([editButtonItem] + __MainToolbar.shared.barButtonItems, animated: false)
 		editButtonItem.image = Self.beginEditingImage
 		
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selected, object: songListState)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.activateIndex, object: nil)
 	}
@@ -96,7 +97,7 @@ final class SongsTVC: LibraryTVC {
 		present(actionSheet, animated: true)
 	}
 	
-	override func refreshLibraryItems() {
+	@objc private func refreshLibraryItems() {
 		Task {
 			let oldRows = songsViewModel.rowIdentifiers()
 			songsViewModel = songsViewModel.withRefreshedData()
