@@ -52,12 +52,12 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		tableView.separatorStyle = .none
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItemsWhenVisible), name: MusicRepo.mergedChanges, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbumID), name: AlbumRow.openAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: AlbumListState.selected, object: albumListState)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 	}
-	@objc private func refreshLibraryItemsWhenVisible() {
+	@objc private func mergedChanges() {
 		guard nil != view.window else {
 			needsRefreshLibraryItems = true
 			return
@@ -114,7 +114,7 @@ final class AlbumsTVC: LibraryTVC {
 			currentAlbumID == album.albumPersistentID
 		}) else { return }
 		// The current song might not be in our database, but the current `Album` is.
-		navigationController?.popToRootViewController(animated: true)
+		navigationController?.popToViewController(self, animated: true)
 		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}

@@ -279,11 +279,11 @@ import MediaPlayer
 		Button {
 			Task { await song.play() }
 		} label: { Label(InterfaceText.play, systemImage: "play") }
+		
 		Divider()
 		Button {
 			Task { await song.playLast() }
 		} label: { Label(InterfaceText.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
-		
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		Button {
 			Task { await song.playRestOfAlbumLast() }

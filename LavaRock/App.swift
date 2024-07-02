@@ -7,8 +7,7 @@ enum WorkingOn {
 	static let mainToolbar = 10 == 1
 }
 
-@main
-struct LavaRock: App {
+@main struct LavaRock: App {
 	init() {
 		Database.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
 		
