@@ -7,7 +7,7 @@ import MediaPlayer
 import CoreData
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate(set) var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
+	@ObservationIgnored fileprivate var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
 	var selectMode: SelectMode = .view { didSet {
 		switch selectMode {
 			case .view: break
@@ -80,9 +80,7 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func openAlbumID(notification: Notification) {
 		guard
 			let albumIDToOpen = notification.object as? AlbumID,
-			let albumToOpen = albumListState.albums.values.first(where: { album in
-				album.albumPersistentID == albumIDToOpen
-			})
+			let albumToOpen = albumListState.albums[albumIDToOpen]
 		else { return }
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
@@ -128,19 +126,18 @@ final class AlbumsTVC: LibraryTVC {
 	private func refreshLibraryItems() {
 		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 		
+		let oldRows = albumListState.rowIdentifiers()
+		albumListState.albums = AlbumListState.freshAlbums()
+		editButtonItem.isEnabled = allowsEdit()
+		guard !albumListState.albums.isEmpty else {
+			reflectNoAlbums()
+			return
+		}
+		switch albumListState.selectMode {
+			case .view: break
+			case .select: albumListState.selectMode = .select([]) // If in editing mode, deselects everything and stays in editing mode
+		}
 		Task {
-			// TO DO: Does this need to be in a `Task`?
-			let oldRows = albumListState.rowIdentifiers()
-			albumListState.albums = AlbumListState.freshAlbums()
-			editButtonItem.isEnabled = allowsEdit()
-			guard !albumListState.albums.isEmpty else {
-				reflectNoAlbums()
-				return
-			}
-			switch albumListState.selectMode {
-				case .view: break
-				case .select: albumListState.selectMode = .select([]) // If in editing mode, deselects everything and stays in editing mode
-			}
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
@@ -264,7 +261,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func allowsEdit() -> Bool {
 		return !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 	}
-		
+	
 	@objc private func reflectSelected() {
 		arrangeButton.isEnabled = {
 			switch albumListState.selectMode {
