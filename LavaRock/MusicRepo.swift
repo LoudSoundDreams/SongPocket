@@ -36,10 +36,19 @@ extension MusicRepo {
 		}
 		
 		Task {
-			let albums = await AppleMusic.albums()
+			let freshAlbums = await AppleMusic.albums()
 			
+			var union = musicKitAlbums
+			freshAlbums.forEach { (key, value) in
+				union[key] = value
+			}
 			withAnimation { // Spooky action at a distance
-				musicKitAlbums = albums
+				musicKitAlbums = union // Show new data immediately…
+			}
+			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before animating it away anyway.
+			
+			withAnimation {
+				musicKitAlbums = freshAlbums
 			}
 		}
 #endif
