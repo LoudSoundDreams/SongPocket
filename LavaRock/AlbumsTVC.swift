@@ -7,36 +7,33 @@ import MediaPlayer
 import CoreData
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var albums: [AlbumID: Album] = AlbumListState.freshAlbums()
 	var selectMode: SelectMode = .view { didSet {
 		switch selectMode {
 			case .view: break
 			case .select: NotificationCenter.default.post(name: Self.selected, object: self)
 		}
 	}}
+}
+extension AlbumListState {
 	enum SelectMode {
 		case view
 		case select(Set<AlbumID>)
 	}
-}
-extension AlbumListState {
 	static let selected = Notification.Name("LRAlbumsSelected")
-	func rowIdentifiers() -> [AnyHashable] {
-		// 10,000 albums takes 22ms in 2024.
-		return albums.values.sorted { $0.index < $1.index }.map { $0.objectID }
-	}
-	static func freshAlbums() -> [AlbumID: Album] {
-		// 10,000 albums takes 10ms in 2024.
-		let allAlbums = Database.viewContext.fetchPlease(Album.fetchRequest())
-		let tuples = allAlbums.map { ($0.albumPersistentID, $0) }
-		return Dictionary(uniqueKeysWithValues: tuples)
-	}
 }
 
 // MARK: - Table view controller
 
 final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
+	
+	private var albums: [Album] = AlbumsTVC.freshAlbums()
+	private static func freshAlbums() -> [Album] {
+		return Database.viewContext.fetchPlease(Album.fetchRequest_sorted())
+	}
+	private static func rowIdentifiers(_ albums: [Album]) -> [AnyHashable] {
+		return albums.map { $0.objectID }
+	}
 	
 	private lazy var arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.moveToTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float() }]))
@@ -80,7 +77,9 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func openAlbumID(notification: Notification) {
 		guard
 			let albumIDToOpen = notification.object as? AlbumID,
-			let albumToOpen = albumListState.albums[albumIDToOpen]
+			let albumToOpen = albums.first(where: { album in
+				albumIDToOpen == album.albumPersistentID
+			})
 		else { return }
 		navigationController?.pushViewController({
 			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
@@ -96,12 +95,8 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewWillTransition(to: size, with: coordinator)
 		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
-			guard 
-				let cell = tableView.cellForRow(at: indexPath),
-				let rowAlbum = albumListState.albums.values.first(where: { album in
-					indexPath.row == album.index
-				})
-			else { return }
+			guard  let cell = tableView.cellForRow(at: indexPath) else { return }
+			let rowAlbum = albums[indexPath.row]
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
 					albumPersistentID: rowAlbum.albumPersistentID,
@@ -113,10 +108,11 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	func showCurrent() {
-		guard
-			let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
-			let currentAlbum = albumListState.albums[AlbumID(bitPattern: uInt64)]
-		else { return }
+		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
+		let currentAlbumID = AlbumID(bitPattern: uInt64)
+		guard let currentAlbum = albums.first(where: { album in
+			currentAlbumID == album.albumPersistentID
+		}) else { return }
 		// The current song might not be in our database, but the current `Album` is.
 		navigationController?.popToRootViewController(animated: true)
 		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
@@ -126,10 +122,10 @@ final class AlbumsTVC: LibraryTVC {
 	private func refreshLibraryItems() {
 		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 		
-		let oldRows = albumListState.rowIdentifiers()
-		albumListState.albums = AlbumListState.freshAlbums()
+		let oldRows = Self.rowIdentifiers(albums)
+		albums = Self.freshAlbums()
 		editButtonItem.isEnabled = allowsEdit()
-		guard !albumListState.albums.isEmpty else {
+		guard !albums.isEmpty else {
 			reflectNoAlbums()
 			return
 		}
@@ -138,7 +134,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .select: albumListState.selectMode = .select([]) // If in editing mode, deselects everything and stays in editing mode
 		}
 		Task {
-			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
+			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
@@ -169,7 +165,7 @@ final class AlbumsTVC: LibraryTVC {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if albumListState.albums.isEmpty {
+			if albums.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
 					} actions: {
@@ -189,7 +185,7 @@ final class AlbumsTVC: LibraryTVC {
 		_ tableView: UITableView, numberOfRowsInSection section: Int
 	) -> Int {
 		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
-		return albumListState.albums.count
+		return albums.count
 	}
 	
 	override func tableView(
@@ -197,10 +193,7 @@ final class AlbumsTVC: LibraryTVC {
 	) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		let rowAlbum = albumListState.albums.values.first(where: { album in
-			// Bad time complexity, but scanning among 10,000 albums takes 0.6ms at worst and 0.3ms on average in 2024.
-			indexPath.row == album.index
-		})!
+		let rowAlbum = albums[indexPath.row]
 		return cellForAlbum(cell: cell, album: rowAlbum)
 	}
 	private func cellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
@@ -259,7 +252,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func allowsEdit() -> Bool {
-		return !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+		return !albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 	}
 	
 	@objc private func reflectSelected() {
@@ -268,7 +261,8 @@ final class AlbumsTVC: LibraryTVC {
 				case .view: return false
 				case .select(let selected):
 					if selected.isEmpty { return true }
-					return selected.compactMap { albumListState.albums[$0]?.index }.sorted().isConsecutive()
+					let selectedIndices = albums.filter { selected.contains($0.albumPersistentID) }.map { $0.index }
+					return selectedIndices.isConsecutive()
 			}
 		}()
 		arrangeButton.preferredMenuElementOrder = .fixed
@@ -316,52 +310,46 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private func arrange(by order: AlbumOrder) {
-		let oldRows = albumListState.rowIdentifiers()
+		let oldRows = Self.rowIdentifiers(albums)
 		
 		order.reindex(toArrange())
+		albums = Self.freshAlbums()
 		albumListState.selectMode = .select([])
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) }
 	}
 	private func toArrange() -> [Album] {
 		switch albumListState.selectMode {
 			case .view: return []
 			case .select(let selected):
-				if selected.isEmpty {
-					return albumListState.albums.values.sorted { $0.index < $1.index }
-				}
-				return selected.compactMap { albumListState.albums[$0] }.sorted { $0.index < $1.index }
+				if selected.isEmpty { return albums }
+				return albums.filter { selected.contains($0.albumPersistentID) }
 		}
 	}
 	
 	private func promote() {
 		guard case let .select(selected) = albumListState.selectMode else { return }
-		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
+		let selectedIndices = albums.filter { selected.contains($0.albumPersistentID) }.map { $0.index }
 		guard
-			let front = selectedIndicesSorted.first,
-			let back = selectedIndicesSorted.last
+			let front = selectedIndices.first,
+			let back = selectedIndices.last
 		else { return }
 		
-		let target: Int64 = selectedIndicesSorted.isConsecutive() ? max(front - 1, 0) : front
+		let target: Int64 = selectedIndices.isConsecutive() ? max(front - 1, 0) : front
 		let range = (target...back)
-		let toAffectSorted = albumListState.albums.values.filter {
-			range.contains($0.index)
-		}.sorted { $0.index < $1.index }
-		let toPromote = toAffectSorted.filter {
-			selected.contains($0.albumPersistentID)
-		}
-		let toDisplace = toAffectSorted.filter {
-			!selected.contains($0.albumPersistentID)
-		}
+		let toAffect = albums.filter { range.contains($0.index) }
+		let toPromote = toAffect.filter { selected.contains($0.albumPersistentID) }
+		let toDisplace = toAffect.filter { !selected.contains($0.albumPersistentID) }
 		let newBlock = toPromote + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
+		let oldRows = Self.rowIdentifiers(albums)
 		
 		newBlock.indices.forEach { offset in
 			newBlock[offset].index = target + Int64(offset)
 		}
+		albums = Self.freshAlbums()
 		Task {
 			let _ = await moveRows(
 				oldIdentifiers: oldRows,
-				newIdentifiers: albumListState.rowIdentifiers(),
+				newIdentifiers: Self.rowIdentifiers(albums),
 				runningBeforeContinuation: {
 					self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 				})
@@ -369,33 +357,28 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func demote() {
 		guard case let .select(selected) = albumListState.selectMode else { return }
-		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
+		let selectedIndices = albums.filter { selected.contains($0.albumPersistentID) }.map { $0.index }
 		guard
-			let front = selectedIndicesSorted.first,
-			let back = selectedIndicesSorted.last
+			let front = selectedIndices.first,
+			let back = selectedIndices.last
 		else { return }
 		
-		let target: Int64 = selectedIndicesSorted.isConsecutive() ? min(back + 1, Int64(albumListState.albums.count) - 1) : back
+		let target: Int64 = selectedIndices.isConsecutive() ? min(back + 1, Int64(albums.count) - 1) : back
 		let range = (front...target)
-		let toAffectSorted = albumListState.albums.values.filter {
-			range.contains($0.index)
-		}.sorted { $0.index < $1.index }
-		let toDemote = toAffectSorted.filter {
-			selected.contains($0.albumPersistentID)
-		}
-		let toDisplace = toAffectSorted.filter {
-			!selected.contains($0.albumPersistentID)
-		}
+		let toAffect = albums.filter { range.contains($0.index) }
+		let toDemote = toAffect.filter { selected.contains($0.albumPersistentID) }
+		let toDisplace = toAffect.filter { !selected.contains($0.albumPersistentID) }
 		let newBlock = toDisplace + toDemote
-		let oldRows = albumListState.rowIdentifiers()
+		let oldRows = Self.rowIdentifiers(albums)
 		
 		newBlock.indices.forEach { offset in
 			newBlock[offset].index = front + Int64(offset)
 		}
+		albums = Self.freshAlbums()
 		Task {
 			let _ = await moveRows(
 				oldIdentifiers: oldRows,
-				newIdentifiers: albumListState.rowIdentifiers(),
+				newIdentifiers: Self.rowIdentifiers(albums),
 				runningBeforeContinuation: {
 					self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 				})
@@ -404,52 +387,42 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func float() {
 		guard case let .select(selected) = albumListState.selectMode else { return }
-		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
-		guard let back = selectedIndicesSorted.last else { return }
+		let selectedIndices = albums.filter { selected.contains($0.albumPersistentID) }.map { $0.index }
+		guard let back = selectedIndices.last else { return }
 		
 		let target: Int64 = 0
 		let range = (target...back)
-		let toAffectSorted = albumListState.albums.values.filter {
-			range.contains($0.index)
-		}.sorted { $0.index < $1.index }
-		let toPromote = toAffectSorted.filter {
-			selected.contains($0.albumPersistentID)
-		}
-		let toDisplace = toAffectSorted.filter {
-			!selected.contains($0.albumPersistentID)
-		}
+		let toAffect = albums.filter { range.contains($0.index) }
+		let toPromote = toAffect.filter { selected.contains($0.albumPersistentID) }
+		let toDisplace = toAffect.filter { !selected.contains($0.albumPersistentID) }
 		let newBlock = toPromote + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
+		let oldRows = Self.rowIdentifiers(albums)
 		
 		albumListState.selectMode = .select([])
 		newBlock.indices.forEach { offset in
 			newBlock[offset].index = target + Int64(offset)
 		}
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+		albums = Self.freshAlbums()
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) }
 	}
 	private func sink() {
 		guard case let .select(selected) = albumListState.selectMode else { return }
-		let selectedIndicesSorted = selected.map { albumListState.albums[$0]!.index }.sorted()
-		guard let front = selectedIndicesSorted.first else { return }
+		let selectedIndices = albums.filter { selected.contains($0.albumPersistentID) }.map { $0.index }
+		guard let front = selectedIndices.first else { return }
 		
-		let target: Int64 = Int64(albumListState.albums.count) - 1
+		let target: Int64 = Int64(albums.count) - 1
 		let range = (front...target)
-		let toAffectSorted = albumListState.albums.values.filter {
-			range.contains($0.index)
-		}.sorted { $0.index < $1.index }
-		let toDemote = toAffectSorted.filter {
-			selected.contains($0.albumPersistentID)
-		}
-		let toDisplace = toAffectSorted.filter {
-			!selected.contains($0.albumPersistentID)
-		}
+		let toAffect = albums.filter { range.contains($0.index) }
+		let toDemote = toAffect.filter { selected.contains($0.albumPersistentID) }
+		let toDisplace = toAffect.filter { !selected.contains($0.albumPersistentID) }
 		let newBlock = toDisplace + toDemote
-		let oldRows = albumListState.rowIdentifiers()
+		let oldRows = Self.rowIdentifiers(albums)
 		
 		albumListState.selectMode = .select([])
 		newBlock.indices.forEach { offset in
 			newBlock[offset].index = front + Int64(offset)
 		}
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+		albums = Self.freshAlbums()
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) }
 	}
 }
