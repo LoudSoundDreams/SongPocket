@@ -18,22 +18,22 @@ import MediaPlayer
 			art
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
-		.opacity(foregroundOpacity) // `withAnimation` animates this when toggling select mode.
-		.background { highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay(alignment: .bottomLeading) { selectionOverlay } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.opacity(select_opacity) // `withAnimation` animates this when toggling select mode.
+		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay(alignment: .bottomLeading) { select_overlay } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum)
 		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum])
 	}
-	private var foregroundOpacity: Double {
+	private var select_opacity: Double {
 		switch albumListState.selectMode {
 			case .view: return 1
 			case .select: return pow(.oneHalf, 2)
 		}
 	}
-	@ViewBuilder private var highlight: some View {
+	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .view: return false
 			case .select(let selected): return selected.contains(albumID)
@@ -41,7 +41,7 @@ import MediaPlayer
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
 	}
-	@ViewBuilder private var selectionOverlay: some View {
+	@ViewBuilder private var select_overlay: some View {
 		switch albumListState.selectMode {
 			case .view: EmptyView()
 			case .select(let selected):
@@ -179,11 +179,11 @@ import MediaPlayer
 		}
 		.alignmentGuide_separatorTrailing()
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
-		.background { highlight }
+		.background { select_highlight }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	@ViewBuilder private var highlight: some View {
+	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch songListState.selectMode {
 			case .view(let activated): return activated == song.index
 			case .select(let selected): return selected.contains(song.index)
@@ -215,7 +215,7 @@ import MediaPlayer
 	@ViewBuilder private var mainStack: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		HStack(alignment: .firstTextBaseline) {
-			selectionIndicator
+			select_indicator
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
@@ -240,7 +240,7 @@ import MediaPlayer
 			.monospacedDigit()
 		}
 	}
-	@ViewBuilder private var selectionIndicator: some View {
+	@ViewBuilder private var select_indicator: some View {
 		ZStack {
 			switch songListState.selectMode {
 				case .view: EmptyView()
