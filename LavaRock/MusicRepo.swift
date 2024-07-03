@@ -6,18 +6,20 @@ import MediaPlayer
 import SwiftUI
 
 @MainActor @Observable final class MusicRepo {
-	static let shared = MusicRepo()
 	private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
+	
+	private init() {}
+	private let context = Database.viewContext
+}
+extension MusicRepo {
+	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
+	static let shared = MusicRepo()
 	func observeMediaPlayerLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
-	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
-	
-	private init() {}
-	private let context = Database.viewContext
 }
 
 // MARK: - Private

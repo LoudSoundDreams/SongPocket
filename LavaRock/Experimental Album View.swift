@@ -124,8 +124,8 @@ extension FakeAlbum: Hashable {
 // MARK: - Helpers
 
 private extension String {
-    static func randomLowercaseLetter() -> Self {
-        let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
-        return String(character)
-    }
+	static func randomLowercaseLetter() -> Self {
+		let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
+		return String(character)
+	}
 }

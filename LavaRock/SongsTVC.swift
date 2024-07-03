@@ -33,13 +33,13 @@ extension SongsViewModel {
 			case .select: NotificationCenter.default.post(name: Self.selected, object: self)
 		}
 	}}
+}
+extension SongListState {
+	static let selected = Notification.Name("LRSongsSelected")
 	enum SelectMode: Equatable {
 		case view(Int64?)
 		case select(Set<Int64>)
 	}
-}
-extension SongListState {
-	static let selected = Notification.Name("LRSongsSelected")
 }
 
 // MARK: - Table view controller

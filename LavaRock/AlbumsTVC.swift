@@ -15,11 +15,11 @@ import CoreData
 	}}
 }
 extension AlbumListState {
+	static let selected = Notification.Name("LRAlbumsSelected")
 	enum SelectMode {
 		case view
 		case select(Set<AlbumID>)
 	}
-	static let selected = Notification.Name("LRAlbumsSelected")
 }
 
 // MARK: - Table view controller
@@ -102,7 +102,7 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewWillTransition(to: size, with: coordinator)
 		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
-			guard  let cell = tableView.cellForRow(at: indexPath) else { return }
+			guard let cell = tableView.cellForRow(at: indexPath) else { return }
 			let rowAlbum = albums[indexPath.row]
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(

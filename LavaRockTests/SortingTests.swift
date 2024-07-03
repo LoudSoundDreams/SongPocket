@@ -1,9 +1,4 @@
-//
-//  SortingTests.swift
-//  LavaRockTests
-//
-//  Created by h on 2022-06-23.
-//
+// 2022-06-23
 
 import XCTest
 @testable import LavaRock
