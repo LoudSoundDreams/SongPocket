@@ -146,8 +146,9 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		switch albumListState.selectMode {
 			case .view: break
-			case .select: albumListState.selectMode = .select([]) // If in editing mode, deselects everything and stays in editing mode
+			case .select: albumListState.selectMode = .select([]) // TO DO: Stop deselecting everything
 		}
+		// TO DO: Keep current content visible
 		guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) else { return }
 		
 		// Update the data within each row, which might be outdated.
