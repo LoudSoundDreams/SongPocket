@@ -169,9 +169,7 @@ final class AlbumsTVC: LibraryTVC {
 		contentUnavailableConfiguration = {
 			guard MusicAuthorization.currentStatus == .authorized else {
 				return UIHostingConfiguration {
-					ContentUnavailableView {
-					} description: {
-						Text(InterfaceText.welcome_message)
+					ContentUnavailableView {} description: { Text(InterfaceText.welcome_message)
 					} actions: {
 						Button(InterfaceText.welcome_button) {
 							Task { await AppleMusic.requestAccess() }
@@ -181,14 +179,11 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			if albums.isEmpty {
 				return UIHostingConfiguration {
-					ContentUnavailableView {
-					} actions: {
+					ContentUnavailableView {} actions: {
 						Button {
 							let musicURL = URL(string: "music://")!
 							UIApplication.shared.open(musicURL)
-						} label: {
-							Image(systemName: "plus")
-						}
+						} label: { Image(systemName: "plus") }
 					}
 				}
 			}
