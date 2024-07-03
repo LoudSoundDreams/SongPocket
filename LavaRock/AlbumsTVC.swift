@@ -62,15 +62,22 @@ final class AlbumsTVC: LibraryTVC {
 			needsRefreshLibraryItems = true
 			return
 		}
-		refreshLibraryItems()
+		Task { await refreshLibraryItems() }
 	}
 	private var needsRefreshLibraryItems = false
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		if needsRefreshLibraryItems {
-			needsRefreshLibraryItems = false
-			refreshLibraryItems()
+		Task {
+			if needsRefreshLibraryItems {
+				needsRefreshLibraryItems = false
+				await refreshLibraryItems()
+			}
+			
+			if needsScrollToCurrent {
+				needsScrollToCurrent = false
+				scrollToCurrent()
+			}
 		}
 	}
 	
@@ -108,18 +115,26 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	func showCurrent() {
+		guard nil != view.window else {
+			needsScrollToCurrent = true
+			navigationController?.popToViewController(self, animated: true)
+			return
+		}
+		scrollToCurrent()
+	}
+	private var needsScrollToCurrent = false
+	private func scrollToCurrent() {
 		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
 		let currentAlbumID = AlbumID(bitPattern: uInt64)
 		guard let currentAlbum = albums.first(where: { album in
 			currentAlbumID == album.albumPersistentID
 		}) else { return }
 		// The current song might not be in our database, but the current `Album` is.
-		navigationController?.popToViewController(self, animated: true)
 		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
 	
-	private func refreshLibraryItems() {
+	private func refreshLibraryItems() async {
 		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 		
 		let oldRows = Self.rowIdentifiers(albums)
@@ -133,12 +148,10 @@ final class AlbumsTVC: LibraryTVC {
 			case .view: break
 			case .select: albumListState.selectMode = .select([]) // If in editing mode, deselects everything and stays in editing mode
 		}
-		Task {
-			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) else { return }
-			
-			// Update the data within each row, which might be outdated.
-			tableView.reconfigureRows(at: tableView.allIndexPaths())
-		}
+		guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) else { return }
+		
+		// Update the data within each row, which might be outdated.
+		tableView.reconfigureRows(at: tableView.allIndexPaths())
 	}
 	private func reflectNoAlbums() {
 		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)

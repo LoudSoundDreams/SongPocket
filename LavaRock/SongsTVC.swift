@@ -101,7 +101,7 @@ final class SongsTVC: LibraryTVC {
 		Task {
 			let oldRows = songsViewModel.rowIdentifiers()
 			songsViewModel = songsViewModel.withRefreshedData()
-			dismiss(animated: true) // In case “confirm play” action sheet is presented
+			dismiss(animated: true) // In case “confirm play” action sheet is presented. Annoying: also dismisses overflow menu.
 			switch songListState.selectMode {
 				case .view: songListState.selectMode = .view(nil) // In case song was activated
 				case .select: songListState.selectMode = .select([])
