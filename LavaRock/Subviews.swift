@@ -153,9 +153,8 @@ import MediaPlayer
 				.font(.caption2)
 				.monospacedDigit()
 			}
-			.padding(.bottom, .eight * 1/4)
 			.animation(.default, value: musicKitAlbums) // TO DO: Distracting when loading for the first time
-		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
+		}.padding()
 	}
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
@@ -175,7 +174,7 @@ import MediaPlayer
 				.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 			overflowMenu
 		}
-		.padding(.horizontal).padding(.vertical, .eight * 3/2)
+		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
 		.background { select_highlight }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
@@ -222,7 +221,7 @@ import MediaPlayer
 						.foregroundStyle(.secondary)
 						.fontFootnote()
 				}
-			}.padding(.bottom, .eight * 1/4)
+			}
 			Spacer()
 			Text({
 				guard let info else { return InterfaceText.octothorpe }
