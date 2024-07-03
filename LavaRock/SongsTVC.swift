@@ -164,7 +164,7 @@ final class SongsTVC: LibraryTVC {
 				cell.selectionStyle = .none // So the user can’t even highlight the cell
 				cell.backgroundColor = .clear
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumHeader(albumPersistentID: album.albumPersistentID)
+					AlbumHeader(albumID: album.albumPersistentID)
 				}.margins(.all, .zero)
 				return cell
 			default:
@@ -178,7 +178,7 @@ final class SongsTVC: LibraryTVC {
 					return result
 				}()
 				cell.contentConfiguration = UIHostingConfiguration {
-					SongRow(song: song, albumPersistentID: album.albumPersistentID, songListState: songListState)
+					SongRow(song: song, albumID: album.albumPersistentID, songListState: songListState)
 				}.margins(.all, .zero)
 				return cell
 		}

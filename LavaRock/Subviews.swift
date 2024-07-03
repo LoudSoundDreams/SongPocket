@@ -8,7 +8,7 @@ import MediaPlayer
 
 @MainActor struct AlbumRow: View {
 	static let openAlbumID = Notification.Name("LROpenAlbumID")
-	let albumPersistentID: AlbumID
+	let albumID: AlbumID
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
 	let albumListState: AlbumListState
@@ -24,8 +24,8 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
-		.accessibilityLabel(musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
-		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum])
+		.accessibilityLabel(musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum)
+		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum])
 	}
 	private var foregroundOpacity: Double {
 		switch albumListState.selectMode {
@@ -36,7 +36,7 @@ import MediaPlayer
 	@ViewBuilder private var highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .view: return false
-			case .select(let selected): return selected.contains(albumPersistentID)
+			case .select(let selected): return selected.contains(albumID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
@@ -45,7 +45,7 @@ import MediaPlayer
 		switch albumListState.selectMode {
 			case .view: EmptyView()
 			case .select(let selected):
-				if selected.contains(albumPersistentID) {
+				if selected.contains(albumID) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
 						.foregroundStyle(.white, Color.accentColor)
@@ -59,10 +59,9 @@ import MediaPlayer
 	}
 	private func tapped() {
 		switch albumListState.selectMode {
-			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: albumPersistentID)
+			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: albumID)
 			case .select(let selected):
 				var newSelected = selected
-				let albumID = albumPersistentID
 				if selected.contains(albumID) {
 					newSelected.remove(albumID)
 				} else {
@@ -83,7 +82,7 @@ import MediaPlayer
 				.frame(width: maxSideLength, height: maxSideLength)
 		} else { Color.red }
 #else
-		if let artwork = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artwork {
+		if let artwork = musicKitAlbums[MusicItemID(String(albumID))]?.artwork {
 			/*
 			 As of iOS 17.5.1:
 			 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
@@ -112,7 +111,7 @@ import MediaPlayer
 // MARK: - Album header
 
 @MainActor struct AlbumHeader: View {
-	let albumPersistentID: AlbumID
+	let albumID: AlbumID
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
 			NowPlayingImage().hidden()
@@ -121,7 +120,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 					return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
 #else
-					return musicKitAlbums[MusicItemID(String(albumPersistentID))]?.title ?? InterfaceText.unknownAlbum
+					return musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum
 #endif
 				}())
 				.fontTitle2Bold()
@@ -131,7 +130,7 @@ import MediaPlayer
 					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
 #else
 					guard
-						let albumArtist = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName,
+						let albumArtist = musicKitAlbums[MusicItemID(String(albumID))]?.artistName,
 						albumArtist != ""
 					else { return InterfaceText.unknownArtist }
 					return albumArtist
@@ -145,7 +144,7 @@ import MediaPlayer
 						return InterfaceText.emDash
 					}
 #else
-					guard let date = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.releaseDate else {
+					guard let date = musicKitAlbums[MusicItemID(String(albumID))]?.releaseDate else {
 						return InterfaceText.emDash
 					}
 #endif
@@ -168,7 +167,7 @@ import MediaPlayer
 @MainActor struct SongRow: View {
 	static let activateIndex = Notification.Name("LRActivateSongIndex")
 	let song: Song
-	let albumPersistentID: AlbumID
+	let albumID: AlbumID
 	var songListState: SongListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
@@ -221,7 +220,7 @@ import MediaPlayer
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 					.alignmentGuide_separatorLeading()
-				let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumPersistentID))]?.artistName
+				let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumID))]?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 					Text(songArtist)
 						.foregroundStyle(.secondary)

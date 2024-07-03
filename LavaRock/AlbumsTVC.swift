@@ -106,7 +106,7 @@ final class AlbumsTVC: LibraryTVC {
 			let rowAlbum = albums[indexPath.row]
 			cell.contentConfiguration = UIHostingConfiguration {
 				AlbumRow(
-					albumPersistentID: rowAlbum.albumPersistentID,
+					albumID: rowAlbum.albumPersistentID,
 					viewportWidth: size.width,
 					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
 					albumListState: albumListState)
@@ -218,7 +218,7 @@ final class AlbumsTVC: LibraryTVC {
 		}()
 		cell.contentConfiguration = UIHostingConfiguration {
 			AlbumRow(
-				albumPersistentID: album.albumPersistentID,
+				albumID: album.albumPersistentID,
 				viewportWidth: view.frame.width,
 				viewportHeight: {
 					let height = view.frame.height
