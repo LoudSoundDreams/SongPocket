@@ -150,13 +150,6 @@ extension View {
 			.font(.body)
 			.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 	}
-	
-	func alignmentGuide_separatorLeading() -> some View {
-		alignmentGuide(.listRowSeparatorLeading) { viewDim in viewDim[.leading] }
-	}
-	func alignmentGuide_separatorTrailing() -> some View {
-		alignmentGuide(.listRowSeparatorTrailing) { viewDim in viewDim[.trailing] }
-	}
 }
 
 // MARK: - UIKit

@@ -124,7 +124,6 @@ import MediaPlayer
 #endif
 				}())
 				.fontTitle2Bold()
-				.alignmentGuide_separatorLeading()
 				Text({
 #if targetEnvironment(simulator)
 					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
@@ -156,7 +155,6 @@ import MediaPlayer
 			}
 			.padding(.bottom, .eight * 1/4)
 			.animation(.default, value: musicKitAlbums) // TO DO: Distracting when loading for the first time
-			Spacer().alignmentGuide_separatorTrailing()
 		}.padding(.horizontal).padding(.vertical, .eight * 3/2)
 	}
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
@@ -177,7 +175,6 @@ import MediaPlayer
 				.accessibilityInputLabels([song.songInfo()?.titleOnDisk].compacted())
 			overflowMenu
 		}
-		.alignmentGuide_separatorTrailing()
 		.padding(.horizontal).padding(.vertical, .eight * 3/2)
 		.background { select_highlight }
 		.contentShape(Rectangle())
@@ -219,7 +216,6 @@ import MediaPlayer
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			VStack(alignment: .leading, spacing: .eight * 1/2) {
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
-					.alignmentGuide_separatorLeading()
 				let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumID))]?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 					Text(songArtist)

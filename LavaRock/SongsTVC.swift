@@ -58,6 +58,7 @@ final class SongsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		view.backgroundColor = UIColor(.grey_oneEighth)
+		tableView.separatorStyle = .none
 		setToolbarItems([editButtonItem] + __MainToolbar.shared.barButtonItems, animated: false)
 		editButtonItem.image = Self.beginEditingImage
 		

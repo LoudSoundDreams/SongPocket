@@ -45,12 +45,12 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewDidLoad()
 		
 		view.backgroundColor = UIColor(.grey_oneEighth)
+		tableView.separatorStyle = .none
 		setToolbarItems([editButtonItem] + __MainToolbar.shared.barButtonItems, animated: false)
 		editButtonItem.image = Self.beginEditingImage
 		
 		editButtonItem.isEnabled = allowsEdit()
 		navigationItem.backButtonDisplayMode = .minimal
-		tableView.separatorStyle = .none
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbumID), name: AlbumRow.openAlbumID, object: nil)
