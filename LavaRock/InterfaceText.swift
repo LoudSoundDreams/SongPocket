@@ -23,7 +23,7 @@ enum InterfaceText {
 	// MARK: Toolbar
 	
 	static let _emptyLibraryMessage = NSLocalizedString("Your Apple Music library is empty. Add something!", comment: "Message in menu when database is empty")
-	static let showAlbum = NSLocalizedString("Show Album", comment: "Button and accessibility label")
+	static let showAlbum = NSLocalizedString("Show Album", comment: "Button")
 	
 	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")
@@ -39,10 +39,10 @@ enum InterfaceText {
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let random = NSLocalizedString("Random", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
-	static let moveToTop = NSLocalizedString("To Top", comment: "Button")
-	static let moveToBottom = NSLocalizedString("To Bottom", comment: "Button")
 	static let moveUp = NSLocalizedString("Move up", comment: "Accessibility label")
 	static let moveDown = NSLocalizedString("Move down", comment: "Accessibility label")
+	static let toTop = NSLocalizedString("To Top", comment: "Button")
+	static let toBottom = NSLocalizedString("To Bottom", comment: "Button")
 	
 	// MARK: Albums view
 	
