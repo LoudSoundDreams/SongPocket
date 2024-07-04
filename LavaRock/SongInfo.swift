@@ -143,7 +143,7 @@ struct Sim_SongInfo: SongInfo {
 	let releaseDateOnDisk: Date?
 	
 	// Not protocol requirements
-	let coverArtFileName: String?
+	let coverArtFileName: String
 }
 extension Sim_SongInfo: Equatable {}
 
@@ -178,7 +178,7 @@ extension Sim_SongInfo {
 		albumID: AlbumID,
 		albumArtist: String?,
 		albumTitle: String?,
-		coverArt: String?,
+		coverArt: String,
 		discCount: Int,
 		discNumber: Int,
 		track: Int,

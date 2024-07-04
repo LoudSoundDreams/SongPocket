@@ -74,12 +74,13 @@ import MediaPlayer
 	@ViewBuilder private var art: some View {
 		let maxSideLength = min(viewportWidth, viewportHeight)
 #if targetEnvironment(simulator)
-		if let fileName = (album.songs(sorted: true).first?.songInfo() as? Sim_SongInfo)?.coverArtFileName, let uiImage = UIImage(named: fileName) {
-			Image(uiImage: uiImage)
-				.resizable()
-				.scaledToFit()
-				.frame(width: maxSideLength, height: maxSideLength)
-		} else { Color.red }
+		let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: {
+			albumID == $0.albumID
+		})!
+		Image(songInfo.coverArtFileName)
+			.resizable()
+			.scaledToFit()
+			.frame(width: maxSideLength, height: maxSideLength)
 #else
 		if let artwork = musicKitAlbums[MusicItemID(String(albumID))]?.artwork {
 			/*
