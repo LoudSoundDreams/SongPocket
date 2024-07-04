@@ -146,7 +146,32 @@ struct Sim_SongInfo: SongInfo {
 	let coverArtFileName: String?
 }
 extension Sim_SongInfo: Equatable {}
+
+private extension Date {
+	// "1984-01-24"
+	static func lateNight(iso8601_10Char: String) -> Self {
+		return try! Self("\(iso8601_10Char)T23:59:59Z", strategy: .iso8601)
+	}
+}
+
 extension Sim_SongInfo {
+	private enum AlbumIDDispenser {
+		private static var nextAvailable = 1
+		static func takeNumber() -> AlbumID {
+			let result = AlbumID(nextAvailable)
+			nextAvailable += 1
+			return result
+		}
+	}
+	private enum SongIDDispenser {
+		private static var nextAvailable = 1
+		static func takeNumber() -> SongID {
+			let result = SongID(nextAvailable)
+			nextAvailable += 1
+			return result
+		}
+	}
+	
 	static var current: Self? = nil
 	init(
 		asCurrent: Bool = false,
@@ -591,28 +616,5 @@ extension Sim_SongInfo {
 		].forEach { result[$0.songID] = $0 }
 		return result
 	}()
-	
-	private enum AlbumIDDispenser {
-		private static var nextAvailable = 1
-		static func takeNumber() -> AlbumID {
-			let result = AlbumID(nextAvailable)
-			nextAvailable += 1
-			return result
-		}
-	}
-	private enum SongIDDispenser {
-		private static var nextAvailable = 1
-		static func takeNumber() -> SongID {
-			let result = SongID(nextAvailable)
-			nextAvailable += 1
-			return result
-		}
-	}
-}
-private extension Date {
-	// "1984-01-24"
-	static func lateNight(iso8601_10Char: String) -> Self {
-		return try! Self("\(iso8601_10Char)T23:59:59Z", strategy: .iso8601)
-	}
 }
 #endif
