@@ -35,6 +35,7 @@ final class AlbumsTVC: LibraryTVC {
 		return albums.map { $0.objectID }
 	}
 	
+	private let selectButton = UIBarButtonItem()
 	private let arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float() }]))
 	private lazy var demoteButton = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sink() }]))
@@ -46,10 +47,9 @@ final class AlbumsTVC: LibraryTVC {
 		
 		view.backgroundColor = UIColor(.grey_oneEighth)
 		tableView.separatorStyle = .none
-		setToolbarItems([editButtonItem] + __MainToolbar.shared.barButtonItems, animated: false)
-		editButtonItem.image = Self.beginEditingImage
 		
-		editButtonItem.isEnabled = allowsEdit()
+		endSelecting()
+		selectButton.isEnabled = allowsSelect()
 		navigationItem.backButtonDisplayMode = .minimal
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: MusicRepo.mergedChanges, object: nil)
@@ -139,7 +139,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		let oldRows = Self.rowIdentifiers(albums)
 		albums = Self.freshAlbums()
-		editButtonItem.isEnabled = allowsEdit()
+		selectButton.isEnabled = allowsSelect()
 		guard !albums.isEmpty else {
 			reflectNoAlbums()
 			return
@@ -156,7 +156,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func reflectNoAlbums() {
 		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
-		setEditing(false, animated: true)
+		endSelecting()
 	}
 	
 	// MARK: - Table view
@@ -224,34 +224,28 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
-	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
-		return false
-	}
 	
 	// MARK: - Editing
 	
-	override func setEditing(_ editing: Bool, animated: Bool) {
-		if !editing {
-			Database.viewContext.savePlease()
-		}
-		
-		super.setEditing(editing, animated: animated)
-		
-		editButtonItem.image = editing ? Self.endEditingImage : Self.beginEditingImage
-		setToolbarItems(
-			editing
-			? [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
-			: [editButtonItem] + __MainToolbar.shared.barButtonItems,
-			animated: animated)
-		
-		withAnimation {
-			albumListState.selectMode = editing ? .select([]) : .view
-		}
+	private func allowsSelect() -> Bool {
+		return !albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 	}
 	
-	private func allowsEdit() -> Bool {
-		return !albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+	private func beginSelecting() {
+		setToolbarItems([selectButton, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton], animated: true)
+		withAnimation {
+			albumListState.selectMode = .select([])
+		}
+		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
+	}
+	private func endSelecting() {
+		Database.viewContext.savePlease()
+		
+		setToolbarItems([selectButton] + __MainToolbar.shared.barButtonItems, animated: true)
+		withAnimation {
+			albumListState.selectMode = .view
+		}
+		selectButton.primaryAction = UIAction(title: InterfaceText.select, image: Self.beginSelectingImage) { [weak self] _ in self?.beginSelecting() }
 	}
 	
 	@objc private func reflectSelected() {

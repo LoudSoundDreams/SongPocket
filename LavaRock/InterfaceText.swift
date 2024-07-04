@@ -7,6 +7,7 @@ enum InterfaceText {
 	// MARK: - WITHOUT VARIABLES
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
+	static let done = NSLocalizedString("Done", comment: "Button")
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
@@ -24,6 +25,8 @@ enum InterfaceText {
 	
 	static let _emptyLibraryMessage = NSLocalizedString("Your Apple Music library is empty. Add something!", comment: "Message in menu when database is empty")
 	static let showAlbum = NSLocalizedString("Show Album", comment: "Button")
+	
+	static let select = NSLocalizedString("Select", comment: "Button")
 	
 	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")

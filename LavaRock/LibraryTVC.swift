@@ -4,8 +4,8 @@ import UIKit
 import MusicKit
 
 class LibraryTVC: UITableViewController {
-	static let beginEditingImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
-	static let endEditingImage = UIImage(systemName: "checkmark.circle.fill")
+	static let beginSelectingImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
+	static let endSelectingImage = UIImage(systemName: "checkmark.circle.fill")
 		
 	// MARK: - Moving rows
 	

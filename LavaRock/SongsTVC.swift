@@ -59,8 +59,9 @@ final class SongsTVC: LibraryTVC {
 		
 		view.backgroundColor = UIColor(.grey_oneEighth)
 		tableView.separatorStyle = .none
+		
 		setToolbarItems([editButtonItem] + __MainToolbar.shared.barButtonItems, animated: false)
-		editButtonItem.image = Self.beginEditingImage
+		editButtonItem.image = Self.beginSelectingImage
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selected, object: songListState)
@@ -182,7 +183,10 @@ final class SongsTVC: LibraryTVC {
 	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
-	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { return false }
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
+		return false
+	}
 	
 	// MARK: - Editing
 	
@@ -193,7 +197,7 @@ final class SongsTVC: LibraryTVC {
 		
 		super.setEditing(editing, animated: animated)
 		
-		editButtonItem.image = editing ? Self.endEditingImage : Self.beginEditingImage
+		editButtonItem.image = editing ? Self.endSelectingImage : Self.beginSelectingImage
 		setToolbarItems(
 			editing
 			? [editButtonItem, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton]
