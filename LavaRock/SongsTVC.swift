@@ -144,9 +144,7 @@ final class SongsTVC: LibraryTVC {
 		
 		return 1
 	}
-	override func tableView(
-		_ tableView: UITableView, numberOfRowsInSection section: Int
-	) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if songsViewModel.songs.isEmpty {
 			return 0 // Without `prerowCount`
 		} else {
@@ -154,9 +152,7 @@ final class SongsTVC: LibraryTVC {
 		}
 	}
 	
-	override func tableView(
-		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
-	) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let album = songsViewModel.songs.first!.container!
 		switch indexPath.row {
 			case 0:
@@ -185,18 +181,8 @@ final class SongsTVC: LibraryTVC {
 		}
 	}
 	
-	override func tableView(
-		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		return nil
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
-	) -> Bool {
-		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
-		return false
-	}
+	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { return false }
 	
 	// MARK: - Editing
 	

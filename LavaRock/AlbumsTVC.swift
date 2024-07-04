@@ -190,16 +190,12 @@ final class AlbumsTVC: LibraryTVC {
 			return nil
 		}()
 	}
-	override func tableView(
-		_ tableView: UITableView, numberOfRowsInSection section: Int
-	) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
 		return albums.count
 	}
 	
-	override func tableView(
-		_ tableView: UITableView, cellForRowAt indexPath: IndexPath
-	) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		// The cell in the storyboard is completely default except for the reuse identifier.
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 		let rowAlbum = albums[indexPath.row]
@@ -227,15 +223,9 @@ final class AlbumsTVC: LibraryTVC {
 		return cell
 	}
 	
-	override func tableView(
-		_ tableView: UITableView, willSelectRowAt indexPath: IndexPath
-	) -> IndexPath? {
-		return nil
-	}
-	
-	override func tableView(
-		_ tableView: UITableView, canEditRowAt indexPath: IndexPath
-	) -> Bool {
+	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		// As of iOS 17.6 developer beta 1, returning `false` removes selection circles even if `tableView.allowsMultipleSelectionDuringEditing`, and removes reorder controls even if you implement `moveRowAt`.
 		return false
 	}
 	
