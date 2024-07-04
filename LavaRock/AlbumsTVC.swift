@@ -47,8 +47,8 @@ final class AlbumsTVC: LibraryTVC {
 		
 		view.backgroundColor = UIColor(.grey_oneEighth)
 		tableView.separatorStyle = .none
-		
 		endSelecting()
+		
 		selectButton.isEnabled = allowsSelect()
 		navigationItem.backButtonDisplayMode = .minimal
 		
