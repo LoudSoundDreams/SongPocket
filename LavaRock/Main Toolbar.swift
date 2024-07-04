@@ -7,7 +7,7 @@ import MediaPlayer
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor final class __MainToolbar {
 	static let shared = __MainToolbar()
-	lazy var barButtonItems: [UIBarButtonItem] = [.flexibleSpace(), playPauseButton, .flexibleSpace(), overflowButton]
+	var barButtonItems: [UIBarButtonItem] { [.flexibleSpace(), playPauseButton, .flexibleSpace(), overflowButton] }
 	var albumsTVC: WeakRef<AlbumsTVC>? = nil
 	func observeMediaPlayerController() {
 		refresh()
@@ -21,8 +21,8 @@ import MediaPlayer
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: MusicRepo.mergedChanges, object: nil) // Because when Media Player enters or exits the “Not Playing” state, it doesn’t post “now-playing item changed” notifications.
 	}
 	
-	private lazy var playPauseButton = UIBarButtonItem()
-	private lazy var overflowButton = UIBarButtonItem()
+	private let playPauseButton = UIBarButtonItem()
+	private let overflowButton = UIBarButtonItem()
 	
 	@objc private func refresh() {
 		refreshPlayPause()
