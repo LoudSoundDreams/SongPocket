@@ -15,10 +15,9 @@ import MediaPlayer
 	var body: some View {
 		VStack(spacing: .zero) {
 			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
-			art
+			art.opacity(select_opacity) // `withAnimation` animates this when toggling select mode.
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
-		.opacity(select_opacity) // `withAnimation` animates this when toggling select mode.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay(alignment: .bottomLeading) { select_overlay } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
