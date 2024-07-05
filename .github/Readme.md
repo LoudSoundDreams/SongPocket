@@ -9,9 +9,9 @@ SongPocket won’t do everything for everyone, and generally, we should [remove]
 So Songpocket tentatively…
 
 1. Won’t offer multiple ways to do the same action. [Monotonous design is better.](https://verbnounenter.net/monotony)
-2. Won’t replace iOS’s Music app. This lets it do better what the Music app doesn’t focus on. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for removing items from the user’s library.)
-3. Won’t show song durations, because I [consider them spoilers](https://en.wikipedia.org/wiki/Hidden_track). If this were a music app for everyone, I would add a mode; but it’s not, and [modes are bad](https://spectrum.ieee.org/of-modes-and-men). (Settings are modes too.)
-4. Won’t include appearance options like dark mode or accent color, because they distract from the key experience. Focus means spending your full attention on what actually matters, and preventing yourself from fiddling.
+2. Won’t replace iOS’s Music app. This lets it focus on what the Music app doesn’t. (Besides, [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for deleting songs from the library.)
+3. Won’t show song durations, because [they’re spoilers](https://en.wikipedia.org/wiki/Hidden_track). If this were a music app for everyone, I would add a mode; but it’s not, and [modes are bad](https://spectrum.ieee.org/of-modes-and-men). (Settings are modes too.)
+4. Won’t include appearance options like accent color, because they distract from the key experience. Focus means spending your full attention on what actually matters, and preventing yourself from fiddling.
 
 Want to make different decisions? You can make your own version:
 
