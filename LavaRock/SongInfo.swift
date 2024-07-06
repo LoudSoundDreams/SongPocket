@@ -2,8 +2,8 @@
 
 import UIKit
 
-typealias AlbumID = Int64
-typealias SongID = Int64
+typealias AlbumID = Int64 // TO DO: Prevent confusion with `Album.index`
+typealias SongID = Int64 // TO DO: Prevent confusion with `Song.index`
 
 protocol SongInfo {
 	var albumID: AlbumID { get }
