@@ -176,9 +176,14 @@ final class AlbumsTVC: LibraryTVC {
 		albumListState.refreshAlbums()
 		selectButton.isEnabled = allowsSelect()
 		switch albumListState.selectMode {
-				// TO DO: Stop deselecting everything
 			case .view: break
-			case .select: albumListState.selectMode = .select([])
+			case .select(let selected):
+				let newSelected: Set<AlbumID> = Set(albumListState.albums.compactMap {
+					let albumID = $0.albumPersistentID
+					guard selected.contains(albumID) else { return nil }
+					return albumID
+				})
+				albumListState.selectMode = .select(newSelected)
 		}
 		guard !albumListState.albums.isEmpty else {
 			reflectNoAlbums()
