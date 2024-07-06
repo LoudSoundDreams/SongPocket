@@ -134,7 +134,8 @@ final class AlbumsTVC: LibraryTVC {
 				switch albumListState.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
 					case .expanded(let expandedAlbumID):
-						let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath) // TO DO: Dequeue a different cell
+						// The cell in the storyboard is completely default except for the reuse identifier.
+						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
 						cell.backgroundColor = .clear
 						cell.selectedBackgroundView = {
 							let result = UIView()
