@@ -280,12 +280,9 @@ final class SongsTVC: LibraryTVC {
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: Int(targetIndex))
 		songsViewModel.songs = newSongs
 		Task {
-			let _ = await moveRows(
-				oldIdentifiers: oldRows,
-				newIdentifiers: songsViewModel.rowIdentifiers(),
-				runningBeforeContinuation: {
-					self.tableView.scrollToRow(at: IndexPath(row: SongsViewModel.prerowCount + targetIndex, section: 0), at: .middle, animated: true)
-				})
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers(), runningBeforeContinuation: {
+				self.tableView.scrollToRow(at: IndexPath(row: SongsViewModel.prerowCount + targetIndex, section: 0), at: .middle, animated: true)
+			})
 		}
 	}
 	func demote() {
@@ -302,12 +299,9 @@ final class SongsTVC: LibraryTVC {
 		newSongs.move(fromOffsets: IndexSet(indicesSorted), toOffset: targetIndex + 1)
 		songsViewModel.songs = newSongs
 		Task {
-			let _ = await moveRows(
-				oldIdentifiers: oldRows,
-				newIdentifiers: songsViewModel.rowIdentifiers(),
-				runningBeforeContinuation: {
-					self.tableView.scrollToRow(at: IndexPath(row: SongsViewModel.prerowCount + targetIndex, section: 0), at: .middle, animated: true)
-				})
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers(), runningBeforeContinuation: {
+				self.tableView.scrollToRow(at: IndexPath(row: SongsViewModel.prerowCount + targetIndex, section: 0), at: .middle, animated: true)
+			})
 		}
 	}
 	
