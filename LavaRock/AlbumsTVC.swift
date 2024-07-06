@@ -40,8 +40,6 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float() }]))
 	private lazy var demoteButton = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sink() }]))
 	
-	// MARK: - Setup
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -53,111 +51,9 @@ final class AlbumsTVC: LibraryTVC {
 		navigationItem.backButtonDisplayMode = .minimal
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: MusicRepo.mergedChanges, object: nil)
+		__MainToolbar.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbumID), name: AlbumRow.openAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: AlbumListState.selected, object: albumListState)
-		__MainToolbar.shared.albumsTVC = WeakRef(self)
-	}
-	@objc private func mergedChanges() {
-		guard nil != view.window else {
-			needsRefreshLibraryItems = true
-			return
-		}
-		Task { await refreshLibraryItems() }
-	}
-	private var needsRefreshLibraryItems = false
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		Task {
-			if needsRefreshLibraryItems {
-				needsRefreshLibraryItems = false
-				await refreshLibraryItems()
-			}
-			
-			if needsScrollToCurrent {
-				needsScrollToCurrent = false
-				scrollToCurrent()
-			}
-		}
-	}
-	
-	@objc private func openAlbumID(notification: Notification) {
-		guard
-			let albumIDToOpen = notification.object as? AlbumID,
-			let albumToOpen = albums.first(where: { album in
-				albumIDToOpen == album.albumPersistentID
-			})
-		else { return }
-		navigationController?.pushViewController({
-			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-			songsTVC.songsViewModel = SongsViewModel(album: albumToOpen)
-			return songsTVC
-		}(), animated: true)
-	}
-	
-	override func viewWillTransition(
-		to size: CGSize,
-		with coordinator: UIViewControllerTransitionCoordinator
-	) {
-		super.viewWillTransition(to: size, with: coordinator)
-		
-		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
-			guard let cell = tableView.cellForRow(at: indexPath) else { return }
-			let rowAlbum = albums[indexPath.row]
-			cell.contentConfiguration = UIHostingConfiguration {
-				AlbumRow(
-					albumID: rowAlbum.albumPersistentID,
-					viewportWidth: size.width,
-					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
-					albumListState: albumListState)
-			}.margins(.all, .zero)
-		}
-	}
-	
-	func showCurrent() {
-		guard nil != view.window else {
-			needsScrollToCurrent = true
-			navigationController?.popToViewController(self, animated: true)
-			return
-		}
-		scrollToCurrent()
-	}
-	private var needsScrollToCurrent = false
-	private func scrollToCurrent() {
-		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
-		let currentAlbumID = AlbumID(bitPattern: uInt64)
-		guard let currentAlbum = albums.first(where: { album in
-			currentAlbumID == album.albumPersistentID
-		}) else { return }
-		// The current song might not be in our database, but the current `Album` is.
-		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
-		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-	}
-	
-	private func refreshLibraryItems() async {
-		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
-		
-		let oldRows = Self.rowIdentifiers(albums)
-		albums = Self.freshAlbums()
-		selectButton.isEnabled = allowsSelect()
-		switch albumListState.selectMode {
-				// TO DO: Stop deselecting everything
-			case .view: break
-			case .select: albumListState.selectMode = .select([])
-		}
-		guard !albums.isEmpty else {
-			reflectNoAlbums()
-			return
-		}
-		// TO DO: Keep current content visible
-		guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) else { return }
-		
-		// Update the data within each row, which might be outdated.
-		tableView.reconfigureRows(at: tableView.allIndexPaths())
-	}
-	private func reflectNoAlbums() {
-		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
-		endSelecting()
 	}
 	
 	// MARK: - Table view
@@ -225,6 +121,110 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
+	
+	// MARK: - Events
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		Task {
+			if needsRefreshLibraryItems {
+				needsRefreshLibraryItems = false
+				await refreshLibraryItems()
+			}
+			
+			if needsScrollToCurrent {
+				needsScrollToCurrent = false
+				scrollToCurrent()
+			}
+		}
+	}
+	
+	override func viewWillTransition(
+		to size: CGSize,
+		with coordinator: UIViewControllerTransitionCoordinator
+	) {
+		super.viewWillTransition(to: size, with: coordinator)
+		
+		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
+			guard let cell = tableView.cellForRow(at: indexPath) else { return }
+			let rowAlbum = albums[indexPath.row]
+			cell.contentConfiguration = UIHostingConfiguration {
+				AlbumRow(
+					albumID: rowAlbum.albumPersistentID,
+					viewportWidth: size.width,
+					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
+					albumListState: albumListState)
+			}.margins(.all, .zero)
+		}
+	}
+	
+	@objc private func mergedChanges() {
+		guard nil != view.window else {
+			needsRefreshLibraryItems = true
+			return
+		}
+		Task { await refreshLibraryItems() }
+	}
+	private var needsRefreshLibraryItems = false
+	private func refreshLibraryItems() async {
+		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
+		
+		let oldRows = Self.rowIdentifiers(albums)
+		albums = Self.freshAlbums()
+		selectButton.isEnabled = allowsSelect()
+		switch albumListState.selectMode {
+				// TO DO: Stop deselecting everything
+			case .view: break
+			case .select: albumListState.selectMode = .select([])
+		}
+		guard !albums.isEmpty else {
+			reflectNoAlbums()
+			return
+		}
+		// TO DO: Keep current content visible
+		guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) else { return }
+		
+		// Update the data within each row, which might be outdated.
+		tableView.reconfigureRows(at: tableView.allIndexPaths())
+	}
+	private func reflectNoAlbums() {
+		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
+		endSelecting()
+	}
+	
+	func showCurrent() {
+		guard nil != view.window else {
+			needsScrollToCurrent = true
+			navigationController?.popToViewController(self, animated: true)
+			return
+		}
+		scrollToCurrent()
+	}
+	private var needsScrollToCurrent = false
+	private func scrollToCurrent() {
+		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
+		let currentAlbumID = AlbumID(bitPattern: uInt64)
+		guard let currentAlbum = albums.first(where: { album in
+			currentAlbumID == album.albumPersistentID
+		}) else { return }
+		// The current song might not be in our database, but the current `Album` is.
+		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
+		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+	}
+	
+	@objc private func openAlbumID(notification: Notification) {
+		guard
+			let albumIDToOpen = notification.object as? AlbumID,
+			let albumToOpen = albums.first(where: { album in
+				albumIDToOpen == album.albumPersistentID
+			})
+		else { return }
+		navigationController?.pushViewController({
+			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
+			songsTVC.songsViewModel = SongsViewModel(album: albumToOpen)
+			return songsTVC
+		}(), animated: true)
+	}
 	
 	// MARK: - Editing
 	

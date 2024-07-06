@@ -7,8 +7,6 @@ class LibraryTVC: UITableViewController {
 	static let beginSelectingImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	static let endSelectingImage = UIImage(systemName: "checkmark.circle.fill")
 	
-	// MARK: - Moving rows
-	
 	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, table view animations are already in progress from an earlier call of this method, and callers could disrupt those animations by running further code.
 	// Returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
 	final func moveRows(
