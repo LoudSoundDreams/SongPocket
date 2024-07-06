@@ -37,7 +37,7 @@ extension SongsViewModel {
 extension SongListState {
 	static let selected = Notification.Name("LRSongsSelected")
 	enum SelectMode: Equatable {
-		case view(Int64?)
+		case view(SongID?)
 		case select(Set<Int64>)
 	}
 }
@@ -64,32 +64,37 @@ final class SongsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selected, object: songListState)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongIndex, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
 	}
 	@objc private func confirmPlay(notification: Notification) {
 		guard
-			let songIndex = notification.object as? Int64,
-			let popoverSource = tableView.cellForRow(at: IndexPath(row: SongsViewModel.prerowCount + Int(songIndex), section: 0)),
+			let chosenSongID = notification.object as? SongID,
+			let chosenSongIndex: Int = songsViewModel.songs.firstIndex(where: {
+				chosenSongID == $0.persistentID
+			}),
+			let popoverSource = tableView.cellForRow(at: IndexPath(row: SongsViewModel.prerowCount + chosenSongIndex, section: 0)),
 			presentedViewController == nil // As of iOS 17.6 developer beta 1, if a `UIMenu` or SwiftUI `Menu` is open, `present` does nothing.
 				// We could call `dismiss` and wait until completion to `present`, but that would be a worse user experience, because tapping outside the menu to close it could open this action sheet. So it’s better to do nothing here and simply let the tap close the menu.
 				// Technically this is inconsistent because we still select and deselect items and open albums when dismissing a menu; and because toolbar buttons do nothing when dismissing a menu. But at least this prevents the most annoying behavior.
 		else { return }
 		
-		songListState.selectMode = .view(songIndex) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
-		
-		let song = songsViewModel.songs[Int(songIndex)]
-		let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
-			Task {
-				await song.playAlbumStartingHere()
-				
-				self.songListState.selectMode = .view(nil)
-			}
-		}
-		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		songListState.selectMode = .view(chosenSongID) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverSource
-		actionSheet.addAction(startPlaying)
+		actionSheet.addAction(
+			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
+				Task {
+					guard let chosenSong: Song = self.songsViewModel.songs.first(where: {
+						chosenSongID == $0.persistentID
+					}) else { return }
+					await chosenSong.playAlbumStartingHere()
+					
+					self.songListState.selectMode = .view(nil)
+				}
+			}
+			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		)
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { _ in
 				self.songListState.selectMode = .view(nil)

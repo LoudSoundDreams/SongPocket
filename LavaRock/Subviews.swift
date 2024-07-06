@@ -162,7 +162,7 @@ import MediaPlayer
 // MARK: - Song row
 
 @MainActor struct SongRow: View {
-	static let confirmPlaySongIndex = Notification.Name("LRConfirmPlaySongIndex")
+	static let confirmPlaySongID = Notification.Name("LRConfirmPlaySongID")
 	let song: Song
 	let albumID: AlbumID
 	let songListState: SongListState
@@ -181,21 +181,21 @@ import MediaPlayer
 	}
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch songListState.selectMode {
-			case .view(let activated): return activated == song.index
+			case .view(let activatedSongID): return activatedSongID == song.persistentID
 			case .select(let selected): return selected.contains(song.index)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
 				{ switch songListState.selectMode {
-					case .view(let activated): return activated == song.index ? nil : .default
+					case .view(let activatedSongID): return (activatedSongID == nil) ? .default: nil
 					case .select: return nil
 				}}(),
 				value: songListState.selectMode)
 	}
 	private func tapped() {
 		switch songListState.selectMode {
-			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongIndex, object: song.index)
+			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: song.persistentID)
 			case .select(let selected):
 				var newSelected = selected
 				let index = song.index
