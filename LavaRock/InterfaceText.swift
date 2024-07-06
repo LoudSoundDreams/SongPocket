@@ -23,7 +23,7 @@ enum InterfaceText {
 	
 	// MARK: Toolbar
 	
-	static let _emptyLibraryMessage = NSLocalizedString("Your Apple Music library is empty. Add something!", comment: "Message in menu when database is empty")
+	static let _emptyLibraryMessage = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
 	static let showAlbum = NSLocalizedString("Show Album", comment: "Button")
 	
 	static let select = NSLocalizedString("Select", comment: "Button")
