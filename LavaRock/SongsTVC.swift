@@ -14,7 +14,7 @@ import CoreData
 		let itemRowIDs = songs.map { AnyHashable($0.objectID) }
 		return [42] + itemRowIDs
 	}
-	func withRefreshedData() -> Self { // TO DO: Refactor to match `AlbumListState.freshAlbums`
+	func withRefreshedData() -> Self {
 		// Get the `Album` from the first non-deleted `Song`.
 		guard let album = songs.first(where: { nil != $0.container })?.container else {
 			return Self(songs: [])
@@ -64,7 +64,7 @@ final class SongsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selected, object: songListState)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.activateIndex, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongIndex, object: nil)
 	}
 	@objc private func confirmPlay(notification: Notification) {
 		guard
@@ -78,11 +78,11 @@ final class SongsTVC: LibraryTVC {
 		songListState.selectMode = .view(songIndex) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
 		let song = songsViewModel.songs[Int(songIndex)]
-		let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { [weak self] _ in
+		let startPlaying = UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
 			Task {
 				await song.playAlbumStartingHere()
 				
-				self?.songListState.selectMode = .view(nil)
+				self.songListState.selectMode = .view(nil)
 			}
 		}
 		// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -91,8 +91,8 @@ final class SongsTVC: LibraryTVC {
 		actionSheet.popoverPresentationController?.sourceView = popoverSource
 		actionSheet.addAction(startPlaying)
 		actionSheet.addAction(
-			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { [weak self] _ in
-				self?.songListState.selectMode = .view(nil)
+			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { _ in
+				self.songListState.selectMode = .view(nil)
 			}
 		)
 		present(actionSheet, animated: true)

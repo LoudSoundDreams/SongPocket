@@ -140,13 +140,14 @@ final class AlbumsTVC: LibraryTVC {
 		let oldRows = Self.rowIdentifiers(albums)
 		albums = Self.freshAlbums()
 		selectButton.isEnabled = allowsSelect()
+		switch albumListState.selectMode {
+				// TO DO: Stop deselecting everything
+			case .view: break
+			case .select: albumListState.selectMode = .select([])
+		}
 		guard !albums.isEmpty else {
 			reflectNoAlbums()
 			return
-		}
-		switch albumListState.selectMode {
-			case .view: break
-			case .select: albumListState.selectMode = .select([]) // TO DO: Stop deselecting everything
 		}
 		// TO DO: Keep current content visible
 		guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: Self.rowIdentifiers(albums)) else { return }

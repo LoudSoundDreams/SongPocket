@@ -70,7 +70,7 @@ import MediaPlayer
 		}
 	}
 	@Environment(\.pixelLength) private var pointsPerPixel
-
+	
 	@ViewBuilder private var art: some View {
 		let maxSideLength = min(viewportWidth, viewportHeight)
 #if targetEnvironment(simulator)
@@ -162,10 +162,10 @@ import MediaPlayer
 // MARK: - Song row
 
 @MainActor struct SongRow: View {
-	static let activateIndex = Notification.Name("LRActivateSongIndex")
+	static let confirmPlaySongIndex = Notification.Name("LRConfirmPlaySongIndex")
 	let song: Song
 	let albumID: AlbumID
-	var songListState: SongListState
+	let songListState: SongListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			mainStack
@@ -195,7 +195,7 @@ import MediaPlayer
 	}
 	private func tapped() {
 		switch songListState.selectMode {
-			case .view: NotificationCenter.default.post(name: Self.activateIndex, object: song.index)
+			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongIndex, object: song.index)
 			case .select(let selected):
 				var newSelected = selected
 				let index = song.index
