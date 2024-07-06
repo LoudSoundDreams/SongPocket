@@ -29,13 +29,13 @@ import MediaPlayer
 	private var select_opacity: Double {
 		switch albumListState.selectMode {
 			case .view: return 1
-			case .select: return pow(.oneHalf, 2)
+			case .selectAlbums: return pow(.oneHalf, 2)
 		}
 	}
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .view: return false
-			case .select(let selected): return selected.contains(albumID)
+			case .selectAlbums(let selectedAlbumIDs): return selectedAlbumIDs.contains(albumID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
@@ -43,8 +43,8 @@ import MediaPlayer
 	@ViewBuilder private var select_overlay: some View {
 		switch albumListState.selectMode {
 			case .view: EmptyView()
-			case .select(let selected):
-				if selected.contains(albumID) {
+			case .selectAlbums(let selectedAlbumIDs):
+				if selectedAlbumIDs.contains(albumID) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
 						.foregroundStyle(.white, Color.accentColor)
@@ -59,14 +59,14 @@ import MediaPlayer
 	private func tapped() {
 		switch albumListState.selectMode {
 			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: albumID)
-			case .select(let selected):
-				var newSelected = selected
-				if selected.contains(albumID) {
+			case .selectAlbums(let selectedAlbumIDs):
+				var newSelected = selectedAlbumIDs
+				if selectedAlbumIDs.contains(albumID) {
 					newSelected.remove(albumID)
 				} else {
 					newSelected.insert(albumID)
 				}
-				albumListState.selectMode = .select(newSelected)
+				albumListState.selectMode = .selectAlbums(newSelected)
 		}
 	}
 	@Environment(\.pixelLength) private var pointsPerPixel

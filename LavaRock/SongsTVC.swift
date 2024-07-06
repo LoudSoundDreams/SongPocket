@@ -30,12 +30,12 @@ extension SongsViewModel {
 	var selectMode: SelectMode = .view(nil) { didSet {
 		switch selectMode {
 			case .view: break
-			case .select: NotificationCenter.default.post(name: Self.selected, object: self)
+			case .select: NotificationCenter.default.post(name: Self.selecting, object: self)
 		}
 	}}
 }
 extension SongListState {
-	static let selected = Notification.Name("LRSongsSelected")
+	static let selecting = Notification.Name("LRSelectingSongs")
 	enum SelectMode: Equatable {
 		case view(SongID?)
 		case select(Set<Int64>)
@@ -62,7 +62,7 @@ final class SongsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selected, object: songListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selecting, object: songListState)
 	}
 	
 	// MARK: - Table view
