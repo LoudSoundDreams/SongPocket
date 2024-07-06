@@ -81,7 +81,7 @@ final class AlbumsTVC: LibraryTVC {
 		selectButton.isEnabled = allowsSelect()
 		navigationItem.backButtonDisplayMode = .minimal
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: MusicRepo.mergedChanges, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
@@ -179,21 +179,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Events
 	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		Task {
-			if needsRefreshLibraryItems {
-				needsRefreshLibraryItems = false
-				await refreshLibraryItems()
-			}
-			
-			if needsScrollToCurrent {
-				needsScrollToCurrent = false
-				scrollToCurrent()
-			}
-		}
-	}
-	
 	override func viewWillTransition(
 		to size: CGSize,
 		with coordinator: UIViewControllerTransitionCoordinator
@@ -216,15 +201,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	@objc private func mergedChanges() {
-		guard nil != view.window else {
-			needsRefreshLibraryItems = true
-			return
-		}
-		Task { await refreshLibraryItems() }
-	}
-	private var needsRefreshLibraryItems = false
-	private func refreshLibraryItems() async {
+	@objc private func refreshLibraryItems() {
 		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 		
 		let oldRows = albumListState.rowIdentifiers()
@@ -246,11 +223,13 @@ final class AlbumsTVC: LibraryTVC {
 			reflectNoAlbums()
 			return
 		}
-		// TO DO: Keep current content visible
-		guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
-		
-		// Update the data within each row, which might be outdated.
-		tableView.reconfigureRows(at: tableView.allIndexPaths())
+		Task {
+			// TO DO: Keep current content visible
+			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
+			
+			// Update the data within each row, which might be outdated.
+			tableView.reconfigureRows(at: tableView.allIndexPaths())
+		}
 	}
 	private func reflectNoAlbums() {
 		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
@@ -258,15 +237,6 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	func showCurrent() {
-		guard nil != view.window else {
-			needsScrollToCurrent = true
-			navigationController?.popToViewController(self, animated: true)
-			return
-		}
-		scrollToCurrent()
-	}
-	private var needsScrollToCurrent = false
-	private func scrollToCurrent() {
 		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
 		let currentAlbumID = AlbumID(bitPattern: uInt64)
 		guard let currentRow = albumListState.items.firstIndex(where: { switch $0 {
@@ -275,26 +245,29 @@ final class AlbumsTVC: LibraryTVC {
 		}}) else { return }
 		// The current song might not be in our database, but the current `Album` is.
 		let indexPath = IndexPath(row: currentRow, section: 0)
-		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+		tableView.performBatchUpdates {
+			tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+		} completion: { _ in
+			self.expandAndAlignTo(currentAlbumID)
+		}
 	}
 	
 	@objc private func expandAlbumID(notification: Notification) {
-		guard let albumIDToOpen = notification.object as? AlbumID else { return }
+		guard let idToOpen = notification.object as? AlbumID else { return }
+		expandAndAlignTo(idToOpen)
+	}
+	private func expandAndAlignTo(_ idToExpand: AlbumID) {
 		let oldRows = albumListState.rowIdentifiers()
 		
-		albumListState.expansion = .expanded(albumIDToOpen)
+		albumListState.expansion = .expanded(idToExpand)
 		albumListState.refreshItems()
 		Task {
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				self.tableView.scrollToRow(
-					at: IndexPath(
-						row: self.albumListState.items.firstIndex(where: { switch $0 {
-							case .album(let album): return albumIDToOpen == album.albumPersistentID
-							case .song: return false
-						}})!,
-						section: 0),
-					at: .top,
-					animated: true)
+				let expandingRow: Int = self.albumListState.items.firstIndex(where: { switch $0 {
+					case .song: return false
+					case .album(let album): return idToExpand == album.albumPersistentID
+				}})!
+				self.tableView.scrollToRow(at: IndexPath(row: expandingRow, section: 0), at: .top, animated: true)
 			})
 		}
 	}

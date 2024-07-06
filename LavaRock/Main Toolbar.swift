@@ -107,7 +107,7 @@ import MediaPlayer
 	private func newOverflowMenu() -> UIMenu {
 		return UIMenu(title: newOverflowTitle(), children: [
 			UIDeferredMenuElement.uncached { [weak self] use in use([
-				UIAction(title: InterfaceText.showAlbum, image: UIImage(systemName: "square.stack"), attributes: {
+				UIAction(title: InterfaceText.goToAlbum, image: UIImage(systemName: "square.stack"), attributes: {
 #if targetEnvironment(simulator)
 					return []
 #else
