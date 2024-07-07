@@ -52,6 +52,12 @@ extension AlbumListState {
 			case .song(let song): return song.objectID
 		}}
 	}
+	fileprivate func albumCount() -> Int {
+		return items.reduce(into: 0) { totalSoFar, item in switch item {
+			case .song: return
+			case .album: totalSoFar += 1
+		}}
+	}
 	
 	enum Expansion {
 		case collapsed
@@ -527,11 +533,73 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Moving up and down
 	
 	private func album_promote() {
+		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
+		let selectedIndices: [Int64] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard selectedAlbumIDs.contains(album.albumPersistentID) else { return nil }
+				return album.index
+		}}
+		guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
+		
+		let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
+		let range = (target...back)
+		let inRange: [Album] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard range.contains(album.index) else { return nil }
+				return album
+		}}
+		let toPromote = inRange.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
+		let toDisplace = inRange.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
+		let newBlock: [Album] = toPromote + toDisplace
+		let oldRows = albumListState.rowIdentifiers()
+		
+		newBlock.indices.forEach { offset in
+			newBlock[offset].index = target + Int64(offset)
+		}
+		albumListState.refreshItems()
+		Task {
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
+			})
+		}
 	}
 	private func song_promote() {
 	}
 	
 	private func album_demote() {
+		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
+		let selectedIndices: [Int64] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard selectedAlbumIDs.contains(album.albumPersistentID) else { return nil }
+				return album.index
+		}}
+		guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
+		
+		let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.albumCount())-1) : back
+		let range = (front...target)
+		let inRange: [Album] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard range.contains(album.index) else { return nil }
+				return album
+		}}
+		let toDemote = inRange.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
+		let toDisplace = inRange.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
+		let newBlock: [Album] = toDisplace + toDemote
+		let oldRows = albumListState.rowIdentifiers()
+		
+		newBlock.indices.forEach { offset in
+			newBlock[offset].index = front + Int64(offset)
+		}
+		albumListState.refreshItems()
+		Task {
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
+			})
+		}
 	}
 	private func song_demote() {
 	}
@@ -539,11 +607,67 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: To top and bottom
 	
 	private func album_float() {
+		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
+		let selectedIndices: [Int64] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard selectedAlbumIDs.contains(album.albumPersistentID) else { return nil }
+				return album.index
+		}}
+		guard let back = selectedIndices.last else { return }
+		
+		let target = Int64(0)
+		let range = (target...back)
+		let inRange: [Album] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard range.contains(album.index) else { return nil }
+				return album
+		}}
+		let toFloat = inRange.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
+		let toDisplace = inRange.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
+		let newBlock: [Album] = toFloat + toDisplace
+		let oldRows = albumListState.rowIdentifiers()
+		
+		albumListState.selectMode = .selectAlbums([])
+		newBlock.indices.forEach { offset in
+			newBlock[offset].index = target + Int64(offset)
+		}
+		albumListState.refreshItems()
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func song_float() {
 	}
 	
 	private func album_sink() {
+		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
+		let selectedIndices: [Int64] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard selectedAlbumIDs.contains(album.albumPersistentID) else { return nil }
+				return album.index
+		}}
+		guard let front = selectedIndices.first else { return }
+		
+		let target = Int64(albumListState.albumCount())-1
+		let range = (front...target)
+		let inRange: [Album] = albumListState.items.compactMap { switch $0 {
+			case .song: return nil
+			case .album(let album):
+				guard range.contains(album.index) else { return nil }
+				return album
+		}}
+		let toSink = inRange.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
+		let toDisplace = inRange.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
+		let newBlock: [Album] = toDisplace + toSink
+		let oldRows = albumListState.rowIdentifiers()
+		
+		albumListState.selectMode = .selectAlbums([])
+		newBlock.indices.forEach { offset in
+			newBlock[offset].index = front + Int64(offset)
+		}
+		albumListState.refreshItems()
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func song_sink() {
 	}
