@@ -361,7 +361,7 @@ final class AlbumsTVC: LibraryTVC {
 				setToolbarItems([selectButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
 			case .expanded:
 				albumListState.selectMode = .selectSongs([])
-				setToolbarItems([selectButton, .flexibleSpace()], animated: true)
+				setToolbarItems([selectButton, .flexibleSpace(), song_arranger, .flexibleSpace(), song_promoter, .flexibleSpace(), song_demoter], animated: true)
 		}
 		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
 	}
@@ -385,6 +385,10 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var album_promoter = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.album_promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.album_float() }]))
 	private lazy var album_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.album_demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.album_sink() }]))
 	
+	private let song_arranger = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var song_promoter = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.song_promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.song_float() }]))
+	private lazy var song_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.song_demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }]))
+	
 	@objc private func album_reflectSelected() {
 		album_arranger.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
@@ -407,17 +411,44 @@ final class AlbumsTVC: LibraryTVC {
 		album_demoter.isEnabled = album_promoter.isEnabled
 	}
 	@objc private func song_reflectSelected() {
-		guard case let .selectSongs(selectedSongIDs) = albumListState.selectMode else { return }
-		print(selectedSongIDs)
+		song_arranger.isEnabled = { switch albumListState.selectMode {
+			case .view, .selectAlbums: return false
+			case .selectSongs(let selectedSongIDs):
+				if selectedSongIDs.isEmpty { return true }
+				let selectedIndices: [Int64] = albumListState.items.compactMap { switch $0 {
+					case .album: return nil
+					case.song(let song):
+						guard selectedSongIDs.contains(song.persistentID) else { return nil }
+						return song.index
+				}}
+				return selectedIndices.isConsecutive()
+		}}()
+		song_arranger.preferredMenuElementOrder = .fixed
+		song_arranger.menu = nil
+		song_promoter.isEnabled = { switch albumListState.selectMode {
+			case .view, .selectAlbums: return false
+			case .selectSongs(let selectedSongIDs): return !selectedSongIDs.isEmpty
+		}}()
+		song_demoter.isEnabled = song_promoter.isEnabled
 	}
 	
 	private func album_promote() {
 	}
+	private func song_promote() {
+	}
+	
 	private func album_demote() {
+	}
+	private func song_demote() {
 	}
 	
 	private func album_float() {
 	}
+	private func song_float() {
+	}
+	
 	private func album_sink() {
+	}
+	private func song_sink() {
 	}
 }
