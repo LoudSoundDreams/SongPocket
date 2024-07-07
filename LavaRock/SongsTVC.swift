@@ -97,46 +97,6 @@ final class SongsTVC: LibraryTVC {
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
 	
 	// MARK: - Editing
-		
-	private func newArrangeMenu() -> UIMenu {
-		let groups: [[SongOrder]] = [
-			[.track],
-			[.random, .reverse],
-		]
-		let submenus: [UIMenu] = groups.map { group in
-			UIMenu(options: .displayInline, children: group.map { order in
-				UIDeferredMenuElement.uncached { [weak self] useElements in
-					guard let self else { return }
-					let action = order.newUIAction(handler: { [weak self] in
-						self?.arrange(by: order)
-					})
-					if toArrange().count <= 1 {
-						action.attributes.formUnion(.disabled)
-					}
-					useElements([action])
-				}
-			})
-		}
-		return UIMenu(children: submenus)
-	}
-	private func arrange(by order: SongOrder) {
-		let oldRows = songsViewModel.rowIdentifiers()
-		
-		order.reindex(toArrange())
-		songsViewModel = songsViewModel.withRefreshedData()
-		songListState.selectMode = .select([])
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) }
-	}
-	private func toArrange() -> [Song] {
-		switch songListState.selectMode {
-			case .view: return []
-			case .select(let selected):
-				if selected.isEmpty {
-					return songsViewModel.songs
-				}
-				return selected.map { songsViewModel.songs[Int($0)] }.sorted { $0.index < $1.index }
-		}
-	}
 	
 	private func promote() {
 		guard case let .select(selected) = songListState.selectMode else { return }

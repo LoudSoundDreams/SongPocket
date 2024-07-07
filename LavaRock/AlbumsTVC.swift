@@ -424,13 +424,15 @@ final class AlbumsTVC: LibraryTVC {
 				return selectedIndices.isConsecutive()
 		}}()
 		song_arranger.preferredMenuElementOrder = .fixed
-		song_arranger.menu = nil
+		song_arranger.menu = song_arrangeMenu()
 		song_promoter.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs(let selectedSongIDs): return !selectedSongIDs.isEmpty
 		}}()
 		song_demoter.isEnabled = song_promoter.isEnabled
 	}
+	
+	// MARK: - Sorting
 	
 	private func album_arrangeMenu() -> UIMenu {
 		let groups: [[AlbumOrder]] = [[.recentlyAdded, .newest, .artist], [.random, .reverse]]
@@ -454,6 +456,21 @@ final class AlbumsTVC: LibraryTVC {
 			case .newest: return album_toArrange().contains { nil != $0.releaseDateEstimate }
 		}
 	}
+	private func song_arrangeMenu() -> UIMenu {
+		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
+		let submenus: [UIMenu] = groups.map { group in
+			UIMenu(options: .displayInline, children: group.map { songOrder in
+				UIDeferredMenuElement.uncached { [weak self] useElements in
+					guard let self else { return }
+					let action = songOrder.newUIAction { [weak self] in self?.song_arrange(by: songOrder) }
+					if song_toArrange().count <= 1 { action.attributes.formUnion(.disabled) }
+					useElements([action])
+				}
+			})
+		}
+		return UIMenu(children: submenus)
+	}
+	
 	private func album_arrange(by albumOrder: AlbumOrder) {
 		let oldRows = albumListState.rowIdentifiers()
 		
@@ -462,6 +479,15 @@ final class AlbumsTVC: LibraryTVC {
 		albumListState.selectMode = .selectAlbums([])
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
+	private func song_arrange(by songOrder: SongOrder) {
+		let oldRows = albumListState.rowIdentifiers()
+		
+		songOrder.reindex(song_toArrange())
+		albumListState.refreshItems()
+		albumListState.selectMode = .selectSongs([])
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+	}
+	
 	private func album_toArrange() -> [Album] {
 		switch albumListState.selectMode {
 			case .view, .selectSongs: return []
@@ -480,6 +506,25 @@ final class AlbumsTVC: LibraryTVC {
 				}}
 		}
 	}
+	private func song_toArrange() -> [Song] {
+		switch albumListState.selectMode {
+			case .view, .selectAlbums: return []
+			case .selectSongs(let selectedSongIDs):
+				if selectedSongIDs.isEmpty {
+					return albumListState.items.compactMap { switch $0 {
+						case .album: return nil
+						case .song(let song): return song
+					}}
+				}
+				return albumListState.items.compactMap { switch $0 {
+					case .album: return nil
+					case .song(let song): guard selectedSongIDs.contains(song.persistentID) else { return nil }
+						return song
+				}}
+		}
+	}
+	
+	// MARK: - Moving up and down
 	
 	private func album_promote() {
 	}
@@ -490,6 +535,8 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func song_demote() {
 	}
+	
+	// MARK: To top and bottom
 	
 	private func album_float() {
 	}
