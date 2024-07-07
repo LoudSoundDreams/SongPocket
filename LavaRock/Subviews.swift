@@ -15,11 +15,18 @@ import MediaPlayer
 	let albumListState: AlbumListState
 	var body: some View {
 		ZStack {
-			art.opacity(select_opacity) // `withAnimation` animates this when toggling select mode.
+			art
+				.opacity(select_opacity)
+				.animation(.default, value: albumListState.selectMode)
 			ZStack(alignment: .bottomLeading) {
 				if shrinkWrapped {
 					Rectangle().foregroundStyle(.regularMaterial)
-					AlbumHeader(albumID: albumID)
+					AlbumHeader(albumID: albumID, dimmed: {
+						switch albumListState.selectMode {
+							case .view, .selectAlbums: return false
+							case .selectSongs: return true
+						}}())
+					.animation(.default, value: albumListState.selectMode)
 				}
 			}.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
 		}
@@ -41,12 +48,12 @@ import MediaPlayer
 	private var select_opacity: Double {
 		switch albumListState.selectMode {
 			case .view: return 1
-			case .selectAlbums: return pow(.oneHalf, 2)
+			case .selectAlbums, .selectSongs: return pow(.oneHalf, 2)
 		}
 	}
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
-			case .view: return false
+			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedAlbumIDs): return selectedAlbumIDs.contains(albumID)
 		}}()
 		Color.accentColor
@@ -54,7 +61,7 @@ import MediaPlayer
 	}
 	@ViewBuilder private var select_overlay: some View {
 		switch albumListState.selectMode {
-			case .view: EmptyView()
+			case .view, .selectSongs: EmptyView()
 			case .selectAlbums(let selectedAlbumIDs):
 				if selectedAlbumIDs.contains(albumID) {
 					Image(systemName: "checkmark.circle.fill")
@@ -70,6 +77,7 @@ import MediaPlayer
 	}
 	private func tapped() {
 		switch albumListState.selectMode {
+			case .selectSongs: return
 			case .view:
 				switch albumListState.expansion {
 					case .collapsed:
@@ -133,6 +141,7 @@ import MediaPlayer
 
 @MainActor struct AlbumHeader: View {
 	let albumID: AlbumID
+	let dimmed: Bool
 	var body: some View {
 		HStack(spacing: .eight * 5/4) {
 			NowPlayingImage().hidden()
@@ -145,6 +154,7 @@ import MediaPlayer
 #endif
 				}())
 				.fontTitle2Bold()
+				.foregroundStyle(dimmed ? .secondary : .primary)
 				Text({
 #if targetEnvironment(simulator)
 					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
@@ -156,7 +166,7 @@ import MediaPlayer
 					return albumArtist
 #endif
 				}())
-				.foregroundStyle(.secondary)
+				.foregroundStyle(dimmed ? .tertiary : .secondary)
 				.fontCaption2Bold()
 				Text({
 #if targetEnvironment(simulator)
@@ -170,7 +180,7 @@ import MediaPlayer
 #endif
 					return date.formatted(date: .numeric, time: .omitted)
 				}())
-				.foregroundStyle(.secondary)
+				.foregroundStyle(dimmed ? .tertiary : .secondary)
 				.font(.caption2)
 				.monospacedDigit()
 			}
@@ -202,22 +212,34 @@ import MediaPlayer
 	}
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
-			case .view(let activatedSongID): return activatedSongID == song.persistentID
 			case .selectAlbums: return false
+			case .view(let activatedSongID): return activatedSongID == song.persistentID
+			case .selectSongs(let selectedSongIDs):
+				return selectedSongIDs.contains(song.persistentID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
 				{ switch albumListState.selectMode {
+					case .selectAlbums: return nil // Should never run
 					case .view(let activatedSongID): return (activatedSongID == nil) ? .default: nil
-					case .selectAlbums: return nil
+					case .selectSongs: return nil
 				}}(),
 				value: albumListState.selectMode)
 	}
 	private func tapped() {
 		switch albumListState.selectMode {
+			case .selectAlbums: return
 			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: song.persistentID)
-			case .selectAlbums: break
+			case .selectSongs(let selectedSongIDs):
+				let songID = song.persistentID
+				var newSelected = selectedSongIDs
+				if selectedSongIDs.contains(songID) {
+					newSelected.remove(songID)
+				} else {
+					newSelected.insert(songID)
+				}
+				albumListState.selectMode = .selectSongs(newSelected)
 		}
 	}
 	
@@ -250,15 +272,14 @@ import MediaPlayer
 	}
 	@ViewBuilder private var select_indicator: some View {
 		ZStack {
-			/*
-			switch songListState.selectMode {
-				case .view: EmptyView()
-				case .select(let selected):
+			switch albumListState.selectMode {
+				case .view, .selectAlbums: EmptyView()
+				case .selectSongs(let selectedSongIDs):
 					ZStack {
 						Image(systemName: "circle")
 							.foregroundStyle(.secondary)
 							.padding(.trailing)
-						if selected.contains(song.index) {
+						if selectedSongIDs.contains(song.persistentID) {
 							Image(systemName: "checkmark.circle.fill")
 								.symbolRenderingMode(.palette)
 								.foregroundStyle(.white, Color.accentColor)
@@ -267,8 +288,7 @@ import MediaPlayer
 						}
 					}
 			}
-			 */
-		}//.animation(.default, value: songListState.selectMode)
+		}.animation(.default, value: albumListState.selectMode)
 	}
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	
@@ -280,8 +300,9 @@ import MediaPlayer
 		}
 		.onTapGesture { signal_tappedMenu.toggle() }
 		.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
-			case .view: return false
 			case .selectAlbums: return false
+			case .view: return false
+			case .selectSongs: return true
 		}}())
 	}
 	@ViewBuilder private var menuContent: some View {

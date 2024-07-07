@@ -13,6 +13,7 @@ import CoreData
 		switch selectMode {
 			case .view: break
 			case .selectAlbums: NotificationCenter.default.post(name: Self.selectingAlbums, object: self)
+			case .selectSongs: NotificationCenter.default.post(name: Self.selectingSongs, object: self)
 		}
 	}}
 }
@@ -60,8 +61,10 @@ extension AlbumListState {
 	enum SelectMode: Equatable {
 		case view(SongID?)
 		case selectAlbums(Set<AlbumID>)
+		case selectSongs(Set<SongID>) // Should always be within the same album.
 	}
 	static let selectingAlbums = Notification.Name("LRSelectingAlbums")
+	static let selectingSongs = Notification.Name("LRSelectingSongs")
 }
 
 // MARK: - Table view controller
@@ -87,6 +90,7 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.selectingAlbums, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(song_reflectSelected), name: AlbumListState.selectingSongs, object: albumListState)
 	}
 	
 	// MARK: - Table view
@@ -227,6 +231,15 @@ final class AlbumsTVC: LibraryTVC {
 						return albumID
 				}})
 				albumListState.selectMode = .selectAlbums(newSelected)
+			case .selectSongs(let selectedSongIDs):
+				let newSelected: Set<SongID> = Set(albumListState.items.compactMap { switch $0 {
+					case .album: return nil
+					case .song(let song):
+						let songID = song.persistentID
+						guard selectedSongIDs.contains(songID) else { return nil }
+						return songID
+				}})
+				albumListState.selectMode = .selectSongs(newSelected)
 		}
 		guard !albumListState.items.isEmpty else {
 			reflectNoAlbums()
@@ -340,19 +353,31 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func beginSelecting() {
-		setToolbarItems([selectButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
-		withAnimation {
-			albumListState.selectMode = .selectAlbums([])
+		switch albumListState.expansion {
+			case .collapsed:
+				withAnimation {
+					albumListState.selectMode = .selectAlbums([])
+				}
+				setToolbarItems([selectButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
+			case .expanded:
+				albumListState.selectMode = .selectSongs([])
+				setToolbarItems([selectButton, .flexibleSpace()], animated: true)
 		}
 		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
 	}
 	private func endSelecting() {
 		Database.viewContext.savePlease()
 		
-		setToolbarItems([selectButton] + __MainToolbar.shared.barButtonItems, animated: true)
-		withAnimation {
-			albumListState.selectMode = .view(nil)
+		switch albumListState.selectMode {
+			case .view: break
+			case .selectAlbums:
+				withAnimation {
+					albumListState.selectMode = .view(nil)
+				}
+			case .selectSongs:
+				albumListState.selectMode = .view(nil)
 		}
+		setToolbarItems([selectButton] + __MainToolbar.shared.barButtonItems, animated: true)
 		selectButton.primaryAction = UIAction(title: InterfaceText.select, image: Self.beginSelectingImage) { [weak self] _ in self?.beginSelecting() }
 	}
 	
@@ -366,6 +391,10 @@ final class AlbumsTVC: LibraryTVC {
 		album_arranger.menu = nil
 		album_promoter.isEnabled = false
 		album_demoter.isEnabled = album_promoter.isEnabled
+	}
+	@objc private func song_reflectSelected() {
+		guard case let .selectSongs(selectedSongIDs) = albumListState.selectMode else { return }
+		print(selectedSongIDs)
 	}
 	
 	private func album_promote() {

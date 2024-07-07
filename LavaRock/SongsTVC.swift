@@ -27,15 +27,9 @@ extension SongsViewModel {
 }
 
 @MainActor @Observable final class SongListState {
-	var selectMode: SelectMode = .view(nil) { didSet {
-		switch selectMode {
-			case .view: break
-			case .select: NotificationCenter.default.post(name: Self.selecting, object: self)
-		}
-	}}
+	var selectMode: SelectMode = .view(nil)
 }
 extension SongListState {
-	static let selecting = Notification.Name("LRSelectingSongs")
 	enum SelectMode: Equatable {
 		case view(SongID?)
 		case select(Set<Int64>)
@@ -59,8 +53,6 @@ final class SongsTVC: LibraryTVC {
 		view.backgroundColor = UIColor(.grey_oneEighth)
 		tableView.separatorStyle = .none
 		endSelecting()
-		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selecting, object: songListState)
 	}
 	
 	// MARK: - Table view
@@ -95,7 +87,7 @@ final class SongsTVC: LibraryTVC {
 				cell.selectionStyle = .none // So the user can’t even highlight the cell
 				cell.backgroundColor = .clear
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumHeader(albumID: album.albumPersistentID)
+					Text(String(album.albumPersistentID))
 				}.margins(.all, .zero)
 				return cell
 			default:
