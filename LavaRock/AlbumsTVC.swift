@@ -39,9 +39,6 @@ final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
 	
 	private let selectButton = UIBarButtonItem()
-	private let arrangeButton = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var promoteButton = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float() }]))
-	private lazy var demoteButton = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sink() }]))
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -56,7 +53,7 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: MusicRepo.mergedChanges, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbumID), name: AlbumRow.openAlbumID, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelectedAlbums), name: AlbumListState.selectingAlbums, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.selectingAlbums, object: albumListState)
 	}
 	
 	// MARK: - Table view
@@ -241,7 +238,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func beginSelecting() {
-		setToolbarItems([selectButton, .flexibleSpace(), arrangeButton, .flexibleSpace(), promoteButton, .flexibleSpace(), demoteButton], animated: true)
+		setToolbarItems([selectButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
 		withAnimation {
 			albumListState.selectMode = .selectAlbums([])
 		}
@@ -257,28 +254,28 @@ final class AlbumsTVC: LibraryTVC {
 		selectButton.primaryAction = UIAction(title: InterfaceText.select, image: Self.beginSelectingImage) { [weak self] _ in self?.beginSelecting() }
 	}
 	
-	@objc private func reflectSelectedAlbums() {
-		arrangeButton.isEnabled = {
-			switch albumListState.selectMode {
-				case .view: return false
-				case .selectAlbums(let selectedAlbumIDs):
-					if selectedAlbumIDs.isEmpty { return true }
-					let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
-					return selectedIndices.isConsecutive()
-			}
-		}()
-		arrangeButton.preferredMenuElementOrder = .fixed
-		arrangeButton.menu = newArrangeMenu()
-		promoteButton.isEnabled = {
-			switch albumListState.selectMode {
-				case .view: return false
-				case .selectAlbums(let selectedAlbumIDs): return !selectedAlbumIDs.isEmpty
-			}
-		}()
-		demoteButton.isEnabled = promoteButton.isEnabled
+	private let album_arranger = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var album_promoter = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "chevron.up"), primaryAction: UIAction { [weak self] _ in self?.album_promote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.album_float() }]))
+	private lazy var album_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.album_demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.album_sink() }]))
+	
+	@objc private func album_reflectSelected() {
+		album_arranger.isEnabled = { switch albumListState.selectMode {
+			case .view: return false
+			case .selectAlbums(let selectedAlbumIDs):
+				if selectedAlbumIDs.isEmpty { return true }
+				let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
+				return selectedIndices.isConsecutive()
+		}}()
+		album_arranger.preferredMenuElementOrder = .fixed
+		album_arranger.menu = album_arrangeMenu()
+		album_promoter.isEnabled = { switch albumListState.selectMode {
+			case .view: return false
+			case .selectAlbums(let selectedAlbumIDs): return !selectedAlbumIDs.isEmpty
+		}}()
+		album_demoter.isEnabled = album_promoter.isEnabled
 	}
 	
-	private func newArrangeMenu() -> UIMenu {
+	private func album_arrangeMenu() -> UIMenu {
 		let groups: [[AlbumOrder]] = [
 			[.recentlyAdded, .newest, .artist],
 			[.random, .reverse],
@@ -289,9 +286,9 @@ final class AlbumsTVC: LibraryTVC {
 					// Runs each time the button presents the menu
 					guard let self else { return }
 					let action = order.newUIAction(handler: { [weak self] in
-						self?.arrange(by: order)
+						self?.album_arrange(by: order)
 					})
-					if !allowsArrange(by: order) {
+					if !album_allowsArrange(by: order) {
 						action.attributes.formUnion(.disabled) // You must do this inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
 					}
 					useElements([action])
@@ -300,26 +297,26 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		return UIMenu(children: submenus)
 	}
-	private func allowsArrange(by order: AlbumOrder) -> Bool {
-		guard toArrange().count >= 2 else { return false }
+	private func album_allowsArrange(by order: AlbumOrder) -> Bool {
+		guard album_toArrange().count >= 2 else { return false }
 		switch order {
 			case .random, .reverse: return true
 			case .recentlyAdded, .artist: return true
 			case .newest:
-				return toArrange().contains {
+				return album_toArrange().contains {
 					nil != $0.releaseDateEstimate
 				}
 		}
 	}
-	private func arrange(by order: AlbumOrder) {
+	private func album_arrange(by order: AlbumOrder) {
 		let oldRows = albumListState.rowIdentifiers()
 		
-		order.reindex(toArrange())
+		order.reindex(album_toArrange())
 		albumListState.refreshAlbums()
 		albumListState.selectMode = .selectAlbums([])
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
-	private func toArrange() -> [Album] {
+	private func album_toArrange() -> [Album] {
 		switch albumListState.selectMode {
 			case .view: return []
 			case .selectAlbums(let selectedAlbumIDs):
@@ -328,7 +325,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func promote() {
+	private func album_promote() {
 		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
 		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
 		guard
@@ -354,7 +351,7 @@ final class AlbumsTVC: LibraryTVC {
 			})
 		}
 	}
-	private func demote() {
+	private func album_demote() {
 		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
 		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
 		guard
@@ -381,7 +378,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func float() {
+	private func album_float() {
 		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
 		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
 		guard let back = selectedIndices.last else { return }
@@ -401,7 +398,7 @@ final class AlbumsTVC: LibraryTVC {
 		albumListState.refreshAlbums()
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
-	private func sink() {
+	private func album_sink() {
 		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
 		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
 		guard let front = selectedIndices.first else { return }
