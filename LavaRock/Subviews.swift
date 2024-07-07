@@ -151,7 +151,7 @@ import MediaPlayer
 					return musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum
 #endif
 				}())
-				.fontTitle2Bold()
+				.font_title2Bold()
 				.foregroundStyle(dimmed ? .secondary : .primary)
 				Text({
 #if targetEnvironment(simulator)
@@ -165,7 +165,7 @@ import MediaPlayer
 #endif
 				}())
 				.foregroundStyle(dimmed ? .tertiary : .secondary)
-				.fontCaption2Bold()
+				.font_caption2Bold()
 				Text({
 #if targetEnvironment(simulator)
 					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else { return InterfaceText.emDash }
@@ -249,7 +249,7 @@ import MediaPlayer
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 					Text(songArtist)
 						.foregroundStyle(.secondary)
-						.fontFootnote()
+						.font_footnote()
 				}
 			}
 			Spacer()
@@ -290,7 +290,7 @@ import MediaPlayer
 	private var overflowMenu: some View {
 		Menu { menuContent } label: {
 			Image(systemName: "ellipsis.circle.fill")
-				.fontBody_dynamicTypeSizeUpToXxxLarge()
+				.font_body_dynamicTypeSizeUpToXxxLarge()
 				.symbolRenderingMode(.hierarchical)
 		}
 		.onTapGesture { signal_tappedMenu.toggle() }
@@ -332,7 +332,7 @@ struct NowPlayingIndicator: View {
 				case .notPlaying: EmptyView()
 				case .paused:
 					Image(systemName: "speaker.fill")
-						.fontBody_dynamicTypeSizeUpToXxxLarge()
+						.font_body_dynamicTypeSizeUpToXxxLarge()
 						.imageScale(.small)
 				case .playing:
 					NowPlayingImage()
@@ -363,7 +363,7 @@ struct NowPlayingIndicator: View {
 struct NowPlayingImage: View {
 	var body: some View {
 		Image(systemName: "speaker.wave.2.fill")
-			.fontBody_dynamicTypeSizeUpToXxxLarge()
+			.font_body_dynamicTypeSizeUpToXxxLarge()
 			.imageScale(.small)
 	}
 }

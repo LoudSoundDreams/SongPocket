@@ -130,22 +130,22 @@ extension Color {
 
 extension View {
 	// As of iOS 16.6, Apple Music uses this for “Recently Added”.
-	func fontTitle2Bold() -> some View { font(.title2).bold() }
+	func font_title2Bold() -> some View { font(.title2).bold() }
 	
 	// As of iOS 16.6, Apple Music uses this for the current song title on the now-playing screen.
-	func fontHeadline_() -> some View { font(.headline) }
+	func font_headline_() -> some View { font(.headline) }
 	
 	/*
 	 As of iOS 16.6, Apple Music uses this for…
 	 • Genre, release year, and “Lossless” on album details views
 	 • Radio show titles
 	 */
-	func fontCaption2Bold() -> some View { font(.caption2).bold() }
+	func font_caption2Bold() -> some View { font(.caption2).bold() }
 	
 	// As of iOS 16.6, Apple Music uses this for artist names on song rows.
-	func fontFootnote() -> some View { font(.footnote) }
+	func font_footnote() -> some View { font(.footnote) }
 	
-	func fontBody_dynamicTypeSizeUpToXxxLarge() -> some View {
+	func font_body_dynamicTypeSizeUpToXxxLarge() -> some View {
 		return self
 			.font(.body)
 			.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
