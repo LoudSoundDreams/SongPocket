@@ -386,10 +386,24 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var album_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.album_demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.album_sink() }]))
 	
 	@objc private func album_reflectSelected() {
-		album_arranger.isEnabled = false
+		album_arranger.isEnabled = { switch albumListState.selectMode {
+			case .view, .selectSongs: return false
+			case .selectAlbums(let selectedAlbumIDs):
+				if selectedAlbumIDs.isEmpty { return true }
+				let selectedIndices: [Int64] = albumListState.items.compactMap { switch $0 {
+					case .song: return nil
+					case .album(let album):
+						guard selectedAlbumIDs.contains(album.albumPersistentID) else { return nil }
+						return album.index
+				}}
+				return selectedIndices.isConsecutive()
+		}}()
 		album_arranger.preferredMenuElementOrder = .fixed
 		album_arranger.menu = nil
-		album_promoter.isEnabled = false
+		album_promoter.isEnabled = { switch albumListState.selectMode {
+			case .view, .selectSongs: return false
+			case .selectAlbums(let selectedAlbumIDs): return !selectedAlbumIDs.isEmpty
+		}}()
 		album_demoter.isEnabled = album_promoter.isEnabled
 	}
 	@objc private func song_reflectSelected() {
