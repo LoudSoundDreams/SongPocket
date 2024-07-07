@@ -403,7 +403,7 @@ final class AlbumsTVC: LibraryTVC {
 				return selectedIndices.isConsecutive()
 		}}()
 		album_arranger.preferredMenuElementOrder = .fixed
-		album_arranger.menu = nil
+		album_arranger.menu = album_arrangeMenu()
 		album_promoter.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedAlbumIDs): return !selectedAlbumIDs.isEmpty
@@ -430,6 +430,55 @@ final class AlbumsTVC: LibraryTVC {
 			case .selectSongs(let selectedSongIDs): return !selectedSongIDs.isEmpty
 		}}()
 		song_demoter.isEnabled = song_promoter.isEnabled
+	}
+	
+	private func album_arrangeMenu() -> UIMenu {
+		let groups: [[AlbumOrder]] = [[.recentlyAdded, .newest, .artist], [.random, .reverse]]
+		let submenus: [UIMenu] = groups.map { group in
+			UIMenu(options: .displayInline, children: group.map { albumOrder in
+				UIDeferredMenuElement.uncached { [weak self] useElements in
+					// Runs each time the button presents the menu
+					guard let self else { return }
+					let action = albumOrder.newUIAction { [weak self] in self?.album_arrange(by: albumOrder) }
+					if !album_allowsArrange(by: albumOrder) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
+					useElements([action])
+				}
+			})
+		}
+		return UIMenu(children: submenus)
+	}
+	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
+		guard album_toArrange().count >= 2 else { return false }
+		switch albumOrder {
+			case .random, .reverse, .recentlyAdded, .artist: return true
+			case .newest: return album_toArrange().contains { nil != $0.releaseDateEstimate }
+		}
+	}
+	private func album_arrange(by albumOrder: AlbumOrder) {
+		let oldRows = albumListState.rowIdentifiers()
+		
+		albumOrder.reindex(album_toArrange())
+		albumListState.refreshItems()
+		albumListState.selectMode = .selectAlbums([])
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+	}
+	private func album_toArrange() -> [Album] {
+		switch albumListState.selectMode {
+			case .view, .selectSongs: return []
+			case .selectAlbums(let selectedAlbumIDs):
+				if selectedAlbumIDs.isEmpty {
+					return albumListState.items.compactMap { switch $0 {
+						case .song: return nil
+						case .album(let album): return album
+					}}
+				}
+				return albumListState.items.compactMap { switch $0 {
+					case .song: return nil
+					case .album(let album):
+						guard selectedAlbumIDs.contains(album.albumPersistentID) else { return nil }
+						return album
+				}}
+		}
 	}
 	
 	private func album_promote() {
