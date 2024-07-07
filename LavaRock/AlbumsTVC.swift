@@ -9,7 +9,7 @@ import CoreData
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate var items: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
 	var expansion: Expansion = .collapsed
-	var selectMode: SelectMode = .view { didSet {
+	var selectMode: SelectMode = .view(nil) { didSet {
 		switch selectMode {
 			case .view: break
 			case .selectAlbums: NotificationCenter.default.post(name: Self.selectingAlbums, object: self)
@@ -57,8 +57,8 @@ extension AlbumListState {
 		case expanded(AlbumID)
 	}
 	
-	enum SelectMode {
-		case view
+	enum SelectMode: Equatable {
+		case view(SongID?)
 		case selectAlbums(Set<AlbumID>)
 	}
 	static let selectingAlbums = Notification.Name("LRSelectingAlbums")
@@ -85,6 +85,7 @@ final class AlbumsTVC: LibraryTVC {
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.selectingAlbums, object: albumListState)
 	}
 	
@@ -146,13 +147,12 @@ final class AlbumsTVC: LibraryTVC {
 							SongRow(
 								song: rowSong,
 								albumID: expandedAlbumID,
-								songListState: __songListState)
+								albumListState: albumListState)
 						}.margins(.all, .zero)
 						return cell
 				}
 		}
 	}
-	private let __songListState = SongListState()
 	private func cellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
 		cell.backgroundColor = .clear
 		cell.selectedBackgroundView = {
@@ -208,7 +208,16 @@ final class AlbumsTVC: LibraryTVC {
 		albumListState.refreshItems()
 		selectButton.isEnabled = allowsSelect()
 		switch albumListState.selectMode {
-			case .view: break
+			case .view(let activatedSongID):
+				var newActivated = activatedSongID
+				if let activatedSongID, !albumListState.items.contains(where: { switch $0 {
+					case .album: return false
+					case .song(let song): return activatedSongID == song.persistentID
+				}}) {
+					dismiss(animated: true) // In case “confirm play” action sheet is presented.
+					newActivated = nil
+				}
+				albumListState.selectMode = .view(newActivated)
 			case .selectAlbums(let selectedAlbumIDs):
 				let newSelected: Set<AlbumID> = Set(albumListState.items.compactMap { switch $0 {
 					case .song: return nil
@@ -279,6 +288,51 @@ final class AlbumsTVC: LibraryTVC {
 		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	
+	@objc private func confirmPlay(notification: Notification) {
+		guard
+			let chosenSongID = notification.object as? SongID,
+			let popoverSource: UIView = { () -> UIView? in
+				guard let chosenRow = albumListState.items.firstIndex(where: { switch $0 {
+					case .album: return false
+					case .song(let song): return chosenSongID == song.persistentID
+				}}) else { return nil }
+				return tableView.cellForRow(at: IndexPath(row: chosenRow, section: 0))
+			}(),
+		presentedViewController == nil // As of iOS 17.6 developer beta 1, if a `UIMenu` or SwiftUI `Menu` is open, `present` does nothing.
+		// We could call `dismiss` and wait until completion to `present`, but that would be a worse user experience, because tapping outside the menu to close it could open this action sheet. So it’s better to do nothing here and simply let the tap close the menu.
+		// Technically this is inconsistent because we still select and deselect items and open albums when dismissing a menu; and because toolbar buttons do nothing when dismissing a menu. But at least this prevents the most annoying behavior.
+		else { return }
+		
+		albumListState.selectMode = .view(chosenSongID) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		
+		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		actionSheet.popoverPresentationController?.sourceView = popoverSource
+		actionSheet.addAction(
+			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
+				Task {
+					guard let chosenSong: Song = { () -> Song? in
+						for item in self.albumListState.items { switch item {
+							case .album: continue
+							case .song(let song):
+								if chosenSongID == song.persistentID { return song }
+						}}
+						return nil
+					}() else { return }
+					await chosenSong.playAlbumStartingHere()
+					
+					self.albumListState.selectMode = .view(nil)
+				}
+			}
+			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+		)
+		actionSheet.addAction(
+			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { _ in
+				self.albumListState.selectMode = .view(nil)
+			}
+		)
+		present(actionSheet, animated: true)
+	}
+	
 	// MARK: - Editing
 	
 	private func allowsSelect() -> Bool {
@@ -297,7 +351,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		setToolbarItems([selectButton] + __MainToolbar.shared.barButtonItems, animated: true)
 		withAnimation {
-			albumListState.selectMode = .view
+			albumListState.selectMode = .view(nil)
 		}
 		selectButton.primaryAction = UIAction(title: InterfaceText.select, image: Self.beginSelectingImage) { [weak self] _ in self?.beginSelecting() }
 	}

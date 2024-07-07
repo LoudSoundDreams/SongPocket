@@ -60,8 +60,6 @@ final class SongsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		endSelecting()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelected), name: SongListState.selecting, object: songListState)
 	}
 	
@@ -111,90 +109,13 @@ final class SongsTVC: LibraryTVC {
 					return result
 				}()
 				cell.contentConfiguration = UIHostingConfiguration {
-					SongRow(song: song, albumID: album.albumPersistentID, songListState: songListState)
+					Text(song.songInfo()?.titleOnDisk ?? "")
 				}.margins(.all, .zero)
 				return cell
 		}
 	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
-	
-	// MARK: - Events
-	
-	@objc private func refreshLibraryItems() {
-		Task {
-			let oldRows = songsViewModel.rowIdentifiers()
-			songsViewModel = songsViewModel.withRefreshedData()
-			switch songListState.selectMode {
-				case .view(let activatedSongID):
-					var newActivated = activatedSongID
-					if let activatedSongID, !songsViewModel.songs.contains(where: {
-						activatedSongID == $0.persistentID
-					}) {
-						dismiss(animated: true) // In case “confirm play” action sheet is presented.
-						newActivated = nil
-					}
-					songListState.selectMode = .view(newActivated)
-				case .select: songListState.selectMode = .select([]) // TO DO: Use `SongID`s to stop deselecting everything
-			}
-			guard !songsViewModel.songs.isEmpty else {
-				reflectNoSongs()
-				return
-			}
-			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: songsViewModel.rowIdentifiers()) else { return }
-			
-			tableView.reconfigureRows(at: tableView.allIndexPaths())
-		}
-	}
-	private func reflectNoSongs() {
-		isAnimatingReflectNoSongs += 1
-		tableView.performBatchUpdates {
-			tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
-		} completion: { _ in
-			self.isAnimatingReflectNoSongs -= 1
-			if self.isAnimatingReflectNoSongs == 0 {
-				self.navigationController?.popViewController(animated: true)
-			}
-		}
-	}
-	private var isAnimatingReflectNoSongs = 0
-	
-	@objc private func confirmPlay(notification: Notification) {
-		guard
-			let chosenSongID = notification.object as? SongID,
-			let chosenSongIndex: Int = songsViewModel.songs.firstIndex(where: {
-				chosenSongID == $0.persistentID
-			}),
-			let popoverSource = tableView.cellForRow(at: IndexPath(row: SongsViewModel.prerowCount + chosenSongIndex, section: 0)),
-			presentedViewController == nil // As of iOS 17.6 developer beta 1, if a `UIMenu` or SwiftUI `Menu` is open, `present` does nothing.
-				// We could call `dismiss` and wait until completion to `present`, but that would be a worse user experience, because tapping outside the menu to close it could open this action sheet. So it’s better to do nothing here and simply let the tap close the menu.
-				// Technically this is inconsistent because we still select and deselect items and open albums when dismissing a menu; and because toolbar buttons do nothing when dismissing a menu. But at least this prevents the most annoying behavior.
-		else { return }
-		
-		songListState.selectMode = .view(chosenSongID) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
-		
-		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		actionSheet.popoverPresentationController?.sourceView = popoverSource
-		actionSheet.addAction(
-			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
-				Task {
-					guard let chosenSong: Song = self.songsViewModel.songs.first(where: {
-						chosenSongID == $0.persistentID
-					}) else { return }
-					await chosenSong.playAlbumStartingHere()
-					
-					self.songListState.selectMode = .view(nil)
-				}
-			}
-			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
-		)
-		actionSheet.addAction(
-			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { _ in
-				self.songListState.selectMode = .view(nil)
-			}
-		)
-		present(actionSheet, animated: true)
-	}
 	
 	// MARK: - Editing
 	

@@ -186,7 +186,7 @@ import MediaPlayer
 	static let confirmPlaySongID = Notification.Name("LRConfirmPlaySongID")
 	let song: Song
 	let albumID: AlbumID
-	let songListState: SongListState
+	let albumListState: AlbumListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			mainStack
@@ -201,31 +201,23 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var select_highlight: some View {
-		let highlighting: Bool = { switch songListState.selectMode {
+		let highlighting: Bool = { switch albumListState.selectMode {
 			case .view(let activatedSongID): return activatedSongID == song.persistentID
-			case .select(let selected): return selected.contains(song.index)
+			case .selectAlbums: return false
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
-				{ switch songListState.selectMode {
+				{ switch albumListState.selectMode {
 					case .view(let activatedSongID): return (activatedSongID == nil) ? .default: nil
-					case .select: return nil
+					case .selectAlbums: return nil
 				}}(),
-				value: songListState.selectMode)
+				value: albumListState.selectMode)
 	}
 	private func tapped() {
-		switch songListState.selectMode {
+		switch albumListState.selectMode {
 			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: song.persistentID)
-			case .select(let selected):
-				var newSelected = selected
-				let index = song.index
-				if selected.contains(index) {
-					newSelected.remove(index)
-				} else {
-					newSelected.insert(index)
-				}
-				songListState.selectMode = .select(newSelected)
+			case .selectAlbums: break
 		}
 	}
 	
@@ -258,6 +250,7 @@ import MediaPlayer
 	}
 	@ViewBuilder private var select_indicator: some View {
 		ZStack {
+			/*
 			switch songListState.selectMode {
 				case .view: EmptyView()
 				case .select(let selected):
@@ -274,7 +267,8 @@ import MediaPlayer
 						}
 					}
 			}
-		}.animation(.default, value: songListState.selectMode)
+			 */
+		}//.animation(.default, value: songListState.selectMode)
 	}
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 	
@@ -285,9 +279,9 @@ import MediaPlayer
 				.symbolRenderingMode(.hierarchical)
 		}
 		.onTapGesture { signal_tappedMenu.toggle() }
-		.disabled({ switch songListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
+		.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
 			case .view: return false
-			case .select: return true
+			case .selectAlbums: return false
 		}}())
 	}
 	@ViewBuilder private var menuContent: some View {
