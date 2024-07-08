@@ -19,7 +19,7 @@ import MediaPlayer
 				.opacity(select_opacity)
 				.animation(.default, value: albumListState.selectMode)
 				.overlay { if shrinkWrapped {
-					Rectangle().foregroundStyle(.regularMaterial)
+					Rectangle().foregroundStyle(.thinMaterial)
 				}}
 				.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
 			ZStack { if shrinkWrapped {
