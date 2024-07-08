@@ -224,31 +224,29 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	@objc private func refreshLibraryItems() {
-		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
-		
-		let oldRows = albumListState.rowIdentifiers()
-		albumListState.refreshItems()
-		selectButton.isEnabled = allowsSelect()
-		switch albumListState.selectMode {
-			case .view(let activatedID):
-				var newActivated = activatedID
-				if let activatedID, albumListState.songs(with: [activatedID]).isEmpty {
-					dismiss(animated: true) // In case “confirm play” action sheet is presented.
-					newActivated = nil
-				}
-				albumListState.selectMode = .view(newActivated)
-			case .selectAlbums(let selectedIDs):
-				let newSelected: Set<AlbumID> = Set(albumListState.albums(with: selectedIDs).map { $0.albumPersistentID })
-				albumListState.selectMode = .selectAlbums(newSelected)
-			case .selectSongs(let selectedIDs):
-				let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID} )
-				albumListState.selectMode = .selectSongs(newSelected)
-		}
-		guard !albumListState.items.isEmpty else {
-			reflectNoAlbums()
-			return
-		}
 		Task {
+			let oldRows = albumListState.rowIdentifiers()
+			albumListState.refreshItems()
+			selectButton.isEnabled = allowsSelect()
+			switch albumListState.selectMode { // In case the user was in the middle of doing something with an item we’ve deleted.
+				case .view(let activatedID):
+					var newActivated = activatedID
+					if let activatedID, albumListState.songs(with: [activatedID]).isEmpty {
+						dismiss(animated: true) // In case “confirm play” action sheet is presented.
+						newActivated = nil
+					}
+					albumListState.selectMode = .view(newActivated)
+				case .selectAlbums(let selectedIDs):
+					let newSelected: Set<AlbumID> = Set(albumListState.albums(with: selectedIDs).map { $0.albumPersistentID })
+					albumListState.selectMode = .selectAlbums(newSelected)
+				case .selectSongs(let selectedIDs):
+					let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID} )
+					albumListState.selectMode = .selectSongs(newSelected)
+			}
+			guard !albumListState.items.isEmpty else {
+				reflectNoAlbums()
+				return
+			}
 			// TO DO: Keep current content visible
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
@@ -281,12 +279,11 @@ final class AlbumsTVC: LibraryTVC {
 		expandAndAlignTo(idToOpen)
 	}
 	private func expandAndAlignTo(_ idToExpand: AlbumID) {
-		guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return } // Because `showCurrent` calls this method in a completion handler, we might have removed the `Album` by now.
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.expansion = .expanded(idToExpand)
-		albumListState.refreshItems()
 		Task {
+			guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return } // Because `showCurrent` calls this method in a completion handler, we might have removed the `Album` by now.
+			let oldRows = albumListState.rowIdentifiers()
+			albumListState.expansion = .expanded(idToExpand)
+			albumListState.refreshItems()
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				let expandingRow: Int = self.albumListState.items.firstIndex(where: { switch $0 {
 					case .song: return false
@@ -459,20 +456,22 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func album_arrange(by albumOrder: AlbumOrder) {
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumOrder.reindex(album_toArrange())
-		albumListState.refreshItems()
-		albumListState.selectMode = .selectAlbums([])
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+		Task {
+			let oldRows = albumListState.rowIdentifiers()
+			albumOrder.reindex(album_toArrange())
+			albumListState.refreshItems()
+			albumListState.selectMode = .selectAlbums([])
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+		}
 	}
 	private func song_arrange(by songOrder: SongOrder) {
-		let oldRows = albumListState.rowIdentifiers()
-		
-		songOrder.reindex(song_toArrange())
-		albumListState.refreshItems()
-		albumListState.selectMode = .selectSongs([])
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+		Task {
+			let oldRows = albumListState.rowIdentifiers()
+			songOrder.reindex(song_toArrange())
+			albumListState.refreshItems()
+			albumListState.selectMode = .selectSongs([])
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+		}
 	}
 	
 	private func album_toArrange() -> [Album] {
@@ -499,48 +498,48 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Moving up and down
 	
 	private func album_promote() {
-		guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
-		guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-		
-		let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
-		let range = (target...back)
-		let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
-		let toPromote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-		let newBlock: [Album] = toPromote + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
-		
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = target + Int64(offset)
-		}
-		albumListState.refreshItems()
 		Task {
+			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
+			
+			let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
+			let range = (target...back)
+			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let toPromote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
+			let newBlock: [Album] = toPromote + toDisplace
+			let oldRows = albumListState.rowIdentifiers()
+			
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = target + Int64(offset)
+			}
+			albumListState.refreshItems()
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
 		}
 	}
 	private func song_promote() {
-		guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
-		guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-		
-		let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
-		let range = (target...back)
-		let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
-		let toPromote = inRange.filter { selectedIDs.contains($0.persistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-		let newBlock: [Song] = toPromote + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
-		
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = target + Int64(offset)
-		}
-		albumListState.refreshItems()
 		Task {
+			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
+			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
+			
+			let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
+			let range = (target...back)
+			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let toPromote = inRange.filter { selectedIDs.contains($0.persistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
+			let newBlock: [Song] = toPromote + toDisplace
+			let oldRows = albumListState.rowIdentifiers()
+			
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = target + Int64(offset)
+			}
+			albumListState.refreshItems()
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				guard 
+				guard
 					let frontSong = newBlock.first,
 					let targetRow = self.albumListState.items.firstIndex(where: { switch $0 {
 						case .album: return false
@@ -553,46 +552,46 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func album_demote() {
-		guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
-		guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-		
-		let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.albums().count)-1) : back
-		let range = (front...target)
-		let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
-		let toDemote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-		let newBlock: [Album] = toDisplace + toDemote
-		let oldRows = albumListState.rowIdentifiers()
-		
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = front + Int64(offset)
-		}
-		albumListState.refreshItems()
 		Task {
+			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
+			
+			let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.albums().count)-1) : back
+			let range = (front...target)
+			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let toDemote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
+			let newBlock: [Album] = toDisplace + toDemote
+			let oldRows = albumListState.rowIdentifiers()
+			
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = front + Int64(offset)
+			}
+			albumListState.refreshItems()
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
 		}
 	}
 	private func song_demote() {
-		guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
-		guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-		
-		let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.songs().count)-1) : back
-		let range = (front...target)
-		let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
-		let toDemote = inRange.filter { selectedIDs.contains($0.persistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-		let newBlock: [Song] = toDisplace + toDemote
-		let oldRows = albumListState.rowIdentifiers()
-		
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = front + Int64(offset)
-		}
-		albumListState.refreshItems()
 		Task {
+			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
+			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
+			
+			let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.songs().count)-1) : back
+			let range = (front...target)
+			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let toDemote = inRange.filter { selectedIDs.contains($0.persistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
+			let newBlock: [Song] = toDisplace + toDemote
+			let oldRows = albumListState.rowIdentifiers()
+			
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = front + Int64(offset)
+			}
+			albumListState.refreshItems()
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let backSong = newBlock.last,
@@ -609,80 +608,88 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: To top and bottom
 	
 	private func album_float() {
-		guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
-		guard let back = selectedIndices.last else { return }
-		
-		let range = (0...back)
-		let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
-		let toFloat = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-		let newBlock: [Album] = toFloat + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.selectMode = .selectAlbums([])
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = Int64(offset)
+		Task {
+			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			guard let back = selectedIndices.last else { return }
+			
+			let range = (0...back)
+			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let toFloat = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
+			let newBlock: [Album] = toFloat + toDisplace
+			let oldRows = albumListState.rowIdentifiers()
+			
+			albumListState.selectMode = .selectAlbums([])
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = Int64(offset)
+			}
+			albumListState.refreshItems()
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
-		albumListState.refreshItems()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func song_float() {
-		guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
-		guard let back = selectedIndices.last else { return }
-		
-		let range = (0...back)
-		let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
-		let toFloat = inRange.filter { selectedIDs.contains($0.persistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-		let newBlock: [Song] = toFloat + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.selectMode = .selectSongs([])
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = Int64(offset)
+		Task {
+			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
+			guard let back = selectedIndices.last else { return }
+			
+			let range = (0...back)
+			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let toFloat = inRange.filter { selectedIDs.contains($0.persistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
+			let newBlock: [Song] = toFloat + toDisplace
+			let oldRows = albumListState.rowIdentifiers()
+			
+			albumListState.selectMode = .selectSongs([])
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = Int64(offset)
+			}
+			albumListState.refreshItems()
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
-		albumListState.refreshItems()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	
 	private func album_sink() {
-		guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
-		guard let front = selectedIndices.first else { return }
-		
-		let range = (front...Int64(albumListState.albums().count)-1)
-		let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
-		let toSink = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-		let newBlock: [Album] = toDisplace + toSink
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.selectMode = .selectAlbums([])
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = front + Int64(offset)
+		Task {
+			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			guard let front = selectedIndices.first else { return }
+			
+			let range = (front...Int64(albumListState.albums().count)-1)
+			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let toSink = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
+			let newBlock: [Album] = toDisplace + toSink
+			let oldRows = albumListState.rowIdentifiers()
+			
+			albumListState.selectMode = .selectAlbums([])
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = front + Int64(offset)
+			}
+			albumListState.refreshItems()
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
-		albumListState.refreshItems()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func song_sink() {
-		guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-		let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
-		guard let front = selectedIndices.first else { return }
-		
-		let range = (front...(Int64(albumListState.songs().count)-1))
-		let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
-		let toSink = inRange.filter { selectedIDs.contains($0.persistentID) }
-		let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-		let newBlock: [Song] = toDisplace + toSink
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.selectMode = .selectSongs([])
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = front + Int64(offset)
+		Task {
+			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
+			let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
+			guard let front = selectedIndices.first else { return }
+			
+			let range = (front...(Int64(albumListState.songs().count)-1))
+			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let toSink = inRange.filter { selectedIDs.contains($0.persistentID) }
+			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
+			let newBlock: [Song] = toDisplace + toSink
+			let oldRows = albumListState.rowIdentifiers()
+			
+			albumListState.selectMode = .selectSongs([])
+			newBlock.indices.forEach { offset in
+				newBlock[offset].index = front + Int64(offset)
+			}
+			albumListState.refreshItems()
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
-		albumListState.refreshItems()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 }
