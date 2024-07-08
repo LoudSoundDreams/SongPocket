@@ -7,15 +7,21 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	static let openAlbumID = Notification.Name("LROpenAlbumID")
+	static let expandAlbumID = Notification.Name("LRExpandAlbumID")
+	static let collapse = Notification.Name("LRAlbumCollapse")
 	let albumID: AlbumID
 	let viewportWidth: CGFloat
 	let viewportHeight: CGFloat
 	let albumListState: AlbumListState
 	var body: some View {
-		VStack(spacing: .zero) {
-			Rectangle().frame(width: 42, height: 1 * pointsPerPixel).hidden()
+		ZStack {
 			art.opacity(select_opacity) // `withAnimation` animates this when toggling select mode.
+			ZStack(alignment: .bottomLeading) {
+				if shrinkWrapped {
+					Rectangle().foregroundStyle(.regularMaterial)
+					AlbumHeader(albumID: albumID)
+				}
+			}.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -25,6 +31,12 @@ import MediaPlayer
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum)
 		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum])
+	}
+	private var shrinkWrapped: Bool {
+		switch albumListState.expansion {
+			case .collapsed: return true
+			case .expanded(let expandedAlbumID): return albumID != expandedAlbumID
+		}
 	}
 	private var select_opacity: Double {
 		switch albumListState.selectMode {
@@ -58,7 +70,17 @@ import MediaPlayer
 	}
 	private func tapped() {
 		switch albumListState.selectMode {
-			case .view: NotificationCenter.default.post(name: Self.openAlbumID, object: albumID)
+			case .view:
+				switch albumListState.expansion {
+					case .collapsed:
+						NotificationCenter.default.post(name: Self.expandAlbumID, object: albumID)
+					case .expanded(let expandedID):
+						if albumID == expandedID {
+							NotificationCenter.default.post(name: Self.collapse, object: nil)
+						} else {
+							NotificationCenter.default.post(name: Self.expandAlbumID, object: albumID)
+						}
+				}
 			case .selectAlbums(let selectedAlbumIDs):
 				var newSelected = selectedAlbumIDs
 				if selectedAlbumIDs.contains(albumID) {
@@ -69,7 +91,6 @@ import MediaPlayer
 				albumListState.selectMode = .selectAlbums(newSelected)
 		}
 	}
-	@Environment(\.pixelLength) private var pointsPerPixel
 	
 	@ViewBuilder private var art: some View {
 		let maxSideLength = min(viewportWidth, viewportHeight)

@@ -7,7 +7,8 @@ import MediaPlayer
 import CoreData
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var albums: [Album] = AlbumListState.freshAlbums()
+	@ObservationIgnored fileprivate var items: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
+	var expansion: Expansion = .collapsed
 	var selectMode: SelectMode = .view { didSet {
 		switch selectMode {
 			case .view: break
@@ -16,14 +17,44 @@ import CoreData
 	}}
 }
 extension AlbumListState {
-	fileprivate func refreshAlbums() {
-		albums = Self.freshAlbums()
+	fileprivate enum Item {
+		case album(Album)
+		case song(Song)
+	}
+	fileprivate func refreshItems() {
+		items = {
+			let albums = Self.freshAlbums()
+			switch expansion {
+				case .collapsed: return albums.map { .album($0) }
+				case .expanded(let expandedAlbumID):
+					guard let expandedAlbum = albums.first(where: { album in
+						expandedAlbumID == album.albumPersistentID
+					}) else {
+						expansion = .collapsed
+						return albums.map { .album($0) }
+					}
+					let inlineSongs = expandedAlbum.songs(sorted: true)
+					var result: [Item] = albums.map { .album($0) }
+					result.insert(
+						contentsOf: inlineSongs.map { .song($0) },
+						at: Int(expandedAlbum.index) + 1)
+					return result
+			}
+		}()
 	}
 	private static func freshAlbums() -> [Album] {
 		return Database.viewContext.fetchPlease(Album.fetchRequest_sorted())
 	}
 	fileprivate func rowIdentifiers() -> [AnyHashable] {
-		return albums.map { $0.objectID }
+		return items.map { switch $0 {
+			case .album(let album): return album.objectID
+			case .song(let song): return song.objectID
+		}}
+	}
+	
+	enum Expansion {
+		case collapsed
+		case expanded(AlbumID)
 	}
 	
 	enum SelectMode {
@@ -52,7 +83,8 @@ final class AlbumsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergedChanges), name: MusicRepo.mergedChanges, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(openAlbumID), name: AlbumRow.openAlbumID, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.selectingAlbums, object: albumListState)
 	}
 	
@@ -74,7 +106,7 @@ final class AlbumsTVC: LibraryTVC {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if albumListState.albums.isEmpty {
+			if albumListState.items.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
 						Button {
@@ -89,15 +121,37 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
-		return albumListState.albums.count
+		return albumListState.items.count
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		// The cell in the storyboard is completely default except for the reuse identifier.
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-		let rowAlbum = albumListState.albums[indexPath.row]
-		return cellForAlbum(cell: cell, album: rowAlbum)
+		switch albumListState.items[indexPath.row] {
+			case .album(let rowAlbum):
+				// The cell in the storyboard is completely default except for the reuse identifier.
+				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
+				return cellForAlbum(cell: cell, album: rowAlbum)
+			case .song(let rowSong):
+				switch albumListState.expansion {
+					case .collapsed: return UITableViewCell() // Should never run
+					case .expanded(let expandedAlbumID):
+						let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath) // TO DO: Dequeue a different cell
+						cell.backgroundColor = .clear
+						cell.selectedBackgroundView = {
+							let result = UIView()
+							result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+							return result
+						}()
+						cell.contentConfiguration = UIHostingConfiguration {
+							SongRow(
+								song: rowSong,
+								albumID: expandedAlbumID,
+								songListState: __songListState)
+						}.margins(.all, .zero)
+						return cell
+				}
+		}
 	}
+	private let __songListState = SongListState()
 	private func cellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
 		cell.backgroundColor = .clear
 		cell.selectedBackgroundView = {
@@ -147,14 +201,17 @@ final class AlbumsTVC: LibraryTVC {
 		
 		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
 			guard let cell = tableView.cellForRow(at: indexPath) else { return }
-			let rowAlbum = albumListState.albums[indexPath.row]
-			cell.contentConfiguration = UIHostingConfiguration {
-				AlbumRow(
-					albumID: rowAlbum.albumPersistentID,
-					viewportWidth: size.width,
-					viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
-					albumListState: albumListState)
-			}.margins(.all, .zero)
+			switch albumListState.items[indexPath.row] {
+				case .song: return
+				case .album(let rowAlbum):
+					cell.contentConfiguration = UIHostingConfiguration {
+						AlbumRow(
+							albumID: rowAlbum.albumPersistentID,
+							viewportWidth: size.width,
+							viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
+							albumListState: albumListState)
+					}.margins(.all, .zero)
+			}
 		}
 	}
 	
@@ -170,19 +227,21 @@ final class AlbumsTVC: LibraryTVC {
 		// WARNING: Is the user in the middle of a content-dependent interaction, like moving or renaming items? If so, wait until they finish before proceeding, or abort that interaction.
 		
 		let oldRows = albumListState.rowIdentifiers()
-		albumListState.refreshAlbums()
+		albumListState.refreshItems()
 		selectButton.isEnabled = allowsSelect()
 		switch albumListState.selectMode {
 			case .view: break
 			case .selectAlbums(let selectedAlbumIDs):
-				let newSelected: Set<AlbumID> = Set(albumListState.albums.compactMap {
-					let albumID = $0.albumPersistentID
-					guard selectedAlbumIDs.contains(albumID) else { return nil }
-					return albumID
-				})
+				let newSelected: Set<AlbumID> = Set(albumListState.items.compactMap { switch $0 {
+					case .song: return nil
+					case .album(let album):
+						let albumID = album.albumPersistentID
+						guard selectedAlbumIDs.contains(albumID) else { return nil }
+						return albumID
+				}})
 				albumListState.selectMode = .selectAlbums(newSelected)
 		}
-		guard !albumListState.albums.isEmpty else {
+		guard !albumListState.items.isEmpty else {
 			reflectNoAlbums()
 			return
 		}
@@ -209,32 +268,47 @@ final class AlbumsTVC: LibraryTVC {
 	private func scrollToCurrent() {
 		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
 		let currentAlbumID = AlbumID(bitPattern: uInt64)
-		guard let currentAlbum = albumListState.albums.first(where: { album in
-			currentAlbumID == album.albumPersistentID
-		}) else { return }
+		guard let currentRow = albumListState.items.firstIndex(where: { switch $0 {
+			case .song: return false
+			case .album(let album): return currentAlbumID == album.albumPersistentID
+		}}) else { return }
 		// The current song might not be in our database, but the current `Album` is.
-		let indexPath = IndexPath(row: Int(currentAlbum.index), section: 0)
+		let indexPath = IndexPath(row: currentRow, section: 0)
 		tableView.scrollToRow(at: indexPath, at: .top, animated: true)
 	}
 	
-	@objc private func openAlbumID(notification: Notification) {
-		guard
-			let albumIDToOpen = notification.object as? AlbumID,
-			let albumToOpen = albumListState.albums.first(where: { album in
-				albumIDToOpen == album.albumPersistentID
+	@objc private func expandAlbumID(notification: Notification) {
+		guard let albumIDToOpen = notification.object as? AlbumID else { return }
+		let oldRows = albumListState.rowIdentifiers()
+		
+		albumListState.expansion = .expanded(albumIDToOpen)
+		albumListState.refreshItems()
+		Task {
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+				self.tableView.scrollToRow(
+					at: IndexPath(
+						row: self.albumListState.items.firstIndex(where: { switch $0 {
+							case .album(let album): return albumIDToOpen == album.albumPersistentID
+							case .song: return false
+						}})!,
+						section: 0),
+					at: .top,
+					animated: true)
 			})
-		else { return }
-		navigationController?.pushViewController({
-			let songsTVC = UIStoryboard(name: "SongsTVC", bundle: nil).instantiateInitialViewController() as! SongsTVC
-			songsTVC.songsViewModel = SongsViewModel(album: albumToOpen)
-			return songsTVC
-		}(), animated: true)
+		}
+	}
+	@objc private func collapse() {
+		let oldRows = albumListState.rowIdentifiers()
+		
+		albumListState.expansion = .collapsed
+		albumListState.refreshItems()
+		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	
 	// MARK: - Editing
 	
 	private func allowsSelect() -> Bool {
-		return !albumListState.albums.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+		return !albumListState.items.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 	}
 	
 	private func beginSelecting() {
@@ -259,165 +333,20 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var album_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.album_demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.album_sink() }]))
 	
 	@objc private func album_reflectSelected() {
-		album_arranger.isEnabled = { switch albumListState.selectMode {
-			case .view: return false
-			case .selectAlbums(let selectedAlbumIDs):
-				if selectedAlbumIDs.isEmpty { return true }
-				let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
-				return selectedIndices.isConsecutive()
-		}}()
+		album_arranger.isEnabled = false
 		album_arranger.preferredMenuElementOrder = .fixed
-		album_arranger.menu = album_arrangeMenu()
-		album_promoter.isEnabled = { switch albumListState.selectMode {
-			case .view: return false
-			case .selectAlbums(let selectedAlbumIDs): return !selectedAlbumIDs.isEmpty
-		}}()
+		album_arranger.menu = nil
+		album_promoter.isEnabled = false
 		album_demoter.isEnabled = album_promoter.isEnabled
 	}
 	
-	private func album_arrangeMenu() -> UIMenu {
-		let groups: [[AlbumOrder]] = [
-			[.recentlyAdded, .newest, .artist],
-			[.random, .reverse],
-		]
-		let submenus: [UIMenu] = groups.map { group in
-			UIMenu(options: .displayInline, children: group.map { order in
-				UIDeferredMenuElement.uncached { [weak self] useElements in
-					// Runs each time the button presents the menu
-					guard let self else { return }
-					let action = order.newUIAction(handler: { [weak self] in
-						self?.album_arrange(by: order)
-					})
-					if !album_allowsArrange(by: order) {
-						action.attributes.formUnion(.disabled) // You must do this inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
-					}
-					useElements([action])
-				}
-			})
-		}
-		return UIMenu(children: submenus)
-	}
-	private func album_allowsArrange(by order: AlbumOrder) -> Bool {
-		guard album_toArrange().count >= 2 else { return false }
-		switch order {
-			case .random, .reverse: return true
-			case .recentlyAdded, .artist: return true
-			case .newest:
-				return album_toArrange().contains {
-					nil != $0.releaseDateEstimate
-				}
-		}
-	}
-	private func album_arrange(by order: AlbumOrder) {
-		let oldRows = albumListState.rowIdentifiers()
-		
-		order.reindex(album_toArrange())
-		albumListState.refreshAlbums()
-		albumListState.selectMode = .selectAlbums([])
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
-	}
-	private func album_toArrange() -> [Album] {
-		switch albumListState.selectMode {
-			case .view: return []
-			case .selectAlbums(let selectedAlbumIDs):
-				if selectedAlbumIDs.isEmpty { return albumListState.albums }
-				return albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
-		}
-	}
-	
 	private func album_promote() {
-		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
-		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
-		guard
-			let front = selectedIndices.first,
-			let back = selectedIndices.last
-		else { return }
-		
-		let target: Int64 = selectedIndices.isConsecutive() ? max(front - 1, 0) : front
-		let range = (target...back)
-		let toAffect = albumListState.albums.filter { range.contains($0.index) }
-		let toPromote = toAffect.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
-		let toDisplace = toAffect.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
-		let newBlock = toPromote + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
-		
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = target + Int64(offset)
-		}
-		albumListState.refreshAlbums()
-		NotificationCenter.default.post(name: AlbumListState.selectingAlbums, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-		Task {
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
-			})
-		}
 	}
 	private func album_demote() {
-		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
-		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
-		guard
-			let front = selectedIndices.first,
-			let back = selectedIndices.last
-		else { return }
-		
-		let target: Int64 = selectedIndices.isConsecutive() ? min(back + 1, Int64(albumListState.albums.count) - 1) : back
-		let range = (front...target)
-		let toAffect = albumListState.albums.filter { range.contains($0.index) }
-		let toDemote = toAffect.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
-		let toDisplace = toAffect.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
-		let newBlock = toDisplace + toDemote
-		let oldRows = albumListState.rowIdentifiers()
-		
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = front + Int64(offset)
-		}
-		albumListState.refreshAlbums()
-		NotificationCenter.default.post(name: AlbumListState.selectingAlbums, object: albumListState)
-		Task {
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
-			})
-		}
 	}
 	
 	private func album_float() {
-		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
-		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
-		guard let back = selectedIndices.last else { return }
-		
-		let target: Int64 = 0
-		let range = (target...back)
-		let toAffect = albumListState.albums.filter { range.contains($0.index) }
-		let toPromote = toAffect.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
-		let toDisplace = toAffect.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
-		let newBlock = toPromote + toDisplace
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.selectMode = .selectAlbums([])
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = target + Int64(offset)
-		}
-		albumListState.refreshAlbums()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 	private func album_sink() {
-		guard case let .selectAlbums(selectedAlbumIDs) = albumListState.selectMode else { return }
-		let selectedIndices = albumListState.albums.filter { selectedAlbumIDs.contains($0.albumPersistentID) }.map { $0.index }
-		guard let front = selectedIndices.first else { return }
-		
-		let target: Int64 = Int64(albumListState.albums.count) - 1
-		let range = (front...target)
-		let toAffect = albumListState.albums.filter { range.contains($0.index) }
-		let toDemote = toAffect.filter { selectedAlbumIDs.contains($0.albumPersistentID) }
-		let toDisplace = toAffect.filter { !selectedAlbumIDs.contains($0.albumPersistentID) }
-		let newBlock = toDisplace + toDemote
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.selectMode = .selectAlbums([])
-		newBlock.indices.forEach { offset in
-			newBlock[offset].index = front + Int64(offset)
-		}
-		albumListState.refreshAlbums()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
 	}
 }
