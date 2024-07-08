@@ -297,11 +297,12 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	@objc private func collapse() {
-		let oldRows = albumListState.rowIdentifiers()
-		
-		albumListState.expansion = .collapsed
-		albumListState.refreshItems()
-		Task { let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) }
+		Task {
+			let oldRows = albumListState.rowIdentifiers()
+			albumListState.expansion = .collapsed
+			albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+		}
 	}
 	
 	@objc private func confirmPlay(notification: Notification) {
