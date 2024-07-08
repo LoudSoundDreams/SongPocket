@@ -264,14 +264,13 @@ final class AlbumsTVC: LibraryTVC {
 	func showCurrent() {
 		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
 		let currentAlbumID = AlbumID(bitPattern: uInt64)
-		guard let currentRow = albumListState.items.firstIndex(where: { switch $0 {
+		// The current song might not be in our database, but the current `Album` is.
+		guard let currentAlbumRow = albumListState.items.firstIndex(where: { switch $0 {
 			case .song: return false
 			case .album(let album): return currentAlbumID == album.albumPersistentID
 		}}) else { return }
-		// The current song might not be in our database, but the current `Album` is.
-		let indexPath = IndexPath(row: currentRow, section: 0)
 		tableView.performBatchUpdates {
-			tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+			tableView.scrollToRow(at: IndexPath(row: currentAlbumRow, section: 0), at: .top, animated: true)
 		} completion: { _ in
 			self.expandAndAlignTo(currentAlbumID)
 		}
@@ -282,6 +281,7 @@ final class AlbumsTVC: LibraryTVC {
 		expandAndAlignTo(idToOpen)
 	}
 	private func expandAndAlignTo(_ idToExpand: AlbumID) {
+		guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return } // Because `showCurrent` calls this method in a completion handler, we might have removed the `Album` by now.
 		let oldRows = albumListState.rowIdentifiers()
 		
 		albumListState.expansion = .expanded(idToExpand)
