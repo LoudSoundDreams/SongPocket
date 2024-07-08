@@ -66,7 +66,7 @@ import MediaPlayer
 				if selectedIDs.contains(albumID) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
-						.foregroundStyle(.white, Color.accentColor)
+						.foregroundStyle(.white, .tint)
 						.padding()
 				} else {
 					Image(systemName: "circle")
@@ -277,7 +277,7 @@ import MediaPlayer
 						if selectedIDs.contains(song.persistentID) {
 							Image(systemName: "checkmark.circle.fill")
 								.symbolRenderingMode(.palette)
-								.foregroundStyle(.white, Color.accentColor)
+								.foregroundStyle(.white, .tint)
 								.padding(.trailing)
 								.transition(.identity) // Prevents animation when selecting or deselecting (but not when inserting or removing entire stack)
 						}
@@ -339,7 +339,7 @@ struct NowPlayingIndicator: View {
 						.symbolRenderingMode(.hierarchical)
 			}
 		}
-		.foregroundStyle(Color.accentColor)
+		.foregroundStyle(.tint)
 		.accessibilityElement()
 		.accessibilityLabel({ switch status {
 			case .notPlaying: return ""

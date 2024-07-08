@@ -99,8 +99,8 @@ final class FakeAlbum: Identifiable {
 	
 	var position: Int
 	let title: String
-	let circleColor = Color.random()
-	let squareColor = Color.random()
+	let circleColor = Color.randomTranslucent()
+	let squareColor = Color.randomTranslucent()
 	
 	init(position: Int, title: String) {
 		self.position = position

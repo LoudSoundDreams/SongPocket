@@ -123,8 +123,9 @@ extension NotificationCenter {
 import SwiftUI
 
 extension Color {
-	static func random() -> Self {
+	static func randomTranslucent() -> Self {
 		return Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
+			.opacity(.oneHalf)
 	}
 }
 
