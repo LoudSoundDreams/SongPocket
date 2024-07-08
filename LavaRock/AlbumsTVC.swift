@@ -345,6 +345,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock[offset].index = target + Int64(offset)
 		}
 		albumListState.refreshAlbums()
+		NotificationCenter.default.post(name: AlbumListState.selectingAlbums, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 		Task {
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
@@ -371,6 +372,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock[offset].index = front + Int64(offset)
 		}
 		albumListState.refreshAlbums()
+		NotificationCenter.default.post(name: AlbumListState.selectingAlbums, object: albumListState)
 		Task {
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
