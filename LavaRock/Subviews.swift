@@ -141,9 +141,9 @@ import MediaPlayer
 	let albumID: AlbumID
 	let dimmed: Bool
 	var body: some View {
-		HStack(spacing: .eight * 5/4) {
+		HStack {
 			NowPlayingImage().hidden()
-			VStack(alignment: .leading, spacing: .eight * 1/2) {
+			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `SongRow`
 				Text({
 #if targetEnvironment(simulator)
 					return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
@@ -243,7 +243,7 @@ import MediaPlayer
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
-			VStack(alignment: .leading, spacing: .eight * 1/2) {
+			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumHeader`
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 				let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumID))]?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
