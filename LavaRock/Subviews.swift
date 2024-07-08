@@ -14,21 +14,21 @@ import MediaPlayer
 	let viewportHeight: CGFloat
 	let albumListState: AlbumListState
 	var body: some View {
-		ZStack {
+		ZStack(alignment: .bottomLeading) {
 			art
 				.opacity(select_opacity)
 				.animation(.default, value: albumListState.selectMode)
-			ZStack(alignment: .bottomLeading) {
-				if shrinkWrapped {
+				.overlay { if shrinkWrapped {
 					Rectangle().foregroundStyle(.regularMaterial)
-					AlbumHeader(albumID: albumID, dimmed: {
-						switch albumListState.selectMode {
-							case .view, .selectAlbums: return false
-							case .selectSongs: return true
-						}}())
-					.animation(.default, value: albumListState.selectMode)
-				}
-			}.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
+				}}
+				.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
+			ZStack { if shrinkWrapped {
+				AlbumHeader(albumID: albumID, dimmed: {
+					switch albumListState.selectMode {
+						case .view, .selectAlbums: return false
+						case .selectSongs: return true
+					}}())
+			}}.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -103,9 +103,7 @@ import MediaPlayer
 	@ViewBuilder private var art: some View {
 		let maxSideLength = min(viewportWidth, viewportHeight)
 #if targetEnvironment(simulator)
-		let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: {
-			albumID == $0.albumID
-		})!
+		let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: { albumID == $0.albumID })!
 		Image(songInfo.coverArtFileName)
 			.resizable()
 			.scaledToFit()
@@ -170,13 +168,9 @@ import MediaPlayer
 				.fontCaption2Bold()
 				Text({
 #if targetEnvironment(simulator)
-					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else {
-						return InterfaceText.emDash
-					}
+					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else { return InterfaceText.emDash }
 #else
-					guard let date = musicKitAlbums[MusicItemID(String(albumID))]?.releaseDate else {
-						return InterfaceText.emDash
-					}
+					guard let date = musicKitAlbums[MusicItemID(String(albumID))]?.releaseDate else { return InterfaceText.emDash }
 #endif
 					return date.formatted(date: .numeric, time: .omitted)
 				}())
@@ -184,6 +178,7 @@ import MediaPlayer
 				.font(.caption2)
 				.monospacedDigit()
 			}
+			.animation(.default, value: dimmed)
 			.animation(.default, value: musicKitAlbums) // TO DO: Distracting when loading for the first time
 		}.padding()
 	}
