@@ -54,7 +54,7 @@ import MediaPlayer
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
-			case .selectAlbums(let selectedAlbumIDs): return selectedAlbumIDs.contains(albumID)
+			case .selectAlbums(let selectedIDs): return selectedIDs.contains(albumID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
@@ -62,8 +62,8 @@ import MediaPlayer
 	@ViewBuilder private var select_overlay: some View {
 		switch albumListState.selectMode {
 			case .view, .selectSongs: EmptyView()
-			case .selectAlbums(let selectedAlbumIDs):
-				if selectedAlbumIDs.contains(albumID) {
+			case .selectAlbums(let selectedIDs):
+				if selectedIDs.contains(albumID) {
 					Image(systemName: "checkmark.circle.fill")
 						.symbolRenderingMode(.palette)
 						.foregroundStyle(.white, Color.accentColor)
@@ -89,9 +89,9 @@ import MediaPlayer
 							NotificationCenter.default.post(name: Self.expandAlbumID, object: albumID)
 						}
 				}
-			case .selectAlbums(let selectedAlbumIDs):
-				var newSelected = selectedAlbumIDs
-				if selectedAlbumIDs.contains(albumID) {
+			case .selectAlbums(let selectedIDs):
+				var newSelected = selectedIDs
+				if selectedIDs.contains(albumID) {
 					newSelected.remove(albumID)
 				} else {
 					newSelected.insert(albumID)
@@ -214,8 +214,8 @@ import MediaPlayer
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .selectAlbums: return false
 			case .view(let activatedSongID): return activatedSongID == song.persistentID
-			case .selectSongs(let selectedSongIDs):
-				return selectedSongIDs.contains(song.persistentID)
+			case .selectSongs(let selectedIDs):
+				return selectedIDs.contains(song.persistentID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
@@ -223,7 +223,7 @@ import MediaPlayer
 				{ switch albumListState.selectMode {
 					case .selectAlbums: return nil // Should never run
 					case .view(let activatedSongID): return (activatedSongID == nil) ? .default: nil
-					case .selectSongs: return nil
+					case .selectSongs: return nil // TO DO: Animate deselecting after arranging, floating, or sinking.
 				}}(),
 				value: albumListState.selectMode)
 	}
@@ -231,10 +231,10 @@ import MediaPlayer
 		switch albumListState.selectMode {
 			case .selectAlbums: return
 			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: song.persistentID)
-			case .selectSongs(let selectedSongIDs):
+			case .selectSongs(let selectedIDs):
 				let songID = song.persistentID
-				var newSelected = selectedSongIDs
-				if selectedSongIDs.contains(songID) {
+				var newSelected = selectedIDs
+				if selectedIDs.contains(songID) {
 					newSelected.remove(songID)
 				} else {
 					newSelected.insert(songID)
@@ -274,12 +274,12 @@ import MediaPlayer
 		ZStack {
 			switch albumListState.selectMode {
 				case .view, .selectAlbums: EmptyView()
-				case .selectSongs(let selectedSongIDs):
+				case .selectSongs(let selectedIDs):
 					ZStack {
 						Image(systemName: "circle")
 							.foregroundStyle(.secondary)
 							.padding(.trailing)
-						if selectedSongIDs.contains(song.persistentID) {
+						if selectedIDs.contains(song.persistentID) {
 							Image(systemName: "checkmark.circle.fill")
 								.symbolRenderingMode(.palette)
 								.foregroundStyle(.white, Color.accentColor)
