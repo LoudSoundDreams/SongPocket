@@ -39,16 +39,4 @@ extension Album {
 		container = collection
 		albumPersistentID = albumID
 	}
-	
-	// MARK: - Sorting
-	
-	final func precedesByNewestFirst(_ other: Album) -> Bool {
-		// Leave elements in the same order if they both have no release date, or the same release date.
-		
-		// Move unknown release date to the end
-		guard let otherDate = other.releaseDateEstimate else { return true }
-		guard let myDate = releaseDateEstimate else { return false }
-		
-		return myDate > otherDate
-	}
 }

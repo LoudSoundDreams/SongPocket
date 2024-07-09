@@ -388,7 +388,9 @@ extension MusicRepo {
 				return byIndex.sortedMaintainingOrderWhen {
 					$0.releaseDateEstimate == $1.releaseDateEstimate
 				} areInOrder: {
-					$0.precedesByNewestFirst($1)
+					guard let rightDate = $1.releaseDateEstimate else { return true }
+					guard let leftDate = $0.releaseDateEstimate else { return false }
+					return leftDate > rightDate
 				}
 			}()
 			Database.renumber(albums)

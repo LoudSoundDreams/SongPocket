@@ -45,27 +45,41 @@ enum AlbumOrder {
 			case .random: return inOriginalOrder.inAnyOtherOrder()
 			case .reverse: return inOriginalOrder.reversed()
 				
+				// Sort stably: keep elements in the same order if they have the same release date, artist, or so on.
+				
 			case .recentlyAdded:
-				let albumsAndDates = inOriginalOrder.map {(
-					album: $0,
-					dateFirstAdded:
-						$0.songs(sorted: false)
-						.compactMap { $0.songInfo()?.dateAddedOnDisk }
-						.reduce(into: Date.now) { oldestSoFar, dateAdded in
-							oldestSoFar = min(oldestSoFar, dateAdded)
+				// 10,000 albums takes 11.4s in 2024.
+				let albumsAndFirstAdded: [(album: Album, firstAdded: Date)] = inOriginalOrder.reversed().map { albumToSort in ( // Puts `Album`s without date added at the beginning, maintaining their current order.
+					album: albumToSort,
+					firstAdded: {
+						let musicKitSongs = MusicRepo.shared.musicKitSection(albumToSort.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
+						// I prefer using date created, meaning the date you first added one of the album’s songs, because that’s what happens naturally when we add new albums at the top when we first see them.
+						return musicKitSongs.reduce(into: Date.now) { earliestSoFar, musicKitSong in
+							if
+								let dateAdded = musicKitSong.libraryAddedDate,
+								dateAdded < earliestSoFar
+							{ earliestSoFar = dateAdded }
 						}
+					}()
 				)}
-				let sorted = albumsAndDates.sorted { leftTuple, rightTuple in
-					leftTuple.dateFirstAdded > rightTuple.dateFirstAdded
+				let sorted = albumsAndFirstAdded.sorted { leftTuple, rightTuple in
+					leftTuple.firstAdded > rightTuple.firstAdded
 				}
 				return sorted.map { $0.album }
 			case .newest:
-				return inOriginalOrder.sortedMaintainingOrderWhen {
-					$0.releaseDateEstimate == $1.releaseDateEstimate
-				} areInOrder: {
-					$0.precedesByNewestFirst($1)
+				let albumsAndReleaseDates: [(album: Album, releaseDate: Date?)] = inOriginalOrder.map {(
+					album: $0,
+					releaseDate: MusicRepo.shared.musicKitSection($0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
+				)}
+				let sorted = albumsAndReleaseDates.sorted {
+					// Move unknown release date to the end
+					guard let rightDate = $1.releaseDate else { return true }
+					guard let leftDate = $0.releaseDate else { return false }
+					return leftDate > rightDate
 				}
+				return sorted.map { $0.album }
 			case .artist:
+				// 10,000 albums takes 30.3s in 2024.
 				let albumsAndArtists: [(album: Album, artist: String?)] = inOriginalOrder.map {(
 					album: $0,
 					artist: MusicRepo.shared.musicKitSection($0.albumPersistentID)?.artistName
