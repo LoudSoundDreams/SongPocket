@@ -23,7 +23,7 @@ import MediaPlayer
 				}}
 				.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
 			ZStack { if shrinkWrapped {
-				AlbumHeader(albumID: albumID, dimmed: {
+				AlbumLabel(albumID: albumID, dimmed: {
 					switch albumListState.selectMode {
 						case .view, .selectAlbums: return false
 						case .selectSongs: return true
@@ -135,9 +135,9 @@ import MediaPlayer
 	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
 }
 
-// MARK: - Album header
+// MARK: - Album label
 
-@MainActor struct AlbumHeader: View {
+@MainActor struct AlbumLabel: View {
 	let albumID: AlbumID
 	let dimmed: Bool
 	var body: some View {
@@ -243,7 +243,7 @@ import MediaPlayer
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
-			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumHeader`
+			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
 				let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumID))]?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
