@@ -68,7 +68,7 @@ enum AlbumOrder {
 			case .artist:
 				let albumsAndArtists: [(album: Album, artist: String?)] = inOriginalOrder.map {(
 					album: $0,
-					artist: MusicRepo.shared.musicKitAlbums[MusicItemID(String($0.albumPersistentID))]?.artistName
+					artist: MusicRepo.shared.musicKitSection($0.albumPersistentID)?.artistName
 				)}
 				let sorted = albumsAndArtists.sortedMaintainingOrderWhen {
 					$0.artist == $1.artist

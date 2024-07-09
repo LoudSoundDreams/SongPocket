@@ -36,8 +36,8 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
-		.accessibilityLabel(musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum)
-		.accessibilityInputLabels([musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum])
+		.accessibilityLabel(repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)
+		.accessibilityInputLabels([repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum])
 	}
 	private var shrinkWrapped: Bool {
 		switch albumListState.expansion {
@@ -109,7 +109,7 @@ import MediaPlayer
 			.scaledToFit()
 			.frame(width: maxSideLength, height: maxSideLength)
 #else
-		if let artwork = musicKitAlbums[MusicItemID(String(albumID))]?.artwork {
+		if let artwork = repo.musicKitSection(albumID)?.artwork {
 			/*
 			 As of iOS 17.5.1:
 			 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
@@ -132,7 +132,7 @@ import MediaPlayer
 #endif
 	}
 	
-	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
+	private let repo: MusicRepo = .shared
 }
 
 // MARK: - Album label
@@ -148,7 +148,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 					return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
 #else
-					return musicKitAlbums[MusicItemID(String(albumID))]?.title ?? InterfaceText.unknownAlbum
+					return repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
 #endif
 				}())
 				.font_title2Bold()
@@ -158,7 +158,7 @@ import MediaPlayer
 					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
 #else
 					guard
-						let albumArtist = musicKitAlbums[MusicItemID(String(albumID))]?.artistName,
+						let albumArtist = repo.musicKitSection(albumID)?.artistName,
 						albumArtist != ""
 					else { return InterfaceText.unknownArtist }
 					return albumArtist
@@ -170,7 +170,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else { return InterfaceText.emDash }
 #else
-					guard let date = musicKitAlbums[MusicItemID(String(albumID))]?.releaseDate else { return InterfaceText.emDash }
+					guard let date = repo.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
 #endif
 					return date.formatted(date: .numeric, time: .omitted)
 				}())
@@ -179,10 +179,10 @@ import MediaPlayer
 				.monospacedDigit()
 			}
 			.animation(.default, value: dimmed)
-			.animation(.default, value: musicKitAlbums) // TO DO: Distracting when loading for the first time
+			.animation(.default, value: repo.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
 		}.padding()
 	}
-	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
+	private let repo: MusicRepo = .shared
 }
 
 // MARK: - Song row
@@ -245,7 +245,7 @@ import MediaPlayer
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
-				let albumArtistOptional = musicKitAlbums[MusicItemID(String(albumID))]?.artistName
+				let albumArtistOptional = repo.musicKitSection(albumID)?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 					Text(songArtist)
 						.foregroundStyle(.secondary)
@@ -285,7 +285,7 @@ import MediaPlayer
 			}
 		}.animation(.default, value: albumListState.selectMode)
 	}
-	private var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] { MusicRepo.shared.musicKitAlbums }
+	private let repo: MusicRepo = .shared
 	
 	private var overflowMenu: some View {
 		Menu { menuContent } label: {

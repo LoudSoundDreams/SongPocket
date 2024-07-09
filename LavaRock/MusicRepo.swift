@@ -6,7 +6,7 @@ import MediaPlayer
 import SwiftUI
 
 @MainActor @Observable final class MusicRepo {
-	private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
+	private(set) var musicKitSections: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
@@ -20,6 +20,9 @@ extension MusicRepo {
 		mergeChanges()
 	}
 	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
+	func musicKitSection(_ albumID: AlbumID) -> MusicLibrarySection<MusicKit.Album, MusicKit.Song>? {
+		return musicKitSections[MusicItemID(String(albumID))]
+	}
 }
 
 // MARK: - Private
@@ -38,19 +41,17 @@ extension MusicRepo {
 		}
 		
 		Task {
-			let freshAlbums = await AppleMusic.albums()
+			let fresh = await AppleMusic.sections()
 			
-			var union = musicKitAlbums
-			freshAlbums.forEach { (key, value) in
-				union[key] = value
-			}
+			var union = musicKitSections
+			fresh.forEach { (key, value) in union[key] = value }
 			withAnimation { // Spooky action at a distance
-				musicKitAlbums = union // Show new data immediately…
+				musicKitSections = union // Show new data immediately…
 			}
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before animating it away anyway.
 			
 			withAnimation {
-				musicKitAlbums = freshAlbums
+				musicKitSections = fresh
 			}
 		}
 #endif
