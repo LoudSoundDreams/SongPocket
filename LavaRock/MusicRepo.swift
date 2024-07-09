@@ -9,7 +9,7 @@ import SwiftUI
 	private(set) var musicKitAlbums: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
 	
 	private init() {}
-	private let context = Database.viewContext
+	@ObservationIgnored private let context = Database.viewContext
 }
 extension MusicRepo {
 	static let shared = MusicRepo()
