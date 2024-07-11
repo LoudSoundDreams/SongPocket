@@ -8,6 +8,7 @@ import CoreData
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate var items: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
+	var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 	var expansion: Expansion = .collapsed
 	var selectMode: SelectMode = .view(nil) { didSet {
 		switch selectMode {
@@ -179,17 +180,12 @@ final class AlbumsTVC: LibraryTVC {
 			result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
 			return result
 		}()
+		albumListState.viewportSize = (
+			width: view.frame.width,
+			height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
+		)
 		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumRow(
-				albumID: album.albumPersistentID,
-				viewportWidth: view.frame.width,
-				viewportHeight: {
-					let height = view.frame.height
-					let topInset = view.safeAreaInsets.top
-					let bottomInset = view.safeAreaInsets.bottom
-					return height - topInset - bottomInset
-				}(),
-				albumListState: albumListState)
+			AlbumRow(albumID: album.albumPersistentID, albumListState: albumListState)
 		}.margins(.all, .zero)
 		return cell
 	}
@@ -203,21 +199,10 @@ final class AlbumsTVC: LibraryTVC {
 		with coordinator: UIViewControllerTransitionCoordinator
 	) {
 		super.viewWillTransition(to: size, with: coordinator)
-		
-		tableView.allIndexPaths().forEach { indexPath in // Don’t use `indexPathsForVisibleRows`, because that excludes cells that underlap navigation bars and toolbars.
-			guard let cell = tableView.cellForRow(at: indexPath) else { return }
-			switch albumListState.items[indexPath.row] {
-				case .song: return
-				case .album(let rowAlbum):
-					cell.contentConfiguration = UIHostingConfiguration {
-						AlbumRow(
-							albumID: rowAlbum.albumPersistentID,
-							viewportWidth: size.width,
-							viewportHeight: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom,
-							albumListState: albumListState)
-					}.margins(.all, .zero)
-			}
-		}
+		albumListState.viewportSize = (
+			width: size.width,
+			height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
+		)
 	}
 	
 	@objc private func refreshLibraryItems() {

@@ -10,8 +10,6 @@ import MediaPlayer
 	static let expandAlbumID = Notification.Name("LRExpandAlbumID")
 	static let collapse = Notification.Name("LRAlbumCollapse")
 	let albumID: AlbumID
-	let viewportWidth: CGFloat
-	let viewportHeight: CGFloat
 	let albumListState: AlbumListState
 	var body: some View {
 		ZStack(alignment: .bottomLeading) {
@@ -101,7 +99,7 @@ import MediaPlayer
 	}
 	
 	@ViewBuilder private var art: some View {
-		let maxSideLength = min(viewportWidth, viewportHeight)
+		let maxSideLength = min(albumListState.viewportSize.width, albumListState.viewportSize.height)
 #if targetEnvironment(simulator)
 		let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: { albumID == $0.albumID })!
 		Image(songInfo.coverArtFileName)
