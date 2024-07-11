@@ -238,22 +238,17 @@ final class AlbumsTVC: LibraryTVC {
 					albumListState.selectMode = .selectAlbums(newSelected)
 				case .selectSongs(let selectedIDs):
 					let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID} )
+					// TO DO: End selecting if we deleted the current album (and set `expansion = .collapsed`).
 					albumListState.selectMode = .selectSongs(newSelected)
 			}
-			guard !albumListState.items.isEmpty else {
-				reflectNoAlbums()
-				return
+			if albumListState.items.isEmpty {
+				endSelecting()
 			}
-			// TO DO: Keep current content visible
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths())
 		}
-	}
-	private func reflectNoAlbums() {
-		tableView.deleteRows(at: tableView.allIndexPaths(), with: .middle)
-		endSelecting()
 	}
 	
 	func showCurrent() {
