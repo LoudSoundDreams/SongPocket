@@ -146,44 +146,48 @@ import MediaPlayer
 	var body: some View {
 		HStack {
 			NowPlayingImage().hidden()
-			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `SongRow`
-				Text({
-#if targetEnvironment(simulator)
-					return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
-#else
-					return repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
-#endif
-				}())
-				.font_title2Bold()
-				.foregroundStyle(dimmed ? .secondary : .primary)
-				Text({
-#if targetEnvironment(simulator)
-					return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
-#else
-					guard
-						let albumArtist = repo.musicKitSection(albumID)?.artistName,
-						albumArtist != ""
-					else { return InterfaceText.unknownArtist }
-					return albumArtist
-#endif
-				}())
-				.foregroundStyle(dimmed ? .tertiary : .secondary)
-				.font_caption2Bold()
-				Text({
-#if targetEnvironment(simulator)
-					guard let date = Sim_SongInfo.current?.releaseDateOnDisk else { return InterfaceText.emDash }
-#else
-					guard let date = repo.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
-#endif
-					return date.formatted(date: .numeric, time: .omitted)
-				}())
-				.foregroundStyle(dimmed ? .tertiary : .secondary)
-				.font(.caption2)
-				.monospacedDigit()
-			}
-			.animation(.default, value: dimmed)
-			.animation(.default, value: repo.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
+			textStack // Align with `SongRow`
+				.animation(.default, value: dimmed)
+				.animation(.default, value: repo.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
 		}.padding()
+	}
+	
+	private var textStack: some View {
+		VStack(alignment: .leading, spacing: .eight * 1/2) {
+			Text({
+#if targetEnvironment(simulator)
+				return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
+#else
+				return repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
+#endif
+			}())
+			.font_title2Bold()
+			.foregroundStyle(dimmed ? .secondary : .primary)
+			Text({
+#if targetEnvironment(simulator)
+				return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
+#else
+				guard
+					let albumArtist = repo.musicKitSection(albumID)?.artistName,
+					albumArtist != ""
+				else { return InterfaceText.unknownArtist }
+				return albumArtist
+#endif
+			}())
+			.foregroundStyle(dimmed ? .tertiary : .secondary)
+			.font_caption2Bold()
+			Text({
+#if targetEnvironment(simulator)
+				guard let date = Sim_SongInfo.current?.releaseDateOnDisk else { return InterfaceText.emDash }
+#else
+				guard let date = repo.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
+#endif
+				return date.formatted(date: .numeric, time: .omitted)
+			}())
+			.foregroundStyle(dimmed ? .tertiary : .secondary)
+			.font(.caption2)
+			.monospacedDigit()
+		}
 	}
 	private let repo: MusicRepo = .shared
 }
@@ -291,11 +295,7 @@ import MediaPlayer
 	private let repo: MusicRepo = .shared
 	
 	private var overflowMenu: some View {
-		Menu { menuContent } label: {
-			Image(systemName: "ellipsis.circle.fill")
-				.font_body_dynamicTypeSizeUpToXxxLarge()
-				.symbolRenderingMode(.hierarchical)
-		}
+		Menu { menuContent } label: { OverflowImage() }
 		.onTapGesture { signal_tappedMenu.toggle() }
 		.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
 			case .selectAlbums: return false
@@ -320,6 +320,14 @@ import MediaPlayer
 		}.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
+}
+
+struct OverflowImage: View {
+	var body: some View {
+		Image(systemName: "ellipsis.circle.fill")
+			.font_body_dynamicTypeSizeUpToXxxLarge()
+			.symbolRenderingMode(.hierarchical)
+	}
 }
 
 // MARK: - Now-playing indicator
