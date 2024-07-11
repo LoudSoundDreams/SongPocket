@@ -19,14 +19,14 @@ import MediaPlayer
 				.overlay { if expansion_labeled {
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
-				.animation(.linear(duration: pow(.oneHalf, 3)), value: expansion_labeled)
+				.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 			ZStack { if expansion_labeled {
 				AlbumLabel(albumID: albumID, dimmed: {
 					switch albumListState.selectMode {
 						case .view, .selectAlbums: return false
 						case .selectSongs: return true
 					}}())
-			}}.animation(.linear(duration: pow(.oneHalf, 3)), value: expansion_labeled)
+			}}.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -46,7 +46,7 @@ import MediaPlayer
 	private var select_opacity: Double {
 		switch albumListState.selectMode {
 			case .view: return 1
-			case .selectAlbums, .selectSongs: return pow(.oneHalf, 2)
+			case .selectAlbums, .selectSongs: return .oneFourth
 		}
 	}
 	@ViewBuilder private var select_highlight: some View {

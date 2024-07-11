@@ -96,7 +96,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = UIColor(.grey_oneEighth)
+		view.backgroundColor = UIColor(Color(hue: 0, saturation: 0, brightness: .oneEighth))
 		tableView.separatorStyle = .none
 		endSelecting()
 		

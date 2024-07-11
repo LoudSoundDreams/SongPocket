@@ -2,18 +2,13 @@ import SwiftUI
 
 // Reference hard-coded numbers here to keep them consistent throughout the app.
 extension Double {
+	static var oneEighth: Self { 1/8 }
+	static var oneFourth: Self { 1/4 }
 	static var oneHalf: Self { 1/2 }
 }
 extension CGFloat {
 	static var oneHalf: Self { 1/2 }
 	static var eight: Self { 8 }
-}
-extension Color {
-	static let grey_oneEighth = Self(
-		hue: 0,
-		saturation: 0,
-		brightness: pow(.oneHalf, 3)
-	)
 }
 
 // Keep keys here to ensure they’re unique.
