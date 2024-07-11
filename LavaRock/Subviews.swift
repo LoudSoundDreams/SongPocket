@@ -13,7 +13,7 @@ import MediaPlayer
 	let albumListState: AlbumListState
 	var body: some View {
 		ZStack(alignment: .bottomLeading) {
-			art
+			AlbumArt(albumID: albumID, maxSideLength: min(albumListState.viewportSize.width, albumListState.viewportSize.height))
 				.opacity(select_opacity)
 				.animation(.default, value: albumListState.selectMode)
 				.overlay { if expansion_labeled {
@@ -97,9 +97,15 @@ import MediaPlayer
 				albumListState.selectMode = .selectAlbums(newSelected)
 		}
 	}
-	
-	@ViewBuilder private var art: some View {
-		let maxSideLength = min(albumListState.viewportSize.width, albumListState.viewportSize.height)
+	private let repo: MusicRepo = .shared
+}
+
+// MARK: - Album art
+
+@MainActor struct AlbumArt: View {
+	let albumID: AlbumID
+	let maxSideLength: CGFloat
+	var body: some View {
 #if targetEnvironment(simulator)
 		let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: { albumID == $0.albumID })!
 		Image(songInfo.coverArtFileName)
@@ -129,7 +135,6 @@ import MediaPlayer
 		}
 #endif
 	}
-	
 	private let repo: MusicRepo = .shared
 }
 
