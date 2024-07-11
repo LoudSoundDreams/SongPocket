@@ -16,28 +16,28 @@ import MediaPlayer
 			art
 				.opacity(select_opacity)
 				.animation(.default, value: albumListState.selectMode)
-				.overlay { if shrinkWrapped {
+				.overlay { if expansion_labeled {
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
-				.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
-			ZStack { if shrinkWrapped {
+				.animation(.linear(duration: pow(.oneHalf, 3)), value: expansion_labeled)
+			ZStack { if expansion_labeled {
 				AlbumLabel(albumID: albumID, dimmed: {
 					switch albumListState.selectMode {
 						case .view, .selectAlbums: return false
 						case .selectSongs: return true
 					}}())
-			}}.animation(.linear(duration: pow(.oneHalf, 3)), value: shrinkWrapped)
+			}}.animation(.linear(duration: pow(.oneHalf, 3)), value: expansion_labeled)
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay(alignment: .bottomLeading) { select_overlay } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay(alignment: .bottomLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 		.accessibilityLabel(repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)
 		.accessibilityInputLabels([repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum])
 	}
-	private var shrinkWrapped: Bool {
+	private var expansion_labeled: Bool {
 		switch albumListState.expansion {
 			case .collapsed: return true
 			case .expanded(let expandedAlbumID): return albumID != expandedAlbumID
@@ -57,7 +57,7 @@ import MediaPlayer
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
 	}
-	@ViewBuilder private var select_overlay: some View {
+	@ViewBuilder private var select_indicator: some View {
 		switch albumListState.selectMode {
 			case .view, .selectSongs: EmptyView()
 			case .selectAlbums(let selectedIDs):
