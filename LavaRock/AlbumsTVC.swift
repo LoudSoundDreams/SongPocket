@@ -99,9 +99,7 @@ final class AlbumsTVC: LibraryTVC {
 		view.backgroundColor = UIColor(Color(hue: 0, saturation: 0, brightness: .oneEighth))
 		tableView.separatorStyle = .none
 		endSelecting()
-		
 		selectButton.isEnabled = allowsSelect()
-		navigationItem.backButtonDisplayMode = .minimal
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
