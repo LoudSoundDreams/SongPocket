@@ -19,15 +19,15 @@ import MediaPlayer
 				.overlay { if expansion_labeled {
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
-				.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 			ZStack { if expansion_labeled {
 				AlbumLabel(albumID: albumID, dimmed: {
 					switch albumListState.selectMode {
 						case .view, .selectAlbums: return false
 						case .selectSongs: return true
 					}}())
-			}}.animation(.linear(duration: .oneEighth), value: expansion_labeled)
+			}}
 		}
+		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay(alignment: .bottomLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
