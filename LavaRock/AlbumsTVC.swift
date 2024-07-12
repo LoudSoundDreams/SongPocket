@@ -359,14 +359,14 @@ final class AlbumsTVC: LibraryTVC {
 		setToolbarItems([endSelectingButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
 		
 		album_arranger.isEnabled = { switch albumListState.selectMode {
-			case .view, .selectSongs: return false
+			case .selectSongs: return false
+			case .view: return true
 			case .selectAlbums(let selectedIDs):
 				if selectedIDs.isEmpty { return true }
 				let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
 				return selectedIndices.isConsecutive()
 		}}()
-		album_arranger.preferredMenuElementOrder = .fixed
-		album_arranger.menu = album_arrangeMenu()
+		album_refreshArrangeMenu()
 		album_promoter.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedIDs): return !selectedIDs.isEmpty
@@ -383,8 +383,7 @@ final class AlbumsTVC: LibraryTVC {
 				let selectedIndices: [Int64] = albumListState.songs(with: selectedIDs).map { $0.index }
 				return selectedIndices.isConsecutive()
 		}}()
-		song_arranger.preferredMenuElementOrder = .fixed
-		song_arranger.menu = song_arrangeMenu()
+		song_refreshArrangeMenu()
 		song_promoter.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs(let selectedIDs): return !selectedIDs.isEmpty
@@ -394,7 +393,9 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Sorting
 	
-	private func album_arrangeMenu() -> UIMenu {
+	private func album_refreshArrangeMenu() {
+		album_arranger.preferredMenuElementOrder = .fixed
+		
 		let groups: [[AlbumOrder]] = [[.recentlyAdded, .newest, .artist], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
 			UIMenu(options: .displayInline, children: group.map { albumOrder in
@@ -407,7 +408,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(children: submenus)
+		album_arranger.menu = UIMenu(children: submenus)
 	}
 	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
 		guard album_toArrange().count >= 2 else { return false }
@@ -418,7 +419,9 @@ final class AlbumsTVC: LibraryTVC {
 			}
 		}
 	}
-	private func song_arrangeMenu() -> UIMenu {
+	private func song_refreshArrangeMenu() {
+		song_arranger.preferredMenuElementOrder = .fixed
+		
 		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
 			UIMenu(options: .displayInline, children: group.map { songOrder in
@@ -430,7 +433,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(children: submenus)
+		song_arranger.menu = UIMenu(children: submenus)
 	}
 	
 	private func album_arrange(by albumOrder: AlbumOrder) {
@@ -438,7 +441,10 @@ final class AlbumsTVC: LibraryTVC {
 			let oldRows = albumListState.rowIdentifiers()
 			albumOrder.reindex(album_toArrange())
 			albumListState.refreshItems()
-			albumListState.selectMode = .selectAlbums([])
+			switch albumListState.selectMode {
+				case .selectSongs, .view: break
+				case .selectAlbums: albumListState.selectMode = .selectAlbums([])
+			}
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
 	}
@@ -447,30 +453,33 @@ final class AlbumsTVC: LibraryTVC {
 			let oldRows = albumListState.rowIdentifiers()
 			songOrder.reindex(song_toArrange())
 			albumListState.refreshItems()
-			albumListState.selectMode = .selectSongs([])
+			switch albumListState.selectMode {
+				case .selectAlbums, .view: break
+				case .selectSongs: albumListState.selectMode = .selectSongs([])
+			}
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
 	}
 	
 	private func album_toArrange() -> [Album] {
 		switch albumListState.selectMode {
-			case .view, .selectSongs: return []
+			case .selectSongs: return []
+			case .view: break
 			case .selectAlbums(let selectedIDs):
-				if selectedIDs.isEmpty {
-					return albumListState.albums()
-				}
+				if selectedIDs.isEmpty { break }
 				return albumListState.albums(with: selectedIDs)
 		}
+		return albumListState.albums()
 	}
 	private func song_toArrange() -> [Song] {
 		switch albumListState.selectMode {
-			case .view, .selectAlbums: return []
+			case .selectAlbums: return []
+			case .view: break
 			case .selectSongs(let selectedIDs):
-				if selectedIDs.isEmpty {
-					return albumListState.songs()
-				}
+				if selectedIDs.isEmpty { break }
 				return albumListState.songs(with: selectedIDs)
 		}
+		return albumListState.songs()
 	}
 	
 	// MARK: - Moving up and down
