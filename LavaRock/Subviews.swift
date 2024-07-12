@@ -20,11 +20,7 @@ import MediaPlayer
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
 			ZStack { if expansion_labeled {
-				AlbumLabel(albumID: albumID, dimmed: {
-					switch albumListState.selectMode {
-						case .view, .selectAlbums: return false
-						case .selectSongs: return true
-					}}())
+				AlbumLabel(albumID: albumID, albumListState: albumListState)
 			}}
 		}
 		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
@@ -142,13 +138,11 @@ import MediaPlayer
 
 @MainActor struct AlbumLabel: View {
 	let albumID: AlbumID
-	let dimmed: Bool
+	let albumListState: AlbumListState
 	var body: some View {
 		HStack {
 			NowPlayingImage().hidden()
 			textStack // Align with `SongRow`
-				.animation(.default, value: dimmed)
-				.animation(.default, value: repo.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
 		}.padding()
 	}
 	
@@ -162,7 +156,7 @@ import MediaPlayer
 #endif
 			}())
 			.font_title2Bold()
-			.foregroundStyle(dimmed ? .secondary : .primary)
+			.foregroundStyle(select_dimmed ? .secondary : .primary)
 			Text({
 #if targetEnvironment(simulator)
 				return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
@@ -174,7 +168,7 @@ import MediaPlayer
 				return albumArtist
 #endif
 			}())
-			.foregroundStyle(dimmed ? .tertiary : .secondary)
+			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
 			.font_caption2Bold()
 			Text({
 #if targetEnvironment(simulator)
@@ -184,9 +178,17 @@ import MediaPlayer
 #endif
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
-			.foregroundStyle(dimmed ? .tertiary : .secondary)
+			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
 			.font(.caption2)
 			.monospacedDigit()
+		}
+		.animation(.default, value: select_dimmed)
+		.animation(.default, value: repo.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
+	}
+	private var select_dimmed: Bool {
+		switch albumListState.selectMode {
+			case .view, .selectAlbums: return false
+			case .selectSongs: return true
 		}
 	}
 	private let repo: MusicRepo = .shared
