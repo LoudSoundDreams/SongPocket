@@ -13,9 +13,7 @@ enum WorkingOn {
 		
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
-		let toKeep = Set(UserDefaults.Key.allCases.map { $0.rawValue })
 		defaults.dictionaryRepresentation().forEach { (existingKey, _) in
-			if toKeep.contains(existingKey) { return }
 			defaults.removeObject(forKey: existingKey)
 		}
 	}

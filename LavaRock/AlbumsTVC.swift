@@ -412,7 +412,9 @@ final class AlbumsTVC: LibraryTVC {
 		guard album_toArrange().count >= 2 else { return false }
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded, .artist: return true
-			case .newest: return album_toArrange().contains { nil != $0.releaseDateEstimate }
+			case .newest: return album_toArrange().contains {
+				nil != MusicRepo.shared.musicKitSection($0.albumPersistentID)?.releaseDate
+			}
 		}
 	}
 	private func song_arrangeMenu() -> UIMenu {

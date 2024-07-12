@@ -178,7 +178,7 @@ import MediaPlayer
 			.font_caption2Bold()
 			Text({
 #if targetEnvironment(simulator)
-				guard let date = Sim_SongInfo.current?.releaseDateOnDisk else { return InterfaceText.emDash }
+				guard let date = Sim_SongInfo.current?.releaseDate else { return InterfaceText.emDash }
 #else
 				guard let date = repo.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
 #endif

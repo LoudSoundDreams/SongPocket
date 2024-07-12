@@ -18,7 +18,6 @@ protocol SongInfo {
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get } // TO DO: Delete
-	var releaseDateOnDisk: Date? { get } // TO DO: Delete
 }
 extension SongInfo {
 	// MARK: - Sorting
@@ -119,7 +118,6 @@ extension MPMediaItem: SongInfo {
 	final var titleOnDisk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	final var artistOnDisk: String? { artist }
 	final var dateAddedOnDisk: Date { dateAdded }
-	final var releaseDateOnDisk: Date? { releaseDate }
 }
 
 // MARK: - Simulator
@@ -140,9 +138,9 @@ struct Sim_SongInfo: SongInfo {
 	let titleOnDisk: String?
 	let artistOnDisk: String?
 	let dateAddedOnDisk: Date
-	let releaseDateOnDisk: Date?
 	
 	// Not protocol requirements
+	let releaseDate: Date?
 	let coverArtFileName: String
 }
 extension Sim_SongInfo: Equatable {}
@@ -198,7 +196,7 @@ extension Sim_SongInfo {
 			titleOnDisk: title,
 			artistOnDisk: by,
 			dateAddedOnDisk: added,
-			releaseDateOnDisk: {
+			releaseDate: {
 				guard let released else { return nil }
 				return Date.lateNight(iso8601_10Char: released)
 			}(),

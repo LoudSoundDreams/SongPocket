@@ -57,12 +57,6 @@ extension MusicRepo {
 #endif
 	}
 	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
-		let defaults = UserDefaults.standard
-		let keyHasSaved = UserDefaults.Key.hasSavedDatabase.rawValue
-		
-		let hasSaved = defaults.bool(forKey: keyHasSaved) // Returns `false` if there’s no saved value
-		let isFirstImport = !hasSaved
-		
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
 		let toUpdate: [(existing: Song, fresh: SongInfo)]
@@ -105,15 +99,10 @@ extension MusicRepo {
 		
 		// Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
 		// This might create new `Album`s, and if it does, it might create new `Collection`s.
-		createLibraryItems(newInfos: toCreate, isFirstImport: isFirstImport)
-		cleanUpLibraryItems(
-			songsToDelete: toDelete,
-			allInfos: freshInAnyOrder,
-			isFirstImport: isFirstImport)
+		createLibraryItems(newInfos: toCreate)
+		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: freshInAnyOrder)
 		
 		context.savePlease()
-		
-		defaults.set(true, forKey: keyHasSaved)
 		
 		DispatchQueue.main.async {
 			NotificationCenter.default.post(name: Self.mergedChanges, object: nil)
@@ -214,29 +203,14 @@ extension MusicRepo {
 	// MARK: - Create
 	
 	// Create new managed objects for the new `SongInfo`s, including new `Album`s and `Collection`s to put them in if necessary.
-	private func createLibraryItems(newInfos: [SongInfo], isFirstImport: Bool) {
-		func byAlbumID(infos: [SongInfo]) -> [AlbumID: [SongInfo]] {
-			return Dictionary(grouping: infos) { $0.albumID }
-		}
-		
+	private func createLibraryItems(newInfos: [SongInfo]) {
 		// Group the `SongInfo`s into albums, sorted by the order we’ll add them to our database in.
-		let groupsOfInfos: [[SongInfo]] = {
-			if isFirstImport {
-				// Since our database is empty, we’ll add items from the top down, because it’s faster.
-				let dictionary = byAlbumID(infos: newInfos)
-				let groups = dictionary.map { $0.value }
-				let sortedGroups = sortedByAlbumArtistNameThenAlbumTitle(groupsOfInfos: groups)
-				// We’ll sort `Album`s by release date later.
-				return sortedGroups
-			} else {
-				// Since our database isn’t empty, we’ll insert items at the top from the bottom up, because it’s simpler.
-				let sortedInfos = newInfos.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
-				let dictionary = byAlbumID(infos: sortedInfos)
-				let groupsOfSortedInfos = dictionary.map { $0.value }
-				let sortedGroups = groupsOfSortedInfos.sorted { leftGroup, rightGroup in
-					leftGroup.first!.dateAddedOnDisk < rightGroup.first!.dateAddedOnDisk
-				}
-				return sortedGroups
+		let albumsEarliestFirst: [[SongInfo]] = {
+			let songsEarliestFirst = newInfos.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
+			let dictionary: [AlbumID: [SongInfo]] = Dictionary(grouping: songsEarliestFirst) { $0.albumID }
+			let albums: [[SongInfo]] = dictionary.map { $0.value }
+			return albums.sorted { leftGroup, rightGroup in
+				leftGroup.first!.dateAddedOnDisk < rightGroup.first!.dateAddedOnDisk
 			}
 			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
 		}()
@@ -246,40 +220,22 @@ extension MusicRepo {
 			let tuples = allAlbums.map { ($0.albumPersistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		groupsOfInfos.forEach { groupOfInfos in
+		albumsEarliestFirst.forEach { groupOfInfos in
 			// Create one group of `Song`s and containers
 			if let newAlbum = createSongsAndReturnNewAlbum(
 				newInfos: groupOfInfos,
-				existingAlbums: existingAlbums,
-				isFirstImport: isFirstImport
+				existingAlbums: existingAlbums
 			) {
 				existingAlbums[newAlbum.albumPersistentID] = newAlbum
 			}
 		}
 	}
 	
-	// 1. Group by album artists, sorted alphabetically.
-	// • “Unknown Artist” should go at the end.
-	// 2. Within each album artist, group by albums, sorted by most recent first.
-	private func sortedByAlbumArtistNameThenAlbumTitle(
-		groupsOfInfos: [[SongInfo]]
-	) -> [[SongInfo]] {
-		let sortedGroupsOfInfos = groupsOfInfos.sorted {
-			guard let leftInfo = $0.first, let rightInfo = $1.first else {
-				// Should never run
-				return true
-			}
-			return leftInfo.precedesInDefaultOrder(inDifferentAlbum: rightInfo)
-		}
-		return sortedGroupsOfInfos
-	}
-	
 	// MARK: Create groups of songs
 	
 	private func createSongsAndReturnNewAlbum(
 		newInfos: [SongInfo],
-		existingAlbums: [AlbumID: Album],
-		isFirstImport: Bool
+		existingAlbums: [AlbumID: Album]
 	) -> Album? {
 		let firstInfo = newInfos.first!
 		
@@ -312,7 +268,18 @@ extension MusicRepo {
 			return nil
 		} else {
 			// Otherwise, create the `Album` to add the `Song`s to…
-			let newAlbum = createAlbum(albumID: firstInfo.albumID, isFirstImport: isFirstImport)
+			let newAlbum: Album = {
+				let collection: Collection = {
+					if let existing = context.fetchPlease(Collection.fetchRequest()).first { // Order doesn’t matter, because our database should contain exactly 0 or 1 `Collection`s at this point.
+						return existing
+					}
+					let new = Collection(context: context)
+					new.index = 0
+					new.title = InterfaceText.tilde
+					return new
+				}()
+				return Album(atBeginningOf: collection, albumID: albumID)!
+			}()
 			
 			// …and then add the `Song`s to that `Album`.
 			let sortedSongIDs = newInfos.sorted {
@@ -344,90 +311,24 @@ extension MusicRepo {
 		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
 		Database.renumber(sortedSongs)
 	}
-	private func createAlbum(albumID: AlbumID, isFirstImport: Bool) -> Album {
-		let collection: Collection = {
-			if let existing = context.fetchPlease(Collection.fetchRequest()).first { // Order doesn’t matter, because our database should contain exactly 0 or 1 `Collection`s at this point.
-				return existing
-			}
-			let new = Collection(context: context)
-			new.index = 0
-			new.title = InterfaceText.tilde
-			return new
-		}()
-		if isFirstImport {
-			return Album(atEndOf: collection, albumID: albumID)!
-		} else {
-			return Album(atBeginningOf: collection, albumID: albumID)!
-		}
-	}
 	
 	// MARK: - Clean Up
 	
 	private func cleanUpLibraryItems(
 		songsToDelete: [Song],
-		allInfos: [SongInfo],
-		isFirstImport: Bool
+		allInfos: [SongInfo]
 	) {
-		songsToDelete.forEach {
-			context.delete($0)
-			// WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. Later, you must delete empty `Album`s and reindex the `Song`s within each `Album`.
-		}
+		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. Later, you must delete empty `Album`s and reindex the `Song`s within each `Album`.
 		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
 		context.deleteEmptyCollections()
 		
-		let allAlbums = context.fetchPlease(Album.fetchRequest()) // Order doesn’t matter, because this is for recalculating each `Album`’s release date estimate, and reindexing the `Song`s within each `Album`.
-		
-		recalculateReleaseDateEstimates(for: allAlbums, considering: allInfos)
-		
-		context.fetchPlease(Collection.fetchRequest()).forEach { collection in
-			// If this is the first import, sort `Album`s by newest first.
-			// Always reindex all `Album`s, because we might have deleted some, which leaves gaps in the indices.
-			let albums: [Album] = {
-				let byIndex = collection.albums(sorted: true) // Sorted by index here, even if we’re going to sort by release date later; this keeps `Album`s whose `releaseDateEstimate` is `nil` in their previous order.
-				guard isFirstImport else { return byIndex }
-				return byIndex.sortedMaintainingOrderWhen {
-					$0.releaseDateEstimate == $1.releaseDateEstimate
-				} areInOrder: {
-					guard let rightDate = $1.releaseDateEstimate else { return true }
-					guard let leftDate = $0.releaseDateEstimate else { return false }
-					return leftDate > rightDate
-				}
-			}()
-			Database.renumber(albums)
-		}
+		// Always reindex all `Album`s, because we might have deleted some, which leaves gaps in the indices.
+		let allAlbums = context.fetchPlease(Album.fetchRequest_sorted())
+		Database.renumber(allAlbums)
 		allAlbums.forEach {
+			$0.releaseDateEstimate = nil // Deprecated
 			let songs = $0.songs(sorted: true)
 			Database.renumber(songs)
-		}
-	}
-	
-	// MARK: Re-estimate release date
-	
-	// Only `MPMediaItem`s have release dates, and those can’t be albums.
-	// `MPMediaItemCollection.representativeItem.releaseDate` doesn’t necessarily represent the album’s release date.
-	// Instead, use the most recent release date among the `MPMediaItemCollection`’s `MPMediaItem`s, and recalculate it whenever necessary.
-	private func recalculateReleaseDateEstimates(
-		for albums: [Album],
-		considering infos: [SongInfo]
-	) {
-		// Filter out infos without release dates
-		// This is pretty slow, but can save time later.
-		let infosWithReleaseDates = infos.filter { nil != $0.releaseDateOnDisk }
-		
-		let infosByAlbumID: [AlbumID: [SongInfo]] = Dictionary(grouping: infosWithReleaseDates) { $0.albumID }
-		
-		albums.forEach { album in
-			// Re-estimate release date for one `Album`
-			
-			album.releaseDateEstimate = nil
-			
-			// Find the release dates associated with this `Album`
-			// For `Album`s with no release dates, using `guard` to return early is slightly faster than optional chaining.
-			guard let matchingInfos = infosByAlbumID[album.albumPersistentID] else { return }
-			let matchingReleaseDates = matchingInfos.compactMap { $0.releaseDateOnDisk }
-			
-			// Find the latest of those release dates
-			album.releaseDateEstimate = matchingReleaseDates.max()
 		}
 	}
 }
