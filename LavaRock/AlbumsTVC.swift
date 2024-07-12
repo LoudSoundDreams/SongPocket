@@ -91,15 +91,13 @@ extension AlbumListState {
 final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
 	
-	private let selectButton = UIBarButtonItem()
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		view.backgroundColor = UIColor(Color(hue: 0, saturation: 0, brightness: .oneEighth))
 		tableView.separatorStyle = .none
 		endSelecting()
-		selectButton.isEnabled = allowsSelect()
+		refreshBeginSelectingButton()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
@@ -207,7 +205,7 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			let oldRows = albumListState.rowIdentifiers()
 			albumListState.refreshItems()
-			selectButton.isEnabled = allowsSelect()
+			refreshBeginSelectingButton()
 			switch albumListState.selectMode { // In case the user was in the middle of doing something with an item we’ve deleted.
 				case .view(let activatedID):
 					var newActivated = activatedID
@@ -317,20 +315,23 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	private func allowsSelect() -> Bool {
-		return !albumListState.items.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+	private func refreshBeginSelectingButton() {
+		beginSelectingButton.isEnabled = !albumListState.items.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 	}
 	
-	private func beginSelecting() {
+	private lazy var beginSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
+		guard let self else { return }
 		switch albumListState.expansion {
 			case .collapsed:
 				withAnimation {
-					albumListState.selectMode = .selectAlbums([])
+					self.albumListState.selectMode = .selectAlbums([])
 				}
 			case .expanded:
 				albumListState.selectMode = .selectSongs([])
 		}
-	}
+	})
+	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
+	
 	private func endSelecting() {
 		Database.viewContext.savePlease()
 		
@@ -343,8 +344,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .selectSongs:
 				albumListState.selectMode = .view(nil)
 		}
-		setToolbarItems([selectButton] + __MainToolbar.shared.barButtonItems, animated: true)
-		selectButton.primaryAction = UIAction(title: InterfaceText.select, image: Self.beginSelectingImage) { [weak self] _ in self?.beginSelecting() }
+		setToolbarItems([beginSelectingButton] + __MainToolbar.shared.barButtonItems, animated: true)
 	}
 	
 	private let album_arranger = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
@@ -356,8 +356,7 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var song_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.song_demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }]))
 	
 	@objc private func album_reflectSelected() {
-		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
-		setToolbarItems([selectButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
+		setToolbarItems([endSelectingButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
 		
 		album_arranger.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
@@ -375,8 +374,7 @@ final class AlbumsTVC: LibraryTVC {
 		album_demoter.isEnabled = album_promoter.isEnabled
 	}
 	@objc private func song_reflectSelected() {
-		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
-		setToolbarItems([selectButton, .flexibleSpace(), song_arranger, .flexibleSpace(), song_promoter, .flexibleSpace(), song_demoter], animated: true)
+		setToolbarItems([endSelectingButton, .flexibleSpace(), song_arranger, .flexibleSpace(), song_promoter, .flexibleSpace(), song_demoter], animated: true)
 		
 		song_arranger.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
