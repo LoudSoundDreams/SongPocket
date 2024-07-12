@@ -53,7 +53,7 @@ extension AlbumListState {
 			case .song(let song): return song.objectID
 		}}
 	}
-	fileprivate func albums(with chosenIDs: Set<AlbumID>? = nil) -> [Album] {
+	func albums(with chosenIDs: Set<AlbumID>? = nil) -> [Album] {
 		return items.compactMap { switch $0 {
 			case .song: return nil
 			case .album(let album):
@@ -344,7 +344,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .selectSongs:
 				albumListState.selectMode = .view(nil)
 		}
-		setToolbarItems([beginSelectingButton] + __MainToolbar.shared.barButtonItems, animated: true)
+		setToolbarItems([beginSelectingButton, .flexibleSpace(), __MainToolbar.shared.playPauseButton, .flexibleSpace(), __MainToolbar.shared.overflowButton], animated: true)
 	}
 	
 	private let album_arranger = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))

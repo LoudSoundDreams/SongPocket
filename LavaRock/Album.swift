@@ -39,4 +39,8 @@ extension Album {
 		container = collection
 		albumPersistentID = albumID
 	}
+	
+	final func isAtBottom() -> Bool {
+		return index >= (container?.contents ?? []).count - 1
+	}
 }

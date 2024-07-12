@@ -21,12 +21,16 @@ enum InterfaceText {
 	static let nowPlaying = NSLocalizedString("Now Playing", comment: "Accessibility label")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
 	
+	static let select = NSLocalizedString("Select", comment: "Button")
+	static let selectAbove = NSLocalizedString("Select Above", comment: "Button")
+	static let selectBelow = NSLocalizedString("Select Below", comment: "Button")
+	static let deselectAbove = NSLocalizedString("Deselect Above", comment: "Button")
+	static let deselectBelow = NSLocalizedString("Deselect Below", comment: "Button")
+	
 	// MARK: Toolbar
 	
 	static let _emptyLibraryMessage = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
 	static let goToAlbum = NSLocalizedString("Go to Album", comment: "Button")
-	
-	static let select = NSLocalizedString("Select", comment: "Button")
 	
 	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")
