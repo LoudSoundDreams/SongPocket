@@ -150,13 +150,15 @@ import MediaPlayer
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
 #if targetEnvironment(simulator)
-				return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
+				guard let date = Sim_SongInfo.current?.releaseDate else { return InterfaceText.emDash }
 #else
-				return repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
+				guard let date = repo.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
 #endif
+				return date.formatted(date: .numeric, time: .omitted)
 			}())
-			.font_title2Bold()
-			.foregroundStyle(select_dimmed ? .secondary : .primary)
+			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
+			.font(.caption2)
+			.monospacedDigit()
 			Text({
 #if targetEnvironment(simulator)
 				return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
@@ -172,15 +174,13 @@ import MediaPlayer
 			.font_caption2Bold()
 			Text({
 #if targetEnvironment(simulator)
-				guard let date = Sim_SongInfo.current?.releaseDate else { return InterfaceText.emDash }
+				return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
 #else
-				guard let date = repo.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
+				return repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
 #endif
-				return date.formatted(date: .numeric, time: .omitted)
 			}())
-			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
-			.font(.caption2)
-			.monospacedDigit()
+			.font_title2Bold()
+			.foregroundStyle(select_dimmed ? .secondary : .primary)
 		}
 		.animation(.default, value: select_dimmed)
 		.animation(.default, value: repo.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
