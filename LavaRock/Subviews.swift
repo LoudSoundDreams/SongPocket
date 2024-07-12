@@ -296,12 +296,12 @@ import MediaPlayer
 	
 	private var overflowMenu: some View {
 		Menu { menuContent } label: { OverflowImage() }
-		.onTapGesture { signal_tappedMenu.toggle() }
-		.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
-			case .selectAlbums: return false
-			case .view: return false
-			case .selectSongs: return true
-		}}())
+			.onTapGesture { signal_tappedMenu.toggle() }
+			.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
+				case .selectAlbums: return false
+				case .view: return false
+				case .selectSongs: return true
+			}}())
 	}
 	@ViewBuilder private var menuContent: some View {
 		Button {
