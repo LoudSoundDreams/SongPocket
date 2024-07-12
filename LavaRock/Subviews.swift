@@ -319,7 +319,7 @@ import MediaPlayer
 			Task { await song.playRestOfAlbumLast() }
 		} label: {
 			Label(InterfaceText.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
-		}.disabled((signal_tappedMenu && false) || song.isAtBottomOfAlbum()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
+		}.disabled((signal_tappedMenu && false) || song.isAtBottom()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
 }
