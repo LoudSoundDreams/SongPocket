@@ -327,12 +327,9 @@ final class AlbumsTVC: LibraryTVC {
 				withAnimation {
 					albumListState.selectMode = .selectAlbums([])
 				}
-				setToolbarItems([selectButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
 			case .expanded:
 				albumListState.selectMode = .selectSongs([])
-				setToolbarItems([selectButton, .flexibleSpace(), song_arranger, .flexibleSpace(), song_promoter, .flexibleSpace(), song_demoter], animated: true)
 		}
-		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
 	}
 	private func endSelecting() {
 		Database.viewContext.savePlease()
@@ -359,6 +356,9 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var song_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "chevron.down"), primaryAction: UIAction { [weak self] _ in self?.song_demote() }, menu: UIMenu(children: [UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }]))
 	
 	@objc private func album_reflectSelected() {
+		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
+		setToolbarItems([selectButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
+		
 		album_arranger.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedIDs):
@@ -375,6 +375,9 @@ final class AlbumsTVC: LibraryTVC {
 		album_demoter.isEnabled = album_promoter.isEnabled
 	}
 	@objc private func song_reflectSelected() {
+		selectButton.primaryAction = UIAction(title: InterfaceText.done, image: Self.endSelectingImage) { [weak self] _ in self?.endSelecting() }
+		setToolbarItems([selectButton, .flexibleSpace(), song_arranger, .flexibleSpace(), song_promoter, .flexibleSpace(), song_demoter], animated: true)
+		
 		song_arranger.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs(let selectedIDs):
