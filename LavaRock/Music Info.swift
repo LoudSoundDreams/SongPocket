@@ -110,9 +110,7 @@ extension Crate {
 		
 		context.savePlease()
 		
-		DispatchQueue.main.async {
-			NotificationCenter.default.post(name: Self.mergedChanges, object: nil)
-		}
+		Task { NotificationCenter.default.post(name: Self.mergedChanges, object: nil) }
 	}
 	
 	// MARK: - Update
