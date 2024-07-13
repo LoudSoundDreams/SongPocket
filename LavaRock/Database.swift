@@ -1,7 +1,6 @@
 // 2020-08-22
 
 import CoreData
-import MusicKit
 
 enum Database {
 	@MainActor static let viewContext = container.viewContext
@@ -34,6 +33,141 @@ enum Database {
 	}
 }
 
+// MARK: - Collection
+
+extension Collection {
+	// Similar to `Album.fetchRequest_sorted`.
+	static func fetchRequest_sorted() -> NSFetchRequest<Collection> {
+		let result = fetchRequest()
+		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		return result
+	}
+	
+	// Similar to `Album.songs`.
+	final func albums(sorted: Bool) -> [Album] {
+		guard let contents else { return [] }
+		
+		let unsorted = contents.map { $0 as! Album }
+		guard sorted else { return unsorted }
+		
+		return unsorted.sorted { $0.index < $1.index }
+	}
+}
+
+// MARK: - Album
+
+extension Album {
+	// Similar to `Collection.fetchRequest_sorted`.
+	static func fetchRequest_sorted() -> NSFetchRequest<Album> {
+		let result = fetchRequest()
+		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		return result
+	}
+	
+	// Similar to `Collection.albums`.
+	final func songs(sorted: Bool) -> [Song] {
+		guard let contents else { return [] }
+		
+		let unsorted = contents.map { $0 as! Song }
+		guard sorted else { return unsorted }
+		
+		return unsorted.sorted { $0.index < $1.index }
+	}
+	
+	convenience init?(atEndOf collection: Collection, albumID: AlbumID) {
+		guard let context = collection.managedObjectContext else { return nil }
+		self.init(context: context)
+		index = Int64(collection.contents?.count ?? 0)
+		container = collection
+		albumPersistentID = albumID
+	}
+	
+	// Use `init(atEndOf:albumID:)` if possible. It’s faster.
+	convenience init?(atBeginningOf collection: Collection, albumID: AlbumID) {
+		guard let context = collection.managedObjectContext else { return nil }
+		
+		collection.albums(sorted: false).forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		index = 0
+		container = collection
+		albumPersistentID = albumID
+	}
+	
+	final func isAtBottom() -> Bool {
+		return index >= (container?.contents ?? []).count - 1
+	}
+}
+
+// MARK: - Song
+
+extension Song {
+	convenience init?(atEndOf album: Album, songID: SongID) {
+		guard let context = album.managedObjectContext else { return nil }
+		self.init(context: context)
+		index = Int64(album.contents?.count ?? 0)
+		container = album
+		persistentID = songID
+	}
+	
+	// Use `init(atEndOf:songID:)` if possible. It’s faster.
+	convenience init?(atBeginningOf album: Album, songID: SongID) {
+		guard let context = album.managedObjectContext else { return nil }
+		
+		album.songs(sorted: false).forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		index = 0
+		container = album
+		persistentID = songID
+	}
+	
+	final func isAtBottom() -> Bool {
+		return index >= (container?.contents ?? []).count - 1
+	}
+	
+	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
+		// Checking song index first and collection index last is slightly faster than vice versa.
+		guard index == other.index else {
+			return index < other.index
+		}
+		
+		let myAlbum = container!
+		let otherAlbum = other.container!
+		guard myAlbum.index == other.index else {
+			return myAlbum.index < otherAlbum.index
+		}
+		
+		let myCollection = myAlbum.container!
+		let otherCollection = otherAlbum.container!
+		return myCollection.index < otherCollection.index
+	}
+}
+import MediaPlayer
+extension Song {
+	final func songInfo() -> (any SongInfo)? {
+#if targetEnvironment(simulator)
+		return Sim_SongInfo.everyInfo[persistentID]
+#else
+		return mpMediaItem()
+#endif
+	}
+	private func mpMediaItem() -> MPMediaItem? {
+		let songsQuery = MPMediaQuery.songs()
+		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
+			value: persistentID,
+			forProperty: MPMediaItemPropertyPersistentID))
+		guard
+			let queriedSongs = songsQuery.items,
+			queriedSongs.count == 1
+		else { return nil }
+		return queriedSongs.first
+	}
+}
+
+// MARK: - Managed object context
+
+import MusicKit
 extension NSManagedObjectContext {
 	final func printLibrary(
 		referencing: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>]
