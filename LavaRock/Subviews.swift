@@ -306,18 +306,11 @@ import MediaPlayer
 			}}())
 	}
 	@ViewBuilder private var menuContent: some View {
-		Button {
-			Task { await song.play() }
-		} label: { Label(InterfaceText.play, systemImage: "play") }
-		
+		Button { Task { await song.play() } } label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
-		Button {
-			Task { await song.playLast() }
-		} label: { Label(InterfaceText.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
+		Button { Task { await song.playLast() } } label: { Label(InterfaceText.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
-		Button {
-			Task { await song.playRestOfAlbumLast() }
-		} label: {
+		Button { Task { await song.playRestOfAlbumLast() } } label: {
 			Label(InterfaceText.playRestOfAlbumLast, systemImage: "text.line.last.and.arrowtriangle.forward")
 		}.disabled((signal_tappedMenu && false) || song.isAtBottom()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}

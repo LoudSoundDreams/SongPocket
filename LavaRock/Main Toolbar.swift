@@ -140,8 +140,7 @@ import MediaPlayer
 								return .on
 							}
 							return (__player.repeatMode == MPMusicRepeatMode.none) ? .on : .off
-						}()
-					) { _ in MPMusicPlayerController._system?.repeatMode = MPMusicRepeatMode.none }
+						}()) { _ in MPMusicPlayerController._system?.repeatMode = MPMusicRepeatMode.none }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(
@@ -160,8 +159,7 @@ import MediaPlayer
 						state: {
 							guard let __player = MPMusicPlayerController._system else { return .off }
 							return (__player.repeatMode == .one) ? .on : .off
-						}()
-					) { _ in MPMusicPlayerController._system?.repeatMode = .one }
+						}()) { _ in MPMusicPlayerController._system?.repeatMode = .one }
 				])},
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [

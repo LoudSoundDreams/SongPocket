@@ -24,7 +24,6 @@ extension Song {
 			let rowItem = await musicKitSong(),
 			let songsInAlbum = container?.songs(sorted: true)
 		else { return }
-		
 		let musicItems: [MusicKit.Song] = await {
 			var result: [MusicKit.Song] = []
 			for song in songsInAlbum {
@@ -71,7 +70,6 @@ extension Song {
 			let rowItem = await musicKitSong(),
 			let songsInAlbum = container?.songs(sorted: true)
 		else { return }
-		
 		let toAppend: [MusicKit.Song] = await {
 			var musicItems: [MusicKit.Song] = []
 			for song in songsInAlbum {
@@ -81,6 +79,7 @@ extension Song {
 			let result = musicItems.drop(while: { $0.id != rowItem.id })
 			return Array(result)
 		}()
+		
 		guard let _ =
 				try? await player.queue.insert(toAppend, position: .tail)
 		else { return }
