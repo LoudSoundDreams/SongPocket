@@ -1,7 +1,7 @@
 // 2020-08-10
 
 import CoreData
-import MusicKit
+@preconcurrency import MusicKit
 import MediaPlayer
 import SwiftUI
 
@@ -41,7 +41,13 @@ extension Crate {
 		}
 		
 		Task {
-			let fresh = await AppleMusic.sections()
+			let fresh: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = await {
+				let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
+				guard let response = try? await request.response() else { return [:] }
+				
+				let tuples = response.sections.map { section in (section.id, section) }
+				return Dictionary(uniqueKeysWithValues: tuples)
+			}()
 			
 			var union = musicKitSections
 			fresh.forEach { (key, value) in union[key] = value }

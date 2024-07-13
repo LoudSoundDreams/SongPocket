@@ -121,7 +121,22 @@ final class AlbumsTVC: LibraryTVC {
 					ContentUnavailableView {} description: { Text(InterfaceText.welcome_message)
 					} actions: {
 						Button(InterfaceText.welcome_button) {
-							Task { await AppleMusic.requestAccess() }
+							Task {
+								switch MusicAuthorization.currentStatus {
+									case .authorized: break // Should never run
+									case .notDetermined:
+										switch await MusicAuthorization.request() {
+											case .denied, .restricted, .notDetermined: break
+											case .authorized: AppleMusic.integrate()
+											@unknown default: break
+										}
+									case .denied, .restricted:
+										if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+											let _ = await UIApplication.shared.open(settingsURL)
+										}
+									@unknown default: break
+								}
+							}
 						}
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
