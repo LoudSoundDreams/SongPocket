@@ -15,13 +15,13 @@
 		076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BB24B42E3E0033E3CC /* LibraryTVC.swift */; };
 		076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
-		076F1C0227E66DAA00220C2B /* Turntable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Turntable.swift */; };
+		076F1C0227E66DAA00220C2B /* Music Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Music Playback.swift */; };
 		07755A58294821860056E90C /* Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Subviews.swift */; };
 		078FDD0F2638872100779AF2 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FDD0E2638872100779AF2 /* Helpers.swift */; };
 		07934CFA27CDBEB0002B2444 /* AlbumsTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */; };
-		079B2C9524E227BF00A949FA /* Crate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* Crate.swift */; };
+		079B2C9524E227BF00A949FA /* Music Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* Music Info.swift */; };
 		07A8786B2BAE2A2900717BA7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */; };
-		07CBB6FF2BBEA9DE008B0BB5 /* Experimental Album View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CBB6FE2BBEA9DE008B0BB5 /* Experimental Album View.swift */; };
+		07CBB6FF2BBEA9DE008B0BB5 /* Experimental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */; };
 		07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* SongInfo.swift */; };
 		07DF76E42828D8AB00B03103 /* Main Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* Main Toolbar.swift */; };
 		07E0BBDE276567760010117E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* Constants.swift */; };
@@ -63,12 +63,12 @@
 		076830BB24B42E3E0033E3CC /* LibraryTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryTVC.swift; sourceTree = "<group>"; };
 		076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsTVC.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		076F1C0127E66DAA00220C2B /* Turntable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Turntable.swift; sourceTree = "<group>"; };
+		076F1C0127E66DAA00220C2B /* Music Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Music Playback.swift"; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subviews.swift; sourceTree = "<group>"; };
 		078FDD0E2638872100779AF2 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlbumsTVC.storyboard; sourceTree = "<group>"; };
-		079B2C9424E227BF00A949FA /* Crate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crate.swift; sourceTree = "<group>"; };
-		07CBB6FE2BBEA9DE008B0BB5 /* Experimental Album View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Experimental Album View.swift"; sourceTree = "<group>"; };
+		079B2C9424E227BF00A949FA /* Music Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Music Info.swift"; sourceTree = "<group>"; };
+		07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experimental.swift; sourceTree = "<group>"; };
 		07DF65D127766C95003B2EA3 /* SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfo.swift; sourceTree = "<group>"; };
 		07DF76E32828D8AB00B03103 /* Main Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Main Toolbar.swift"; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -135,12 +135,12 @@
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				07755A57294821860056E90C /* Subviews.swift */,
 				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
-				07CBB6FE2BBEA9DE008B0BB5 /* Experimental Album View.swift */,
+				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
 				07DF65D127766C95003B2EA3 /* SongInfo.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
 				07E0BBFA276567F70010117E /* Database.swift */,
-				079B2C9424E227BF00A949FA /* Crate.swift */,
-				076F1C0127E66DAA00220C2B /* Turntable.swift */,
+				079B2C9424E227BF00A949FA /* Music Info.swift */,
+				076F1C0127E66DAA00220C2B /* Music Playback.swift */,
 				078FDD0E2638872100779AF2 /* Helpers.swift */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				075FC9052B4677D800219146 /* Dev Assets */,
@@ -302,11 +302,11 @@
 				078FDD0F2638872100779AF2 /* Helpers.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
 				07755A58294821860056E90C /* Subviews.swift in Sources */,
-				07CBB6FF2BBEA9DE008B0BB5 /* Experimental Album View.swift in Sources */,
+				07CBB6FF2BBEA9DE008B0BB5 /* Experimental.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				07DF76E42828D8AB00B03103 /* Main Toolbar.swift in Sources */,
-				079B2C9524E227BF00A949FA /* Crate.swift in Sources */,
-				076F1C0227E66DAA00220C2B /* Turntable.swift in Sources */,
+				079B2C9524E227BF00A949FA /* Music Info.swift in Sources */,
+				076F1C0227E66DAA00220C2B /* Music Playback.swift in Sources */,
 				071A0B9E277E76510017F76D /* App.swift in Sources */,
 				07DF65D227766C95003B2EA3 /* SongInfo.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
