@@ -32,8 +32,8 @@ enum AlbumOrder {
 						default: return "die.face.6"
 					}
 				case .reverse: return "arrow.up.and.down"
-				case .recentlyAdded: return "clock"
-				case .newest: return "sparkles"
+				case .recentlyAdded: return "plus.app"
+				case .newest: return "calendar"
 				case .artist: return "music.mic"
 			}}()),
 			handler: { _ in handler() })
