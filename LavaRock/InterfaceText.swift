@@ -11,15 +11,12 @@ enum InterfaceText {
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
-	static let tilde = NSLocalizedString("~", comment: "Default title for a new folder")
-	static let octothorpe = NSLocalizedString("#", comment: "Number sign, for missing number")
-	static let emDash = NSLocalizedString("—", comment: "Em dash, for missing data")
+	static let tilde = NSLocalizedString("~", comment: "Invisible, but here for consistency. Default title for a new folder, which used to contain albums.")
+	static let octothorpe = NSLocalizedString("#", comment: "Number sign. Stand-in for missing number")
+	static let emDash = NSLocalizedString("—", comment: "Em dash. Stand-in for missing general text: currently for missing song title")
 	
-	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "")
-	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "")
-	
-	static let nowPlaying = NSLocalizedString("Now Playing", comment: "Accessibility label")
-	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
+	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "Stand-in for missing info on albums and songs")
+	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Stand-in for missing album title")
 	
 	static let select = NSLocalizedString("Select", comment: "Button")
 	static let selectAbove = NSLocalizedString("Select Above", comment: "Button")
@@ -27,12 +24,18 @@ enum InterfaceText {
 	static let deselectAbove = NSLocalizedString("Deselect Above", comment: "Button")
 	static let deselectBelow = NSLocalizedString("Deselect Below", comment: "Button")
 	
+	static let play = NSLocalizedString("Play", comment: "Button")
+	static let playAll = NSLocalizedString("Play All", comment: "Button")
+	static let shuffle = NSLocalizedString("Shuffle", comment: "Button")
+	static let shuffleAll = NSLocalizedString("Shuffle All", comment: "Button")
+	static let nowPlaying = NSLocalizedString("Now Playing", comment: "Accessibility label")
+	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
+	
 	// MARK: Toolbar
 	
 	static let _emptyLibraryMessage = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
 	static let goToAlbum = NSLocalizedString("Go to Album", comment: "Button")
 	
-	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
 	static let previous = NSLocalizedString("Previous", comment: "Button")
