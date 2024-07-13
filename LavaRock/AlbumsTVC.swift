@@ -127,7 +127,7 @@ final class AlbumsTVC: LibraryTVC {
 									case .notDetermined:
 										switch await MusicAuthorization.request() {
 											case .denied, .restricted, .notDetermined: break
-											case .authorized: AppleMusic.integrate()
+											case .authorized: LavaRock.integrateAppleMusic()
 											@unknown default: break
 										}
 									case .denied, .restricted:

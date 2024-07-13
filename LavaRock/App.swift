@@ -31,10 +31,15 @@ enum WorkingOn {
 						}}
 						.task {
 							guard MusicAuthorization.currentStatus == .authorized else { return }
-							AppleMusic.integrate()
+							Self.integrateAppleMusic()
 						}
 			}
 		}
+	}
+	
+	@MainActor static func integrateAppleMusic() {
+		Crate.shared.observeMediaPlayerLibrary()
+		__MainToolbar.shared.observeMediaPlayerController()
 	}
 }
 private struct RootVCRep: UIViewControllerRepresentable {

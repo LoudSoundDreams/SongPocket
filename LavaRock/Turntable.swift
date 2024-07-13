@@ -2,13 +2,6 @@
 
 import MusicKit
 
-enum AppleMusic {
-	@MainActor static func integrate() {
-		Crate.shared.observeMediaPlayerLibrary()
-		__MainToolbar.shared.observeMediaPlayerController()
-	}
-}
-
 extension SystemMusicPlayer {
 	@MainActor static var _shared: SystemMusicPlayer? {
 		guard MusicAuthorization.currentStatus == .authorized else { return nil }
