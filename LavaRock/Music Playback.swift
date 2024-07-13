@@ -7,6 +7,16 @@ extension SystemMusicPlayer {
 		guard MusicAuthorization.currentStatus == .authorized else { return nil }
 		return .shared
 	}
+	
+	func playNow<ToPlay>(
+		_ musicKitSongs: [ToPlay],
+		startingAt: ToPlay? = nil
+	) where ToPlay: PlayableMusicItem {
+		state.shuffleMode = .none // As of iOS 17.6 developer beta 3, you must do this before setting `queue`, not after. Otherwise, if you happen to set the queue with the same contents, this does nothing.
+		state.repeatMode = RepeatMode.none // As of iOS 17.6 developer beta 3, this line of code sometimes does nothing; I haven’t figured out the exact conditions. It’s more reliably if we run it before setting `queue`, not after.
+		queue = Queue(for: musicKitSongs, startingAt: startingAt)
+		Task { try? await play() }
+	}
 }
 
 import MediaPlayer
@@ -33,24 +43,7 @@ extension Song {
 			return result
 		}()
 		
-		player.queue = SystemMusicPlayer.Queue(for: musicItems, startingAt: rowItem)
-		try? await player.play()
-		
-		// As of iOS 17.2 beta, if setting the queue did effectively nothing, you must do these after calling `play`, not before.
-		player.state.repeatMode = MusicPlayer.RepeatMode.none
-		player.state.shuffleMode = .off
-	}
-	@MainActor final func play() async {
-		guard
-			let player = SystemMusicPlayer._shared,
-			let musicItem = await musicKitSong()
-		else { return }
-		
-		player.queue = SystemMusicPlayer.Queue(for: [musicItem])
-		try? await player.play()
-		
-		player.state.repeatMode = MusicPlayer.RepeatMode.none
-		player.state.shuffleMode = .off
+		player.playNow(musicItems, startingAt: rowItem)
 	}
 	@MainActor final func playLast() async {
 		guard

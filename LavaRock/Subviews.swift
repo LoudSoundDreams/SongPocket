@@ -306,7 +306,12 @@ import MediaPlayer
 			}}())
 	}
 	@ViewBuilder private var menuContent: some View {
-		Button { Task { await song.play() } } label: { Label(InterfaceText.play, systemImage: "play") }
+		Button {
+			Task {
+				guard let musicKitSong = await song.musicKitSong() else { return }
+				SystemMusicPlayer._shared?.playNow([musicKitSong])
+			}
+		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
 		Button { Task { await song.playLast() } } label: { Label(InterfaceText.playLast, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
