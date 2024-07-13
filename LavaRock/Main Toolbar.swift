@@ -19,7 +19,7 @@ import MediaPlayer
 	
 	private init() {
 		refresh()
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: MusicRepo.mergedChanges, object: nil) // Because when Media Player enters or exits the “Not Playing” state, it doesn’t post “now-playing item changed” notifications.
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: Crate.mergedChanges, object: nil) // Because when Media Player enters or exits the “Not Playing” state, it doesn’t post “now-playing item changed” notifications.
 	}
 	
 	@objc private func refresh() {

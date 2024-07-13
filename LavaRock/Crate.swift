@@ -5,21 +5,21 @@ import MusicKit
 import MediaPlayer
 import SwiftUI
 
-@MainActor @Observable final class MusicRepo {
+@MainActor @Observable final class Crate {
 	private(set) var musicKitSections: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
 }
-extension MusicRepo {
-	static let shared = MusicRepo()
+extension Crate {
+	static let shared = Crate()
 	func observeMediaPlayerLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
-	static let mergedChanges = Notification.Name("LRMusicRepoMergedChanges")
+	static let mergedChanges = Notification.Name("LRMusicLibraryMerged")
 	func musicKitSection(_ albumID: AlbumID) -> MusicLibrarySection<MusicKit.Album, MusicKit.Song>? {
 		return musicKitSections[MusicItemID(String(albumID))]
 	}
@@ -27,7 +27,7 @@ extension MusicRepo {
 
 // MARK: - Private
 
-extension MusicRepo {
+extension Crate {
 	@objc private func mergeChanges() {
 #if targetEnvironment(simulator)
 		context.performAndWait {

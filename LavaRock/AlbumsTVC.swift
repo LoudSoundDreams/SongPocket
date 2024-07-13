@@ -13,8 +13,8 @@ import CoreData
 	var selectMode: SelectMode = .view(nil) { didSet {
 		switch selectMode {
 			case .view: break
-			case .selectAlbums: NotificationCenter.default.post(name: Self.selectingAlbums, object: self)
-			case .selectSongs: NotificationCenter.default.post(name: Self.selectingSongs, object: self)
+			case .selectAlbums: NotificationCenter.default.post(name: Self.albumSelecting, object: self)
+			case .selectSongs: NotificationCenter.default.post(name: Self.songSelecting, object: self)
 		}
 	}}
 }
@@ -82,8 +82,8 @@ extension AlbumListState {
 		case selectAlbums(Set<AlbumID>)
 		case selectSongs(Set<SongID>) // Should always be within the same album.
 	}
-	static let selectingAlbums = Notification.Name("LRSelectingAlbums")
-	static let selectingSongs = Notification.Name("LRSelectingSongs")
+	static let albumSelecting = Notification.Name("LRAlbumSelecting")
+	static let songSelecting = Notification.Name("LRSongSelecting")
 }
 
 // MARK: - Table view controller
@@ -99,13 +99,13 @@ final class AlbumsTVC: LibraryTVC {
 		endSelecting()
 		refreshBeginSelectingButton()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: MusicRepo.mergedChanges, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Crate.mergedChanges, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.selectingAlbums, object: albumListState)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(song_reflectSelected), name: AlbumListState.selectingSongs, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.albumSelecting, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(song_reflectSelected), name: AlbumListState.songSelecting, object: albumListState)
 	}
 	
 	// MARK: - Table view
@@ -415,7 +415,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded, .artist: return true
 			case .newest: return album_toArrange().contains {
-				nil != MusicRepo.shared.musicKitSection($0.albumPersistentID)?.releaseDate
+				nil != Crate.shared.musicKitSection($0.albumPersistentID)?.releaseDate
 			}
 		}
 	}
@@ -502,7 +502,7 @@ final class AlbumsTVC: LibraryTVC {
 				newBlock[offset].index = target + Int64(offset)
 			}
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectingAlbums, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			NotificationCenter.default.post(name: AlbumListState.albumSelecting, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
@@ -526,7 +526,7 @@ final class AlbumsTVC: LibraryTVC {
 				newBlock[offset].index = target + Int64(offset)
 			}
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectingSongs, object: albumListState)
+			NotificationCenter.default.post(name: AlbumListState.songSelecting, object: albumListState)
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let frontSong = newBlock.first,
@@ -558,7 +558,7 @@ final class AlbumsTVC: LibraryTVC {
 				newBlock[offset].index = front + Int64(offset)
 			}
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectingAlbums, object: albumListState)
+			NotificationCenter.default.post(name: AlbumListState.albumSelecting, object: albumListState)
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
@@ -582,7 +582,7 @@ final class AlbumsTVC: LibraryTVC {
 				newBlock[offset].index = front + Int64(offset)
 			}
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectingSongs, object: albumListState)
+			NotificationCenter.default.post(name: AlbumListState.songSelecting, object: albumListState)
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let backSong = newBlock.last,

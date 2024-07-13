@@ -52,7 +52,7 @@ enum AlbumOrder {
 				let albumsAndFirstAdded: [(album: Album, firstAdded: Date)] = inOriginalOrder.reversed().map { albumToSort in ( // Puts `Album`s without date added at the beginning, maintaining their current order.
 					album: albumToSort,
 					firstAdded: {
-						let musicKitSongs = MusicRepo.shared.musicKitSection(albumToSort.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
+						let musicKitSongs = Crate.shared.musicKitSection(albumToSort.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, meaning the date you first added one of the album’s songs, because that’s what happens naturally when we add new albums at the top when we first see them.
 						return musicKitSongs.reduce(into: Date.now) { earliestSoFar, musicKitSong in
 							if
@@ -69,7 +69,7 @@ enum AlbumOrder {
 			case .newest:
 				let albumsAndReleaseDates: [(album: Album, releaseDate: Date?)] = inOriginalOrder.map {(
 					album: $0,
-					releaseDate: MusicRepo.shared.musicKitSection($0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
+					releaseDate: Crate.shared.musicKitSection($0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
 				)}
 				let sorted = albumsAndReleaseDates.sorted {
 					// Move unknown release date to the end
@@ -82,7 +82,7 @@ enum AlbumOrder {
 				// 10,000 albums takes 30.3s in 2024.
 				let albumsAndArtists: [(album: Album, artist: String?)] = inOriginalOrder.map {(
 					album: $0,
-					artist: MusicRepo.shared.musicKitSection($0.albumPersistentID)?.artistName
+					artist: Crate.shared.musicKitSection($0.albumPersistentID)?.artistName
 				)}
 				let sorted = albumsAndArtists.sortedMaintainingOrderWhen {
 					$0.artist == $1.artist

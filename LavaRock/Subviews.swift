@@ -7,7 +7,7 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	static let expandAlbumID = Notification.Name("LRExpandAlbumID")
+	static let expandAlbumID = Notification.Name("LRAlbumExpandWithID")
 	static let collapse = Notification.Name("LRAlbumCollapse")
 	let albumID: AlbumID
 	let albumListState: AlbumListState
@@ -30,8 +30,8 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
-		.accessibilityLabel(repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)
-		.accessibilityInputLabels([repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum])
+		.accessibilityLabel(crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)
+		.accessibilityInputLabels([crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum])
 	}
 	private var expansion_labeled: Bool {
 		switch albumListState.expansion {
@@ -93,7 +93,7 @@ import MediaPlayer
 				albumListState.selectMode = .selectAlbums(newSelected)
 		}
 	}
-	private let repo: MusicRepo = .shared
+	private let crate: Crate = .shared
 }
 
 // MARK: - Album art
@@ -109,7 +109,7 @@ import MediaPlayer
 			.scaledToFit()
 			.frame(width: maxSideLength, height: maxSideLength)
 #else
-		if let artwork = repo.musicKitSection(albumID)?.artwork {
+		if let artwork = crate.musicKitSection(albumID)?.artwork {
 			/*
 			 As of iOS 17.5.1:
 			 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
@@ -131,7 +131,7 @@ import MediaPlayer
 		}
 #endif
 	}
-	private let repo: MusicRepo = .shared
+	private let crate: Crate = .shared
 }
 
 // MARK: - Album label
@@ -152,7 +152,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 				guard let date = Sim_SongInfo.current?.releaseDate else { return InterfaceText.emDash }
 #else
-				guard let date = repo.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
+				guard let date = crate.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
 #endif
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
@@ -164,7 +164,7 @@ import MediaPlayer
 				return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
 #else
 				guard
-					let albumArtist = repo.musicKitSection(albumID)?.artistName,
+					let albumArtist = crate.musicKitSection(albumID)?.artistName,
 					albumArtist != ""
 				else { return InterfaceText.unknownArtist }
 				return albumArtist
@@ -176,14 +176,14 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 				return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
 #else
-				return repo.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
+				return crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
 #endif
 			}())
 			.font_title2Bold()
 			.foregroundStyle(select_dimmed ? .secondary : .primary)
 		}
 		.animation(.default, value: select_dimmed)
-		.animation(.default, value: repo.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
+		.animation(.default, value: crate.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
 	}
 	private var select_dimmed: Bool {
 		switch albumListState.selectMode {
@@ -191,13 +191,13 @@ import MediaPlayer
 			case .selectSongs: return true
 		}
 	}
-	private let repo: MusicRepo = .shared
+	private let crate: Crate = .shared
 }
 
 // MARK: - Song row
 
 @MainActor struct SongRow: View {
-	static let confirmPlaySongID = Notification.Name("LRConfirmPlaySongID")
+	static let confirmPlaySongID = Notification.Name("LRSongConfirmPlayWithID")
 	let song: Song
 	let albumID: AlbumID
 	let albumListState: AlbumListState
@@ -254,7 +254,7 @@ import MediaPlayer
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
-				let albumArtistOptional = repo.musicKitSection(albumID)?.artistName
+				let albumArtistOptional = crate.musicKitSection(albumID)?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 					Text(songArtist)
 						.foregroundStyle(.secondary)
@@ -294,7 +294,7 @@ import MediaPlayer
 			}
 		}.animation(.default, value: albumListState.selectMode)
 	}
-	private let repo: MusicRepo = .shared
+	private let crate: Crate = .shared
 	
 	private var overflowMenu: some View {
 		Menu { menuContent } label: { OverflowImage() }

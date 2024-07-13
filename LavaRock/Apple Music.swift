@@ -21,7 +21,7 @@ enum AppleMusic {
 	}
 	
 	@MainActor static func integrate() {
-		MusicRepo.shared.observeMediaPlayerLibrary()
+		Crate.shared.observeMediaPlayerLibrary()
 		__MainToolbar.shared.observeMediaPlayerController()
 	}
 	
