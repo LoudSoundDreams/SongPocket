@@ -23,6 +23,10 @@ extension Crate {
 	func musicKitSection(_ albumID: AlbumID) -> MusicLibrarySection<MusicKit.Album, MusicKit.Song>? {
 		return musicKitSections[MusicItemID(String(albumID))]
 	}
+	static func openAppleMusicLibrary() {
+		guard let musicLibraryURL = URL(string: "music://music.apple.com/library") else { return }
+		UIApplication.shared.open(musicLibraryURL)
+	}
 }
 
 // MARK: - Private

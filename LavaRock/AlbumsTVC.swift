@@ -143,10 +143,7 @@ final class AlbumsTVC: LibraryTVC {
 			if albumListState.items.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
-						Button {
-							let musicURL = URL(string: "music://")!
-							UIApplication.shared.open(musicURL)
-						} label: { Image(systemName: "plus") }
+						Button { Crate.openAppleMusicLibrary() } label: { Image(systemName: "plus") }
 					}
 				}
 			}
