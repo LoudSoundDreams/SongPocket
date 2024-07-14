@@ -104,66 +104,59 @@ import MediaPlayer
 	}
 	private func newOverflowMenu() -> UIMenu {
 		return UIMenu(title: newOverflowTitle(), children: [
-			UIDeferredMenuElement.uncached { [weak self] use in use([
-				UIAction(title: InterfaceText.goToAlbum, image: UIImage(systemName: "square.stack"), attributes: {
-#if targetEnvironment(simulator)
-					return []
-#else
-					let albumsInDatabase = Database.viewContext.fetchPlease(Album.fetchRequest())
-					guard
-						let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
-						nil != albumsInDatabase.first(where: { album in
-							currentAlbumID == album.albumPersistentID
-						})
-					else { return .disabled }
-					return []
-#endif
-				}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrent() }
-			])},
-			// We want to indicate which mode is active by selecting it, not disabling it.
-			// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
-			// Disabling the selected mode is a compromise.
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				UIDeferredMenuElement.uncached { use in use([
-					UIAction(
-						title: InterfaceText.repeatOff, image: UIImage(systemName: "minus"),
-						attributes: {
-							guard
-								let __player = MPMusicPlayerController._system,
-								!SystemMusicPlayer.isEmpty
-							else { return .disabled }
-							return (__player.repeatMode == MPMusicRepeatMode.none) ? .disabled : []
-						}(),
-						state: {
-							guard let __player = MPMusicPlayerController._system else {
-								// Assume Repeat is off
-								return .on
-							}
-							return (__player.repeatMode == MPMusicRepeatMode.none) ? .on : .off
-						}()) { _ in MPMusicPlayerController._system?.repeatMode = MPMusicRepeatMode.none }
+				UIDeferredMenuElement.uncached { [weak self] use in use([
+					UIAction(title: InterfaceText.goToAlbum, image: UIImage(systemName: "square.stack"), attributes: {
+#if targetEnvironment(simulator)
+						return []
+#else
+						let albumsInDatabase = Database.viewContext.fetchPlease(Album.fetchRequest())
+						guard
+							let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
+							nil != albumsInDatabase.first(where: { album in
+								currentAlbumID == album.albumPersistentID
+							})
+						else { return .disabled }
+						return []
+#endif
+					}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrent() }
 				])},
+				// We want to indicate which mode is active by selecting it, not disabling it.
+				// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
+				// Disabling the selected mode is a compromise.
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(
-						title: InterfaceText.repeat1, image: UIImage(systemName: "repeat.1"),
-						attributes: {
-							guard
+						title: InterfaceText.repeat1,
+						image: {
+							if
 								let __player = MPMusicPlayerController._system,
-								!SystemMusicPlayer.isEmpty
-							else { return .disabled }
-							return (__player.repeatMode == .one) ? .disabled : []
+								!SystemMusicPlayer.isEmpty,
+								__player.repeatMode == .one
+							{ return UIImage(systemName: "repeat.1.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)) }
+							return UIImage(systemName: "repeat.1")
 						}(),
+						attributes: SystemMusicPlayer.isEmpty ? .disabled : [],
 						state: {
-							guard let __player = MPMusicPlayerController._system else { return .off }
-							return (__player.repeatMode == .one) ? .on : .off
-						}()) { _ in MPMusicPlayerController._system?.repeatMode = .one }
+							if
+								let __player = MPMusicPlayerController._system,
+								!SystemMusicPlayer.isEmpty,
+								__player.repeatMode == .one
+							{ return .on }
+							return .off
+						}()) { _ in
+							guard let __player = MPMusicPlayerController._system else { return }
+							if __player.repeatMode == .one {
+								__player.repeatMode = MPMusicRepeatMode.none
+							} else {
+								__player.repeatMode = .one
+							}
+						}
 				])},
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					// Ideally, disable this when there are no previous tracks to skip to.
-					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: {
-						return SystemMusicPlayer.isEmpty ? .disabled : []
-					}()) { _ in Task { try await SystemMusicPlayer._shared?.skipToPreviousEntry() } }
+					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: SystemMusicPlayer.isEmpty ? .disabled : []) { _ in Task { try await SystemMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
