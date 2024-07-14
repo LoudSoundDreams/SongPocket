@@ -8,6 +8,14 @@ extension SystemMusicPlayer {
 		return .shared
 	}
 	
+	@MainActor static var isEmpty: Bool {
+#if targetEnvironment(simulator)
+		return false
+#else
+		return _shared?.queue.currentEntry == nil
+#endif
+	}
+	
 	func playNow<ToPlay>(
 		_ musicKitSongs: [ToPlay],
 		startingAt: ToPlay? = nil
