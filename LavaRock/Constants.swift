@@ -1,4 +1,4 @@
-import SwiftUI
+import CoreGraphics
 
 // Reference hard-coded numbers here to keep them consistent throughout the app.
 extension Double {

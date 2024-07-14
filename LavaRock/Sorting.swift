@@ -1,7 +1,6 @@
 // 2022-04-22
 
 import UIKit
-import CoreData
 
 enum AlbumOrder {
 	case random

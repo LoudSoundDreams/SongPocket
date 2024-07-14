@@ -123,8 +123,6 @@ extension MPMediaItem: SongInfo {
 // MARK: - Simulator
 
 #if targetEnvironment(simulator)
-import UIKit
-
 struct Sim_SongInfo: SongInfo {
 	let albumID: AlbumID
 	let songID: SongID

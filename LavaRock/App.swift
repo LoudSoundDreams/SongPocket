@@ -3,10 +3,6 @@
 import SwiftUI
 import MusicKit
 
-enum WorkingOn {
-	static let mainToolbar = 10 == 1
-}
-
 @main struct LavaRock: App {
 	init() {
 		Database.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
@@ -26,9 +22,6 @@ enum WorkingOn {
 				default:
 					RootVCRep()
 						.ignoresSafeArea()
-						.toolbar { if WorkingOn.mainToolbar {
-							ToolbarItemGroup(placement: .bottomBar) { MainToolbar() }
-						}}
 						.task {
 							guard MusicAuthorization.currentStatus == .authorized else { return }
 							Self.integrateAppleMusic()
@@ -54,11 +47,9 @@ private final class RootNC: UINavigationController {
 		)
 		let navBar = result.navigationBar
 		navBar.scrollEdgeAppearance = navBar.standardAppearance
-		if !WorkingOn.mainToolbar {
-			let toolbar = result.toolbar!
-			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-			result.setToolbarHidden(false, animated: false)
-		}
+		let toolbar = result.toolbar!
+		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		result.setToolbarHidden(false, animated: false)
 		return result
 	}
 	override func viewIsAppearing(_ animated: Bool) {
