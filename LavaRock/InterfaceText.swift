@@ -19,15 +19,13 @@ enum InterfaceText {
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Stand-in for missing album title")
 	
 	static let select = NSLocalizedString("Select", comment: "Button")
-	static let selectAbove = NSLocalizedString("Select Above", comment: "Button")
-	static let selectBelow = NSLocalizedString("Select Below", comment: "Button")
-	static let deselectAbove = NSLocalizedString("Deselect Above", comment: "Button")
-	static let deselectBelow = NSLocalizedString("Deselect Below", comment: "Button")
+	static let selectUp = NSLocalizedString("Select Up", comment: "Button")
+	static let selectDown = NSLocalizedString("Select Down", comment: "Button")
+	static let deselectUp = NSLocalizedString("Deselect Up", comment: "Button")
+	static let deselectDown = NSLocalizedString("Deselect Down", comment: "Button")
 	
 	static let play = NSLocalizedString("Play", comment: "Button")
-	static let playAll = NSLocalizedString("Play All", comment: "Button")
 	static let shuffle = NSLocalizedString("Shuffle", comment: "Button")
-	static let shuffleAll = NSLocalizedString("Shuffle All", comment: "Button")
 	static let nowPlaying = NSLocalizedString("Now Playing", comment: "Accessibility label")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
 	
