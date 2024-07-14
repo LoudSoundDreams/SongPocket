@@ -68,8 +68,8 @@ enum InterfaceText {
 	// MARK: Songs view
 	
 	static let startPlaying = NSLocalizedString("Start Playing", comment: "Button")
-	static let playLast = NSLocalizedString("Play Last", comment: "Button")
-	static let playRestOfAlbumLast = NSLocalizedString("Play Rest of Album Last", comment: "Button")
+	static let playLater = NSLocalizedString("Play Later", comment: "Button")
+	static let playRestOfAlbumLater = NSLocalizedString("Play Rest of Album Later", comment: "Button")
 	
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
 	

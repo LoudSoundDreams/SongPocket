@@ -53,7 +53,7 @@ extension Song {
 		
 		player.playNow(musicItems, startingAt: rowItem)
 	}
-	@MainActor final func playLast() async {
+	@MainActor final func playLater() async {
 		guard
 			let player = SystemMusicPlayer._shared,
 			let musicItem = await musicKitSong()
@@ -65,7 +65,7 @@ extension Song {
 		
 		UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 	}
-	@MainActor final func playRestOfAlbumLast() async {
+	@MainActor final func playRestOfAlbumLater() async {
 		guard
 			let player = SystemMusicPlayer._shared,
 			let rowItem = await musicKitSong(),
