@@ -160,7 +160,20 @@ final class AlbumsTVC: LibraryTVC {
 			case .album(let rowAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
-				return cellForAlbum(cell: cell, album: rowAlbum)
+				cell.backgroundColor = .clear
+				cell.selectedBackgroundView = {
+					let result = UIView()
+					result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+					return result
+				}()
+				albumListState.viewportSize = (
+					width: view.frame.width,
+					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
+				)
+				cell.contentConfiguration = UIHostingConfiguration {
+					AlbumRow(albumID: rowAlbum.albumPersistentID, albumListState: albumListState)
+				}.margins(.all, .zero)
+				return cell
 			case .song(let rowSong):
 				switch albumListState.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
@@ -179,22 +192,6 @@ final class AlbumsTVC: LibraryTVC {
 						return cell
 				}
 		}
-	}
-	private func cellForAlbum(cell: UITableViewCell, album: Album) -> UITableViewCell {
-		cell.backgroundColor = .clear
-		cell.selectedBackgroundView = {
-			let result = UIView()
-			result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
-			return result
-		}()
-		albumListState.viewportSize = (
-			width: view.frame.width,
-			height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
-		)
-		cell.contentConfiguration = UIHostingConfiguration {
-			AlbumRow(albumID: album.albumPersistentID, albumListState: albumListState)
-		}.margins(.all, .zero)
-		return cell
 	}
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
