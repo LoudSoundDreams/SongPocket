@@ -84,9 +84,9 @@ enum AlbumOrder {
 				)}
 				let sorted = albumsAndArtists.sortedMaintainingOrderWhen {
 					$0.artist == $1.artist
-				} areInOrder: { leftTuple, rightTuple in
-					guard let rightArtist = rightTuple.artist else { return true }
-					guard let leftArtist = leftTuple.artist else { return false }
+				} areInOrder: { left, right in
+					guard let rightArtist = right.artist else { return true }
+					guard let leftArtist = left.artist else { return false }
 					return leftArtist.precedesInFinder(rightArtist)
 				}
 				return sorted.map { $0.album }
