@@ -143,7 +143,7 @@ final class AlbumsTVC: LibraryTVC {
 			if albumListState.items.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
-						Button { Crate.openAppleMusicLibrary() } label: { Image(systemName: "plus") }
+						Button { Crate.openAppleMusic() } label: { Image(systemName: "plus") }
 					}
 				}
 			}
