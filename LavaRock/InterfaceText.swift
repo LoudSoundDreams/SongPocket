@@ -58,8 +58,8 @@ enum InterfaceText {
 	
 	static let albumArtwork = NSLocalizedString("Album artwork", comment: "Accessibility label")
 	
-	static let recentlyAdded = NSLocalizedString("Date Added", comment: "Sort option")
-	static let newest = NSLocalizedString("Date Released", comment: "Sort option")
+	static let recentlyAdded = NSLocalizedString("Recently Added", comment: "Sort option")
+	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Sort option")
 	static let artist = NSLocalizedString("Artist", comment: "Sort option")
 	
 	// MARK: Songs view

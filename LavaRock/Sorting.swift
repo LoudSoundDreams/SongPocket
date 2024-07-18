@@ -7,7 +7,7 @@ enum AlbumOrder {
 	case reverse
 	
 	case recentlyAdded
-	case newest
+	case recentlyReleased
 	case artist
 	
 	@MainActor func newUIAction(handler: @escaping () -> Void) -> UIAction {
@@ -16,7 +16,7 @@ enum AlbumOrder {
 				case .random: return InterfaceText.random
 				case .reverse: return InterfaceText.reverse
 				case .recentlyAdded: return InterfaceText.recentlyAdded
-				case .newest: return InterfaceText.newest
+				case .recentlyReleased: return InterfaceText.recentlyReleased
 				case .artist: return InterfaceText.artist
 			}}(),
 			image: UIImage(systemName: { switch self {
@@ -31,7 +31,7 @@ enum AlbumOrder {
 					}
 				case .reverse: return "arrow.up.and.down"
 				case .recentlyAdded: return "plus.app"
-				case .newest: return "calendar"
+				case .recentlyReleased: return "calendar"
 				case .artist: return "music.mic"
 			}}()),
 			handler: { _ in handler() })
@@ -64,7 +64,7 @@ enum AlbumOrder {
 					leftTuple.firstAdded > rightTuple.firstAdded
 				}
 				return sorted.map { $0.album }
-			case .newest:
+			case .recentlyReleased:
 				let albumsAndReleaseDates: [(album: Album, releaseDate: Date?)] = inOriginalOrder.map {(
 					album: $0,
 					releaseDate: Crate.shared.musicKitSection($0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.

@@ -404,7 +404,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_refreshArrangeMenu() {
 		album_arranger.preferredMenuElementOrder = .fixed
 		
-		let groups: [[AlbumOrder]] = [[.recentlyAdded, .newest, .artist], [.random, .reverse]]
+		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased, .artist], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
 			UIMenu(options: .displayInline, children: group.map { albumOrder in
 				UIDeferredMenuElement.uncached { [weak self] useElements in
@@ -422,7 +422,7 @@ final class AlbumsTVC: LibraryTVC {
 		guard album_toArrange().count >= 2 else { return false }
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded, .artist: return true
-			case .newest: return album_toArrange().contains {
+			case .recentlyReleased: return album_toArrange().contains {
 				nil != Crate.shared.musicKitSection($0.albumPersistentID)?.releaseDate
 			}
 		}
