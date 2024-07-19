@@ -19,6 +19,8 @@ import MediaPlayer
 				.overlay { if expansion_labeled {
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
+				.accessibilityLabel(InterfaceText.albumArtwork)
+				.accessibilityInputLabels([Text(crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)])
 			ZStack { if expansion_labeled {
 				AlbumLabel(albumID: albumID, albumListState: albumListState)
 			}}
@@ -30,8 +32,6 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
-		.accessibilityLabel(crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)
-		.accessibilityInputLabels([crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum])
 	}
 	private var expansion_labeled: Bool {
 		switch albumListState.expansion {
@@ -127,8 +127,6 @@ import MediaPlayer
 					.foregroundStyle(.secondary)
 					.font(.title)
 			}
-			.accessibilityLabel(InterfaceText.albumArtwork)
-			.accessibilityIgnoresInvertColors()
 		}
 #endif
 	}
@@ -185,6 +183,7 @@ import MediaPlayer
 		}
 		.animation(.default, value: select_dimmed)
 		.animation(.default, value: crate.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
+		.accessibilityInputLabels([Text("")])
 	}
 	private var select_dimmed: Bool {
 		switch albumListState.selectMode {
