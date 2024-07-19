@@ -7,6 +7,7 @@ enum AlbumOrder {
 	case reverse
 	
 	case recentlyAdded
+	case title
 	case recentlyReleased
 	case artist
 	
@@ -17,6 +18,7 @@ enum AlbumOrder {
 				case .reverse: return InterfaceText.reverse
 				case .recentlyAdded: return InterfaceText.recentlyAdded
 				case .recentlyReleased: return InterfaceText.recentlyReleased
+				case .title: return InterfaceText.title
 				case .artist: return InterfaceText.artist
 			}}(),
 			image: UIImage(systemName: { switch self {
@@ -32,6 +34,7 @@ enum AlbumOrder {
 				case .reverse: return "arrow.up.and.down"
 				case .recentlyAdded: return "plus.app"
 				case .recentlyReleased: return "calendar"
+				case .title: return "character"
 				case .artist: return "music.mic"
 			}}()),
 			handler: { _ in handler() })
@@ -75,6 +78,19 @@ enum AlbumOrder {
 					guard let rightDate = $1.releaseDate else { return true }
 					guard let leftDate = $0.releaseDate else { return false }
 					return leftDate > rightDate
+				}
+				return sorted.map { $0.album }
+			case .title:
+				let albumsAndTitles: [(album: Album, title: String?)] = inOriginalOrder.map {(
+					album: $0,
+					title: Crate.shared.musicKitSection($0.albumPersistentID)?.title
+				)}
+				let sorted = albumsAndTitles.sortedMaintainingOrderWhen {
+					$0.title == $1.title
+				} areInOrder: {
+					guard let rightTitle = $1.title else { return true }
+					guard let leftTitle = $0.title else { return false }
+					return leftTitle.precedesInFinder(rightTitle)
 				}
 				return sorted.map { $0.album }
 			case .artist:

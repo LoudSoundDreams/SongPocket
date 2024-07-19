@@ -60,6 +60,7 @@ enum InterfaceText {
 	
 	static let recentlyAdded = NSLocalizedString("Recently Added", comment: "Sort option")
 	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Sort option")
+	static let title = NSLocalizedString("Title", comment: "Sort option. The word for the name of an album.")
 	static let artist = NSLocalizedString("Artist", comment: "Sort option")
 	
 	// MARK: Songs view
