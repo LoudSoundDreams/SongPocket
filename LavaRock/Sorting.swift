@@ -32,7 +32,7 @@ enum AlbumOrder {
 						default: return "die.face.6"
 					}
 				case .reverse: return "arrow.up.and.down"
-				case .recentlyAdded: return "plus.app"
+				case .recentlyAdded: return "plus.square"
 				case .recentlyReleased: return "calendar"
 				case .title: return "character"
 				case .artist: return "music.mic"
