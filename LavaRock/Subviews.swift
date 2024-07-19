@@ -39,6 +39,8 @@ import MediaPlayer
 			case .expanded(let expandedAlbumID): return albumID != expandedAlbumID
 		}
 	}
+	private let crate: Crate = .shared
+	
 	private var select_opacity: Double {
 		switch albumListState.selectMode {
 			case .view: return 1
@@ -50,8 +52,7 @@ import MediaPlayer
 			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedIDs): return selectedIDs.contains(albumID)
 		}}()
-		Color.accentColor
-			.opacity(highlighting ? .oneHalf : .zero)
+		Color.accentColor.opacity(highlighting ? .oneHalf : .zero)
 	}
 	@ViewBuilder private var select_indicator: some View {
 		switch albumListState.selectMode {
@@ -69,6 +70,7 @@ import MediaPlayer
 				}
 		}
 	}
+	
 	private func tapped() {
 		switch albumListState.selectMode {
 			case .selectSongs: return
@@ -93,7 +95,6 @@ import MediaPlayer
 				albumListState.selectMode = .selectAlbums(newSelected)
 		}
 	}
-	private let crate: Crate = .shared
 }
 
 // MARK: - Album art
@@ -214,38 +215,6 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	@ViewBuilder private var select_highlight: some View {
-		let highlighting: Bool = { switch albumListState.selectMode {
-			case .selectAlbums: return false
-			case .view(let activatedSongID): return activatedSongID == song.persistentID
-			case .selectSongs(let selectedIDs): return selectedIDs.contains(song.persistentID)
-		}}()
-		Color.accentColor
-			.opacity(highlighting ? .oneHalf : .zero)
-			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
-				{ switch albumListState.selectMode {
-					case .selectAlbums: return nil // Should never run
-					case .view(let activatedSongID): return (activatedSongID == nil) ? .default: nil
-					case .selectSongs: return nil // TO DO: Animate deselecting after arranging, floating, or sinking.
-				}}(),
-				value: albumListState.selectMode)
-	}
-	private func tapped() {
-		switch albumListState.selectMode {
-			case .selectAlbums: return
-			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: song.persistentID)
-			case .selectSongs(let selectedIDs):
-				let songID = song.persistentID
-				var newSelected = selectedIDs
-				if selectedIDs.contains(songID) {
-					newSelected.remove(songID)
-				} else {
-					newSelected.insert(songID)
-				}
-				albumListState.selectMode = .selectSongs(newSelected)
-		}
-	}
-	
 	@ViewBuilder private var mainStack: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		HStack(alignment: .firstTextBaseline) {
@@ -273,28 +242,7 @@ import MediaPlayer
 			.monospacedDigit()
 		}
 	}
-	@ViewBuilder private var select_indicator: some View {
-		ZStack {
-			switch albumListState.selectMode {
-				case .view, .selectAlbums: EmptyView()
-				case .selectSongs(let selectedIDs):
-					ZStack {
-						Image(systemName: "circle")
-							.foregroundStyle(.secondary)
-							.padding(.trailing)
-						if selectedIDs.contains(song.persistentID) {
-							Image(systemName: "checkmark.circle.fill")
-								.symbolRenderingMode(.palette)
-								.foregroundStyle(.white, .tint)
-								.padding(.trailing)
-								.transition(.identity) // Prevents animation when selecting or deselecting (but not when inserting or removing entire stack)
-						}
-					}
-			}
-		}.animation(.default, value: albumListState.selectMode)
-	}
 	private let crate: Crate = .shared
-	
 	private var overflowMenu: some View {
 		Menu { menuContent } label: { OverflowImage() }
 			.onTapGesture { signal_tappedMenu.toggle() }
@@ -319,6 +267,59 @@ import MediaPlayer
 		}.disabled((signal_tappedMenu && false) || song.isAtBottom()) // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
+	
+	@ViewBuilder private var select_highlight: some View {
+		let highlighting: Bool = { switch albumListState.selectMode {
+			case .selectAlbums: return false
+			case .view(let activatedSongID): return activatedSongID == song.persistentID
+			case .selectSongs(let selectedIDs): return selectedIDs.contains(song.persistentID)
+		}}()
+		Color.accentColor
+			.opacity(highlighting ? .oneHalf : .zero)
+			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
+				{ switch albumListState.selectMode {
+					case .selectAlbums: return nil // Should never run
+					case .view(let activatedSongID): return (activatedSongID == nil) ? .default: nil
+					case .selectSongs: return nil // TO DO: Animate deselecting after arranging, floating, or sinking.
+				}}(),
+				value: albumListState.selectMode)
+	}
+	@ViewBuilder private var select_indicator: some View {
+		ZStack {
+			switch albumListState.selectMode {
+				case .view, .selectAlbums: EmptyView()
+				case .selectSongs(let selectedIDs):
+					ZStack {
+						Image(systemName: "circle")
+							.foregroundStyle(.secondary)
+							.padding(.trailing)
+						if selectedIDs.contains(song.persistentID) {
+							Image(systemName: "checkmark.circle.fill")
+								.symbolRenderingMode(.palette)
+								.foregroundStyle(.white, .tint)
+								.padding(.trailing)
+								.transition(.identity) // Prevents animation when selecting or deselecting (but not when inserting or removing entire stack)
+						}
+					}
+			}
+		}.animation(.default, value: albumListState.selectMode)
+	}
+	
+	private func tapped() {
+		switch albumListState.selectMode {
+			case .selectAlbums: return
+			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: song.persistentID)
+			case .selectSongs(let selectedIDs):
+				let songID = song.persistentID
+				var newSelected = selectedIDs
+				if selectedIDs.contains(songID) {
+					newSelected.remove(songID)
+				} else {
+					newSelected.insert(songID)
+				}
+				albumListState.selectMode = .selectSongs(newSelected)
+		}
+	}
 }
 
 struct OverflowImage: View {
