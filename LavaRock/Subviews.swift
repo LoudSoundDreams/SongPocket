@@ -218,8 +218,7 @@ import MediaPlayer
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .selectAlbums: return false
 			case .view(let activatedSongID): return activatedSongID == song.persistentID
-			case .selectSongs(let selectedIDs):
-				return selectedIDs.contains(song.persistentID)
+			case .selectSongs(let selectedIDs): return selectedIDs.contains(song.persistentID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)

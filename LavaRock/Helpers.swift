@@ -10,12 +10,9 @@ extension String {
 	func precedesInFinder(_ other: Self) -> Bool {
 		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
 		switch comparisonResult {
-			case .orderedAscending:
-				return true
-			case .orderedSame:
-				return true
-			case .orderedDescending:
-				return false
+			case .orderedAscending: return true
+			case .orderedSame: return true
+			case .orderedDescending: return false
 		}
 	}
 }
@@ -205,16 +202,15 @@ extension UITableView {
 			var moves: [(Int, Int)] = []
 			difference.forEach { change in switch change {
 					// If a `Change`’s `associatedWith:` value is non-`nil`, then it has a counterpart `Change` in the `CollectionDifference`, and the two `Change`s together represent a move, rather than a remove and an insert.
-				case .remove(let offset, _, let associatedOffset):
-					if let associatedOffset = associatedOffset {
-						moves.append((old: offset, new: associatedOffset))
-					} else {
+				case .remove(let offset, _, let associated):
+					guard let associated else {
 						deletes.append(offset)
+						return
 					}
-				case .insert(let offset, _, let associatedOffset):
-					if associatedOffset == nil {
-						inserts.append(offset)
-					}
+					moves.append((old: offset, new: associated))
+				case .insert(let offset, _, let associated):
+					guard associated == nil else { return }
+					inserts.append(offset)
 			}}
 			oldToDelete = deletes
 			newToInsert = inserts
