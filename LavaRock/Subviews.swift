@@ -221,7 +221,7 @@ import MediaPlayer
 			select_indicator
 			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
-				Text(song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
+				Text(info?.titleOnDisk ?? InterfaceText.emDash)
 				let albumArtistOptional = crate.musicKitSection(albumID)?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 					Text(songArtist)
@@ -230,16 +230,9 @@ import MediaPlayer
 				}
 			}
 			Spacer()
-			Text({
-				guard let info else { return InterfaceText.octothorpe }
-				return (
-					info.shouldShowDiscNumber
-					? info.discAndTrackFormatted()
-					: info.trackFormatted()
-				)
-			}())
-			.foregroundStyle(.secondary)
-			.monospacedDigit()
+			Text(info?.discAndTrackFormatted() ?? InterfaceText.octothorpe)
+				.foregroundStyle(.secondary)
+				.monospacedDigit()
 		}
 	}
 	private let crate: Crate = .shared

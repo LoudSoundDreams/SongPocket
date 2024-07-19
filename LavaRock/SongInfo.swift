@@ -89,15 +89,14 @@ extension SongInfo {
 	
 	// MARK: Formatted attributes
 	
-	var shouldShowDiscNumber: Bool {
-		return discCountOnDisk >= 2 || discNumberOnDisk >= 2
-	}
 	func discAndTrackFormatted() -> String {
-		return "\(discNumberOnDisk)\(InterfaceText.interpunct)\(trackFormatted())"
-	}
-	func trackFormatted() -> String {
-		guard trackNumberOnDisk != Self.unknownTrackNumber else { return InterfaceText.octothorpe }
-		return String(trackNumberOnDisk)
+		let trackFormatted: String = (trackNumberOnDisk == Self.unknownTrackNumber)
+		? InterfaceText.octothorpe
+		: String(trackNumberOnDisk)
+		if discCountOnDisk >= 2 || discNumberOnDisk >= 2 {
+			return "\(discNumberOnDisk)\(InterfaceText.interpunct)\(trackFormatted)"
+		}
+		return trackFormatted
 	}
 }
 
