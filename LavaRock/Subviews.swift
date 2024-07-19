@@ -32,6 +32,7 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
+		// TO DO: Accessibility label “Selected”
 	}
 	private var expansion_labeled: Bool {
 		switch albumListState.expansion {
@@ -203,8 +204,8 @@ import MediaPlayer
 	let albumListState: AlbumListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			select_indicator.accessibilityHidden(true)
-			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue).accessibilitySortPriority(10) // Bigger is sooner
+			select_indicator.accessibilityHidden(true) // TO DO: Accessibility label “Selected”
+			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
 			VStack(spacing: .zero) {
 				HStack(alignment: .firstTextBaseline) {
 					infoStack

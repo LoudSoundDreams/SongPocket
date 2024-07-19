@@ -19,6 +19,7 @@ enum InterfaceText {
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Stand-in for missing album title")
 	
 	static let select = NSLocalizedString("Select", comment: "Button")
+	static let selected = NSLocalizedString("Selected", comment: "Accessibility label")
 	static let selectUp = NSLocalizedString("Select Up", comment: "Button")
 	static let selectDown = NSLocalizedString("Select Down", comment: "Button")
 	static let deselectUp = NSLocalizedString("Deselect Up", comment: "Button")
