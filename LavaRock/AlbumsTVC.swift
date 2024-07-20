@@ -404,7 +404,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_refreshArrangeMenu() {
 		album_arranger.preferredMenuElementOrder = .fixed
 		
-		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased, .title, .artist], [.random, .reverse]]
+		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased, .artist, .title], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
 			UIMenu(options: .displayInline, children: group.map { albumOrder in
 				UIDeferredMenuElement.uncached { [weak self] useElements in
