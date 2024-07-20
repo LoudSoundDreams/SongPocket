@@ -183,7 +183,6 @@ import MediaPlayer
 			.foregroundStyle(select_dimmed ? .secondary : .primary)
 		}
 		.animation(.default, value: select_dimmed)
-		.animation(.default, value: crate.musicKitSection(albumID)) // TO DO: Distracting when loading for the first time
 		.accessibilityInputLabels([Text("")])
 	}
 	private var select_dimmed: Bool {
