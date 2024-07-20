@@ -90,6 +90,55 @@ extension AlbumListState {
 final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
 	
+	private lazy var ellipsisButton = {
+		let result = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!)
+		result.preferredMenuElementOrder = .fixed
+		var menuChildren: [UIMenuElement] = [
+			UIDeferredMenuElement.uncached { [weak self] use in use([
+				UIAction(
+					title: InterfaceText.play, image: UIImage(systemName: "play"),
+					attributes: {
+						guard
+							MusicAuthorization.currentStatus == .authorized,
+							let self,
+							!self.albumListState.items.isEmpty
+						else { return .disabled }
+						return []
+					}()) { _ in
+					}
+			])},
+			UIDeferredMenuElement.uncached { [weak self] use in use([
+				UIAction(
+					title: InterfaceText.playLater, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward"),
+					attributes: {
+						guard
+							MusicAuthorization.currentStatus == .authorized,
+							let self,
+							!self.albumListState.items.isEmpty
+						else { return .disabled }
+						return []
+					}()) { _ in
+					}
+			])},
+		]
+		if Self.workingOnShuffleAll { menuChildren.append(shuffleMenuElement) }
+		result.menu = UIMenu(children: menuChildren)
+		return result
+	}()
+	private static let workingOnShuffleAll = 10 == 1
+	private lazy var shuffleMenuElement = UIDeferredMenuElement.uncached { [weak self] use in use([
+		UIAction(
+			title: InterfaceText.shuffle, image: UIImage(systemName: "shuffle"),
+			attributes: {
+				guard
+					MusicAuthorization.currentStatus == .authorized,
+					let self,
+					!self.albumListState.items.isEmpty
+				else { return .disabled }
+				return []
+			}()) { _ in SystemMusicPlayer._shared?.shuffleAll() }
+	])}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -168,8 +217,7 @@ final class AlbumsTVC: LibraryTVC {
 				}()
 				albumListState.viewportSize = (
 					width: view.frame.width,
-					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
-				)
+					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
 					AlbumRow(albumID: rowAlbum.albumPersistentID, albumListState: albumListState)
 				}.margins(.all, .zero)
@@ -205,8 +253,7 @@ final class AlbumsTVC: LibraryTVC {
 		super.viewWillTransition(to: size, with: coordinator)
 		albumListState.viewportSize = (
 			width: size.width,
-			height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
-		)
+			height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 	}
 	
 	@objc private func refreshLibraryItems() {
@@ -226,7 +273,7 @@ final class AlbumsTVC: LibraryTVC {
 					let newSelected: Set<AlbumID> = Set(albumListState.albums(with: selectedIDs).map { $0.albumPersistentID })
 					albumListState.selectMode = .selectAlbums(newSelected)
 				case .selectSongs(let selectedIDs):
-					let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID} )
+					let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID})
 					// TO DO: End selecting if we deleted the current album (and set `expansion = .collapsed`).
 					albumListState.selectMode = .selectSongs(newSelected)
 			}

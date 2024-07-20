@@ -142,11 +142,17 @@ import MediaPlayer
 	let albumID: AlbumID
 	let albumListState: AlbumListState
 	var body: some View {
-		HStack {
+		HStack(alignment: .lastTextBaseline) {
 			NowPlayingImage().hidden()
 			textStack // Align with `SongRow`
+			if Self.workingOnOverflowAlbum {
+				Spacer()
+				Menu { menuContent } label: { OverflowImage() }
+					.onTapGesture {}
+			}
 		}.padding()
 	}
+	private static let workingOnOverflowAlbum = 10 == 1
 	
 	private var textStack: some View {
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
@@ -194,6 +200,19 @@ import MediaPlayer
 		}
 	}
 	private let crate: Crate = .shared
+	
+	@ViewBuilder private var menuContent: some View {
+		Button {
+		} label: { Label(InterfaceText.play, systemImage: "play") }
+		Button {
+		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
+		if Self.workingOnShuffleAlbum {
+			Button {
+				SystemMusicPlayer._shared?.shuffleNow(albumID)
+			} label: { Label(InterfaceText.shuffle, systemImage: "shuffle") }
+		}
+	}
+	private static let workingOnShuffleAlbum = 10 == 1
 }
 
 // MARK: - Song row
