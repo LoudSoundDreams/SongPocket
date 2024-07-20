@@ -331,7 +331,7 @@ final class AlbumsTVC: LibraryTVC {
 		guard let self else { return }
 		switch albumListState.expansion {
 			case .collapsed:
-				withAnimation {
+				withAnimation { // TO DO: Is this slow?
 					self.albumListState.selectMode = .selectAlbums([])
 				}
 			case .expanded:
@@ -346,7 +346,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch albumListState.selectMode {
 			case .view: break
 			case .selectAlbums:
-				withAnimation {
+				withAnimation { // TO DO: Is this slow?
 					albumListState.selectMode = .view(nil)
 				}
 			case .selectSongs:

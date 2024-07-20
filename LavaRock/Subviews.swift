@@ -271,8 +271,8 @@ import MediaPlayer
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
 				{ switch albumListState.selectMode {
 					case .selectAlbums: return nil // Should never run
-					case .view(let activatedSongID): return (activatedSongID == nil) ? .default: nil
-					case .selectSongs: return nil // TO DO: Animate deselecting after arranging, floating, or sinking.
+					case .view(let activatedSongID): return (activatedSongID == nil) ? .default : nil
+					case .selectSongs: return nil // It’d be nice to animate deselecting after arranging, floating, and sinking, but not manually selecting or deselecting.
 				}}(),
 				value: albumListState.selectMode)
 	}
