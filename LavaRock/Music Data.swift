@@ -58,11 +58,9 @@ extension Crate {
 			withAnimation { // Spooky action at a distance
 				musicKitSections = union // Show new data immediately…
 			}
-			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before animating it away anyway.
+			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
-			withAnimation {
-				musicKitSections = fresh
-			}
+			musicKitSections = fresh
 		}
 #endif
 	}
