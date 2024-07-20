@@ -205,37 +205,19 @@ import MediaPlayer
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator.accessibilityHidden(true) // TO DO: Accessibility label “Selected”
-			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
-			VStack(spacing: .zero) {
-				HStack(alignment: .firstTextBaseline) {
-					infoStack
-						.accessibilityElement(children: .combine)
-						.accessibilityAddTraits(.isButton)
-					overflowMenu
-				}.padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
-				Rectangle()
-					.foregroundStyle(.separator)
-					.frame(height: 1 * pointsPerPixel)
-					.opacity(isAtBottom ? .zero : 1)
-					.animation(.default, value: isAtBottom)
-			}
+			infoStack
+				.accessibilityElement(children: .combine)
+				.accessibilityAddTraits(.isButton)
+			overflowMenu
 		}
-		.padding(.horizontal)
+		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
 		.background { select_highlight }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	private var isAtBottom: Bool {
-		guard let lastSong = albumListState.items.last(where: { switch $0 { // Referencing `items` to make SwiftUI observe changes
-			case .album: return false
-			case .song: return true
-		}}) else { return false }
-		guard case let .song(theLastSong) = lastSong else { return false }
-		return theLastSong.persistentID == song.persistentID
-	}
-	@Environment(\.pixelLength) private var pointsPerPixel
 	private var infoStack: some View {
 		HStack(alignment: .firstTextBaseline) {
+			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
 			let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(info?.titleOnDisk ?? InterfaceText.emDash)
