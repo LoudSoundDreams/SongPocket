@@ -55,9 +55,7 @@ extension Crate {
 			
 			var union = musicKitSections
 			fresh.forEach { (key, value) in union[key] = value }
-			withAnimation { // Spooky action at a distance
-				musicKitSections = union // Show new data immediately…
-			}
+			musicKitSections = union // Show new data immediately…
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
 			musicKitSections = fresh

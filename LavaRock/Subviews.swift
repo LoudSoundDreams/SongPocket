@@ -104,32 +104,34 @@ import MediaPlayer
 	let albumID: AlbumID
 	let maxSideLength: CGFloat
 	var body: some View {
+		ZStack {
 #if targetEnvironment(simulator)
-		let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: { albumID == $0.albumID })!
-		Image(songInfo.coverArtFileName)
-			.resizable()
-			.scaledToFit()
-			.frame(width: maxSideLength, height: maxSideLength)
+			let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: { albumID == $0.albumID })!
+			Image(songInfo.coverArtFileName)
+				.resizable()
+				.scaledToFit()
+				.frame(width: maxSideLength, height: maxSideLength)
 #else
-		if let artwork = crate.musicKitSection(albumID)?.artwork {
-			/*
-			 As of iOS 17.5.1:
-			 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
-			 • If you pass only width or only height, the view will always be square.
-			 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
-			 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
-			 */
-			ArtworkImage(artwork, width: maxSideLength)
-		} else {
-			ZStack {
-				Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
-					.frame(width: maxSideLength, height: maxSideLength)
-				Image(systemName: "music.note")
-					.foregroundStyle(.secondary)
-					.font(.title)
+			if let artwork = crate.musicKitSection(albumID)?.artwork {
+				/*
+				 As of iOS 17.5.1:
+				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
+				 • If you pass only width or only height, the view will always be square.
+				 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
+				 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
+				 */
+				ArtworkImage(artwork, width: maxSideLength)
+			} else {
+				ZStack {
+					Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
+						.frame(width: maxSideLength, height: maxSideLength)
+					Image(systemName: "music.note")
+						.foregroundStyle(.secondary)
+						.font(.title)
+				}
 			}
-		}
 #endif
+		}.animation(.default, value: crate.musicKitSections)
 	}
 	private let crate: Crate = .shared
 }
