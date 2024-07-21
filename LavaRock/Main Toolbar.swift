@@ -106,7 +106,7 @@ import MediaPlayer
 		return UIMenu(title: newOverflowTitle(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { [weak self] use in use([
-					UIAction(title: InterfaceText.goToAlbum, image: UIImage(systemName: "square.stack"), attributes: {
+					UIAction(title: InterfaceText.nowPlaying, image: UIImage(systemName: "waveform"), attributes: {
 #if targetEnvironment(simulator)
 						return []
 #else

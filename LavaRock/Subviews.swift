@@ -358,7 +358,8 @@ struct NowPlayingIndicator: View {
 			switch status {
 				case .notPlaying: EmptyView()
 				case .paused:
-					Image(systemName: "speaker.fill")
+					Image(systemName: "waveform")
+						.disabled(true)
 						.font_body_dynamicTypeSizeUpToXxxLarge()
 						.imageScale(.small)
 				case .playing:
@@ -394,7 +395,7 @@ struct NowPlayingIndicator: View {
 }
 struct NowPlayingImage: View {
 	var body: some View {
-		Image(systemName: "speaker.wave.2.fill")
+		Image(systemName: "waveform")
 			.font_body_dynamicTypeSizeUpToXxxLarge()
 			.imageScale(.small)
 	}
