@@ -241,7 +241,7 @@ import MediaPlayer
 	}
 	private var infoStack: some View {
 		HStack(alignment: .firstTextBaseline) {
-			NowPlayingIndicator(song: song, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
+			NowPlayingIndicator(songID: song.persistentID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
 			let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(info?.titleOnDisk ?? InterfaceText.emDash)
@@ -338,6 +338,52 @@ import MediaPlayer
 	}
 }
 
+// MARK: - Now-playing indicator
+
+struct NowPlayingIndicator: View {
+	let songID: SongID
+	@ObservedObject var state: SystemMusicPlayer.State
+	@ObservedObject var queue: SystemMusicPlayer.Queue
+	var body: some View {
+		ZStack {
+			NowPlayingImage().hidden()
+			switch status {
+				case .notPlaying: EmptyView()
+				case .paused:
+					NowPlayingImage()
+						.foregroundStyle(.tint)
+						.disabled(true)
+				case .playing:
+					NowPlayingImage()
+						.foregroundStyle(.tint)
+			}
+		}
+		.accessibilityElement()
+		.accessibilityLabel({ switch status {
+			case .notPlaying: return ""
+			case .paused: return InterfaceText.paused
+			case .playing: return InterfaceText.nowPlaying
+		}}())
+		.accessibilityHidden({ switch status {
+			case .paused, .playing: return false
+			case .notPlaying: return true
+		}}())
+	}
+	private var status: Status {
+#if targetEnvironment(simulator)
+		guard songID == Sim_SongInfo.current?.songID else { return .notPlaying }
+		return .playing
+#else
+		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
+		guard songID == MPMusicPlayerController._system?.nowPlayingItem?.songID else { return .notPlaying }
+		return (state.playbackStatus == .playing) ? .playing : .paused
+#endif
+	}
+	private enum Status { case notPlaying, paused, playing }
+}
+
+// MARK: - Multipurpose
+
 struct OverflowImage: View {
 	var body: some View {
 		Image(systemName: "ellipsis.circle.fill")
@@ -346,53 +392,6 @@ struct OverflowImage: View {
 	}
 }
 
-// MARK: - Now-playing indicator
-
-struct NowPlayingIndicator: View {
-	let song: Song
-	@ObservedObject var state: SystemMusicPlayer.State
-	@ObservedObject var queue: SystemMusicPlayer.Queue
-	var body: some View {
-		ZStack(alignment: .leading) {
-			NowPlayingImage().hidden()
-			switch status {
-				case .notPlaying: EmptyView()
-				case .paused:
-					Image(systemName: "waveform")
-						.disabled(true)
-						.font_body_dynamicTypeSizeUpToXxxLarge()
-						.imageScale(.small)
-				case .playing:
-					NowPlayingImage()
-						.symbolRenderingMode(.hierarchical)
-			}
-		}
-		.foregroundStyle(.tint)
-		.accessibilityElement()
-		.accessibilityLabel({ switch status {
-			case .notPlaying: return ""
-			case .paused: return InterfaceText.paused
-			case .playing: return InterfaceText.nowPlaying
-		}}())
-		.accessibilityHidden({ switch status {
-			case .notPlaying: return true
-			case .paused: return false
-			case .playing: return false
-		}}())
-	}
-	private var status: Status {
-#if targetEnvironment(simulator)
-		let sim_info = song.songInfo() as! Sim_SongInfo
-		guard sim_info == Sim_SongInfo.current else { return .notPlaying }
-		return .playing
-#else
-		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
-		guard song.persistentID == MPMusicPlayerController._system?.nowPlayingItem?.songID else { return .notPlaying }
-		return (state.playbackStatus == .playing) ? .playing : .paused
-#endif
-	}
-	private enum Status { case notPlaying, paused, playing }
-}
 struct NowPlayingImage: View {
 	var body: some View {
 		Image(systemName: "waveform")
