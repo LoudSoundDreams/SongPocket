@@ -46,7 +46,6 @@ extension Crate {
 			await mergeChangesToMatch(freshInAnyOrder: Array(Sim_SongInfo.everyInfo.values))
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
-			mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
 			
 			let fresh: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
@@ -57,6 +56,9 @@ extension Crate {
 			}()
 			let union = musicKitSections.merging(fresh) { old, new in new }
 			musicKitSections = union // Show new data immediately…
+			
+			mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
+			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
 			musicKitSections = fresh
