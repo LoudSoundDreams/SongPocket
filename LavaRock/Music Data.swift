@@ -46,7 +46,7 @@ extension Crate {
 			await mergeChangesToMatch(freshInAnyOrder: Array(Sim_SongInfo.everyInfo.values))
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
-			await mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
+			mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
 			
 			let fresh: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
@@ -63,7 +63,7 @@ extension Crate {
 #endif
 		}
 	}
-	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) async {
+	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
 		isMerging = true
 		defer { isMerging = false }
 		
