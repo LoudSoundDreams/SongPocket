@@ -7,6 +7,13 @@ import SwiftUI
 
 @MainActor @Observable final class Crate {
 	private(set) var musicKitSections: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
+	private(set) var isMerging = false { didSet {
+		if isMerging {
+			NotificationCenter.default.post(name: Self.willMerge, object: nil)
+		} else {
+			NotificationCenter.default.post(name: Self.didMerge, object: nil)
+		}
+	}}
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
@@ -19,7 +26,8 @@ extension Crate {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
-	static let mergedChanges = Notification.Name("LRMusicLibraryMerged")
+	static let willMerge = Notification.Name("LRMusicLibraryWillMerge")
+	static let didMerge = Notification.Name("LRMusicLibraryDidMerge")
 	func musicKitSection(_ albumID: AlbumID) -> MusicLibrarySection<MusicKit.Album, MusicKit.Song>? {
 		return musicKitSections[MusicItemID(String(albumID))]
 	}
@@ -33,18 +41,13 @@ extension Crate {
 
 extension Crate {
 	@objc private func mergeChanges() {
-#if targetEnvironment(simulator)
-		context.performAndWait {
-			mergeChangesToMatch(freshInAnyOrder: Array(Sim_SongInfo.everyInfo.values))
-		}
-#else
-		if let freshMediaItems = MPMediaQuery.songs().items {
-			context.performAndWait {
-				mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
-			}
-		}
-		
 		Task {
+#if targetEnvironment(simulator)
+			await mergeChangesToMatch(freshInAnyOrder: Array(Sim_SongInfo.everyInfo.values))
+#else
+			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
+			await mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
+			
 			let fresh: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
 				guard let response = try? await request.response() else { return [:] }
@@ -52,17 +55,18 @@ extension Crate {
 				let tuples = response.sections.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			
-			var union = musicKitSections
-			fresh.forEach { (key, value) in union[key] = value }
+			let union = musicKitSections.merging(fresh) { old, new in new }
 			musicKitSections = union // Show new data immediately…
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
 			musicKitSections = fresh
-		}
 #endif
+		}
 	}
-	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
+	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) async {
+		isMerging = true
+		defer { isMerging = false }
+		
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
 		let toUpdate: [(existing: Song, fresh: SongInfo)]
@@ -109,8 +113,6 @@ extension Crate {
 		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: freshInAnyOrder)
 		
 		context.savePlease()
-		
-		Task { NotificationCenter.default.post(name: Self.mergedChanges, object: nil) }
 	}
 	
 	// MARK: - Update

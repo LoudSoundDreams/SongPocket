@@ -147,7 +147,8 @@ final class AlbumsTVC: LibraryTVC {
 		endSelecting()
 		refreshBeginSelectingButton()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Crate.mergedChanges, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Crate.willMerge, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Crate.didMerge, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
@@ -370,8 +371,10 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	private func refreshBeginSelectingButton() {
-		beginSelectingButton.isEnabled = !albumListState.items.isEmpty && MusicAuthorization.currentStatus == .authorized // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+	@objc private func refreshBeginSelectingButton() {
+		beginSelectingButton.isEnabled = !albumListState.items.isEmpty &&
+		MusicAuthorization.currentStatus == .authorized && // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
+		!Crate.shared.isMerging
 	}
 	
 	private lazy var beginSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
