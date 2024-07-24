@@ -1,7 +1,11 @@
 // 2020-08-10
 
 import CoreData
-@preconcurrency import MusicKit
+#if targetEnvironment(simulator)
+#else
+@preconcurrency
+#endif
+import MusicKit
 import MediaPlayer
 import SwiftUI
 

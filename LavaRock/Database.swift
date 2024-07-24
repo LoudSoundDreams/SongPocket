@@ -176,10 +176,12 @@ extension NSManagedObjectContext {
 			print(collection.index, collection.title ?? "")
 			
 			collection.albums(sorted: true).forEach { album in
-				print(" ", album.index, referencing[MusicItemID(String(album.albumPersistentID))]?.title ?? InterfaceText.unknownAlbum)
+				let musicKitSection: MusicLibrarySection<MusicKit.Album, MusicKit.Song>? = referencing[MusicItemID(String(album.albumPersistentID))]
+				print(" ", album.index, musicKitSection?.title ?? InterfaceText.unknownAlbum)
 				
 				album.songs(sorted: true).forEach { song in
-					print("   ", song.index, song.songInfo()?.titleOnDisk ?? InterfaceText.emDash)
+					let _ = musicKitSection?.items ?? []
+					print("   ", song.index)
 				}
 			}
 		}
