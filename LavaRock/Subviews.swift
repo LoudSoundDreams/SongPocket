@@ -263,6 +263,7 @@ import MediaPlayer
 		Menu { menuContent } label: { OverflowImage() }
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
+					// TO DO: It’s actually `albumListState.selectMode` that disables or enables “Play Rest of Album Last” while the menu is open. Change that to a sensical dependency.
 				case .selectAlbums: return false
 				case .view: return false
 				case .selectSongs: return true

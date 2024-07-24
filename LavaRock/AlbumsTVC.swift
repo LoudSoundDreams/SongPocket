@@ -292,6 +292,7 @@ final class AlbumsTVC: LibraryTVC {
 		guard let uInt64 = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID else { return }
 		let currentAlbumID = AlbumID(bitPattern: uInt64)
 		// The current song might not be in our database, but the current `Album` is.
+		// TO DO: Change that^. The “waveform” now-playing indicator suggests navigating to the current song, not the current album.
 		guard let currentAlbumRow = albumListState.items.firstIndex(where: { switch $0 {
 			case .song: return false
 			case .album(let album): return currentAlbumID == album.albumPersistentID
