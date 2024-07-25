@@ -2,10 +2,10 @@
 
 import CoreData
 #if targetEnvironment(simulator)
-#else
-@preconcurrency
-#endif
 import MusicKit
+#else
+@preconcurrency import MusicKit
+#endif
 import MediaPlayer
 import SwiftUI
 
@@ -47,7 +47,7 @@ extension Crate {
 	@objc private func mergeChanges() {
 		Task {
 #if targetEnvironment(simulator)
-			await mergeChangesToMatch(freshInAnyOrder: Array(Sim_SongInfo.everyInfo.values))
+			mergeChangesToMatch(freshInAnyOrder: Array(Sim_MusicLibrary.shared.songInfos.values))
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
 			

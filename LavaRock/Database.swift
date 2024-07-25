@@ -145,9 +145,9 @@ extension Song {
 }
 import MediaPlayer
 extension Song {
-	final func songInfo() -> (any SongInfo)? {
+	@MainActor final func songInfo() -> (some SongInfo)? {
 #if targetEnvironment(simulator)
-		return Sim_SongInfo.everyInfo[persistentID]
+		return Sim_MusicLibrary.shared.songInfos[persistentID]
 #else
 		return mpMediaItem()
 #endif

@@ -106,8 +106,7 @@ import MediaPlayer
 	var body: some View {
 		ZStack {
 #if targetEnvironment(simulator)
-			let songInfo = Sim_SongInfo.everyInfo.values.sorted { $0.songID < $1.songID }.first(where: { albumID == $0.albumID })!
-			Image(songInfo.coverArtFileName)
+			Image(Sim_MusicLibrary.shared.albumInfos[albumID]!.artFileName)
 				.resizable()
 				.scaledToFit()
 				.frame(width: maxSideLength, height: maxSideLength)
@@ -162,7 +161,7 @@ import MediaPlayer
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
 #if targetEnvironment(simulator)
-				guard let date = Sim_SongInfo.current?.releaseDate else { return InterfaceText.emDash }
+				guard let date = Sim_MusicLibrary.shared.albumInfos[albumID]?._releaseDate else { return InterfaceText.emDash }
 #else
 				guard let date = crate.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
 #endif
@@ -173,7 +172,7 @@ import MediaPlayer
 			.monospacedDigit()
 			Text({
 #if targetEnvironment(simulator)
-				return Sim_SongInfo.current?.albumArtistOnDisk ?? InterfaceText.unknownArtist
+				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ?? InterfaceText.unknownArtist
 #else
 				guard
 					let albumArtist = crate.musicKitSection(albumID)?.artistName,
@@ -186,7 +185,7 @@ import MediaPlayer
 			.font_caption2Bold()
 			Text({
 #if targetEnvironment(simulator)
-				return Sim_SongInfo.current?.albumTitleOnDisk ?? InterfaceText.unknownAlbum
+				return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
 #else
 				return crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
 #endif
@@ -370,9 +369,9 @@ struct NowPlayingIndicator: View {
 			case .notPlaying: return true
 		}}())
 	}
-	private var status: Status {
+	@MainActor private var status: Status {
 #if targetEnvironment(simulator)
-		guard songID == Sim_SongInfo.current?.songID else { return .notPlaying }
+		guard songID == Sim_MusicLibrary.shared.currentSongInfo?.songID else { return .notPlaying }
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
