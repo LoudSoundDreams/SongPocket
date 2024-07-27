@@ -146,7 +146,7 @@ import MediaPlayer
 			textStack // Align with `SongRow`
 			if Self.workingOnOverflowAlbum {
 				Spacer()
-				Menu { menuContent } label: { OverflowImage() }
+				Menu { albumMenu } label: { OverflowImage() }
 					.onTapGesture {}
 					.disabled({ switch albumListState.selectMode { // TO DO: Also disable when any album is expanded.
 						case .view: return false
@@ -204,7 +204,7 @@ import MediaPlayer
 	}
 	private let crate: Crate = .shared
 	
-	@ViewBuilder private var menuContent: some View {
+	@ViewBuilder private var albumMenu: some View {
 		Button {
 		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Button {
@@ -231,7 +231,7 @@ import MediaPlayer
 			infoStack
 				.accessibilityElement(children: .combine)
 				.accessibilityAddTraits(.isButton)
-			overflowMenu
+			songOverflow
 		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
 		.background { select_highlight }
@@ -258,8 +258,8 @@ import MediaPlayer
 		}
 	}
 	private let crate: Crate = .shared
-	private var overflowMenu: some View {
-		Menu { menuContent } label: { OverflowImage() }
+	private var songOverflow: some View {
+		Menu { songMenu } label: { OverflowImage() }
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
 					// TO DO: It’s actually `albumListState.selectMode` that disables or enables “Play Rest of Album Last” while the menu is open. Change that to a sensical dependency.
@@ -268,7 +268,7 @@ import MediaPlayer
 				case .selectSongs: return true
 			}}())
 	}
-	@ViewBuilder private var menuContent: some View {
+	@ViewBuilder private var songMenu: some View {
 		Button {
 			Task {
 				guard let musicKitSong = await song.musicKitSong() else { return }
