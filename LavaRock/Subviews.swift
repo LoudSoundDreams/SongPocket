@@ -148,7 +148,7 @@ import MediaPlayer
 				Spacer()
 				Menu { menuContent } label: { OverflowImage() }
 					.onTapGesture {}
-					.disabled({ switch albumListState.selectMode {
+					.disabled({ switch albumListState.selectMode { // TO DO: Also disable when any album is expanded.
 						case .view: return false
 						case .selectAlbums, .selectSongs: return true
 					}}())
