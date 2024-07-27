@@ -1,6 +1,7 @@
 // 2022-03-19
 
 @preconcurrency import MusicKit
+import os
 
 extension SystemMusicPlayer {
 	@MainActor static var _shared: SystemMusicPlayer? {
@@ -21,8 +22,8 @@ extension SystemMusicPlayer {
 		startingAt: ToPlay? = nil
 	) where ToPlay: PlayableMusicItem {
 		state.shuffleMode = .none // As of iOS 17.6 developer beta 3, you must do this before setting `queue`, not after. Otherwise, if you happen to set the queue with the same contents, this does nothing.
-		state.repeatMode = RepeatMode.none // As of iOS 17.6 developer beta 3, this line of code sometimes does nothing; I haven’t figured out the exact conditions. It’s more reliably if we run it before setting `queue`, not after.
-		queue = Queue(for: musicKitSongs, startingAt: startingAt)
+		state.repeatMode = RepeatMode.none // As of iOS 17.6 developer beta 3, this line of code sometimes does nothing; I haven’t figured out the exact conditions. It’s more reliable if we run it before setting `queue`, not after.
+		queue = Queue(for: musicKitSongs, startingAt: startingAt) // Slow.
 		Task { try? await play() }
 	}
 	@MainActor final func shuffleAll() {
@@ -100,7 +101,7 @@ extension Song {
 		impactor.impactOccurred()
 	}
 	
-	@MainActor final func musicKitSong() async -> MusicKit.Song? {
+	@MainActor final func musicKitSong() async -> MusicKit.Song? { // Slow.
 		var request = MusicLibraryRequest<MusicKit.Song>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
 		guard

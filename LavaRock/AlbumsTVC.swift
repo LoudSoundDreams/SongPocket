@@ -4,6 +4,7 @@ import UIKit
 import SwiftUI
 import MusicKit
 import MediaPlayer
+import os
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate var items: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
@@ -104,7 +105,12 @@ final class AlbumsTVC: LibraryTVC {
 							!self.albumListState.items.isEmpty
 						else { return .disabled }
 						return []
-					}()) { _ in
+					}()) { [weak self] _ in
+						guard let self else { return }
+						let albumIDs = albumListState.albums().map { $0.albumPersistentID }
+						let sections = albumIDs.compactMap { Crate.shared.musicKitSection($0) }
+						let musicKitSongs = sections.flatMap { $0.items }
+						SystemMusicPlayer._shared?.playNow(musicKitSongs)
 					}
 			])},
 			UIDeferredMenuElement.uncached { [weak self] use in use([
