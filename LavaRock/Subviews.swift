@@ -277,7 +277,10 @@ import MediaPlayer
 		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
 		Button {
-			Task { await song.playLater() }
+			Task {
+				guard let musicKitSong = await song.musicKitSong() else { return }
+				SystemMusicPlayer._shared?.playLater([musicKitSong])
+			}
 		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		Button {

@@ -17,15 +17,21 @@ import os
 #endif
 	}
 	
-	final func playNow<ToPlay>(
-		_ musicKitSongs: [ToPlay],
-		startingAt: ToPlay? = nil
-	) where ToPlay: PlayableMusicItem {
+	final func playNow<ToPlay: PlayableMusicItem>(_ playables: [ToPlay], startingAt: ToPlay? = nil) {
 		state.shuffleMode = .none // As of iOS 17.6 developer beta 3, you must do this before setting `queue`, not after. Otherwise, if you happen to set the queue with the same contents, this does nothing.
 		state.repeatMode = RepeatMode.none // As of iOS 17.6 developer beta 3, this line of code sometimes does nothing; I haven’t figured out the exact conditions. It’s more reliable if we run it before setting `queue`, not after.
-		queue = Queue(for: musicKitSongs, startingAt: startingAt) // Slow.
+		queue = Queue(for: playables, startingAt: startingAt) // Slow.
 		Task { try? await play() }
 	}
+	
+	final func playLater(_ playables: [some PlayableMusicItem]) {
+		Task {
+			try? await queue.insert(playables, position: .tail)
+			
+			UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+		}
+	}
+	
 	final func shuffleAll() {
 		let musicKitSongs = Crate.shared.musicKitSections.values.flatMap { $0.items }.shuffled() // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 		playNow(musicKitSongs) // TO DO: Can get stuck “Loading…” when offline, even when song is downloaded.
@@ -61,18 +67,6 @@ extension MPMusicPlayerController {
 		}()
 		
 		player.playNow(musicItems, startingAt: rowItem)
-	}
-	final func playLater() async {
-		guard
-			let player = SystemMusicPlayer._shared,
-			let musicItem = await musicKitSong()
-		else { return }
-		
-		guard let _ =
-				try? await player.queue.insert([musicItem], position: .tail)
-		else { return }
-		
-		UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 	}
 	final func playRestOfAlbumLater() async {
 		guard
