@@ -95,7 +95,7 @@ extension Crate {
 					
 					freshInfos[songID] = nil
 				} else {
-					// This `Song` no longer corresponds to any `SongInfo` in the library. We’ll delete it.
+					// This `Song` no longer corresponds with any `SongInfo` in the library. We’ll delete it.
 					deletes.append(existingSong)
 				}
 			}
