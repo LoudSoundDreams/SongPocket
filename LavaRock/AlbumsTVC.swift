@@ -280,8 +280,8 @@ final class AlbumsTVC: LibraryTVC {
 					let newSelected: Set<AlbumID> = Set(albumListState.albums(with: selectedIDs).map { $0.albumPersistentID })
 					albumListState.selectMode = .selectAlbums(newSelected)
 				case .selectSongs(let selectedIDs):
-					let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID})
 					// TO DO: End selecting if we deleted the current album (and set `expansion = .collapsed`).
+					let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID })
 					albumListState.selectMode = .selectSongs(newSelected)
 			}
 			if albumListState.items.isEmpty {

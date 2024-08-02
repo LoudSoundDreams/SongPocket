@@ -15,7 +15,7 @@ import MediaPlayer
 		ZStack(alignment: .bottomLeading) {
 			AlbumArt(albumID: albumID, maxSideLength: min(albumListState.viewportSize.width, albumListState.viewportSize.height))
 				.opacity(select_opacity)
-				.animation(.default, value: albumListState.selectMode) // TO DO: is this slow?
+				.animation(.default, value: albumListState.selectMode) // TO DO: Is this slow?
 				.overlay { if expansion_labeled {
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
@@ -130,7 +130,7 @@ import MediaPlayer
 				}
 			}
 #endif
-		}.animation(.default, value: crate.musicKitSections) // TO DO: is this slow?
+		}.animation(.default, value: crate.musicKitSections) // TO DO: Is this slow?
 	}
 	private let crate: Crate = .shared
 }
@@ -193,7 +193,7 @@ import MediaPlayer
 			.font_title2Bold()
 			.foregroundStyle(select_dimmed ? .secondary : .primary)
 		}
-		.animation(.default, value: select_dimmed) // TO DO: is this slow?
+		.animation(.default, value: select_dimmed) // TO DO: Is this slow?
 		.accessibilityInputLabels([Text("")])
 	}
 	private var select_dimmed: Bool {
