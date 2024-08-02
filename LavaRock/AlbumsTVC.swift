@@ -267,7 +267,6 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			let oldRows = albumListState.rowIdentifiers()
 			albumListState.refreshItems()
-			refreshBeginSelectingButton()
 			switch albumListState.selectMode { // In case the user was in the middle of doing something with an item we’ve deleted.
 				case .view(let activatedID):
 					var newActivated = activatedID
@@ -287,6 +286,7 @@ final class AlbumsTVC: LibraryTVC {
 			if albumListState.items.isEmpty {
 				endSelecting()
 			}
+			refreshBeginSelectingButton()
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
