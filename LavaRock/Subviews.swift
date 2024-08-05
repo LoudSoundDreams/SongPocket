@@ -25,7 +25,7 @@ import MediaPlayer
 				AlbumLabel(albumID: albumID, albumListState: albumListState)
 			}}
 		}
-		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
+		.animation(.linear(duration: .oneEighth), value: expansion_labeled) // TO DO: Is this slow?
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay(alignment: .bottomLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -148,7 +148,7 @@ import MediaPlayer
 				Spacer()
 				Menu { albumMenu } label: { OverflowImage() }
 					.onTapGesture {}
-					.disabled({ switch albumListState.selectMode { // TO DO: Also disable when any album is expanded.
+					.disabled({ switch albumListState.selectMode { // We should also disable this when any album is expanded.
 						case .view: return false
 						case .selectAlbums, .selectSongs: return true
 					}}())
@@ -262,7 +262,7 @@ import MediaPlayer
 		Menu { songMenu } label: { OverflowImage() }
 			.onTapGesture { signal_tappedMenu.toggle() }
 			.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
-					// TO DO: It’s actually `albumListState.selectMode` that disables or enables “Play Rest of Album Last” while the menu is open. Change that to a sensical dependency.
+					// When the menu is open, it’s actually `albumListState.selectMode` that disables or enables “Play Rest of Album Last”. We should change that to a sensical dependency.
 				case .selectAlbums: return false
 				case .view: return false
 				case .selectSongs: return true

@@ -34,7 +34,7 @@ import os
 	
 	final func shuffleAll() {
 		let musicKitSongs = Crate.shared.musicKitSections.values.flatMap { $0.items }.shuffled() // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
-		playNow(musicKitSongs) // TO DO: Can get stuck “Loading…” when offline, even when song is downloaded.
+		playNow(musicKitSongs) // Can get stuck “Loading…” when offline, even when song is downloaded.
 	}
 	final func shuffleNow(_ albumID: AlbumID) {
 		guard let musicKitSection = Crate.shared.musicKitSection(albumID) else { return }

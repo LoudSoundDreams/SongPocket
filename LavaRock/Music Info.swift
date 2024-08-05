@@ -15,7 +15,7 @@ protocol SongInfo {
 	static var unknownTrackNumber: Int { get }
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
-	var dateAddedOnDisk: Date { get } // TO DO: Delete
+	var dateAddedOnDisk: Date { get }
 }
 extension SongInfo {
 	// MARK: - Sorting
