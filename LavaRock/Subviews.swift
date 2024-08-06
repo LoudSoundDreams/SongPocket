@@ -19,8 +19,6 @@ import MediaPlayer
 				.overlay { if expansion_labeled {
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
-				.accessibilityLabel(InterfaceText.albumArtwork)
-				.accessibilityInputLabels([Text(crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)])
 			ZStack { if expansion_labeled {
 				AlbumLabel(albumID: albumID, albumListState: albumListState)
 			}}
@@ -31,8 +29,9 @@ import MediaPlayer
 		.overlay(alignment: .topLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
+		.accessibilityLabel(InterfaceText.albumArtwork) // TO DO: Accessibility label “Selected”
+		.accessibilityInputLabels([Text(crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)])
 		.accessibilityAddTraits(.isButton)
-		// TO DO: Accessibility label “Selected”
 	}
 	private var expansion_labeled: Bool {
 		switch albumListState.expansion {
