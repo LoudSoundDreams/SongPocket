@@ -110,12 +110,9 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 						return []
 #else
-						let albumsInDatabase = Database.viewContext.fetchPlease(Album.fetchRequest())
 						guard
-							let currentAlbumID = MPMusicPlayerController._system?.nowPlayingItem?.albumPersistentID,
-							nil != albumsInDatabase.first(where: { album in
-								currentAlbumID == album.albumPersistentID
-							})
+							let currentSongID = MPMusicPlayerController._system?.nowPlayingItem?.songID,
+							nil != Database.viewContext.song(with: currentSongID)
 						else { return .disabled }
 						return []
 #endif

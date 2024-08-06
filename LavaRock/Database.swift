@@ -206,6 +206,10 @@ extension NSManagedObjectContext {
 		}
 	}
 	
+	final func song(with songID: SongID) -> Song? {
+		return fetchPlease(Song.fetchRequest()).first(where: { songID == $0.persistentID })
+	}
+	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
 		fetchPlease(Album.fetchRequest()).forEach { album in
