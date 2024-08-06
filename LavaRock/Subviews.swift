@@ -28,7 +28,7 @@ import MediaPlayer
 		.animation(.linear(duration: .oneEighth), value: expansion_labeled) // TO DO: Is this slow?
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay(alignment: .bottomLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay(alignment: .topLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
