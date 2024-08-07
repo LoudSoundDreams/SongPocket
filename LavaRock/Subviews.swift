@@ -21,6 +21,7 @@ import MediaPlayer
 				}}
 			ZStack { if expansion_labeled {
 				AlbumLabel(albumID: albumID, albumListState: albumListState)
+					.accessibilitySortPriority(10)
 			}}
 		}
 		.animation(.linear(duration: .oneEighth), value: expansion_labeled) // TO DO: Is this slow?
@@ -29,8 +30,7 @@ import MediaPlayer
 		.overlay(alignment: .topLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
-		.accessibilityLabel(InterfaceText.albumArtwork) // TO DO: Accessibility label “Selected”
-		.accessibilityInputLabels([Text(crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum)])
+		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 	}
 	private var expansion_labeled: Bool {
@@ -129,7 +129,9 @@ import MediaPlayer
 				}
 			}
 #endif
-		}.animation(.default, value: crate.musicKitSections) // TO DO: Is this slow?
+		}
+		.animation(.default, value: crate.musicKitSections) // TO DO: Is this slow?
+		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
 	private let crate: Crate = .shared
 }
@@ -169,6 +171,7 @@ import MediaPlayer
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
 			.font(.caption2)
 			.monospacedDigit()
+			.accessibilitySortPriority(10)
 			Text({
 #if targetEnvironment(simulator)
 				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ?? InterfaceText.unknownArtist
@@ -182,18 +185,24 @@ import MediaPlayer
 			}())
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
 			.font_caption2Bold()
+			.accessibilitySortPriority(20)
 			Text({
 #if targetEnvironment(simulator)
 				return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
 #else
-				return crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
+				return title
 #endif
 			}())
 			.font_title2Bold()
 			.foregroundStyle(select_dimmed ? .secondary : .primary)
+			.accessibilitySortPriority(30)
 		}
 		.animation(.default, value: select_dimmed) // TO DO: Is this slow?
-		.accessibilityInputLabels([Text("")])
+		.accessibilityElement(children: .combine)
+		.accessibilityInputLabels([Text(title)])
+	}
+	private var title: String {
+		return crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
 	}
 	private var select_dimmed: Bool {
 		switch albumListState.selectMode {
@@ -226,9 +235,7 @@ import MediaPlayer
 	let albumListState: AlbumListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			infoStack
-				.accessibilityElement(children: .combine)
-				.accessibilityAddTraits(.isButton)
+			mainStack
 			songOverflow
 		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
@@ -236,20 +243,14 @@ import MediaPlayer
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	private var infoStack: some View {
+	@ViewBuilder private var mainStack: some View {
+		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
+		let title: String = info?.titleOnDisk ?? InterfaceText.emDash
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
-				.accessibilityElement()
-				.accessibilityLabel(Text({ switch albumListState.selectMode {
-					case .view, .selectAlbums: return ""
-					case .selectSongs(let selectedIDs):
-						guard selectedIDs.contains(song.persistentID) else { return "" }
-						return InterfaceText.selected
-				}}()))
 			NowPlayingIndicator(songID: song.persistentID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
-			let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
-				Text(info?.titleOnDisk ?? InterfaceText.emDash)
+				Text(title)
 				let albumArtistOptional = crate.musicKitSection(albumID)?.artistName
 				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
 					Text(songArtist)
@@ -262,6 +263,9 @@ import MediaPlayer
 				.foregroundStyle(.secondary)
 				.monospacedDigit()
 		}
+		.accessibilityElement(children: .combine)
+		.accessibilityInputLabels([Text(title)])
+		.accessibilityAddTraits(.isButton)
 	}
 	private let crate: Crate = .shared
 	private var songOverflow: some View {
