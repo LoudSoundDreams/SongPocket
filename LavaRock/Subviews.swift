@@ -226,7 +226,6 @@ import MediaPlayer
 	let albumListState: AlbumListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			select_indicator.accessibilityHidden(true) // TO DO: Accessibility label “Selected”
 			infoStack
 				.accessibilityElement(children: .combine)
 				.accessibilityAddTraits(.isButton)
@@ -239,6 +238,14 @@ import MediaPlayer
 	}
 	private var infoStack: some View {
 		HStack(alignment: .firstTextBaseline) {
+			select_indicator
+				.accessibilityElement()
+				.accessibilityLabel(Text({ switch albumListState.selectMode {
+					case .view, .selectAlbums: return ""
+					case .selectSongs(let selectedIDs):
+						guard selectedIDs.contains(song.persistentID) else { return "" }
+						return InterfaceText.selected
+				}}()))
 			NowPlayingIndicator(songID: song.persistentID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
 			let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
