@@ -74,26 +74,25 @@ import MediaPlayer
 		defer {
 			overflowButton.image = newImage
 			overflowButton.accessibilityLabel = newLabel
+			overflowButton.accessibilityUserInputLabels = [InterfaceText.more] // Still says “Repeat One More” for some reason.
 		}
 		let regularImage = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
 		let regularLabel = InterfaceText.more
-		guard
-			let __player = MPMusicPlayerController._system,
-			!SystemMusicPlayer.isEmpty
-		else {
-			newImage = regularImage
-			newLabel = regularLabel
-			return
-		}
-		newImage = {
+		if
+			!SystemMusicPlayer.isEmpty,
+			let __player = MPMusicPlayerController._system
+		{
 			switch __player.repeatMode {
-				case .one: return UIImage(systemName: "repeat.1.circle.fill")!
+				case .one:
+					newImage = UIImage(systemName: "repeat.1.circle.fill")!
+					newLabel = [InterfaceText.repeat1, regularLabel].formattedAsNarrowList()
+					return
 				case .all, .none, .default: break
 				@unknown default: break
 			}
-			return regularImage
-		}()
-		newLabel = [InterfaceText.repeat1, regularLabel].formattedAsNarrowList()
+		}
+		newImage = regularImage
+		newLabel = regularLabel
 	}
 	private func newOverflowTitle() -> String {
 		if
