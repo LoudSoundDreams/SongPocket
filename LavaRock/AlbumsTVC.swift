@@ -510,10 +510,6 @@ final class AlbumsTVC: LibraryTVC {
 			let oldRows = albumListState.rowIdentifiers()
 			albumOrder.reindex(album_toArrange())
 			albumListState.refreshItems()
-			switch albumListState.selectMode {
-				case .selectSongs, .view: break
-				case .selectAlbums: albumListState.selectMode = .selectAlbums([])
-			}
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
 	}
@@ -522,10 +518,6 @@ final class AlbumsTVC: LibraryTVC {
 			let oldRows = albumListState.rowIdentifiers()
 			songOrder.reindex(song_toArrange())
 			albumListState.refreshItems()
-			switch albumListState.selectMode {
-				case .selectAlbums, .view: break
-				case .selectSongs: albumListState.selectMode = .selectSongs([])
-			}
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
 		}
 	}
