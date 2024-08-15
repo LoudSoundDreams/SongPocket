@@ -484,7 +484,11 @@ final class AlbumsTVC: LibraryTVC {
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded, .title, .artist: return true
 			case .recentlyReleased: return album_toArrange().contains {
+#if targetEnvironment(simulator)
+				nil != Sim_MusicLibrary.shared.albumInfos[$0.albumPersistentID]?._releaseDate
+#else
 				nil != Crate.shared.musicKitSection($0.albumPersistentID)?.releaseDate
+#endif
 			}
 		}
 	}
