@@ -234,8 +234,8 @@ extension Crate {
 		let albumsEarliestFirst: [[SongInfo]] = {
 			let songsEarliestFirst = newInfos.sorted { $0.dateAddedOnDisk < $1.dateAddedOnDisk }
 			let dictionary: [AlbumID: [SongInfo]] = Dictionary(grouping: songsEarliestFirst) { $0.albumID }
-			let albums: [[SongInfo]] = dictionary.map { $0.value }
-			return albums.sorted { leftGroup, rightGroup in
+			let albumsUnsorted: [[SongInfo]] = dictionary.map { $0.value }
+			return albumsUnsorted.sorted { leftGroup, rightGroup in
 				leftGroup.first!.dateAddedOnDisk < rightGroup.first!.dateAddedOnDisk
 			}
 			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
