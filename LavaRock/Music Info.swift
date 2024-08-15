@@ -145,11 +145,11 @@ private extension Date {
 		var albumIDNext: AlbumID = 0
 		var songIDNext: SongID = 0
 		Self.literals.reversed().forEach { demoAlbum in
-			albumIDNext += 1
+			defer { albumIDNext += 1 }
 			let dateAdded = Date.now
 			let sim_songs: [Sim_Song] = {
 				demoAlbum.items.indices.map { demoSongIndex in
-					songIDNext += 1
+					defer { songIDNext += 1 }
 					let demoSong = demoAlbum.items[demoSongIndex]
 					let result = Sim_Song(
 						albumID: albumIDNext,
