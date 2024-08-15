@@ -105,10 +105,12 @@ import MediaPlayer
 	var body: some View {
 		ZStack {
 #if targetEnvironment(simulator)
-			Image(Sim_MusicLibrary.shared.albumInfos[albumID]!.artFileName)
-				.resizable()
-				.scaledToFit()
-				.frame(width: maxSideLength, height: maxSideLength)
+			if let sim_album = Sim_MusicLibrary.shared.albumInfos[albumID] {
+				Image(sim_album.artFileName)
+					.resizable()
+					.scaledToFit()
+					.frame(width: maxSideLength, height: maxSideLength)
+			}
 #else
 			if let artwork = crate.musicKitSection(albumID)?.artwork {
 				/*
