@@ -18,45 +18,6 @@ protocol SongInfo {
 	var dateAddedOnDisk: Date { get }
 }
 extension SongInfo {
-	// MARK: - Sorting
-	
-	// Behavior is undefined if you compare with a `SongInfo` from a different album.
-	func precedesNumerically(
-		inSameAlbum other: SongInfo,
-		shouldResortToTitle: Bool
-	) -> Bool {
-		// Sort by disc number
-		let myDisc = discNumberOnDisk
-		let otherDisc = other.discNumberOnDisk
-		guard myDisc == otherDisc else {
-			return myDisc < otherDisc
-		}
-		
-		let myTrack = trackNumberOnDisk
-		let otherTrack = other.trackNumberOnDisk
-		
-		if shouldResortToTitle {
-			guard myTrack != otherTrack else {
-				// Sort by song title
-				let myTitle = titleOnDisk ?? ""
-				let otherTitle = other.titleOnDisk ?? ""
-				return myTitle.precedesInFinder(otherTitle)
-			}
-		} else {
-			// At this point, leave elements in the same order if they both have no track number, or the same track number.
-			// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
-			guard myTrack != otherTrack else { return true }
-		}
-		
-		// Move unknown track number to the end
-		guard otherTrack != type(of: other).unknownTrackNumber else { return true }
-		guard myTrack != Self.unknownTrackNumber else { return false }
-		
-		return myTrack < otherTrack
-	}
-	
-	// MARK: Formatted attributes
-	
 	func discAndTrackFormatted() -> String {
 		let trackFormatted: String = (trackNumberOnDisk == Self.unknownTrackNumber)
 		? InterfaceText.octothorpe

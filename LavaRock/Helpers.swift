@@ -5,18 +5,6 @@ final class WeakRef<Referencee: AnyObject> {
 	init(_ referencee: Referencee) { self.referencee = referencee }
 }
 
-extension String {
-	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
-	func precedesInFinder(_ other: Self) -> Bool {
-		let comparisonResult = localizedStandardCompare(other) // The comparison method that the Finder uses
-		switch comparisonResult {
-			case .orderedAscending: return true
-			case .orderedSame: return true
-			case .orderedDescending: return false
-		}
-	}
-}
-
 extension Sequence {
 	func compacted<WrappedType>() -> [WrappedType]
 	where Element == Optional<WrappedType>
@@ -104,12 +92,7 @@ extension Array {
 
 extension NotificationCenter {
 	// Helps callers observe each kind of `Notification` exactly once.
-	final func addObserverOnce(
-		_ observer: Any,
-		selector: Selector,
-		name: Notification.Name,
-		object: Any?
-	) {
+	final func addObserverOnce(_ observer: Any, selector: Selector, name: Notification.Name, object: Any?) {
 		removeObserver(observer, name: name, object: object)
 		addObserver(observer, selector: selector, name: name, object: object)
 	}

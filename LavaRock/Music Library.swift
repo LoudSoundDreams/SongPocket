@@ -159,8 +159,7 @@ extension Crate {
 		}
 		
 		// `Song`s will very rarely make it past this point.
-		
-		let toMove = unsortedToMove.sorted { $0.precedesInUserCustomOrder($1) }
+		let toMove = unsortedToMove.sorted { Self.precedesInManualOrder($0, $1) }
 		toMove.forEach { song in
 			let destination = topmostUniqueAlbums[song.container!.albumPersistentID]!
 			song.index = Int64(destination.contents?.count ?? 0)
@@ -184,7 +183,7 @@ extension Crate {
 			}
 			// Sort by the order the user arranged the `Song`s in the app.
 			return unsortedOutdated.sorted { leftTuple, rightTuple in
-				leftTuple.0.precedesInUserCustomOrder(rightTuple.0)
+				Self.precedesInManualOrder(leftTuple.0, rightTuple.0)
 			}
 		}()
 		var existingAlbums = canonicalAlbums
@@ -210,6 +209,21 @@ extension Crate {
 				existingAlbums[freshAlbumID] = newAlbum
 			}
 		}
+	}
+	
+	private static func precedesInManualOrder(_ left: Song, _ right: Song) -> Bool {
+		// Checking song index first and collection index last is slightly faster than vice versa.
+		guard left.index == right.index else {
+			return left.index < right.index
+		}
+		
+		let leftAlbum = left.container!; let rightAlbum = right.container!
+		guard leftAlbum.index == rightAlbum.index else {
+			return leftAlbum.index < rightAlbum.index
+		}
+		
+		let leftCollection = leftAlbum.container!; let rightCollection = rightAlbum.container!
+		return leftCollection.index < rightCollection.index
 	}
 	
 	// MARK: - Create

@@ -125,23 +125,6 @@ extension Song {
 	final func isAtBottom() -> Bool {
 		return index >= (container?.contents ?? []).count - 1
 	}
-	
-	final func precedesInUserCustomOrder(_ other: Song) -> Bool {
-		// Checking song index first and collection index last is slightly faster than vice versa.
-		guard index == other.index else {
-			return index < other.index
-		}
-		
-		let myAlbum = container!
-		let otherAlbum = other.container!
-		guard myAlbum.index == other.index else {
-			return myAlbum.index < otherAlbum.index
-		}
-		
-		let myCollection = myAlbum.container!
-		let otherCollection = otherAlbum.container!
-		return myCollection.index < otherCollection.index
-	}
 }
 import MediaPlayer
 extension Song {
