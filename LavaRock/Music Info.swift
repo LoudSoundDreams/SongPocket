@@ -105,31 +105,29 @@ private extension Date {
 		var songDict: [SongID: Sim_Song] = [:]
 		var albumIDNext: AlbumID = 0
 		var songIDNext: SongID = 0
-		Self.literals.reversed().forEach { demoAlbum in
+		let demoDate = Date.now
+		Self.demoAlbums.forEach { demoAlbum in
 			defer { albumIDNext += 1 }
-			let dateAdded = Date.now
-			let sim_songs: [Sim_Song] = {
-				demoAlbum.items.indices.map { demoSongIndex in
-					defer { songIDNext += 1 }
-					let demoSong = demoAlbum.items[demoSongIndex]
-					let result = Sim_Song(
-						albumID: albumIDNext,
-						songID: songIDNext,
-						discCountOnDisk: 1,
-						discNumberOnDisk: 1,
-						trackNumberOnDisk: demoSongIndex + 1,
-						titleOnDisk: demoSong.title,
-						artistOnDisk: demoSong.artist,
-						dateAddedOnDisk: dateAdded)
-					songDict[songIDNext] = result
-					return result
-				}
-			}()
+			let sim_songs: [Sim_Song] = demoAlbum.items.indices.map { indexInAlbum in
+				defer { songIDNext += 1 }
+				let demoSong = demoAlbum.items[indexInAlbum]
+				let result = Sim_Song(
+					albumID: albumIDNext,
+					songID: songIDNext,
+					discCountOnDisk: 1,
+					discNumberOnDisk: 1,
+					trackNumberOnDisk: indexInAlbum + 1,
+					titleOnDisk: demoSong.title,
+					artistOnDisk: demoSong.artist,
+					dateAddedOnDisk: demoDate)
+				songDict[songIDNext] = result
+				return result
+			}
 			albumDict[albumIDNext] = Sim_Album(
 				_title: demoAlbum.title,
 				_artist: demoAlbum.artist,
 				_releaseDate: demoAlbum.releaseDate,
-				_dateAdded: dateAdded,
+				_dateAdded: demoDate,
 				artFileName: demoAlbum.artFileName,
 				_items: sim_songs)
 		}
@@ -137,7 +135,7 @@ private extension Date {
 		self.songInfos = songDict
 		currentSongInfo = songInfos[SongID(0)]
 	}
-	private static let literals: [DemoAlbum] = [
+	private static let demoAlbums: [DemoAlbum] = [
 		DemoAlbum(
 			title: "Hillside",
 			artist: "Wanderer",
