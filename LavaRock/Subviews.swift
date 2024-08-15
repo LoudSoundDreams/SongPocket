@@ -251,8 +251,11 @@ import MediaPlayer
 			NowPlayingIndicator(songID: song.persistentID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(title)
-				let albumArtistOptional = crate.musicKitSection(albumID)?.artistName
-				if let songArtist = info?.artistOnDisk, songArtist != albumArtistOptional {
+				if
+					let songArtist = info?.artistOnDisk,
+					songArtist != "",
+					songArtist != crate.musicKitSection(albumID)?.artistName
+				{
 					Text(songArtist)
 						.foregroundStyle(.secondary)
 						.font_footnote()
