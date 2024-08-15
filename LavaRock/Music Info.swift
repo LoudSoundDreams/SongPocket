@@ -156,7 +156,7 @@ private extension Date {
 						songID: songIDNext,
 						discCountOnDisk: 1,
 						discNumberOnDisk: 1,
-						trackNumberOnDisk: demoSongIndex,
+						trackNumberOnDisk: demoSongIndex + 1,
 						titleOnDisk: demoSong.title,
 						artistOnDisk: demoSong.artist,
 						dateAddedOnDisk: dateAdded)
