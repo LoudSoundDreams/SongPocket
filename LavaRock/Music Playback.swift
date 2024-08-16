@@ -37,7 +37,7 @@ import os
 		playNow(tracks) // Can get stuck “Loading…” when offline, even when song is downloaded.
 	}
 	final func shuffleNow(_ albumID: AlbumID) {
-		guard let tracks = Crate.shared.mkSection(albumID)?.tracks else { return }
+		guard let tracks = Crate.shared.mkSection(albumID: albumID)?.tracks else { return }
 		playNow(tracks.shuffled())
 	}
 }

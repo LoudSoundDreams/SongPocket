@@ -34,7 +34,7 @@ extension Crate {
 	}
 	static let willMerge = Notification.Name("LRMusicLibraryWillMerge")
 	static let didMerge = Notification.Name("LRMusicLibraryDidMerge")
-	func mkSection(_ albumID: AlbumID) -> MKSection? {
+	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}
 	static func openAppleMusic() {

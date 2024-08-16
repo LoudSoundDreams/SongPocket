@@ -112,7 +112,7 @@ import MediaPlayer
 					.frame(width: maxSideLength, height: maxSideLength)
 			}
 #else
-			if let artwork = crate.mkSection(albumID)?.artwork {
+			if let artwork = crate.mkSection(albumID: albumID)?.artwork {
 				/*
 				 As of iOS 17.5.1:
 				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
@@ -165,7 +165,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
 #else
-			crate.mkSection(albumID)?.title ?? InterfaceText.unknownAlbum
+			crate.mkSection(albumID: albumID)?.title ?? InterfaceText.unknownAlbum
 #endif
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
@@ -173,7 +173,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 				guard let date = Sim_MusicLibrary.shared.albumInfos[albumID]?._releaseDate else { return InterfaceText.emDash }
 #else
-				guard let date = crate.mkSection(albumID)?.releaseDate else { return InterfaceText.emDash }
+				guard let date = crate.mkSection(albumID: albumID)?.releaseDate else { return InterfaceText.emDash }
 #endif
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
@@ -186,7 +186,7 @@ import MediaPlayer
 				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ?? InterfaceText.unknownArtist
 #else
 				guard
-					let albumArtist = crate.mkSection(albumID)?.artistName,
+					let albumArtist = crate.mkSection(albumID: albumID)?.artistName,
 					albumArtist != ""
 				else { return InterfaceText.unknownArtist }
 				return albumArtist
@@ -254,7 +254,7 @@ import MediaPlayer
 				if
 					let songArtist = info?.artistOnDisk,
 					songArtist != "",
-					songArtist != crate.mkSection(albumID)?.artistName
+					songArtist != crate.mkSection(albumID: albumID)?.artistName
 				{
 					Text(songArtist)
 						.foregroundStyle(.secondary)
