@@ -28,7 +28,13 @@ import os
 		Task {
 			try? await queue.insert(playables, position: .tail)
 			
-			UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+			let impactor = UIImpactFeedbackGenerator(style: .heavy)
+			impactor.impactOccurred()
+			
+			guard playables.count >= 2 else { return }
+			try? await Task.sleep(for: .seconds(0.2))
+			
+			impactor.impactOccurred()
 		}
 	}
 	
@@ -84,15 +90,7 @@ extension MPMusicPlayerController {
 			return Array(result)
 		}()
 		
-		guard let _ =
-				try? await player.queue.insert(toAppend, position: .tail)
-		else { return }
-		
-		let impactor = UIImpactFeedbackGenerator(style: .heavy)
-		impactor.impactOccurred()
-		try? await Task.sleep(nanoseconds: 0_200_000_000)
-		
-		impactor.impactOccurred()
+		player.playLater(toAppend)
 	}
 	
 	final func musicKitSong() async -> MusicKit.Song? { // Slow.
