@@ -176,6 +176,11 @@ extension NSManagedObjectContext {
 		}
 		return result
 	}
+	final func fetchSong(mpID: SongID) -> Song? {
+		let request = Song.fetchRequest()
+		request.predicate = NSPredicate(#Predicate<Song> { mpID == $0.persistentID })
+		return fetchPlease(request).first
+	}
 	
 	final func savePlease() {
 		guard hasChanges else { return }
@@ -184,10 +189,6 @@ extension NSManagedObjectContext {
 		} catch {
 			fatalError("Crashed while trying to save changes synchronously: \(error)")
 		}
-	}
-	
-	final func song(with songID: SongID) -> Song? {
-		return fetchPlease(Song.fetchRequest()).first(where: { songID == $0.persistentID })
 	}
 	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.

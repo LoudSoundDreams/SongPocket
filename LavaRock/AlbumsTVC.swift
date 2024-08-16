@@ -300,7 +300,7 @@ final class AlbumsTVC: LibraryTVC {
 	func showCurrent() {
 		guard
 			let currentSongID = MPMusicPlayerController._system?.nowPlayingItem?.songID,
-			let currentSong = Database.viewContext.song(with: currentSongID),
+			let currentSong = Database.viewContext.fetchSong(mpID: currentSongID),
 			let currentAlbumID = currentSong.container?.albumPersistentID
 		else { return }
 		guard let currentAlbumRow = albumListState.items.firstIndex(where: { switch $0 {
