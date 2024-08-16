@@ -152,15 +152,13 @@ extension Song {
 
 import MusicKit
 extension NSManagedObjectContext {
-	final func printLibrary(
-		referencing: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>]
-	) {
+	final func printLibrary(referencing: [MusicItemID: MKSection]) {
 		fetchPlease(Collection.fetchRequest_sorted()).forEach { collection in
 			print(collection.index, collection.title ?? "")
 			
 			collection.albums(sorted: true).forEach { album in
-				let musicKitSection: MusicLibrarySection<MusicKit.Album, MusicKit.Song>? = referencing[MusicItemID(String(album.albumPersistentID))]
-				print(" ", album.index, musicKitSection?.title ?? InterfaceText.unknownAlbum)
+				let mkSection: MKSection? = referencing[MusicItemID(String(album.albumPersistentID))]
+				print(" ", album.index, mkSection?.title ?? InterfaceText.unknownAlbum)
 				
 				album.songs(sorted: true).forEach { song in
 					print("   ", song.index)

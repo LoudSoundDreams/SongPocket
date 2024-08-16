@@ -108,7 +108,7 @@ final class AlbumsTVC: LibraryTVC {
 					}()) { [weak self] _ in
 						guard let self else { return }
 						let albumIDs = albumListState.albums().map { $0.albumPersistentID }
-						let sections = albumIDs.compactMap { Crate.shared.musicKitSection($0) }
+						let sections = albumIDs.compactMap { Crate.shared.mkSection($0) }
 						let musicKitSongs = sections.flatMap { $0.items }
 						SystemMusicPlayer._shared?.playNow(musicKitSongs)
 					}
@@ -487,7 +487,7 @@ final class AlbumsTVC: LibraryTVC {
 #if targetEnvironment(simulator)
 				nil != Sim_MusicLibrary.shared.albumInfos[$0.albumPersistentID]?._releaseDate
 #else
-				nil != Crate.shared.musicKitSection($0.albumPersistentID)?.releaseDate
+				nil != Crate.shared.mkSection($0.albumPersistentID)?.releaseDate
 #endif
 			}
 		}

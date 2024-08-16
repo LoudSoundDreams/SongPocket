@@ -9,8 +9,10 @@ import MusicKit
 import MediaPlayer
 import SwiftUI
 
+typealias MKSection = MusicLibrarySection<MusicKit.Album, MusicKit.Song>
+
 @MainActor @Observable final class Crate {
-	private(set) var musicKitSections: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = [:]
+	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var isMerging = false { didSet {
 		if isMerging {
 			NotificationCenter.default.post(name: Self.willMerge, object: nil)
@@ -32,8 +34,8 @@ extension Crate {
 	}
 	static let willMerge = Notification.Name("LRMusicLibraryWillMerge")
 	static let didMerge = Notification.Name("LRMusicLibraryDidMerge")
-	func musicKitSection(_ albumID: AlbumID) -> MusicLibrarySection<MusicKit.Album, MusicKit.Song>? {
-		return musicKitSections[MusicItemID(String(albumID))]
+	func mkSection(_ albumID: AlbumID) -> MKSection? {
+		return mkSections[MusicItemID(String(albumID))]
 	}
 	static func openAppleMusic() {
 		guard let musicLibraryURL = URL(string: "music://") else { return }
@@ -51,21 +53,21 @@ extension Crate {
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
 			
-			let fresh: [MusicItemID: MusicLibrarySection<MusicKit.Album, MusicKit.Song>] = await {
+			let fresh: [MusicItemID: MKSection] = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
 				guard let response = try? await request.response() else { return [:] }
 				
 				let tuples = response.sections.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let union = musicKitSections.merging(fresh) { old, new in new }
-			musicKitSections = union // Show new data immediately…
+			let union = mkSections.merging(fresh) { old, new in new }
+			mkSections = union // Show new data immediately…
 			
 			mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
-			musicKitSections = fresh
+			mkSections = fresh
 #endif
 		}
 	}

@@ -112,7 +112,7 @@ import MediaPlayer
 					.frame(width: maxSideLength, height: maxSideLength)
 			}
 #else
-			if let artwork = crate.musicKitSection(albumID)?.artwork {
+			if let artwork = crate.mkSection(albumID)?.artwork {
 				/*
 				 As of iOS 17.5.1:
 				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
@@ -132,7 +132,7 @@ import MediaPlayer
 			}
 #endif
 		}
-		.animation(.default, value: crate.musicKitSections) // TO DO: Is this slow?
+		.animation(.default, value: crate.mkSections) // TO DO: Is this slow?
 		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
 	private let crate: Crate = .shared
@@ -166,7 +166,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 				guard let date = Sim_MusicLibrary.shared.albumInfos[albumID]?._releaseDate else { return InterfaceText.emDash }
 #else
-				guard let date = crate.musicKitSection(albumID)?.releaseDate else { return InterfaceText.emDash }
+				guard let date = crate.mkSection(albumID)?.releaseDate else { return InterfaceText.emDash }
 #endif
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
@@ -179,7 +179,7 @@ import MediaPlayer
 				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ?? InterfaceText.unknownArtist
 #else
 				guard
-					let albumArtist = crate.musicKitSection(albumID)?.artistName,
+					let albumArtist = crate.mkSection(albumID)?.artistName,
 					albumArtist != ""
 				else { return InterfaceText.unknownArtist }
 				return albumArtist
@@ -204,7 +204,7 @@ import MediaPlayer
 		.accessibilityInputLabels([Text(title)])
 	}
 	private var title: String {
-		return crate.musicKitSection(albumID)?.title ?? InterfaceText.unknownAlbum
+		return crate.mkSection(albumID)?.title ?? InterfaceText.unknownAlbum
 	}
 	private var select_dimmed: Bool {
 		switch albumListState.selectMode {
@@ -256,7 +256,7 @@ import MediaPlayer
 				if
 					let songArtist = info?.artistOnDisk,
 					songArtist != "",
-					songArtist != crate.musicKitSection(albumID)?.artistName
+					songArtist != crate.mkSection(albumID)?.artistName
 				{
 					Text(songArtist)
 						.foregroundStyle(.secondary)
