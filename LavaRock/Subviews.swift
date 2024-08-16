@@ -322,7 +322,7 @@ import MediaPlayer
 				}}(),
 				value: albumListState.selectMode)
 	}
-	@ViewBuilder private var select_indicator: some View {
+	private var select_indicator: some View {
 		ZStack {
 			switch albumListState.selectMode {
 				case .view, .selectAlbums: EmptyView()
