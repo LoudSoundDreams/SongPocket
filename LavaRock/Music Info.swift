@@ -77,7 +77,7 @@ struct DemoAlbum {
 	let artist: String
 	let releaseDate: Date?
 	let artFileName: String
-	let items: [DemoSong]
+	let tracks: [DemoSong]
 }
 struct DemoSong {
 	let title: String
@@ -108,9 +108,9 @@ private extension Date {
 		let demoDate = Date.now
 		Self.demoAlbums.forEach { demoAlbum in
 			defer { albumIDNext += 1 }
-			let sim_songs: [Sim_Song] = demoAlbum.items.indices.map { indexInAlbum in
+			let sim_songs: [Sim_Song] = demoAlbum.tracks.indices.map { indexInAlbum in
 				defer { songIDNext += 1 }
-				let demoSong = demoAlbum.items[indexInAlbum]
+				let demoSong = demoAlbum.tracks[indexInAlbum]
 				let result = Sim_Song(
 					albumID: albumIDNext,
 					songID: songIDNext,
@@ -141,7 +141,7 @@ private extension Date {
 			artist: "Wanderer",
 			releaseDate: .strategy(iso8601_10Char: "2024-05-31"),
 			artFileName: "field",
-			items: [
+			tracks: [
 				.init("Magic"),
 				.init("Robot"),
 				.init("Last"),
@@ -151,7 +151,7 @@ private extension Date {
 			artist: "Wanderer",
 			releaseDate: .strategy(iso8601_10Char: "2024-03-31"),
 			artFileName: "city",
-			items: [
+			tracks: [
 				.init("Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.", artist: "Tony Harnell"),
 			]),
 		DemoAlbum(
@@ -159,7 +159,7 @@ private extension Date {
 			artist: "Wanderer",
 			releaseDate: .strategy(iso8601_10Char: "2024-02-29"),
 			artFileName: "sky",
-			items: [
+			tracks: [
 				.init(""),
 			]),
 	]
