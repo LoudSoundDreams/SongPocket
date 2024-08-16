@@ -9,24 +9,22 @@ protocol SongInfo {
 	var albumID: AlbumID { get }
 	var songID: SongID { get }
 	
-	var discCountOnDisk: Int { get }
 	var discNumberOnDisk: Int { get }
 	var trackNumberOnDisk: Int { get }
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
 }
-extension SongInfo {
-	func discAndTrackFormatted() -> String {
+
+extension Song {
+	static func formatted(disc: Int?, track: Int?, discCount: Int) -> String {
 		let trackFormatted: String = {
-			if trackNumberOnDisk == 0 {
-				return InterfaceText.octothorpe
-			} else {
-				return String(trackNumberOnDisk)
-			}
+			guard let track, track != 0 else { return InterfaceText.octothorpe }
+			return String(track)
 		}()
-		if discCountOnDisk >= 2 || discNumberOnDisk >= 2 {
-			return "\(discNumberOnDisk)\(InterfaceText.interpunct)\(trackFormatted)"
+		let disc = disc ?? 0
+		if discCount >= 2 || disc >= 2 {
+			return "\(disc)\(InterfaceText.interpunct)\(trackFormatted)"
 		} else {
 			return trackFormatted
 		}
@@ -41,7 +39,6 @@ extension MPMediaItem: SongInfo {
 	final var songID: SongID { SongID(bitPattern: persistentID) }
 	
 	// Media Player reports unknown values as…
-	final var discCountOnDisk: Int { discCount } // `0`, as of iOS 15.0 RC
 	final var discNumberOnDisk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
 	final var trackNumberOnDisk: Int { albumTrackNumber }
 	final var titleOnDisk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
@@ -65,7 +62,6 @@ struct Sim_Song: SongInfo {
 	let albumID: AlbumID
 	let songID: SongID
 	
-	let discCountOnDisk: Int
 	let discNumberOnDisk: Int
 	let trackNumberOnDisk: Int
 	let titleOnDisk: String?
@@ -116,7 +112,6 @@ private extension Date {
 				let result = Sim_Song(
 					albumID: albumIDNext,
 					songID: songIDNext,
-					discCountOnDisk: 1,
 					discNumberOnDisk: 1,
 					trackNumberOnDisk: indexInAlbum + 1,
 					titleOnDisk: demoSong.title,

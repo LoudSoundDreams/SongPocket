@@ -244,8 +244,9 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var mainStack: some View {
-		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
+		let info: (some SongInfo)? = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		let title: String? = info?.titleOnDisk
+		let mkSection: MKSection? = crate.mkSection(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
 			NowPlayingIndicator(songID: song.persistentID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
@@ -254,7 +255,7 @@ import MediaPlayer
 				if
 					let songArtist = info?.artistOnDisk,
 					songArtist != "",
-					songArtist != crate.mkSection(albumID: albumID)?.artistName
+					songArtist != mkSection?.artistName
 				{
 					Text(songArtist)
 						.foregroundStyle(.secondary)
@@ -262,9 +263,20 @@ import MediaPlayer
 				}
 			}
 			Spacer()
-			Text(info?.discAndTrackFormatted() ?? InterfaceText.octothorpe)
-				.foregroundStyle(.secondary)
-				.monospacedDigit()
+			Text({
+				guard let info, let mkSection else { return InterfaceText.octothorpe }
+				return Song.formatted(
+					disc: info.discNumberOnDisk,
+					track: info.trackNumberOnDisk,
+					discCount: mkSection.items.reduce(into: 1) { highestSoFar, mkSong in
+						if let disc = mkSong.discNumber, disc > highestSoFar {
+							highestSoFar = disc
+						}
+					}
+				)
+			}())
+			.foregroundStyle(.secondary)
+			.monospacedDigit()
 		}
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title].compactMap { $0 })
