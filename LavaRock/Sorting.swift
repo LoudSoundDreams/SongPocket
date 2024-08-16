@@ -203,8 +203,8 @@ extension SongInfo {
 		}
 		
 		// Move unknown track number to the end
-		guard otherTrack != type(of: other).unknownTrackNumber else { return true }
-		guard myTrack != Self.unknownTrackNumber else { return false }
+		guard otherTrack != 0 else { return true }
+		guard myTrack != 0 else { return false }
 		
 		return myTrack < otherTrack
 	}

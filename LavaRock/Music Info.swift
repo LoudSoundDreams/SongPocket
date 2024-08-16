@@ -12,7 +12,6 @@ protocol SongInfo {
 	var discCountOnDisk: Int { get }
 	var discNumberOnDisk: Int { get }
 	var trackNumberOnDisk: Int { get }
-	static var unknownTrackNumber: Int { get }
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
@@ -20,7 +19,7 @@ protocol SongInfo {
 extension SongInfo {
 	func discAndTrackFormatted() -> String {
 		let trackFormatted: String = {
-			if Self.unknownTrackNumber == trackNumberOnDisk {
+			if trackNumberOnDisk == 0 {
 				return InterfaceText.octothorpe
 			} else {
 				return String(trackNumberOnDisk)
@@ -44,7 +43,6 @@ extension MPMediaItem: SongInfo {
 	// Media Player reports unknown values as…
 	final var discCountOnDisk: Int { discCount } // `0`, as of iOS 15.0 RC
 	final var discNumberOnDisk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
-	static let unknownTrackNumber = 0 // As of iOS 14.7 developer beta 5
 	final var trackNumberOnDisk: Int { albumTrackNumber }
 	final var titleOnDisk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
 	final var artistOnDisk: String? { artist }
@@ -70,7 +68,6 @@ struct Sim_Song: SongInfo {
 	let discCountOnDisk: Int
 	let discNumberOnDisk: Int
 	let trackNumberOnDisk: Int
-	static let unknownTrackNumber = 0
 	let titleOnDisk: String?
 	let artistOnDisk: String?
 	let dateAddedOnDisk: Date
