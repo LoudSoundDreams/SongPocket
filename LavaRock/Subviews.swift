@@ -160,7 +160,14 @@ import MediaPlayer
 	}
 	private static let workingOnOverflowAlbum = 10 == 1
 	
-	private var textStack: some View {
+	@ViewBuilder private var textStack: some View {
+		let title: String = {
+#if targetEnvironment(simulator)
+			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
+#else
+			crate.mkSection(albumID)?.title ?? InterfaceText.unknownAlbum
+#endif
+		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
 #if targetEnvironment(simulator)
@@ -188,23 +195,14 @@ import MediaPlayer
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
 			.font_caption2Bold()
 			.accessibilitySortPriority(20)
-			Text({
-#if targetEnvironment(simulator)
-				return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
-#else
-				return title
-#endif
-			}())
-			.font_title2Bold()
-			.foregroundStyle(select_dimmed ? .secondary : .primary)
-			.accessibilitySortPriority(30)
+			Text(title)
+				.font_title2Bold()
+				.foregroundStyle(select_dimmed ? .secondary : .primary)
+				.accessibilitySortPriority(30)
 		}
 		.animation(.default, value: select_dimmed) // TO DO: Is this slow?
 		.accessibilityElement(children: .combine)
-		.accessibilityInputLabels([Text(title)])
-	}
-	private var title: String {
-		return crate.mkSection(albumID)?.title ?? InterfaceText.unknownAlbum
+		.accessibilityInputLabels([title])
 	}
 	private var select_dimmed: Bool {
 		switch albumListState.selectMode {
@@ -247,12 +245,12 @@ import MediaPlayer
 	}
 	@ViewBuilder private var mainStack: some View {
 		let info = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
-		let title: String = info?.titleOnDisk ?? InterfaceText.emDash
+		let title: String? = info?.titleOnDisk
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
 			NowPlayingIndicator(songID: song.persistentID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
-				Text(title)
+				Text(title ?? InterfaceText.emDash)
 				if
 					let songArtist = info?.artistOnDisk,
 					songArtist != "",
@@ -269,7 +267,7 @@ import MediaPlayer
 				.monospacedDigit()
 		}
 		.accessibilityElement(children: .combine)
-		.accessibilityInputLabels([Text(title)])
+		.accessibilityInputLabels([title].compactMap { $0 })
 		.accessibilityAddTraits(.isButton)
 	}
 	private let crate: Crate = .shared
