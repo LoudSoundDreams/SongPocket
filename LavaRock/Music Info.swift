@@ -19,13 +19,18 @@ protocol SongInfo {
 }
 extension SongInfo {
 	func discAndTrackFormatted() -> String {
-		let trackFormatted: String = (trackNumberOnDisk == Self.unknownTrackNumber)
-		? InterfaceText.octothorpe
-		: String(trackNumberOnDisk)
+		let trackFormatted: String = {
+			if Self.unknownTrackNumber == trackNumberOnDisk {
+				return InterfaceText.octothorpe
+			} else {
+				return String(trackNumberOnDisk)
+			}
+		}()
 		if discCountOnDisk >= 2 || discNumberOnDisk >= 2 {
 			return "\(discNumberOnDisk)\(InterfaceText.interpunct)\(trackFormatted)"
+		} else {
+			return trackFormatted
 		}
-		return trackFormatted
 	}
 }
 
