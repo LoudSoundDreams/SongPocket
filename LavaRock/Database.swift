@@ -163,7 +163,6 @@ extension NSManagedObjectContext {
 				print(" ", album.index, musicKitSection?.title ?? InterfaceText.unknownAlbum)
 				
 				album.songs(sorted: true).forEach { song in
-					let _ = musicKitSection?.items ?? []
 					print("   ", song.index)
 				}
 			}
