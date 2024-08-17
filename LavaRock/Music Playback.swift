@@ -60,19 +60,19 @@ extension Song {
 	@MainActor final func playAlbumStartingHere() async {
 		guard
 			let player = SystemMusicPlayer._shared,
-			let rowItem = await musicKitSong(),
+			let rowMKSong = await Crate.shared.mkSong(mpID: persistentID),
 			let songsInAlbum = container?.songs(sorted: true)
 		else { return }
 		let mkSongs: [MusicKit.Song] = await {
 			var result: [MusicKit.Song] = []
 			for song in songsInAlbum {
-				guard let musicItem = await song.musicKitSong() else { continue }
-				result.append(musicItem)
+				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { continue }
+				result.append(mkSong)
 			}
 			return result
 		}()
 		
-		player.playNow(mkSongs, startingAt: rowItem)
+		player.playNow(mkSongs, startingAt: rowMKSong)
 	}
 	
 	@MainActor final func playRestOfAlbumLater() async {
@@ -84,22 +84,12 @@ extension Song {
 		let mkSongs: [MusicKit.Song] = await {
 			var result: [MusicKit.Song] = []
 			for song in restOfAlbum {
-				guard let mkSong = await song.musicKitSong() else { continue }
+				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { continue }
 				result.append(mkSong)
 			}
 			return result
 		}()
 		
 		player.playLater(mkSongs)
-	}
-	
-	@MainActor final func musicKitSong() async -> MusicKit.Song? { // Slow; 11ms in 2024.
-		var request = MusicLibraryRequest<MusicKit.Song>()
-		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
-		guard
-			let response = try? await request.response(),
-			response.items.count == 1
-		else { return nil }
-		return response.items.first
 	}
 }

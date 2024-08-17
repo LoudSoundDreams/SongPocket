@@ -296,15 +296,15 @@ import MediaPlayer
 	@ViewBuilder private var songMenu: some View {
 		Button {
 			Task {
-				guard let musicKitSong = await song.musicKitSong() else { return }
-				SystemMusicPlayer._shared?.playNow([musicKitSong])
+				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { return }
+				SystemMusicPlayer._shared?.playNow([mkSong])
 			}
 		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
 		Button {
 			Task {
-				guard let musicKitSong = await song.musicKitSong() else { return }
-				SystemMusicPlayer._shared?.playLater([musicKitSong])
+				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { return }
+				SystemMusicPlayer._shared?.playLater([mkSong])
 			}
 		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
