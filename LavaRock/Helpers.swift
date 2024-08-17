@@ -1,5 +1,11 @@
 // MARK: - Standard library
 
+final class LifetimePrinter {
+	init() { print(Date.now, "+", id) }
+	deinit { print(Date.now, id, "-") }
+	private let id = Int.random(in: 0...999)
+}
+
 final class WeakRef<Referencee: AnyObject> {
 	weak var referencee: Referencee? = nil
 	init(_ referencee: Referencee) { self.referencee = referencee }
