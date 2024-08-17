@@ -56,8 +56,8 @@ extension MPMusicPlayerController {
 	}
 }
 
-@MainActor extension Song {
-	final func playAlbumStartingHere() async {
+extension Song {
+	@MainActor final func playAlbumStartingHere() async {
 		guard
 			let player = SystemMusicPlayer._shared,
 			let rowItem = await musicKitSong(),
@@ -74,7 +74,8 @@ extension MPMusicPlayerController {
 		
 		player.playNow(mkSongs, startingAt: rowItem)
 	}
-	final func playRestOfAlbumLater() async {
+	
+	@MainActor final func playRestOfAlbumLater() async {
 		guard
 			let player = SystemMusicPlayer._shared,
 			let album = container
@@ -92,7 +93,7 @@ extension MPMusicPlayerController {
 		player.playLater(mkSongs)
 	}
 	
-	final func musicKitSong() async -> MusicKit.Song? { // Slow; 11ms in 2024.
+	@MainActor final func musicKitSong() async -> MusicKit.Song? { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MusicKit.Song>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
 		guard
