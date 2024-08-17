@@ -8,6 +8,7 @@ import MusicKit
 #endif
 import MediaPlayer
 import SwiftUI
+import os
 
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MusicKit.Song>
 
@@ -23,6 +24,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MusicKit.Song>
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
+	@ObservationIgnored private var mkSongs: [MusicItemID: MusicKit.Song] = [:]
 }
 extension Crate {
 	static let shared = Crate()
@@ -53,21 +55,33 @@ extension Crate {
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
 			
-			let fresh: [MusicItemID: MKSection] = await {
+			let freshSections: [MusicItemID: MKSection] = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
 				guard let response = try? await request.response() else { return [:] }
 				
 				let tuples = response.sections.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let union = mkSections.merging(fresh) { old, new in new }
-			mkSections = union // Show new data immediately…
+			let sectionsUnion = mkSections.merging(freshSections) { old, new in new }
+			
+			// 12,000 songs takes 37ms in 2024.
+			let freshSongs: [MusicItemID: MusicKit.Song] = {
+				let allSongs = freshSections.values.flatMap { $0.items }
+				let tuples = allSongs.map { ($0.id, $0) }
+				return Dictionary(uniqueKeysWithValues: tuples)
+			}()
+			let songsUnion = mkSongs.merging(freshSongs) { old, new in new }
+			
+			// Show new data immediately…
+			mkSections = sectionsUnion
+			mkSongs = songsUnion
 			
 			mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
-			mkSections = fresh
+			mkSections = freshSections
+			mkSongs = freshSongs
 #endif
 		}
 	}
