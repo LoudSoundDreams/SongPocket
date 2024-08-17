@@ -63,8 +63,8 @@ extension Song {
 			let rowMKSong = await Crate.shared.mkSong(mpID: persistentID),
 			let songsInAlbum = container?.songs(sorted: true)
 		else { return }
-		let mkSongs: [MusicKit.Song] = await {
-			var result: [MusicKit.Song] = []
+		let mkSongs: [MKSong] = await {
+			var result: [MKSong] = []
 			for song in songsInAlbum {
 				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { continue }
 				result.append(mkSong)
@@ -81,8 +81,8 @@ extension Song {
 			let album = container
 		else { return }
 		let restOfAlbum = album.songs(sorted: true).drop { persistentID != $0.persistentID }
-		let mkSongs: [MusicKit.Song] = await {
-			var result: [MusicKit.Song] = []
+		let mkSongs: [MKSong] = await {
+			var result: [MKSong] = []
 			for song in restOfAlbum {
 				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { continue }
 				result.append(mkSong)

@@ -5,11 +5,12 @@ import CoreData
 import MediaPlayer
 import os
 
-typealias MKSection = MusicLibrarySection<MusicKit.Album, MusicKit.Song>
+typealias MKSong = MusicKit.Song
+typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
 @MainActor @Observable final class Crate {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
-	private(set) var mkSongs: [MusicItemID: MusicKit.Song] = [:]
+	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
 	private(set) var isMerging = false { didSet {
 		if isMerging {
 			NotificationCenter.default.post(name: Self.willMerge, object: nil)
@@ -35,14 +36,14 @@ extension Crate {
 	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}
-	func mkSong(mpID: SongID) async -> MusicKit.Song? {
+	func mkSong(mpID: SongID) async -> MKSong? {
 		if let mkID = mkSongIDs[mpID] {
 			return mkSongs[mkID]
 		}
 		return await fetchAndCacheMKSong(mpID: mpID)
 	}
-	private func fetchAndCacheMKSong(mpID: SongID) async -> MusicKit.Song? { // Slow; 11ms in 2024.
-		var request = MusicLibraryRequest<MusicKit.Song>()
+	private func fetchAndCacheMKSong(mpID: SongID) async -> MKSong? { // Slow; 11ms in 2024.
+		var request = MusicLibraryRequest<MKSong>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(mpID)))
 		guard
 			let response = try? await request.response(),
@@ -72,7 +73,7 @@ extension Crate {
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
 			
 			let freshSections: [MusicItemID: MKSection] = await {
-				let request = MusicLibrarySectionedRequest<MusicKit.Album, MusicKit.Song>()
+				let request = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
 				guard let response = try? await request.response() else { return [:] }
 				
 				let tuples = response.sections.map { section in (section.id, section) }
@@ -81,7 +82,7 @@ extension Crate {
 			let sectionsUnion = mkSections.merging(freshSections) { old, new in new }
 			
 			// 12,000 songs takes 37ms in 2024.
-			let freshSongs: [MusicItemID: MusicKit.Song] = {
+			let freshSongs: [MusicItemID: MKSong] = {
 				let allSongs = freshSections.values.flatMap { $0.items }
 				let tuples = allSongs.map { ($0.id, $0) }
 				return Dictionary(uniqueKeysWithValues: tuples)

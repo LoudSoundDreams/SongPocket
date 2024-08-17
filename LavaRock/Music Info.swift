@@ -13,7 +13,7 @@ protocol __SongInfo {
 	var _title: String { get }
 	var _artist: String { get }
 }
-extension MusicKit.Song: __SongInfo {
+extension MKSong: __SongInfo {
 	var _disc: Int? { discNumber }
 	var _track: Int? { trackNumber }
 	var _title: String { title }
