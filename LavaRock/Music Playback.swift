@@ -77,20 +77,19 @@ extension MPMusicPlayerController {
 	final func playRestOfAlbumLater() async {
 		guard
 			let player = SystemMusicPlayer._shared,
-			let rowItem = await musicKitSong(),
-			let songsInAlbum = container?.songs(sorted: true)
+			let album = container
 		else { return }
-		let toAppend: [MusicKit.Song] = await {
-			var mkSongs: [MusicKit.Song] = []
-			for song in songsInAlbum {
-				guard let musicItem = await song.musicKitSong() else { continue }
-				musicItems.append(musicItem)
+		let restOfAlbum = album.songs(sorted: true).drop { persistentID != $0.persistentID }
+		let mkSongs: [MusicKit.Song] = await {
+			var result: [MusicKit.Song] = []
+			for song in restOfAlbum {
+				guard let mkSong = await song.musicKitSong() else { continue }
+				result.append(mkSong)
 			}
-			let result = mkSongs.drop(while: { $0.id != rowItem.id })
-			return Array(result)
+			return result
 		}()
 		
-		player.playLater(toAppend)
+		player.playLater(mkSongs)
 	}
 	
 	final func musicKitSong() async -> MusicKit.Song? { // Slow; 11ms in 2024.
