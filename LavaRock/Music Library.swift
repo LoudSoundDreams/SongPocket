@@ -7,13 +7,13 @@ import MusicKit
 @preconcurrency import MusicKit
 #endif
 import MediaPlayer
-import SwiftUI
 import os
 
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MusicKit.Song>
 
 @MainActor @Observable final class Crate {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
+	private(set) var mkSongs: [MusicItemID: MusicKit.Song] = [:]
 	private(set) var isMerging = false { didSet {
 		if isMerging {
 			NotificationCenter.default.post(name: Self.willMerge, object: nil)
@@ -24,7 +24,6 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MusicKit.Song>
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
-	@ObservationIgnored private var mkSongs: [MusicItemID: MusicKit.Song] = [:]
 }
 extension Crate {
 	static let shared = Crate()
