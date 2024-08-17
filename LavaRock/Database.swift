@@ -167,6 +167,20 @@ extension NSManagedObjectContext {
 		}
 	}
 	
+	final func fetchSong(mpID: SongID) -> Song? {
+		let request = Song.fetchRequest()
+		request.predicate = NSPredicate(#Predicate<Song> {
+			mpID == $0.persistentID
+		})
+		return fetchPlease(request).first
+	}
+	final func fetchAlbum(id albumIDToMatch: AlbumID) -> Album? {
+		let request = Album.fetchRequest()
+		request.predicate = NSPredicate(#Predicate<Album> {
+			albumIDToMatch == $0.albumPersistentID
+		})
+		return fetchPlease(request).first
+	}
 	final func fetchPlease<T>(_ request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		do {
@@ -175,11 +189,6 @@ extension NSManagedObjectContext {
 			fatalError("Couldn’t load items from Core Data using the fetch request: \(request)")
 		}
 		return result
-	}
-	final func fetchSong(mpID: SongID) -> Song? {
-		let request = Song.fetchRequest()
-		request.predicate = NSPredicate(#Predicate<Song> { mpID == $0.persistentID })
-		return fetchPlease(request).first
 	}
 	
 	final func savePlease() {

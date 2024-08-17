@@ -39,6 +39,9 @@ extension Crate {
 	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}
+	func mkSong(id: MusicItemID) -> MusicKit.Song? {
+		return mkSongs[id]
+	}
 	static func openAppleMusic() {
 		guard let musicLibraryURL = URL(string: "music://") else { return }
 		UIApplication.shared.open(musicLibraryURL)
