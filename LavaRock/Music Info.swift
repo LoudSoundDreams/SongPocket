@@ -7,19 +7,6 @@ import MediaPlayer
 typealias AlbumID = Int64
 typealias SongID = Int64
 
-protocol __SongInfo {
-	var _disc: Int? { get }
-	var _track: Int? { get }
-	var _title: String { get }
-	var _artist: String { get }
-}
-extension MKSong: __SongInfo {
-	var _disc: Int? { discNumber }
-	var _track: Int? { trackNumber }
-	var _title: String { title }
-	var _artist: String { artistName }
-}
-
 protocol SongInfo {
 	var albumID: AlbumID { get }
 	var songID: SongID { get }
