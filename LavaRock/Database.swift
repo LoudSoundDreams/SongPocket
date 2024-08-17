@@ -126,27 +126,6 @@ extension Song {
 		return index >= (container?.contents ?? []).count - 1
 	}
 }
-import MediaPlayer
-extension Song {
-	@MainActor final func songInfo() -> (some SongInfo)? {
-#if targetEnvironment(simulator)
-		return Sim_MusicLibrary.shared.songInfos[persistentID]
-#else
-		return mpMediaItem()
-#endif
-	}
-	private func mpMediaItem() -> MPMediaItem? {
-		let songsQuery = MPMediaQuery.songs()
-		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
-			value: persistentID,
-			forProperty: MPMediaItemPropertyPersistentID))
-		guard
-			let queriedSongs = songsQuery.items,
-			queriedSongs.count == 1
-		else { return nil }
-		return queriedSongs.first
-	}
-}
 
 // MARK: - Managed object context
 

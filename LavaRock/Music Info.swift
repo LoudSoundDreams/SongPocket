@@ -2,6 +2,7 @@
 
 import UIKit
 import MusicKit
+import MediaPlayer
 
 typealias AlbumID = Int64
 typealias SongID = Int64
@@ -42,6 +43,22 @@ extension Song {
 		} else {
 			return trackFormatted
 		}
+	}
+	
+	static func info(mpID: SongID) -> (some SongInfo)? {
+#if targetEnvironment(simulator)
+		return Sim_MusicLibrary.shared.songInfos[mpID]
+#else
+		return mpMediaItem(id: mpID)
+#endif
+	}
+	private static func mpMediaItem(id: SongID) -> MPMediaItem? {
+		let songsQuery = MPMediaQuery.songs()
+		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
+			value: id,
+			forProperty: MPMediaItemPropertyPersistentID))
+		guard let items = songsQuery.items, items.count == 1 else { return nil }
+		return items.first
 	}
 }
 

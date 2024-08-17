@@ -151,7 +151,10 @@ enum SongOrder {
 				
 			case .track:
 				// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-				let songsAndInfos = inOriginalOrder.map { (song: $0, info: $0.songInfo()) }
+				let songsAndInfos = inOriginalOrder.map {(
+					song: $0,
+					info: Song.info(mpID: $0.persistentID)
+				)}
 				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
 					let left = $0.info
 					let right = $1.info

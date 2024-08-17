@@ -244,7 +244,7 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var mainStack: some View {
-		let info: (some SongInfo)? = song.songInfo() // Can be `nil` if the user recently deleted the `SongInfo` from their library
+		let info: (some SongInfo)? = Song.info(mpID: song.persistentID) // Can be `nil` if the user recently deleted the `SongInfo` from their library
 		let title: String? = info?.titleOnDisk
 		let mkSection: MKSection? = crate.mkSection(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {

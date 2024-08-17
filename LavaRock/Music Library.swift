@@ -290,7 +290,7 @@ extension Crate {
 			// …then add the `Song`s to that `Album`.
 			let songIDs = newInfos.map { $0.songID }
 			let isInDefaultOrder: Bool = {
-				let infos = existingAlbum.songs(sorted: true).compactMap { $0.songInfo() } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
+				let infos = existingAlbum.songs(sorted: true).compactMap { Song.info(mpID: $0.persistentID) } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
 				let orderedInfos = infos.sorted {
 					$0.precedesNumerically(inSameAlbum: $1, shouldResortToTitle: true)
 				}
@@ -342,10 +342,10 @@ extension Crate {
 		
 		// `Song`s that don’t have a corresponding `SongInfo` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
 		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
-			var songsAndInfos = songs.map {
-				(song: $0,
-				 info: $0.songInfo()) // Can be `nil`
-			}
+			var songsAndInfos = songs.map {(
+				song: $0,
+				info: Song.info(mpID: $0.persistentID) // Can be `nil`
+			)}
 			songsAndInfos.sort {
 				guard let left = $0.info, let right = $1.info else { return true }
 				return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: true)
