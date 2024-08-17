@@ -40,21 +40,22 @@ extension Crate {
 		if let mkID = mkSongIDs[mpID] {
 			return mkSongs[mkID]
 		}
-		return await fetchAndCacheMKSong(mpID: mpID)
+		await cacheMKSongID(mpID: mpID)
+		
+		guard let mkID = mkSongIDs[mpID] else {
+			return nil
+		}
+		return mkSongs[mkID]
 	}
-	private func fetchAndCacheMKSong(mpID: SongID) async -> MKSong? { // Slow; 11ms in 2024.
+	private func cacheMKSongID(mpID: SongID) async { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MKSong>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(mpID)))
 		guard
 			let response = try? await request.response(),
 			response.items.count == 1,
-			let result = response.items.first
-		else { return nil }
-		
-		mkSongIDs[mpID] = result.id
-		mkSongs[result.id] = result
-		
-		return result
+			let mkSong = response.items.first
+		else { return }
+		mkSongIDs[mpID] = mkSong.id
 	}
 	static func openAppleMusic() {
 		guard let musicLibraryURL = URL(string: "music://") else { return }
