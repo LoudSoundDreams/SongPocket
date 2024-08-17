@@ -1,11 +1,7 @@
 // 2020-08-10
 
 import CoreData
-#if targetEnvironment(simulator)
-import MusicKit
-#else
 @preconcurrency import MusicKit
-#endif
 import MediaPlayer
 import os
 
@@ -24,6 +20,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MusicKit.Song>
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
+	@ObservationIgnored private var mkSongIDs: [SongID: MusicItemID] = [:]
 }
 extension Crate {
 	static let shared = Crate()
@@ -38,8 +35,22 @@ extension Crate {
 	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}
-	func mkSong(id: MusicItemID) -> MusicKit.Song? {
-		return mkSongs[id]
+	func mkSongID(mpID: SongID) -> MusicItemID? {
+		return mkSongIDs[mpID]
+	}
+	func fetchAndCacheMKSong(mpID: SongID) async -> MusicKit.Song? { // Slow; 11ms in 2024.
+		var request = MusicLibraryRequest<MusicKit.Song>()
+		request.filter(matching: \.id, equalTo: MusicItemID(String(mpID)))
+		guard
+			let response = try? await request.response(),
+			response.items.count == 1,
+			let result = response.items.first
+		else { return nil }
+		
+		mkSongIDs[mpID] = result.id
+		mkSongs[result.id] = result
+		
+		return result
 	}
 	static func openAppleMusic() {
 		guard let musicLibraryURL = URL(string: "music://") else { return }
