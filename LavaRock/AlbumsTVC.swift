@@ -109,8 +109,8 @@ final class AlbumsTVC: LibraryTVC {
 						guard let self else { return }
 						let albumIDs = albumListState.albums().map { $0.albumPersistentID }
 						let sections = albumIDs.compactMap { Crate.shared.mkSection(albumID: $0) }
-						let musicKitSongs = sections.flatMap { $0.items }
-						SystemMusicPlayer._shared?.playNow(musicKitSongs)
+						let mkSongs = sections.flatMap { $0.items }
+						SystemMusicPlayer._shared?.playNow(mkSongs)
 					}
 			])},
 			UIDeferredMenuElement.uncached { [weak self] use in use([

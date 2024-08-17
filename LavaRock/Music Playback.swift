@@ -63,7 +63,7 @@ extension MPMusicPlayerController {
 			let rowItem = await musicKitSong(),
 			let songsInAlbum = container?.songs(sorted: true)
 		else { return }
-		let musicItems: [MusicKit.Song] = await {
+		let mkSongs: [MusicKit.Song] = await {
 			var result: [MusicKit.Song] = []
 			for song in songsInAlbum {
 				guard let musicItem = await song.musicKitSong() else { continue }
@@ -72,7 +72,7 @@ extension MPMusicPlayerController {
 			return result
 		}()
 		
-		player.playNow(musicItems, startingAt: rowItem)
+		player.playNow(mkSongs, startingAt: rowItem)
 	}
 	final func playRestOfAlbumLater() async {
 		guard
@@ -81,19 +81,19 @@ extension MPMusicPlayerController {
 			let songsInAlbum = container?.songs(sorted: true)
 		else { return }
 		let toAppend: [MusicKit.Song] = await {
-			var musicItems: [MusicKit.Song] = []
+			var mkSongs: [MusicKit.Song] = []
 			for song in songsInAlbum {
 				guard let musicItem = await song.musicKitSong() else { continue }
 				musicItems.append(musicItem)
 			}
-			let result = musicItems.drop(while: { $0.id != rowItem.id })
+			let result = mkSongs.drop(while: { $0.id != rowItem.id })
 			return Array(result)
 		}()
 		
 		player.playLater(toAppend)
 	}
 	
-	final func musicKitSong() async -> MusicKit.Song? { // Slow.
+	final func musicKitSong() async -> MusicKit.Song? { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MusicKit.Song>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(persistentID)))
 		guard

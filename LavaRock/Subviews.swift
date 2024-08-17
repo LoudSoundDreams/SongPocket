@@ -15,7 +15,7 @@ import MediaPlayer
 		ZStack(alignment: .bottomLeading) {
 			AlbumArt(albumID: albumID, maxSideLength: min(albumListState.viewportSize.width, albumListState.viewportSize.height))
 				.opacity(select_opacity)
-				.animation(.default, value: albumListState.selectMode) // TO DO: Is this slow?
+				.animation(.default, value: albumListState.selectMode)
 				.overlay { if expansion_labeled {
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
@@ -24,7 +24,7 @@ import MediaPlayer
 					.accessibilitySortPriority(10)
 			}}
 		}
-		.animation(.linear(duration: .oneEighth), value: expansion_labeled) // TO DO: Is this slow?
+		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay(alignment: .topLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -132,7 +132,7 @@ import MediaPlayer
 			}
 #endif
 		}
-		.animation(.default, value: crate.mkSections) // TO DO: Is this slow?
+		.animation(.default, value: crate.mkSections)
 		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
 	private let crate: Crate = .shared
@@ -200,7 +200,7 @@ import MediaPlayer
 				.foregroundStyle(select_dimmed ? .secondary : .primary)
 				.accessibilitySortPriority(30)
 		}
-		.animation(.default, value: select_dimmed) // TO DO: Is this slow?
+		.animation(.default, value: select_dimmed)
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title])
 	}
