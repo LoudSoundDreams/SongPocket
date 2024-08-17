@@ -11,6 +11,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 @MainActor @Observable final class Crate {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
+	@ObservationIgnored private(set) var mkSongIDs: [SongID: MusicItemID] = [:]
 	private(set) var isMerging = false { didSet {
 		if isMerging {
 			NotificationCenter.default.post(name: Self.willMerge, object: nil)
@@ -21,7 +22,6 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
-	@ObservationIgnored private var mkSongIDs: [SongID: MusicItemID] = [:]
 }
 extension Crate {
 	static let shared = Crate()

@@ -161,7 +161,7 @@ import MediaPlayer
 	private static let workingOnOverflowAlbum = 10 == 1
 	
 	@ViewBuilder private var textStack: some View {
-		let title: String = {
+		let titleAndInputLabel: String = {
 #if targetEnvironment(simulator)
 			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
 #else
@@ -195,14 +195,14 @@ import MediaPlayer
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
 			.font_caption2Bold()
 			.accessibilitySortPriority(20)
-			Text(title)
+			Text(titleAndInputLabel)
 				.font_title2Bold()
 				.foregroundStyle(select_dimmed ? .secondary : .primary)
 				.accessibilitySortPriority(30)
 		}
 		.animation(.default, value: select_dimmed)
 		.accessibilityElement(children: .combine)
-		.accessibilityInputLabels([title])
+		.accessibilityInputLabels([titleAndInputLabel])
 	}
 	private var select_dimmed: Bool {
 		switch albumListState.selectMode {
@@ -279,7 +279,7 @@ import MediaPlayer
 			.monospacedDigit()
 		}
 		.accessibilityElement(children: .combine)
-		.accessibilityInputLabels([title].compactMap { $0 })
+		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 	}
 	private let crate: Crate = .shared
