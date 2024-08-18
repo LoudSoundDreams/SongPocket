@@ -305,12 +305,10 @@ extension Crate {
 			// …then add the `Song`s to that `Album`.
 			let songIDs = newInfos.map { $0.songID }
 			let isInDefaultOrder: Bool = {
-				let infos = existingAlbum.songs(sorted: true).compactMap { Song.info(mpID: $0.persistentID) } // Don’t let `Song`s that we’ll delete later disrupt an otherwise in-order `Album`; just skip over them.
-				let orderedInfos = infos.sorted {
-					$0.precedesNumerically(inSameAlbum: $1, shouldResortToTitle: true)
-				}
-				return infos.indices.allSatisfy { index in
-					infos[index].songID == orderedInfos[index].songID
+				let userOrder: [Song] = existingAlbum.songs(sorted: true)
+				let defaultOrder: [Song] = SongOrder.sortedNumerically(strict: true, userOrder)
+				return userOrder.indices.allSatisfy { counter in
+					userOrder[counter].objectID == defaultOrder[counter].objectID
 				}
 			}()
 			if isInDefaultOrder {
@@ -318,7 +316,9 @@ extension Crate {
 					let _ = Song(atBeginningOf: existingAlbum, songID: $0)
 				}
 				
-				Self.sortSongsByDefaultOrder(in: existingAlbum)
+				let songsInAlbum = existingAlbum.songs(sorted: true)
+				let sorted = SongOrder.sortedNumerically(strict: true, songsInAlbum)
+				Database.renumber(sorted)
 			} else {
 				songIDs.reversed().forEach {
 					let _ = Song(atBeginningOf: existingAlbum, songID: $0)
@@ -342,34 +342,15 @@ extension Crate {
 			}()
 			
 			// …and then add the `Song`s to that `Album`.
-			let sortedSongIDs = newInfos.sorted {
-				$0.precedesNumerically(inSameAlbum: $1, shouldResortToTitle: true)
-			}.map { $0.songID }
-			sortedSongIDs.forEach {
-				let _ = Song(atEndOf: newAlbum, songID: $0)
+			let sortedInfos = newInfos.sorted {
+				return SongOrder.precedesNumerically(strict: true, $0, $1)
+			}
+			sortedInfos.forEach {
+				let _ = Song(atEndOf: newAlbum, songID: $0.songID)
 			}
 			
 			return newAlbum
 		}
-	}
-	private static func sortSongsByDefaultOrder(in album: Album) {
-		let songs = album.songs(sorted: false)
-		
-		// `Song`s that don’t have a corresponding `SongInfo` will end up at an undefined position in the result. `Song`s that do will still be in the correct order relative to each other.
-		func sortedByDefaultOrder(inSameAlbum: [Song]) -> [Song] {
-			var songsAndInfos = songs.map {(
-				song: $0,
-				info: Song.info(mpID: $0.persistentID) // Can be `nil`
-			)}
-			songsAndInfos.sort {
-				guard let left = $0.info, let right = $1.info else { return true }
-				return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: true)
-			}
-			return songsAndInfos.map { $0.song }
-		}
-		
-		let sortedSongs = sortedByDefaultOrder(inSameAlbum: songs)
-		Database.renumber(sortedSongs)
 	}
 	
 	// MARK: - Clean Up

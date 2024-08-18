@@ -149,66 +149,60 @@ enum SongOrder {
 			case .random: return inOriginalOrder.inAnyOtherOrder()
 			case .reverse: return inOriginalOrder.reversed()
 				
-			case .track:
-				// Actually, return the songs grouped by disc number, and sorted by track number within each disc.
-				let songsAndInfos = inOriginalOrder.map {(
-					song: $0,
-					info: Song.info(mpID: $0.persistentID)
-				)}
-				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
-					let left = $0.info; let right = $1.info
-					return (
-						left?.discNumberOnDisk == right?.discNumberOnDisk &&
-						left?.trackNumberOnDisk == right?.trackNumberOnDisk
-					)
-				} areInOrder: {
-					guard let left = $0.info, let right = $1.info else { return true }
-					return left.precedesNumerically(inSameAlbum: right, shouldResortToTitle: false)
-				}
-				return sorted.map { $0.song }
+			case .track: return Self.sortedNumerically(strict: false, inOriginalOrder)
 		}}()
 		arranged.indices.forEach { counter in
 			arranged[counter].index = replaceAt[counter]
 		}
 	}
-}
-
-// MARK: - Track number
-
-extension SongInfo {
-	// Behavior is undefined if you compare with a `SongInfo` from a different album.
-	func precedesNumerically(
-		inSameAlbum other: SongInfo,
-		shouldResortToTitle: Bool
+	
+	@MainActor static func sortedNumerically(strict: Bool, _ input: [Song]) -> [Song] {
+		let songsAndInfos = input.map {(
+			song: $0,
+			info: Song.info(mpID: $0.persistentID)
+		)}
+		let sorted = songsAndInfos.sortedMaintainingOrderWhen {
+			let left = $0.info; let right = $1.info
+			return (
+				left?.discNumberOnDisk == right?.discNumberOnDisk &&
+				left?.trackNumberOnDisk == right?.trackNumberOnDisk
+			)
+		} areInOrder: {
+			guard let right = $1.info else { return true }
+			guard let left = $0.info else { return false }
+			return Self.precedesNumerically(strict: false, left, right)
+		}
+		return sorted.map { $0.song }
+	}
+	static func precedesNumerically(
+		strict: Bool,
+		_ left: some SongInfo, _ right: some SongInfo
 	) -> Bool {
-		// Sort by disc number
-		let myDisc = discNumberOnDisk
-		let otherDisc = other.discNumberOnDisk
-		guard myDisc == otherDisc else {
-			return myDisc < otherDisc
+		let leftDisc = left.discNumberOnDisk
+		let rightDisc = right.discNumberOnDisk
+		guard leftDisc == rightDisc else {
+			return leftDisc < rightDisc
 		}
 		
-		let myTrack = trackNumberOnDisk
-		let otherTrack = other.trackNumberOnDisk
-		
-		if shouldResortToTitle {
-			guard myTrack != otherTrack else {
-				// Sort by song title
-				let myTitle = titleOnDisk ?? ""
-				let otherTitle = other.titleOnDisk ?? ""
-				return myTitle.precedesInFinder(otherTitle)
-			}
-		} else {
-			// At this point, leave elements in the same order if they both have no track number, or the same track number.
-			// However, as of iOS 14.7, when using `sorted(by:)`, returning `true` here doesn’t always keep the elements in the same order. Call this method in `sortedMaintainingOrderWhen` to guarantee stable sorting.
-			guard myTrack != otherTrack else { return true }
+		let leftTrack = left.trackNumberOnDisk
+		let rightTrack = right.trackNumberOnDisk
+		guard leftTrack == rightTrack else {
+			guard rightTrack != 0 else { return true }
+			guard leftTrack != 0 else { return false }
+			return leftTrack < rightTrack
 		}
 		
-		// Move unknown track number to the end
-		guard otherTrack != 0 else { return true }
-		guard myTrack != 0 else { return false }
+		guard strict else { return true }
 		
-		return myTrack < otherTrack
+		let leftTitle = left.titleOnDisk
+		let rightTitle = right.titleOnDisk
+		guard leftTitle == rightTitle else {
+			guard let rightTitle, rightTitle != "" else { return true }
+			guard let leftTitle, leftTitle != "" else { return false }
+			return leftTitle.precedesInFinder(rightTitle)
+		}
+		
+		return left.songID < right.songID
 	}
 }
 
