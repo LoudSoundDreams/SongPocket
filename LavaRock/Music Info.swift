@@ -1,6 +1,5 @@
 // 2021-12-24
 
-import UIKit
 import MusicKit
 import MediaPlayer
 
@@ -51,7 +50,6 @@ extension Song {
 
 // MARK: - Apple Music
 
-import MediaPlayer
 extension MPMediaItem: SongInfo {
 	final var albumID: AlbumID { AlbumID(bitPattern: albumPersistentID) }
 	final var songID: SongID { SongID(bitPattern: persistentID) }

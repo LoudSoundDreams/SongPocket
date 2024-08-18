@@ -140,15 +140,7 @@ extension Crate {
 			toCreate = freshInfos.map { $0.value } // We’ll sort these later.
 		}
 		
-		// Update before creating and deleting, so that we can easily put new `Song`s above modified `Song`s.
-		// This also deletes all but one `Album` with any given `albumPersistentID`.
-		// This might create `Album`s, but not `Collection`s or `Song`s.
-		// This might delete `Album`s, but not `Collection`s or `Song`s.
-		// This also might leave behind empty `Album`s. We don’t delete those here, so that if the user also added other `Song`s to those `Album`s, we can keep those `Album`s in the same place, instead of re-adding them to the top.
 		updateLibraryItems(existingAndFresh: toUpdate)
-		
-		// Create before deleting, because deleting also cleans up empty `Album`s and `Collection`s, which we shouldn’t do yet (see above).
-		// This might create new `Album`s, and if it does, it might create new `Collection`s.
 		createLibraryItems(newInfos: toCreate)
 		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: freshInAnyOrder)
 		
@@ -170,17 +162,12 @@ extension Crate {
 	private func mergeClonedAlbumsAndReturnCanonical(
 		existingAndFresh: [(Song, SongInfo)]
 	) -> [AlbumID: Album] {
-		// I’ve seen an obscure bug where we had two `Album`s with the same `albumPersistentID`, probably caused by a bug in Apple Music for Mac when I was editing metadata. (Once, one song appeared twice in its album.)
-		// We never should have had two `Album`s with the same `albumPersistentID`, but this code makes our database resilient to that problem.
-		
 		// To merge `Album`s with the same `albumPersistentID`, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
 		// The one `Album` we’ll keep is the uppermost in the user’s custom order.
 		let topmostUniqueAlbums: [AlbumID: Album] = {
 			let allAlbums = context.fetchPlease(Album.fetchRequest_sorted())
-			let tuplesForAllAlbums = allAlbums.map { album in
-				(album.albumPersistentID, album)
-			}
-			return Dictionary(tuplesForAllAlbums, uniquingKeysWith: { (leftAlbum, _) in leftAlbum })
+			let tuples = allAlbums.map { ($0.albumPersistentID, $0) }
+			return Dictionary(tuples, uniquingKeysWith: { leftAlbum, _ in leftAlbum })
 		}()
 		
 		// Filter to `Song`s in cloned `Album`s
