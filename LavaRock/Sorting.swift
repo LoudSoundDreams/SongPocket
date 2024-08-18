@@ -156,11 +156,10 @@ enum SongOrder {
 					info: Song.info(mpID: $0.persistentID)
 				)}
 				let sorted = songsAndInfos.sortedMaintainingOrderWhen {
-					let left = $0.info
-					let right = $1.info
+					let left = $0.info; let right = $1.info
 					return (
-						left?.discNumberOnDisk == right?.discNumberOnDisk
-						&& left?.trackNumberOnDisk == right?.trackNumberOnDisk
+						left?.discNumberOnDisk == right?.discNumberOnDisk &&
+						left?.trackNumberOnDisk == right?.trackNumberOnDisk
 					)
 				} areInOrder: {
 					guard let left = $0.info, let right = $1.info else { return true }
