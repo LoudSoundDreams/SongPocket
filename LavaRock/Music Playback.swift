@@ -64,13 +64,13 @@ extension Song {
 	@MainActor final func playAlbumStartingHere() async {
 		guard
 			let player = SystemMusicPlayer._shared,
-			let rowMKSong = await Crate.shared.mkSong(mpID: persistentID),
+			let rowMKSong = await Crate.shared.mkSongFetched(mpID: persistentID),
 			let songsInAlbum = container?.songs(sorted: true)
 		else { return }
 		let mkSongs: [MKSong] = await {
 			var result: [MKSong] = []
 			for song in songsInAlbum {
-				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { continue }
+				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { continue }
 				result.append(mkSong)
 			}
 			return result
@@ -88,7 +88,7 @@ extension Song {
 		let mkSongs: [MKSong] = await {
 			var result: [MKSong] = []
 			for song in restOfAlbum {
-				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { continue }
+				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { continue }
 				result.append(mkSong)
 			}
 			return result

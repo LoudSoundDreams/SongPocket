@@ -296,14 +296,14 @@ import MediaPlayer
 	@ViewBuilder private var songMenu: some View {
 		Button {
 			Task {
-				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { return }
+				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { return }
 				SystemMusicPlayer._shared?.playNow([mkSong])
 			}
 		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
 		Button {
 			Task {
-				guard let mkSong = await Crate.shared.mkSong(mpID: song.persistentID) else { return }
+				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { return }
 				SystemMusicPlayer._shared?.playLater([mkSong])
 			}
 		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }

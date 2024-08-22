@@ -36,16 +36,15 @@ extension Crate {
 	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}
-	func mkSong(mpID: SongID) async -> MKSong? {
-		if let mkID = mkSongIDs[mpID] {
-			return mkSongs[mkID]
-		}
+	func mkSongCached(mpID: SongID) -> MKSong? {
+		guard let mkID = mkSongIDs[mpID] else { return nil }
+		return mkSongs[mkID]
+	}
+	func mkSongFetched(mpID: SongID) async -> MKSong? {
+		if let cached = mkSongCached(mpID: mpID) { return cached }
 		await cacheMKSongID(mpID: mpID)
 		
-		guard let mkID = mkSongIDs[mpID] else {
-			return nil
-		}
-		return mkSongs[mkID]
+		return mkSongCached(mpID: mpID)
 	}
 	private func cacheMKSongID(mpID: SongID) async { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MKSong>()
