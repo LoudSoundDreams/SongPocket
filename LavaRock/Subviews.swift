@@ -111,7 +111,7 @@ import MediaPlayer
 					.frame(width: maxSideLength, height: maxSideLength)
 			}
 #else
-			if let artwork = crate.mkSection(albumID: albumID)?.artwork {
+			if let artwork {
 				/*
 				 As of iOS 17.5.1:
 				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
@@ -131,10 +131,12 @@ import MediaPlayer
 			}
 #endif
 		}
-		.animation(.default, value: crate.mkSections)
+		.animation(.default, value: artwork)
 		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
-	private let crate: Crate = .shared
+	private var artwork: MusicKit.Artwork? {
+		return Crate.shared.mkSection(albumID: albumID)?.artwork
+	}
 }
 
 // MARK: - Album label
