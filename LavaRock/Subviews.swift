@@ -164,7 +164,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
 #else
-			crate.mkSection(albumID: albumID)?.title ?? InterfaceText.unknownAlbum
+			mkSection?.title ?? InterfaceText.unknownAlbum
 #endif
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
@@ -172,7 +172,7 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 				guard let date = Sim_MusicLibrary.shared.albumInfos[albumID]?._releaseDate else { return InterfaceText.emDash }
 #else
-				guard let date = crate.mkSection(albumID: albumID)?.releaseDate else { return InterfaceText.emDash }
+				guard let date = mkSection?.releaseDate else { return InterfaceText.emDash }
 #endif
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
@@ -185,7 +185,7 @@ import MediaPlayer
 				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ?? InterfaceText.unknownArtist
 #else
 				guard
-					let albumArtist = crate.mkSection(albumID: albumID)?.artistName,
+					let albumArtist = mkSection?.artistName,
 					albumArtist != ""
 				else { return InterfaceText.unknownArtist }
 				return albumArtist
@@ -209,7 +209,9 @@ import MediaPlayer
 			case .selectSongs: return true
 		}
 	}
-	private let crate: Crate = .shared
+	private var mkSection: MKSection? {
+		return Crate.shared.mkSection(albumID: albumID)
+	}
 	
 	@ViewBuilder private var albumMenu: some View {
 		Button {
