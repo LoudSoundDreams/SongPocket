@@ -407,7 +407,7 @@ struct NowPlayingIndicator: View {
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
-		guard songID == MPMusicPlayerController._system?.nowPlayingItem?.songID else { return .notPlaying }
+		guard songID == MPMusicPlayerController.nowPlayingID else { return .notPlaying }
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
 	}

@@ -54,6 +54,10 @@ extension MPMusicPlayerController {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return .systemMusicPlayer
 	}
+	
+	static var nowPlayingID: SongID? {
+		return _system?.nowPlayingItem?.songID
+	}
 }
 
 extension Song {

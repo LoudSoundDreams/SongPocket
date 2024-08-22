@@ -110,7 +110,7 @@ import MediaPlayer
 						return []
 #else
 						guard
-							let currentSongID = MPMusicPlayerController._system?.nowPlayingItem?.songID,
+							let currentSongID = MPMusicPlayerController.nowPlayingID,
 							nil != Database.viewContext.fetchSong(mpID: currentSongID)
 						else { return .disabled }
 						return []
