@@ -39,7 +39,6 @@ import MediaPlayer
 			case .expanded(let expandedAlbumID): return albumID != expandedAlbumID
 		}
 	}
-	private let crate: Crate = .shared
 	
 	private var select_opacity: Double {
 		switch albumListState.selectMode {
