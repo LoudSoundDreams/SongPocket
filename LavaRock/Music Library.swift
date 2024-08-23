@@ -68,15 +68,18 @@ extension Crate {
 	@objc private func mergeChanges() {
 		Task {
 #if targetEnvironment(simulator)
-			mergeChangesToMatch(freshInAnyOrder: Array(Sim_MusicLibrary.shared.songInfos.values))
+			mergeFromAppleMusic(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.songInfos.values))
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
 			
-			let freshSections: [MusicItemID: MKSection] = await {
+			let freshSectionsOnly: [MKSection] = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
-				guard let response = try? await request.response() else { return [:] }
+				guard let response = try? await request.response() else { return [] }
 				
-				let tuples = response.sections.map { section in (section.id, section) }
+				return response.sections
+			}()
+			let freshSections: [MusicItemID: MKSection] = {
+				let tuples = freshSectionsOnly.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
 			let sectionsUnion = mkSections.merging(freshSections) { old, new in new }
@@ -93,7 +96,7 @@ extension Crate {
 			mkSections = sectionsUnion
 			mkSongs = songsUnion
 			
-			mergeChangesToMatch(freshInAnyOrder: freshMediaItems)
+			mergeFromAppleMusic(musicKit: freshSectionsOnly, mediaPlayer: freshMediaItems)
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
@@ -102,7 +105,7 @@ extension Crate {
 #endif
 		}
 	}
-	private func mergeChangesToMatch(freshInAnyOrder: [SongInfo]) {
+	private func mergeFromAppleMusic(musicKit sections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
 		isMerging = true
 		defer { isMerging = false }
 		
@@ -116,7 +119,7 @@ extension Crate {
 			var deletes: [Song] = []
 			
 			var freshInfos: [SongID: SongInfo] = {
-				let tuples = freshInAnyOrder.map { info in (info.songID, info) }
+				let tuples = unorderedMediaItems.map { info in (info.songID, info) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
 			let existingSongs: [Song] = context.fetchPlease(Song.fetchRequest()) // Not sorted
@@ -141,7 +144,7 @@ extension Crate {
 		
 		updateLibraryItems(existingAndFresh: toUpdate)
 		createLibraryItems(newInfos: toCreate)
-		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: freshInAnyOrder)
+		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: unorderedMediaItems)
 		
 		context.savePlease()
 	}
