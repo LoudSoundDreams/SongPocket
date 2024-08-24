@@ -46,7 +46,7 @@ extension Crate {
 		
 		return mkSongCached(mpID: mpID)
 	}
-	private func cacheMKSongID(mpID: SongID) async { // Slow; 11ms in 2024.
+	func cacheMKSongID(mpID: SongID) async { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MKSong>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(mpID)))
 		guard

@@ -247,8 +247,11 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var mainStack: some View {
-		let info: (some SongInfo)? = Song.info(mpID: song.persistentID) // Can be `nil` if the user recently deleted the `SongInfo` from their library
-		let title: String? = info?.titleOnDisk
+		let mkSong: MKSong? = {
+			guard let mkID else { return nil }
+			return crate.mkSongs[mkID]
+		}()
+		let title: String? = mkSong?.title
 		let mkSection: MKSection? = crate.mkSection(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
@@ -256,7 +259,7 @@ import MediaPlayer
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(title ?? InterfaceText.emDash)
 				if
-					let songArtist = info?.artistOnDisk,
+					let songArtist = mkSong?.artistName,
 					songArtist != "",
 					songArtist != mkSection?.artistName
 				{
@@ -267,10 +270,10 @@ import MediaPlayer
 			}
 			Spacer()
 			Text({
-				guard let info, let mkSection else { return InterfaceText.octothorpe }
+				guard let mkSong, let mkSection else { return InterfaceText.octothorpe }
 				return Song.formatted(
-					disc: info.discNumberOnDisk,
-					track: info.trackNumberOnDisk,
+					disc: mkSong.discNumber,
+					track: mkSong.trackNumber,
 					discCount: mkSection.items.reduce(into: 1) { highestSoFar, mkSong in
 						if let disc = mkSong.discNumber, disc > highestSoFar {
 							highestSoFar = disc
@@ -284,7 +287,18 @@ import MediaPlayer
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
+		.task {
+			let cached = crate.mkSongIDs[song.persistentID]
+			guard cached == nil else {
+				mkID = cached
+				return
+			}
+			await crate.cacheMKSongID(mpID: song.persistentID)
+			
+			mkID = crate.mkSongIDs[song.persistentID]
+		}
 	}
+	@State private var mkID: MusicItemID? = nil
 	private let crate: Crate = .shared
 	private var songOverflow: some View {
 		Menu { songMenu } label: { OverflowImage() }
