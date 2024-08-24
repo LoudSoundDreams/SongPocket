@@ -36,15 +36,16 @@ extension Crate {
 	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}
-	func mkSongCached(mpID: SongID) -> MKSong? {
-		guard let mkID = mkSongIDs[mpID] else { return nil }
-		return mkSongs[mkID]
-	}
 	func mkSongFetched(mpID: SongID) async -> MKSong? {
-		if let cached = mkSongCached(mpID: mpID) { return cached }
+		if let cachedMKID = mkSongIDs[mpID] {
+			return mkSongs[cachedMKID]
+		}
 		await cacheMKSongID(mpID: mpID)
 		
-		return mkSongCached(mpID: mpID)
+		if let cachedMKID = mkSongIDs[mpID] {
+			return mkSongs[cachedMKID]
+		}
+		return nil
 	}
 	func cacheMKSongID(mpID: SongID) async { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MKSong>()
@@ -105,7 +106,7 @@ extension Crate {
 #endif
 		}
 	}
-	private func mergeFromAppleMusic(musicKit sections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
+	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
 		isMerging = true
 		defer { isMerging = false }
 		
