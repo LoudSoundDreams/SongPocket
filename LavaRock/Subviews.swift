@@ -247,10 +247,6 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var mainStack: some View {
-		let mkSong: MKSong? = {
-			guard let mkID else { return nil }
-			return crate.mkSongs[mkID]
-		}()
 		let title: String? = mkSong?.title
 		let mkSection: MKSection? = crate.mkSection(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
@@ -288,17 +284,10 @@ import MediaPlayer
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 		.task {
-			let cached = crate.mkSongIDs[song.persistentID]
-			guard cached == nil else {
-				mkID = cached
-				return
-			}
-			await crate.cacheMKSongID(mpID: song.persistentID)
-			
-			mkID = crate.mkSongIDs[song.persistentID]
+			mkSong = await crate.mkSongFetched(mpID: song.persistentID)
 		}
 	}
-	@State private var mkID: MusicItemID? = nil
+	@State private var mkSong: MKSong? = nil
 	private let crate: Crate = .shared
 	private var songOverflow: some View {
 		Menu { songMenu } label: { OverflowImage() }
