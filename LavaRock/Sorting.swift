@@ -57,16 +57,11 @@ enum AlbumOrder {
 					firstAdded: {
 						let mkSongs = Crate.shared.mkSection(albumID: albumToSort.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
-						return mkSongs.reduce(into: now) { earliestSoFar, mkSong in
-							if
-								let dateAdded = mkSong.libraryAddedDate, // MusicKit’s granularity is 1 second; we can’t meaningfully compare items added within the same second.
-								dateAdded < earliestSoFar
-							{ earliestSoFar = dateAdded }
-						}
+						return Album.dateCreated(mkSongs) ?? now
 					}()
 				)}
 				let sorted = albumsAndFirstAdded.sortedMaintainingOrderWhen { // 10,000 albums takes 41ms in 2024.
-					$0.firstAdded == $1.firstAdded
+					$0.firstAdded == $1.firstAdded // MusicKit’s granularity is 1 second; we can’t meaningfully compare items added within the same second.
 				} areInOrder: {
 					$0.firstAdded > $1.firstAdded
 				}

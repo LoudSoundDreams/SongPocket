@@ -120,6 +120,30 @@ extension Crate {
 	}
 	private static let workingOnMusicKitIDs = 10 == 1
 	private func mergeFromMusicKit(_ unsortedSections: [MKSection]) {
+		let allSongs = context.fetchPlease(Song.fetchRequest())
+		allSongs.forEach { context.delete($0) }
+		let allAlbums = context.fetchPlease(Album.fetchRequest())
+		allAlbums.forEach { context.delete($0) }
+		let allCollections = context.fetchPlease(Collection.fetchRequest())
+		allCollections.forEach { context.delete($0) }
+		
+		// recentlyCreatedFirst
+		let _: [MKSection] = {
+			// Only sort albums themselves; we’ll sort the songs within each album later.
+			let now = Date.now
+			let sectionsAndDatesCreated: [(section: MKSection, dateCreated: Date)] = unsortedSections.map {(
+				section: $0,
+				dateCreated: Album.dateCreated($0.items) ?? now
+			)}
+			let sorted = sectionsAndDatesCreated.sortedMaintainingOrderWhen {
+				$0.dateCreated == $1.dateCreated
+			} areInOrder: {
+				$0.dateCreated > $1.dateCreated
+			}
+			return sorted.map { $0.section }
+		}()
+		
+		
 	}
 	private func mergeFromMediaPlayer(_ unorderedMediaItems: [SongInfo]) {
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.

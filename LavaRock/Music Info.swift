@@ -1,6 +1,7 @@
 // 2021-12-24
 
 import MediaPlayer
+import os
 
 typealias AlbumID = Int64
 typealias SongID = Int64
@@ -14,6 +15,21 @@ protocol SongInfo {
 	var titleOnDisk: String? { get }
 	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
+}
+
+extension Album {
+	static func dateCreated(_ mkSongs: any Sequence<MKSong>) -> Date? {
+		return mkSongs.reduce(into: nil) { earliestSoFar, mkSong in
+			let dateAdded = mkSong.libraryAddedDate
+			guard let earliest = earliestSoFar else {
+				earliestSoFar = dateAdded
+				return
+			}
+			if let dateAdded, dateAdded < earliest {
+				earliestSoFar = dateAdded
+			}
+		}
+	}
 }
 
 extension Song {
