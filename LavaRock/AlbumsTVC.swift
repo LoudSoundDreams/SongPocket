@@ -201,7 +201,7 @@ final class AlbumsTVC: LibraryTVC {
 					ContentUnavailableView {} actions: {
 						Button { Crate.openAppleMusic() } label: { Image(systemName: "plus") }
 					}
-				}
+				}.margins(.all, .zero)
 			}
 			return nil
 		}()
