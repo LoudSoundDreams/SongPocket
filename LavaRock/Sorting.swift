@@ -52,10 +52,10 @@ enum AlbumOrder {
 			case .recentlyAdded:
 				// 10,000 albums takes 11.4s in 2024.
 				let now = Date.now // Keeps `Album`s without date added at the beginning, maintaining their current order.
-				let albumsAndFirstAdded: [(album: Album, firstAdded: Date)] = inOriginalOrder.map { albumToSort in ( // 10,000 albums takes 10.6s in 2024.
-					album: albumToSort,
+				let albumsAndFirstAdded: [(album: Album, firstAdded: Date)] = inOriginalOrder.map { album in (
+					album: album,
 					firstAdded: {
-						let mkSongs = Crate.shared.mkSection(albumID: albumToSort.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
+						let mkSongs = Crate.shared.mkSection(albumID: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
 						return Album.dateCreated(mkSongs) ?? now
 					}()
@@ -158,8 +158,8 @@ enum SongOrder {
 	
 	@MainActor static func sortedNumerically(strict: Bool, _ input: [Song]) -> [Song] {
 		let songsAndInfos: [(song: Song, info: (some SongInfo)?)] = input.map {(
-			$0,
-			Song.info(mpID: $0.persistentID)
+			song: $0,
+			info: Song.info(mpID: $0.persistentID)
 		)}
 		let sorted = songsAndInfos.sortedMaintainingOrderWhen {
 			let left = $0.info; let right = $1.info
