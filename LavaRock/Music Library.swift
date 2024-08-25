@@ -110,6 +110,18 @@ extension Crate {
 		isMerging = true
 		defer { isMerging = false }
 		
+		if Self.workingOnMusicKitIDs {
+			mergeFromMusicKit(unsortedSections)
+		} else {
+			mergeFromMediaPlayer(unorderedMediaItems)
+		}
+		
+		context.savePlease()
+	}
+	private static let workingOnMusicKitIDs = 10 == 1
+	private func mergeFromMusicKit(_ unsortedSections: [MKSection]) {
+	}
+	private func mergeFromMediaPlayer(_ unorderedMediaItems: [SongInfo]) {
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
 		let toUpdate: [(existing: Song, fresh: SongInfo)]
@@ -146,8 +158,6 @@ extension Crate {
 		updateLibraryItems(existingAndFresh: toUpdate)
 		createLibraryItems(newInfos: toCreate)
 		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: unorderedMediaItems)
-		
-		context.savePlease()
 	}
 	
 	// MARK: - Update
