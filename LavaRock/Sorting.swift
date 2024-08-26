@@ -176,6 +176,23 @@ enum SongOrder {
 	}
 	static func precedesNumerically(
 		strict: Bool,
+		_ left: MKSong, _ right: MKSong
+	) -> Bool {
+		
+		
+		let rightTrack = right.trackNumber
+		let leftTrack = left.trackNumber
+		guard leftTrack == rightTrack else {
+			guard let rightTrack else { return true }
+			guard let leftTrack else { return false }
+			return leftTrack < rightTrack
+		}
+		
+		
+		return true
+	}
+	static func precedesNumerically(
+		strict: Bool,
 		_ left: some SongInfo, _ right: some SongInfo
 	) -> Bool {
 		let leftDisc = left.discNumberOnDisk

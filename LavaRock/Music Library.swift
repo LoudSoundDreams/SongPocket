@@ -18,6 +18,8 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 			NotificationCenter.default.post(name: Self.didMerge, object: nil)
 		}
 	}}
+	@ObservationIgnored private(set) var __mkAlbumIDs: [AlbumID: MusicItemID] = [:]
+	@ObservationIgnored private(set) var __mkSongIDs: [SongID: MusicItemID] = [:]
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
@@ -98,6 +100,12 @@ extension Crate {
 		isMerging = true
 		defer { isMerging = false }
 		
+//		let allSongs = context.fetchPlease(Song.fetchRequest())
+//		allSongs.forEach { context.delete($0) }
+//		let allAlbums = context.fetchPlease(Album.fetchRequest())
+//		allAlbums.forEach { context.delete($0) }
+//		let allCollections = context.fetchPlease(Collection.fetchRequest())
+//		allCollections.forEach { context.delete($0) }
 //		mergeFromMusicKit(unsortedSections)
 		mergeFromMediaPlayer(unorderedMediaItems)
 		
@@ -107,15 +115,15 @@ extension Crate {
 	// MARK: - MUSICKIT
 	
 	private func mergeFromMusicKit(_ unsortedSections: [MKSection]) {
-		let allSongs = context.fetchPlease(Song.fetchRequest())
-		allSongs.forEach { context.delete($0) }
-		let allAlbums = context.fetchPlease(Album.fetchRequest())
-		allAlbums.forEach { context.delete($0) }
-		let allCollections = context.fetchPlease(Collection.fetchRequest())
-		allCollections.forEach { context.delete($0) }
+		let signposter = OSSignposter()
+		let _merge = signposter.beginInterval("merge")
+		defer { signposter.endInterval("merge", _merge) }
 		
-		// recentlyCreatedFirst
-		let _: [MKSection] = {
+		let theCollection = Collection(context: context)
+		theCollection.index = 0
+		theCollection.title = InterfaceText.tilde
+		
+		let toInsertAtBeginning: [MKSection] = {
 			// Only sort albums themselves; we’ll sort the songs within each album later.
 			let now = Date.now
 			let sectionsAndDatesCreated: [(section: MKSection, dateCreated: Date)] = unsortedSections.map {(
@@ -129,8 +137,31 @@ extension Crate {
 			}
 			return sorted.map { $0.section }
 		}()
-		
-		
+		context.fetchPlease(Album.fetchRequest()).forEach {
+			$0.index += Int64(toInsertAtBeginning.count)
+		}
+		toInsertAtBeginning.indices.forEach { albumIndex in
+			let mkSection = toInsertAtBeginning[albumIndex]
+			
+			let newAlbum = Album(context: context)
+			newAlbum.container = theCollection
+			newAlbum.index = Int64(albumIndex)
+			let albumID = AlbumID((albumIndex + 1) * -10)
+			newAlbum.albumPersistentID = albumID
+			__mkAlbumIDs[albumID] = mkSection.id
+			
+			let toAddToAlbum = mkSection.items.sorted {
+				SongOrder.precedesNumerically(strict: true, $0, $1)
+			}
+			toAddToAlbum.indices.forEach { songIndex in
+				let newSong = Song(context: context)
+				newSong.container = newAlbum
+				newSong.index = Int64(songIndex)
+				let songID = SongID((albumIndex + 1) * -10)
+				newSong.persistentID = songID
+				__mkSongIDs[songID] = toAddToAlbum[songIndex].id
+			}
+		}
 	}
 	
 	// MARK: - MEDIA PLAYER

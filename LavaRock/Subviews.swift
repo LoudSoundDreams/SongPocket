@@ -135,7 +135,11 @@ import MediaPlayer
 		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
 	private var artwork: MusicKit.Artwork? {
-		return Crate.shared.mkSection(albumID: albumID)?.artwork
+		let crate = Crate.shared
+		if let mkAlbumID = crate.__mkAlbumIDs[albumID] {
+			return crate.mkSections[mkAlbumID]?.artwork
+		}
+		return crate.mkSection(albumID: albumID)?.artwork
 	}
 }
 
@@ -212,7 +216,11 @@ import MediaPlayer
 		}
 	}
 	private var mkSection: MKSection? {
-		return Crate.shared.mkSection(albumID: albumID)
+		let crate = Crate.shared
+		if let mkAlbumID = crate.__mkAlbumIDs[albumID] {
+			return crate.mkSections[mkAlbumID]
+		}
+		return crate.mkSection(albumID: albumID)
 	}
 	
 	@ViewBuilder private var albumMenu: some View {
