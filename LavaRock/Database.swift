@@ -93,15 +93,6 @@ extension Album {
 // MARK: - Song
 
 extension Song {
-	convenience init?(atEndOf album: Album, songID: SongID) {
-		guard let context = album.managedObjectContext else { return nil }
-		self.init(context: context)
-		index = Int64(album.contents?.count ?? 0)
-		container = album
-		persistentID = songID
-	}
-	
-	// Use `init(atEndOf:songID:)` if possible. It’s faster.
 	convenience init?(atBeginningOf album: Album, songID: SongID) {
 		guard let context = album.managedObjectContext else { return nil }
 		

@@ -357,8 +357,11 @@ extension Crate {
 			let sortedInfos = newInfos.sorted {
 				return SongOrder.precedesNumerically(strict: true, $0, $1)
 			}
-			sortedInfos.forEach {
-				let _ = Song(atEndOf: newAlbum, songID: $0.songID)
+			sortedInfos.indices.forEach { index in
+				let newSong = Song(context: context)
+				newSong.container = newAlbum
+				newSong.index = Int64(index)
+				newSong.persistentID = sortedInfos[index].songID
 			}
 			
 			return newAlbum
