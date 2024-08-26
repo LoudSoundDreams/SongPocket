@@ -33,19 +33,6 @@ extension Album {
 }
 
 extension Song {
-	static func formatted(disc: Int?, track: Int?, discCount: Int) -> String {
-		let trackFormatted: String = {
-			guard let track, track != 0 else { return InterfaceText.octothorpe }
-			return String(track)
-		}()
-		let disc = disc ?? 0
-		if discCount >= 2 || disc >= 2 {
-			return "\(disc)\(InterfaceText.interpunct)\(trackFormatted)"
-		} else {
-			return trackFormatted
-		}
-	}
-	
 	@MainActor static func info(mpID: SongID) -> (some SongInfo)? {
 #if targetEnvironment(simulator)
 		return Sim_MusicLibrary.shared.songInfos[mpID]

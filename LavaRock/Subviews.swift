@@ -275,15 +275,22 @@ import MediaPlayer
 			Spacer()
 			Text({
 				guard let mkSong, let mkSection else { return InterfaceText.octothorpe }
-				return Song.formatted(
-					disc: mkSong.discNumber,
-					track: mkSong.trackNumber,
-					discCount: mkSection.items.reduce(into: 1) { highestSoFar, mkSong in
-						if let disc = mkSong.discNumber, disc > highestSoFar {
-							highestSoFar = disc
-						}
-					}
-				)
+				let discCount = mkSection.items.reduce(into: 1) { highest, mkSong in
+					if let disc = mkSong.discNumber, disc > highest { highest = disc }
+				}
+				let trackFormatted: String = {
+					guard let track = mkSong.trackNumber else { return InterfaceText.octothorpe }
+					return String(track)
+				}()
+				if discCount >= 2 {
+					let discFormatted: String = {
+						guard let disc = mkSong.discNumber else { return InterfaceText.octothorpe }
+						return String(disc)
+					}()
+					return "\(discFormatted)\(InterfaceText.interpunct)\(trackFormatted)"
+				} else {
+					return trackFormatted
+				}
 			}())
 			.foregroundStyle(.secondary)
 			.monospacedDigit()
