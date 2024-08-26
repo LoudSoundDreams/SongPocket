@@ -74,15 +74,6 @@ extension Album {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	convenience init?(atEndOf collection: Collection, albumID: AlbumID) {
-		guard let context = collection.managedObjectContext else { return nil }
-		self.init(context: context)
-		index = Int64(collection.contents?.count ?? 0)
-		container = collection
-		albumPersistentID = albumID
-	}
-	
-	// Use `init(atEndOf:albumID:)` if possible. It’s faster.
 	convenience init?(atBeginningOf collection: Collection, albumID: AlbumID) {
 		guard let context = collection.managedObjectContext else { return nil }
 		
