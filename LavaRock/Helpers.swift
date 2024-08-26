@@ -25,14 +25,7 @@ extension Sequence {
 	}
 }
 
-extension Array where Element: BinaryInteger {
-	// Whether the integers are increasing and contiguous.
-	func isConsecutive() -> Bool {
-		return allNeighborsSatisfy { $0 + 1 == $1 }
-	}
-}
-
-extension Array {
+extension Array  {
 	func inAnyOtherOrder() -> Self
 	where Element: Equatable
 	{
@@ -42,6 +35,13 @@ extension Array {
 			result = shuffled()
 		} while result == self
 		return result
+	}
+	
+	// Whether the integers are increasing and contiguous.
+	func isConsecutive() -> Bool
+	where Element: BinaryInteger
+	{
+		return allNeighborsSatisfy { $0 + 1 == $1 }
 	}
 	
 	func differenceInferringMoves(
@@ -55,7 +55,7 @@ extension Array {
 		}.inferringMoves()
 	}
 	
-	func sortedMaintainingOrderWhen(
+	func sortedStably(
 		shouldMaintainOrder: (Element, Element) -> Bool,
 		areInOrder: (Element, Element) -> Bool
 	) -> Self {

@@ -60,7 +60,7 @@ enum AlbumOrder {
 						return Album.dateCreated(mkSongs) ?? now
 					}()
 				)}
-				let sorted = albumsAndFirstAdded.sortedMaintainingOrderWhen { // 10,000 albums takes 41ms in 2024.
+				let sorted = albumsAndFirstAdded.sortedStably { // 10,000 albums takes 41ms in 2024.
 					$0.firstAdded == $1.firstAdded // MusicKit’s granularity is 1 second; we can’t meaningfully compare items added within the same second.
 				} areInOrder: {
 					$0.firstAdded > $1.firstAdded
@@ -71,7 +71,7 @@ enum AlbumOrder {
 					album: $0,
 					releaseDate: Crate.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
 				)}
-				let sorted = albumsAndReleaseDates.sortedMaintainingOrderWhen {
+				let sorted = albumsAndReleaseDates.sortedStably {
 					$0.releaseDate == $1.releaseDate
 				} areInOrder: {
 					// Move unknown release date to the end
@@ -86,7 +86,7 @@ enum AlbumOrder {
 					album: $0,
 					artist: Crate.shared.mkSection(albumID: $0.albumPersistentID)?.artistName
 				)}
-				let sorted = albumsAndArtists.sortedMaintainingOrderWhen {
+				let sorted = albumsAndArtists.sortedStably {
 					$0.artist == $1.artist
 				} areInOrder: {
 					guard let rightArtist = $1.artist else { return true }
@@ -99,7 +99,7 @@ enum AlbumOrder {
 					album: $0,
 					title: Crate.shared.mkSection(albumID: $0.albumPersistentID)?.title
 				)}
-				let sorted = albumsAndTitles.sortedMaintainingOrderWhen {
+				let sorted = albumsAndTitles.sortedStably {
 					$0.title == $1.title
 				} areInOrder: {
 					guard let rightTitle = $1.title else { return true }
@@ -161,7 +161,7 @@ enum SongOrder {
 			song: $0,
 			info: Song.info(mpID: $0.persistentID)
 		)}
-		let sorted = songsAndInfos.sortedMaintainingOrderWhen {
+		let sorted = songsAndInfos.sortedStably {
 			let left = $0.info; let right = $1.info
 			return (
 				left?.discNumberOnDisk == right?.discNumberOnDisk &&

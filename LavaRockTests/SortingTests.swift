@@ -47,14 +47,14 @@ class SortingTests: XCTestCase {
 		let before = input.enumerated().map { (offset, name) in
 			Numbered(name: name, id: offset)
 		}
-		let after1 = before.sortedMaintainingOrderWhen {
+		let after1 = before.sortedStably {
 			$0.name == $1.name
 		} areInOrder: {
 			guard let right = $1.name else { return true }
 			guard let left = $0.name else { return false }
 			return left < right //
 		}
-		let after2 = before.sortedMaintainingOrderWhen {
+		let after2 = before.sortedStably {
 			$0.name == $1.name
 		} areInOrder: {
 			guard let right = $1.name else { return true }

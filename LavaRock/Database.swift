@@ -119,10 +119,10 @@ extension NSManagedObjectContext {
 			
 			collection.albums(sorted: true).forEach { album in
 				let mkSection: MKSection? = referencing[MusicItemID(String(album.albumPersistentID))]
-				print(" ", album.index, mkSection?.title ?? InterfaceText.unknownAlbum)
+				print(" ", album.index, album.albumPersistentID, mkSection?.title ?? "")
 				
 				album.songs(sorted: true).forEach { song in
-					print("   ", song.index)
+					print("   ", song.index, song.persistentID)
 				}
 			}
 		}
