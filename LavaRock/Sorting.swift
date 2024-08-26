@@ -197,8 +197,10 @@ enum SongOrder {
 		let leftTitle = left.titleOnDisk
 		let rightTitle = right.titleOnDisk
 		guard leftTitle == rightTitle else {
-			guard let rightTitle, rightTitle != "" else { return true }
-			guard let leftTitle, leftTitle != "" else { return false }
+			guard let rightTitle else { return true }
+			guard let leftTitle else { return false }
+			guard rightTitle != "" else { return true }
+			guard leftTitle != "" else { return false }
 			return leftTitle.precedesInFinder(rightTitle)
 		}
 		
