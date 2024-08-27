@@ -5,13 +5,13 @@ import MusicKit
 
 @main struct LavaRock: App {
 	init() {
-		Database.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
-		
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
 		defaults.dictionaryRepresentation().forEach { (existingKey, _) in
 			defaults.removeObject(forKey: existingKey)
 		}
+		
+		Database.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
 	}
 	var body: some Scene {
 		let workingOnAlbumView = 1
