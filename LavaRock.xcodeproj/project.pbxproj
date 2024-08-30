@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070056912C8275C0006F1069 /* Disk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070056902C8275C0006F1069 /* Disk.swift */; };
 		071A0B9E277E76510017F76D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* App.swift */; };
 		075218A2257C498D0077AE9B /* InterfaceText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075218A1257C498D0077AE9B /* InterfaceText.swift */; };
 		075FC9042B46765D00219146 /* Sample Artwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Sample Artwork.xcassets */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		070056902C8275C0006F1069 /* Disk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disk.swift; sourceTree = "<group>"; };
 		071A0B9D277E76510017F76D /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* InterfaceText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceText.swift; sourceTree = "<group>"; };
@@ -135,10 +137,11 @@
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				07755A57294821860056E90C /* Subviews.swift */,
 				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
-				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
-				07E0BBFA276567F70010117E /* Database.swift */,
 				079B2C9424E227BF00A949FA /* Music Library.swift */,
 				07DF65D127766C95003B2EA3 /* Music Info.swift */,
+				070056902C8275C0006F1069 /* Disk.swift */,
+				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
+				07E0BBFA276567F70010117E /* Database.swift */,
 				076F1C0127E66DAA00220C2B /* Music Playback.swift */,
 				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
 				078FDD0E2638872100779AF2 /* Helpers.swift */,
@@ -299,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070056912C8275C0006F1069 /* Disk.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Helpers.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
 				07755A58294821860056E90C /* Subviews.swift in Sources */,
