@@ -162,6 +162,8 @@ extension Crate {
 				__mkSongIDs[songID] = toAddToAlbum[songIndex].id
 			}
 		}
+		
+		Disk.write([theCollection])
 	}
 	
 	// MARK: - MEDIA PLAYER
