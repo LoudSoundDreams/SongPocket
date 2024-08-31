@@ -163,7 +163,7 @@ extension Crate {
 			}
 		}
 		
-		Disk.write([theCollection])
+		Disk.save([theCollection])
 	}
 	
 	// MARK: - MEDIA PLAYER

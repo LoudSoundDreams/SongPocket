@@ -1,14 +1,9 @@
 // 2024-08-30
 
 import Foundation
-import os
 
 enum Disk {
-	static func write(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
-		let signposter = OSSignposter()
-		let _save = signposter.beginInterval("save")
-		defer { signposter.endInterval("save", _save) }
-		
+	static func save(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		var output: String = ""
 		collections.forEach {
 			output.append(contentsOf: "\($0.title ?? "")\n")
@@ -25,7 +20,7 @@ enum Disk {
 		try! data.write(to: URL.applicationSupportDirectory.appending(path: cCrates), options: options)
 	}
 	
-	static func read() -> [Collection] {
+	static func load() -> [Collection] {
 		return []
 	}
 }
