@@ -4,6 +4,10 @@ import Foundation
 
 enum Disk {
 	static func save(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
+		let pDatabase = URL.applicationSupportDirectory.appending(path: "v1/")
+		let filer = FileManager.default
+		try! filer.createDirectory(at: pDatabase, withIntermediateDirectories: true)
+		
 		var output: String = ""
 		collections.forEach {
 			output.append(contentsOf: "\($0.title ?? "")\n")
@@ -15,9 +19,7 @@ enum Disk {
 			}
 		}
 		let data = Data(output.utf8)
-		let cCrates = "crates"
-		let options: Data.WritingOptions = [.atomic, .completeFileProtection]
-		try! data.write(to: URL.applicationSupportDirectory.appending(path: cCrates), options: options)
+		try! data.write(to: pDatabase.appending(path: "crates"), options: [.atomic, .completeFileProtection])
 	}
 	
 	static func load() -> [Collection] {
