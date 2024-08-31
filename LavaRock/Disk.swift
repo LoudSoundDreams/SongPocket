@@ -1,35 +1,28 @@
 // 2024-08-30
 
 import Foundation
+import os
 
 enum Disk {
-	static func write(_ collections: [Collection]) {
-		let cCrates = "crates/"
-		let pNewCrates = URL.temporaryDirectory.appending(path: cCrates)
-		let filer = FileManager.default
-		let options: Data.WritingOptions = [.atomic, .completeFileProtection]
+	static func write(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
+		let signposter = OSSignposter()
+		let _save = signposter.beginInterval("save")
+		defer { signposter.endInterval("save", _save) }
+		
+		var output: String = ""
 		collections.forEach {
-			$0.albums(sorted: false).forEach { album in
-				let pAlbum = pNewCrates.appending(path: "0/albums/\(album.index)/")
-				try! filer.createDirectory(at: pAlbum, withIntermediateDirectories: true)
-				
-				let dAlbumID = Data(String(album.albumPersistentID).utf8)
-				try! dAlbumID.write(to: pAlbum.appending(path: "id"), options: options)
-				
-				let sSongs: String = {
-					var result = ""
-					album.songs(sorted: true).forEach {
-						result.append("\($0.persistentID)\n")
-					}
-					return result
-				}()
-				let dSongs = Data(sSongs.utf8)
-				try! dSongs.write(to: pAlbum.appending(path: "songs"), options: options)
+			output.append(contentsOf: "\($0.title ?? "")\n")
+			$0.albums(sorted: true).forEach { album in
+				output.append(contentsOf: "\t\(String(album.albumPersistentID))\n")
+				album.songs(sorted: true).forEach { song in
+					output.append(contentsOf: "\t\t\(String(song.persistentID))\n")
+				}
 			}
 		}
-		let pCrates = URL.applicationSupportDirectory.appending(path: "v1/\(cCrates)")
-		try! filer.createDirectory(at: pCrates, withIntermediateDirectories: true)
-		let _ = try! filer.replaceItemAt(pCrates, withItemAt: pNewCrates)
+		let data = Data(output.utf8)
+		let cCrates = "crates"
+		let options: Data.WritingOptions = [.atomic, .completeFileProtection]
+		try! data.write(to: URL.applicationSupportDirectory.appending(path: cCrates), options: options)
 	}
 	
 	static func read() -> [Collection] {
