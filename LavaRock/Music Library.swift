@@ -140,6 +140,7 @@ extension Crate {
 		context.fetchPlease(Album.fetchRequest()).forEach {
 			$0.index += Int64(toInsertAtBeginning.count)
 		}
+		var nextSongID: SongID = SongID(-10)
 		toInsertAtBeginning.indices.forEach { albumIndex in
 			let mkSection = toInsertAtBeginning[albumIndex]
 			
@@ -157,7 +158,8 @@ extension Crate {
 				let newSong = Song(context: context)
 				newSong.container = newAlbum
 				newSong.index = Int64(songIndex)
-				let songID = SongID((albumIndex + 1) * -10)
+				let songID = nextSongID
+				nextSongID -= 10
 				newSong.persistentID = songID
 				__mkSongIDs[songID] = toAddToAlbum[songIndex].id
 			}
