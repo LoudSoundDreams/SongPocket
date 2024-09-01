@@ -48,7 +48,7 @@
 }
 
 import MediaPlayer
-extension MPMusicPlayerController {
+@MainActor extension MPMusicPlayerController {
 	static var _system: MPMusicPlayerController? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return .systemMusicPlayer
