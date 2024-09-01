@@ -97,18 +97,23 @@ extension Crate {
 #endif
 		}
 	}
+	private static let workingOnMusicKitIDs = 10 == 1
 	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
 		isMerging = true
 		defer { isMerging = false }
 		
-//		let allSongs = context.fetchPlease(Song.fetchRequest())
-//		allSongs.forEach { context.delete($0) }
-//		let allAlbums = context.fetchPlease(Album.fetchRequest())
-//		allAlbums.forEach { context.delete($0) }
-//		let allCollections = context.fetchPlease(Collection.fetchRequest())
-//		allCollections.forEach { context.delete($0) }
-//		mergeFromMusicKit(unsortedSections)
-		mergeFromMediaPlayer(unorderedMediaItems)
+		if Self.workingOnMusicKitIDs {
+			let allSongs = context.fetchPlease(Song.fetchRequest())
+			allSongs.forEach { context.delete($0) }
+			let allAlbums = context.fetchPlease(Album.fetchRequest())
+			allAlbums.forEach { context.delete($0) }
+			let allCollections = context.fetchPlease(Collection.fetchRequest())
+			allCollections.forEach { context.delete($0) }
+			
+			mergeFromMusicKit(unsortedSections)
+		} else {
+			mergeFromMediaPlayer(unorderedMediaItems)
+		}
 		
 		context.savePlease()
 	}
