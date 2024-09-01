@@ -125,6 +125,8 @@ extension Librarian {
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }
 		
+		let _ = Disk.load()
+		
 		let theCollection = Collection(context: context)
 		theCollection.index = 0
 		theCollection.title = InterfaceText.tilde
