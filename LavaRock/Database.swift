@@ -84,10 +84,6 @@ extension Album {
 		container = collection
 		albumPersistentID = albumID
 	}
-	
-	final func isAtBottom() -> Bool {
-		return index >= (container?.contents ?? []).count - 1
-	}
 }
 
 // MARK: - Song
@@ -102,10 +98,6 @@ extension Song {
 		index = 0
 		container = album
 		persistentID = songID
-	}
-	
-	final func isAtBottom() -> Bool {
-		return index >= (container?.contents ?? []).count - 1
 	}
 }
 
