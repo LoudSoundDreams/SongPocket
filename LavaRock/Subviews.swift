@@ -96,7 +96,7 @@ import MediaPlayer
 	}
 }
 
-// MARK: - Album art
+// MARK: Album art
 
 @MainActor struct AlbumArt: View {
 	let albumID: AlbumID
@@ -143,7 +143,7 @@ import MediaPlayer
 	}
 }
 
-// MARK: - Album label
+// MARK: Album label
 
 @MainActor struct AlbumLabel: View {
 	let albumID: AlbumID
@@ -414,7 +414,7 @@ import MediaPlayer
 	}
 }
 
-// MARK: - Now-playing indicator
+// MARK: Now-playing indicator
 
 struct NowPlayingIndicator: View {
 	let songID: SongID
