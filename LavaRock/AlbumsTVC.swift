@@ -363,8 +363,21 @@ final class AlbumsTVC: LibraryTVC {
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
 				Task {
-					guard let chosenSong = self.albumListState.songs(with: [chosenSongID]).first else { return }
-					await chosenSong.playAlbumStartingHere()
+					guard 
+						let chosenSong = self.albumListState.songs(with: [chosenSongID]).first,
+						let chosenAlbum = chosenSong.container,
+						let chosenMKSong = await Crate.shared.mkSongFetched(mpID: chosenSong.persistentID)
+					else { return }
+					let mkSongs: [MKSong] = await {
+						var result: [MKSong] = []
+						for song in chosenAlbum.songs(sorted: true) {
+							guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { continue }
+							result.append(mkSong)
+						}
+						return result
+					}()
+					
+					SystemMusicPlayer._shared?.playNow(mkSongs, startingAt: chosenMKSong)
 					
 					self.albumListState.selectMode = .view(nil)
 				}

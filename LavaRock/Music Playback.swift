@@ -58,23 +58,3 @@ import MediaPlayer
 		return _system?.nowPlayingItem?.songID
 	}
 }
-
-extension Song {
-	@MainActor final func playAlbumStartingHere() async {
-		guard
-			let player = SystemMusicPlayer._shared,
-			let rowMKSong = await Crate.shared.mkSongFetched(mpID: persistentID),
-			let songsInAlbum = container?.songs(sorted: true)
-		else { return }
-		let mkSongs: [MKSong] = await {
-			var result: [MKSong] = []
-			for song in songsInAlbum {
-				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { continue }
-				result.append(mkSong)
-			}
-			return result
-		}()
-		
-		player.playNow(mkSongs, startingAt: rowMKSong)
-	}
-}

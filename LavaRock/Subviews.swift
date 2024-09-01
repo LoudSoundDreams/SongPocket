@@ -318,6 +318,7 @@ import MediaPlayer
 		Button {
 			Task {
 				guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
+				
 				SystemMusicPlayer._shared?.playNow([mkSong])
 			}
 		} label: { Label(InterfaceText.play, systemImage: "play") }
@@ -325,6 +326,7 @@ import MediaPlayer
 		Button {
 			Task {
 				guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
+				
 				SystemMusicPlayer._shared?.playLater([mkSong])
 			}
 		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
@@ -341,6 +343,7 @@ import MediaPlayer
 					}
 					return result
 				}()
+				
 				SystemMusicPlayer._shared?.playLater(mkSongs)
 			}
 		} label: {
