@@ -247,7 +247,12 @@ import MediaPlayer
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			mainStack
-			songOverflow
+			SongMenu(songID: songID, albumID: albumID, albumListState: albumListState)
+				.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
+					case .selectAlbums: return false
+					case .view: return false
+					case .selectSongs: return true
+				}}())
 		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
 		.background { select_highlight }
@@ -304,62 +309,6 @@ import MediaPlayer
 	}
 	@State private var mkSong: MKSong? = nil
 	private let crate: Crate = .shared
-	private var songOverflow: some View {
-		Menu { songMenu } label: { OverflowImage() }
-			.onTapGesture { signal_tappedMenu.toggle() }
-			.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
-					// When the menu is open, it’s actually `albumListState.selectMode` that disables or enables “Play Rest of Album Last”. We should change that to a sensical dependency.
-				case .selectAlbums: return false
-				case .view: return false
-				case .selectSongs: return true
-			}}())
-	}
-	@ViewBuilder private var songMenu: some View {
-		Button {
-			Task {
-				guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
-				
-				SystemMusicPlayer._shared?.playNow([mkSong])
-			}
-		} label: { Label(InterfaceText.play, systemImage: "play") }
-		Divider()
-		Button {
-			Task {
-				guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
-				
-				SystemMusicPlayer._shared?.playLater([mkSong])
-			}
-		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
-		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
-		Button {
-			Task {
-				guard let album = Database.viewContext.fetchAlbum(id: albumID) else { return }
-				let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
-				let mkSongs: [MKSong] = await {
-					var result: [MKSong] = []
-					for song in restOfAlbum {
-						guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { continue }
-						result.append(mkSong)
-					}
-					return result
-				}()
-				
-				SystemMusicPlayer._shared?.playLater(mkSongs)
-			}
-		} label: {
-			Label(InterfaceText.playRestOfAlbumLater, systemImage: "text.line.last.and.arrowtriangle.forward")
-		}.disabled(
-			(signal_tappedMenu && false) || // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
-			{
-				guard
-					let album = Database.viewContext.fetchAlbum(id: albumID),
-					let bottomSong = album.songs(sorted: true).last
-				else { return false }
-				return songID == bottomSong.persistentID
-			}()
-		)
-	}
-	@State private var signal_tappedMenu = false // Value doesn’t actually matter
 	
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
@@ -412,6 +361,65 @@ import MediaPlayer
 				albumListState.selectMode = .selectSongs(newSelected)
 		}
 	}
+}
+
+// MARK: Song menu
+
+@MainActor private struct SongMenu: View {
+	let songID: SongID
+	let albumID: AlbumID
+	let albumListState: AlbumListState
+	var body: some View {
+		Menu {
+			Button {
+				Task {
+					guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
+					
+					SystemMusicPlayer._shared?.playNow([mkSong])
+				}
+			} label: { Label(InterfaceText.play, systemImage: "play") }
+			Divider()
+			Button {
+				Task {
+					guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
+					
+					SystemMusicPlayer._shared?.playLater([mkSong])
+				}
+			} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
+			// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
+			Button {
+				Task {
+					guard let album = Database.viewContext.fetchAlbum(id: albumID) else { return }
+					let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
+					let mkSongs: [MKSong] = await {
+						var result: [MKSong] = []
+						for song in restOfAlbum {
+							guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { continue }
+							result.append(mkSong)
+						}
+						return result
+					}()
+					
+					SystemMusicPlayer._shared?.playLater(mkSongs)
+				}
+			} label: {
+				Label(InterfaceText.playRestOfAlbumLater, systemImage: "text.line.last.and.arrowtriangle.forward")
+			}.disabled(
+				(signal_tappedMenu && false) || // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
+				{
+					let _ = albumListState.selectMode // In case you add or remove the bottom song while the menu is open.
+					guard
+						let album = Database.viewContext.fetchAlbum(id: albumID),
+						let bottomSong = album.songs(sorted: true).last
+					else { return false }
+					return songID == bottomSong.persistentID
+				}()
+			)
+		} label: { OverflowImage() }
+			.onTapGesture { signal_tappedMenu.toggle() }
+	}
+	@State private var signal_tappedMenu = false // Value doesn’t actually matter
+	private let crate: Crate = .shared
 }
 
 // MARK: Now-playing indicator
