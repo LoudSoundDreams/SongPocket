@@ -148,7 +148,7 @@ extension Librarian {
 		context.fetchPlease(Album.fetchRequest()).forEach {
 			$0.index += Int64(toInsertAtBeginning.count)
 		}
-		var nextSongID: SongID = SongID(-10)
+		var nextSongID: SongID = SongID(-11)
 		toInsertAtBeginning.indices.forEach { albumIndex in
 			let mkSection = toInsertAtBeginning[albumIndex]
 			
