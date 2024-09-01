@@ -80,7 +80,7 @@ extension Crate {
 			let freshSongs: [MusicItemID: MKSong] = {
 				let allSongs = freshSections.values.flatMap { $0.items }
 				let tuples = allSongs.map { ($0.id, $0) }
-				return Dictionary(uniqueKeysWithValues: tuples)
+				return Dictionary(tuples) { former, latter in latter } // As of iOS 18 developer beta 7, I’ve seen a library where multiple pairs of MusicKit `Song`s had the same `MusicItemID`; they also had the same title, album title, and song artist.
 			}()
 			let songsUnion = mkSongs.merging(freshSongs) { old, new in new }
 			
