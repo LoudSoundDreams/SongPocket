@@ -317,20 +317,32 @@ import MediaPlayer
 	@ViewBuilder private var songMenu: some View {
 		Button {
 			Task {
-				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { return }
+				guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { return }
 				SystemMusicPlayer._shared?.playNow([mkSong])
 			}
 		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
 		Button {
 			Task {
-				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { return }
+				guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { return }
 				SystemMusicPlayer._shared?.playLater([mkSong])
 			}
 		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
 		// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 		Button {
-			Task { await song.playRestOfAlbumLater() }
+			Task {
+				guard let album = Database.viewContext.fetchAlbum(id: albumID) else { return }
+				let restOfAlbum = album.songs(sorted: true).drop { song.persistentID != $0.persistentID }
+				let mkSongs: [MKSong] = await {
+					var result: [MKSong] = []
+					for song in restOfAlbum {
+						guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { continue }
+						result.append(mkSong)
+					}
+					return result
+				}()
+				SystemMusicPlayer._shared?.playLater(mkSongs)
+			}
 		} label: {
 			Label(InterfaceText.playRestOfAlbumLater, systemImage: "text.line.last.and.arrowtriangle.forward")
 		}.disabled(

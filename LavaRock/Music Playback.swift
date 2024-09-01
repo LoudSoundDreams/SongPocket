@@ -77,22 +77,4 @@ extension Song {
 		
 		player.playNow(mkSongs, startingAt: rowMKSong)
 	}
-	
-	@MainActor final func playRestOfAlbumLater() async {
-		guard
-			let player = SystemMusicPlayer._shared,
-			let album = container
-		else { return }
-		let restOfAlbum = album.songs(sorted: true).drop { persistentID != $0.persistentID }
-		let mkSongs: [MKSong] = await {
-			var result: [MKSong] = []
-			for song in restOfAlbum {
-				guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { continue }
-				result.append(mkSong)
-			}
-			return result
-		}()
-		
-		player.playLater(mkSongs)
-	}
 }
