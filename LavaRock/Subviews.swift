@@ -241,7 +241,7 @@ import MediaPlayer
 
 @MainActor struct SongRow: View {
 	static let confirmPlaySongID = Notification.Name("LRSongConfirmPlayWithID")
-	let song: Song
+	let songID: SongID
 	let albumID: AlbumID
 	let albumListState: AlbumListState
 	var body: some View {
@@ -259,7 +259,7 @@ import MediaPlayer
 		let mkSection: MKSection? = crate.mkSection(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
-			NowPlayingIndicator(songID: song.persistentID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
+			NowPlayingIndicator(songID: songID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(title ?? InterfaceText.emDash)
 				if
@@ -299,7 +299,7 @@ import MediaPlayer
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 		.task {
-			mkSong = await crate.mkSongFetched(mpID: song.persistentID)
+			mkSong = await crate.mkSongFetched(mpID: songID)
 		}
 	}
 	@State private var mkSong: MKSong? = nil
@@ -317,14 +317,14 @@ import MediaPlayer
 	@ViewBuilder private var songMenu: some View {
 		Button {
 			Task {
-				guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { return }
+				guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
 				SystemMusicPlayer._shared?.playNow([mkSong])
 			}
 		} label: { Label(InterfaceText.play, systemImage: "play") }
 		Divider()
 		Button {
 			Task {
-				guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { return }
+				guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
 				SystemMusicPlayer._shared?.playLater([mkSong])
 			}
 		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
@@ -332,7 +332,7 @@ import MediaPlayer
 		Button {
 			Task {
 				guard let album = Database.viewContext.fetchAlbum(id: albumID) else { return }
-				let restOfAlbum = album.songs(sorted: true).drop { song.persistentID != $0.persistentID }
+				let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
 				let mkSongs: [MKSong] = await {
 					var result: [MKSong] = []
 					for song in restOfAlbum {
@@ -352,7 +352,7 @@ import MediaPlayer
 					let album = Database.viewContext.fetchAlbum(id: albumID),
 					let bottomSong = album.songs(sorted: true).last
 				else { return false }
-				return song.persistentID == bottomSong.persistentID
+				return songID == bottomSong.persistentID
 			}()
 		)
 	}
@@ -361,8 +361,8 @@ import MediaPlayer
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
 			case .selectAlbums: return false
-			case .view(let activatedSongID): return activatedSongID == song.persistentID
-			case .selectSongs(let selectedIDs): return selectedIDs.contains(song.persistentID)
+			case .view(let activatedSongID): return activatedSongID == songID
+			case .selectSongs(let selectedIDs): return selectedIDs.contains(songID)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
@@ -383,7 +383,7 @@ import MediaPlayer
 						Image(systemName: "circle")
 							.foregroundStyle(.secondary)
 							.padding(.trailing)
-						if selectedIDs.contains(song.persistentID) {
+						if selectedIDs.contains(songID) {
 							Image(systemName: "checkmark.circle.fill")
 								.symbolRenderingMode(.palette)
 								.foregroundStyle(.white, .tint)
@@ -398,9 +398,8 @@ import MediaPlayer
 	private func tapped() {
 		switch albumListState.selectMode {
 			case .selectAlbums: return
-			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: song.persistentID)
+			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: songID)
 			case .selectSongs(let selectedIDs):
-				let songID = song.persistentID
 				var newSelected = selectedIDs
 				if selectedIDs.contains(songID) {
 					newSelected.remove(songID)

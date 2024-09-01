@@ -241,7 +241,7 @@ final class AlbumsTVC: LibraryTVC {
 							return result
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {
-							SongRow(song: rowSong, albumID: expandedAlbumID, albumListState: albumListState)
+							SongRow(songID: rowSong.persistentID, albumID: expandedAlbumID, albumListState: albumListState)
 						}.margins(.all, .zero)
 						return cell
 				}
