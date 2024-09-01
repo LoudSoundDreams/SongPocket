@@ -54,7 +54,7 @@ enum AlbumOrder {
 				let albumsAndFirstAdded: [(album: Album, firstAdded: Date)] = inOriginalOrder.map { album in (
 					album: album,
 					firstAdded: {
-						let mkSongs = Crate.shared.mkSection(albumID: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
+						let mkSongs = Librarian.shared.mkSection(albumID: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
 						return Album.dateCreated(mkSongs) ?? now
 					}()
@@ -68,7 +68,7 @@ enum AlbumOrder {
 			case .recentlyReleased:
 				let albumsAndReleaseDates: [(album: Album, releaseDate: Date?)] = inOriginalOrder.map {(
 					album: $0,
-					releaseDate: Crate.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
+					releaseDate: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
 				)}
 				let sorted = albumsAndReleaseDates.sortedStably {
 					$0.releaseDate == $1.releaseDate
@@ -83,7 +83,7 @@ enum AlbumOrder {
 				// 10,000 albums takes 30.3s in 2024.
 				let albumsAndArtists: [(album: Album, artist: String?)] = inOriginalOrder.map {(
 					album: $0,
-					artist: Crate.shared.mkSection(albumID: $0.albumPersistentID)?.artistName
+					artist: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.artistName
 				)}
 				let sorted = albumsAndArtists.sortedStably {
 					$0.artist == $1.artist
@@ -96,7 +96,7 @@ enum AlbumOrder {
 			case .title:
 				let albumsAndTitles: [(album: Album, title: String?)] = inOriginalOrder.map {(
 					album: $0,
-					title: Crate.shared.mkSection(albumID: $0.albumPersistentID)?.title
+					title: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.title
 				)}
 				let sorted = albumsAndTitles.sortedStably {
 					$0.title == $1.title

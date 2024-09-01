@@ -135,11 +135,11 @@ import MediaPlayer
 		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
 	private var artwork: MusicKit.Artwork? {
-		let crate = Crate.shared
-		if let mkAlbumID = crate.__mkAlbumIDs[albumID] {
-			return crate.mkSections[mkAlbumID]?.artwork
+		let librarian = Librarian.shared
+		if let mkAlbumID = librarian.__mkAlbumIDs[albumID] {
+			return librarian.mkSections[mkAlbumID]?.artwork
 		}
-		return crate.mkSection(albumID: albumID)?.artwork
+		return librarian.mkSection(albumID: albumID)?.artwork
 	}
 }
 
@@ -216,11 +216,11 @@ import MediaPlayer
 		}
 	}
 	private var mkSection: MKSection? {
-		let crate = Crate.shared
-		if let mkAlbumID = crate.__mkAlbumIDs[albumID] {
-			return crate.mkSections[mkAlbumID]
+		let librarian = Librarian.shared
+		if let mkAlbumID = librarian.__mkAlbumIDs[albumID] {
+			return librarian.mkSections[mkAlbumID]
 		}
-		return crate.mkSection(albumID: albumID)
+		return librarian.mkSection(albumID: albumID)
 	}
 	
 	@ViewBuilder private var albumMenu: some View {
@@ -261,7 +261,7 @@ import MediaPlayer
 	}
 	@ViewBuilder private var mainStack: some View {
 		let title: String? = mkSong?.title
-		let mkSection: MKSection? = crate.mkSection(albumID: albumID)
+		let mkSection: MKSection? = librarian.mkSection(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
 			NowPlayingIndicator(songID: songID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
@@ -304,11 +304,11 @@ import MediaPlayer
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 		.task {
-			mkSong = await crate.mkSongFetched(mpID: songID)
+			mkSong = await librarian.mkSongFetched(mpID: songID)
 		}
 	}
 	@State private var mkSong: MKSong? = nil
-	private let crate: Crate = .shared
+	private let librarian: Librarian = .shared
 	
 	@ViewBuilder private var select_highlight: some View {
 		let highlighting: Bool = { switch albumListState.selectMode {
@@ -373,7 +373,7 @@ import MediaPlayer
 		Menu {
 			Button {
 				Task {
-					guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
+					guard let mkSong = await librarian.mkSongFetched(mpID: songID) else { return }
 					
 					SystemMusicPlayer._shared?.playNow([mkSong])
 				}
@@ -381,7 +381,7 @@ import MediaPlayer
 			Divider()
 			Button {
 				Task {
-					guard let mkSong = await crate.mkSongFetched(mpID: songID) else { return }
+					guard let mkSong = await librarian.mkSongFetched(mpID: songID) else { return }
 					
 					SystemMusicPlayer._shared?.playLater([mkSong])
 				}
@@ -394,7 +394,7 @@ import MediaPlayer
 					let mkSongs: [MKSong] = await {
 						var result: [MKSong] = []
 						for song in restOfAlbum {
-							guard let mkSong = await crate.mkSongFetched(mpID: song.persistentID) else { continue }
+							guard let mkSong = await librarian.mkSongFetched(mpID: song.persistentID) else { continue }
 							result.append(mkSong)
 						}
 						return result
@@ -419,7 +419,7 @@ import MediaPlayer
 			.onTapGesture { signal_tappedMenu.toggle() }
 	}
 	@State private var signal_tappedMenu = false // Value doesn’t actually matter
-	private let crate: Crate = .shared
+	private let librarian: Librarian = .shared
 }
 
 // MARK: Now-playing indicator

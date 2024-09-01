@@ -8,7 +8,7 @@ import os
 typealias MKSong = MusicKit.Song
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
-@MainActor @Observable final class Crate {
+@MainActor @Observable final class Librarian {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
 	private(set) var isMerging = false { didSet {
@@ -24,8 +24,8 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
 }
-extension Crate {
-	static let shared = Crate()
+extension Librarian {
+	static let shared = Librarian()
 	func observeMediaPlayerLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
@@ -56,7 +56,7 @@ extension Crate {
 
 // MARK: - Private
 
-extension Crate {
+extension Librarian {
 	@objc private func mergeChanges() {
 		Task {
 #if targetEnvironment(simulator)

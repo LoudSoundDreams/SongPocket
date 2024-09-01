@@ -107,7 +107,7 @@ final class AlbumsTVC: LibraryTVC {
 					}()) { [weak self] _ in
 						guard let self else { return }
 						let albumIDs = albumListState.albums().map { $0.albumPersistentID }
-						let sections = albumIDs.compactMap { Crate.shared.mkSection(albumID: $0) }
+						let sections = albumIDs.compactMap { Librarian.shared.mkSection(albumID: $0) }
 						let mkSongs = sections.flatMap { $0.items }
 						SystemMusicPlayer._shared?.playNow(mkSongs)
 					}
@@ -152,8 +152,8 @@ final class AlbumsTVC: LibraryTVC {
 		endSelecting()
 		refreshBeginSelectingButton()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Crate.willMerge, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Crate.didMerge, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
 		__MainToolbar.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
@@ -198,7 +198,7 @@ final class AlbumsTVC: LibraryTVC {
 			if albumListState.items.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
-						Button { Crate.openAppleMusic() } label: { Image(systemName: "plus") }
+						Button { Librarian.openAppleMusic() } label: { Image(systemName: "plus") }
 					}
 				}.margins(.all, .zero)
 			}
@@ -366,12 +366,12 @@ final class AlbumsTVC: LibraryTVC {
 					guard 
 						let chosenSong = self.albumListState.songs(with: [chosenSongID]).first,
 						let chosenAlbum = chosenSong.container,
-						let chosenMKSong = await Crate.shared.mkSongFetched(mpID: chosenSong.persistentID)
+						let chosenMKSong = await Librarian.shared.mkSongFetched(mpID: chosenSong.persistentID)
 					else { return }
 					let mkSongs: [MKSong] = await {
 						var result: [MKSong] = []
 						for song in chosenAlbum.songs(sorted: true) {
-							guard let mkSong = await Crate.shared.mkSongFetched(mpID: song.persistentID) else { continue }
+							guard let mkSong = await Librarian.shared.mkSongFetched(mpID: song.persistentID) else { continue }
 							result.append(mkSong)
 						}
 						return result
@@ -397,7 +397,7 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func refreshBeginSelectingButton() {
 		beginSelectingButton.isEnabled = !albumListState.items.isEmpty &&
 		MusicAuthorization.currentStatus == .authorized && // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
-		!Crate.shared.isMerging
+		!Librarian.shared.isMerging
 	}
 	
 	private lazy var beginSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
@@ -499,7 +499,7 @@ final class AlbumsTVC: LibraryTVC {
 #if targetEnvironment(simulator)
 				nil != Sim_MusicLibrary.shared.albumInfos[$0.albumPersistentID]?._releaseDate
 #else
-				nil != Crate.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate
+				nil != Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate
 #endif
 			}
 		}

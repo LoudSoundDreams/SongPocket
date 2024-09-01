@@ -31,7 +31,7 @@ import MusicKit
 	}
 	
 	@MainActor static func integrateAppleMusic() {
-		Crate.shared.observeMediaPlayerLibrary()
+		Librarian.shared.observeMediaPlayerLibrary()
 		__MainToolbar.shared.observeMediaPlayerController()
 	}
 }
