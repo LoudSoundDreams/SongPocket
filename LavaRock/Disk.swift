@@ -5,24 +5,13 @@ import Foundation
 struct LRCrate: Equatable {
 	let title: String
 	let albums: [LRAlbum]
-	init(title: String, albums: [LRAlbum]) {
-		self.title = title
-		self.albums = albums
-	}
 }
 struct LRAlbum: Equatable {
 	let id: String
 	let songs: [LRSong]
-	init(id: String, songs: [LRSong]) {
-		self.id = id
-		self.songs = songs
-	}
 }
 struct LRSong: Equatable {
 	let id: String
-	init(id: String) {
-		self.id = id
-	}
 }
 
 enum Disk {
