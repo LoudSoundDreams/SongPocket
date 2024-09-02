@@ -28,7 +28,7 @@
 		07E0BBDE276567760010117E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* Constants.swift */; };
 		07E0BBFB276567F70010117E /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBFA276567F70010117E /* Database.swift */; };
 		07FB52CB2813909400CCCBA5 /* Sorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB52CA2813909400CCCBA5 /* Sorting.swift */; };
-		07FF080128652A4C00EE4FD4 /* SortingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* SortingTests.swift */; };
+		07FF080128652A4C00EE4FD4 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* Sort.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +76,7 @@
 		07E0BBDA276567760010117E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		07E0BBFA276567F70010117E /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		07FB52CA2813909400CCCBA5 /* Sorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sorting.swift; sourceTree = "<group>"; };
-		07FF080028652A4C00EE4FD4 /* SortingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingTests.swift; sourceTree = "<group>"; };
+		07FF080028652A4C00EE4FD4 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,7 +156,7 @@
 		076830A124B42DEE0033E3CC /* LavaRockTests */ = {
 			isa = PBXGroup;
 			children = (
-				07FF080028652A4C00EE4FD4 /* SortingTests.swift */,
+				07FF080028652A4C00EE4FD4 /* Sort.swift */,
 				076830A424B42DEE0033E3CC /* Info.plist */,
 			);
 			path = LavaRockTests;
@@ -325,7 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07FF080128652A4C00EE4FD4 /* SortingTests.swift in Sources */,
+				07FF080128652A4C00EE4FD4 /* Sort.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
