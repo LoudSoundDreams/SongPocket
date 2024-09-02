@@ -2,7 +2,7 @@
 
 import Foundation
 
-final class LRCrate {
+struct LRCrate: Equatable {
 	let title: String
 	let albums: [LRAlbum]
 	init(title: String, albums: [LRAlbum]) {
@@ -10,7 +10,7 @@ final class LRCrate {
 		self.albums = albums
 	}
 }
-final class LRAlbum {
+struct LRAlbum: Equatable {
 	let id: String
 	let songs: [LRSong]
 	init(id: String, songs: [LRSong]) {
@@ -18,7 +18,7 @@ final class LRAlbum {
 		self.songs = songs
 	}
 }
-final class LRSong {
+struct LRSong: Equatable {
 	let id: String
 	init(id: String) {
 		self.id = id
@@ -65,27 +65,6 @@ enum Disk {
 
 struct Parser {
 	init(_ string: String) {
-		let string = """
-	1
-		2
-	3
-5
-7
-	11
-	13
-		17
-		
-	
-		19
-		23
-	29
-31
-37
-	41
-		43
-47
-	53
-"""
 		self.lines = string.split(separator: "\n", omittingEmptySubsequences: true)
 	}
 	private let lines: [Substring]
