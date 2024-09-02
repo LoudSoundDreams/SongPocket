@@ -16,12 +16,11 @@ struct LRSong: Equatable {
 }
 
 enum Disk {
-	private static let signposter = OSSignposter(subsystem: "persistence", category: "disk")
-	
 	static func save(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let filer = FileManager.default
 		try! filer.createDirectory(at: pDatabase, withIntermediateDirectories: true)
 		
+		let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 		let _serialize = signposter.beginInterval("serialize")
 		var output: String = ""
 		collections.forEach {
@@ -38,7 +37,7 @@ enum Disk {
 		try! data.write(to: pDatabase.appending(path: cCrates), options: [.atomic, .completeFileProtection])
 	}
 	
-	static func load() -> [LRCrate] {
+	static func loadCrates() -> [LRCrate] {
 		guard let data = try? Data(contentsOf: pDatabase.appending(path: cCrates)) else {
 			// Maybe the file doesn’t exist.
 			return []

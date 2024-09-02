@@ -126,7 +126,7 @@ extension Librarian {
 		defer { signposter.endInterval("merge", _merge) }
 		
 		let _load = signposter.beginInterval("load")
-		let _ = Disk.load()
+		let _ = Disk.loadCrates()
 		signposter.endInterval("load", _load)
 		
 		let theCollection = Collection(context: context)
