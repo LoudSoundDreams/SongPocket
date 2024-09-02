@@ -23,6 +23,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext
+	private let signposter = OSSignposter(subsystem: "persistence", category: "librarian")
 }
 extension Librarian {
 	static let shared = Librarian()
@@ -121,11 +122,12 @@ extension Librarian {
 	// MARK: - MUSICKIT
 	
 	private func mergeFromMusicKit(_ unsortedSections: [MKSection]) {
-		let signposter = OSSignposter()
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }
 		
+		let _load = signposter.beginInterval("load")
 		let _ = Disk.load()
+		signposter.endInterval("load", _load)
 		
 		let theCollection = Collection(context: context)
 		theCollection.index = 0
@@ -173,7 +175,9 @@ extension Librarian {
 			}
 		}
 		
+		let _save = signposter.beginInterval("save")
 		Disk.save([theCollection])
+		signposter.endInterval("save", _save)
 	}
 	
 	// MARK: - MEDIA PLAYER

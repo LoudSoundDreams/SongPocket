@@ -1,6 +1,7 @@
 // 2024-08-30
 
 import Foundation
+import os
 
 struct LRCrate: Equatable {
 	let title: String
@@ -15,10 +16,13 @@ struct LRSong: Equatable {
 }
 
 enum Disk {
+	private static let signposter = OSSignposter(subsystem: "persistence", category: "disk")
+	
 	static func save(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let filer = FileManager.default
 		try! filer.createDirectory(at: pDatabase, withIntermediateDirectories: true)
 		
+		let _serialize = signposter.beginInterval("serialize")
 		var output: String = ""
 		collections.forEach {
 			output.append(contentsOf: "\($0.title ?? "")\n")
@@ -29,6 +33,7 @@ enum Disk {
 				}
 			}
 		}
+		signposter.endInterval("serialize", _serialize)
 		let data = Data(output.utf8)
 		try! data.write(to: pDatabase.appending(path: cCrates), options: [.atomic, .completeFileProtection])
 	}
@@ -53,12 +58,17 @@ enum Disk {
 }
 
 struct Parser {
+	private let signposter = OSSignposter(subsystem: "persistence", category: "parser")
+	
 	init(_ string: String) {
 		self.lines = string.split(separator: "\n", omittingEmptySubsequences: true)
 	}
 	private let lines: [Substring]
 	
 	func crates() -> [LRCrate] {
+		let _crates = signposter.beginInterval("crates")
+		defer { signposter.endInterval("crates", _crates) }
+		
 		var result: [LRCrate] = []
 		var iLine = 0
 		while iLine < lines.count {
@@ -84,6 +94,9 @@ struct Parser {
 		return result
 	}
 	private func albumsUntilOutdent(from start: Int) -> (nextILine: Int, [LRAlbum]) {
+		let _albums = signposter.beginInterval("albums")
+		defer { signposter.endInterval("albums", _albums) }
+		
 		var result: [LRAlbum] = []
 		var iLine = start
 		while 
@@ -113,6 +126,9 @@ struct Parser {
 		return (iLine, result)
 	}
 	private func songsUntilOutdent(from start: Int) -> (nextILine: Int, [LRSong]) {
+		let _songs = signposter.beginInterval("songs")
+		defer { signposter.endInterval("songs", _songs) }
+		
 		var result: [LRSong] = []
 		var iLine = start
 		while 
