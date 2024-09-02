@@ -1,7 +1,6 @@
 // 2024-08-30
 
 import Foundation
-import MusicKit
 
 final class LRCrate {
 	let title: String
@@ -27,9 +26,6 @@ final class LRSong {
 }
 
 enum Disk {
-	private static let pDatabase = URL.applicationSupportDirectory.appending(path: "v1/")
-	private static let cCrates = "crates"
-	
 	static func save(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let filer = FileManager.default
 		try! filer.createDirectory(at: pDatabase, withIntermediateDirectories: true)
@@ -38,9 +34,9 @@ enum Disk {
 		collections.forEach {
 			output.append(contentsOf: "\($0.title ?? "")\n")
 			$0.albums(sorted: true).forEach { album in
-				output.append(contentsOf: "\t\(String(album.albumPersistentID))\n")
+				output.append(contentsOf: "\(tAlbum)\(String(album.albumPersistentID))\n")
 				album.songs(sorted: true).forEach { song in
-					output.append(contentsOf: "\t\t\(String(song.persistentID))\n")
+					output.append(contentsOf: "\(ttSong)\(String(song.persistentID))\n")
 				}
 			}
 		}
@@ -59,6 +55,12 @@ enum Disk {
 		}
 		return Parser(input).crates()
 	}
+	
+	fileprivate static let tAlbum = "\t"
+	fileprivate static let ttSong = "\t\t"
+	
+	private static let pDatabase = URL.applicationSupportDirectory.appending(path: "v1/")
+	private static let cCrates = "crates"
 }
 
 struct Parser {
@@ -81,6 +83,8 @@ struct Parser {
 37
 	41
 		43
+47
+	53
 """
 		self.lines = string.split(separator: "\n", omittingEmptySubsequences: true)
 	}
@@ -90,105 +94,93 @@ struct Parser {
 		var result: [LRCrate] = []
 		var iLine = 0
 		while iLine < lines.count {
-			let line = lines[iLine]
-			print(line, "crates?", iLine)
-			
-			iLine += 1
-			guard isCollection(line) else {
+			guard isCrate(at: iLine) else {
 				// Not a crate line. Skip it.
-				print("not a crate line")
+				iLine += 1
 				continue
 			}
-			print("crate line")
-			let (newILine, albums) = albumsUntilOutdent(from: iLine)
-			iLine = newILine
+			
+			let crateTitle = lines[iLine]
+			iLine += 1
+			
+			let (nextILine, albums) = albumsUntilOutdent(from: iLine)
+			iLine = nextILine
 			guard !albums.isEmpty else {
-				// No valid album lines in block below. Skip this crate line.
-				print("no album lines")
+				// No valid albums for this crate. Skip this crate line.
 				continue
 			}
 			result.append(
-				LRCrate(title: String(line), albums: albums)
+				LRCrate(title: String(crateTitle), albums: albums)
 			)
 		}
 		return result
 	}
-	private func albumsUntilOutdent(from start: Int) -> (newILine: Int, [LRAlbum]) {
+	private func albumsUntilOutdent(from start: Int) -> (nextILine: Int, [LRAlbum]) {
 		var result: [LRAlbum] = []
 		var iLine = start
-		while iLine < lines.count {
-			let line = lines[iLine]
-			print(line, "albums?", iLine)
-			
-			guard !isCollection(line) else {
-				// Outdent. Stop parsing for albums.
-				break
-			}
-			
-			iLine += 1
-			guard let albumLine = isAlbum(line) else {
+		while 
+			iLine < lines.count,
+			!isCrate(at: iLine) // Parse albums until outdent.
+		{
+			guard isAlbum(at: iLine) else {
 				// Not an album line. Skip it.
-				print("\tnot an album line")
+				iLine += 1
 				continue
 			}
-			print("\talbum line")
-			let (newILine, songs) = songsUntilOutdent(from: iLine)
-			iLine = newILine
+			
+			let line = lines[iLine]
+			let albumID = line.dropFirst(Disk.tAlbum.count)
+			iLine += 1
+			
+			let (nextILine, songs) = songsUntilOutdent(from: iLine)
+			iLine = nextILine
 			guard !songs.isEmpty else {
-				// No valid song lines in block below. Skip this album line.
-				print("\tno song lines")
+				// No valid songs for this album. Skip this album line.
 				continue
 			}
 			result.append(
-				LRAlbum(id: String(albumLine), songs: songs)
+				LRAlbum(id: String(albumID), songs: songs)
 			)
 		}
-		print("\tend albums")
 		return (iLine, result)
 	}
-	private func songsUntilOutdent(from start: Int) -> (newILine: Int, [LRSong]) {
+	private func songsUntilOutdent(from start: Int) -> (nextILine: Int, [LRSong]) {
 		var result: [LRSong] = []
 		var iLine = start
-		while iLine < lines.count {
-			let line = lines[iLine]
-			print(line, "songs?", iLine)
-			
-			guard !isCollection(line), isAlbum(line) == nil else {
-				// Outdent. Stop parsing for songs.
-				break
-			}
-			
-			iLine += 1
-			guard let songLine = isSong(line) else {
+		while 
+			iLine < lines.count,
+			!isCrate(at: iLine), !isAlbum(at: iLine) // Parse songs until outdent.
+		{
+			guard isSong(at: iLine) else {
 				// Not a valid song line. Skip it.
-				print("\t\tnot a song line")
+				iLine += 1
 				continue
 			}
-			print("\t\tsong line")
+			
+			let line = lines[iLine]
+			let songID = line.dropFirst(Disk.ttSong.count)
+			iLine += 1
+			
 			result.append(
-				LRSong(id: String(songLine))
+				LRSong(id: String(songID))
 			)
 		}
-		print("\t\tend songs")
 		return (iLine, result)
 	}
 	
-	private func isCollection(_ line: Substring) -> Bool {
-		guard let char = line.first, char != "\t" else { return false }
-		return true
+	private func isCrate(at iLine: Int) -> Bool {
+		let line = lines[iLine]
+		return !line.hasPrefix(Disk.tAlbum)
 	}
-	private func isAlbum(_ line: Substring) -> Substring? {
-		let prefix = "\t"
-		guard line.hasPrefix(prefix) else { return nil }
-		let content = line.dropFirst(prefix.count)
-		guard let char = content.first, char != "\t" else { return nil }
-		return content
+	private func isAlbum(at iLine: Int) -> Bool {
+		let line = lines[iLine]
+		return line.count > Disk.tAlbum.count &&
+		line.hasPrefix(Disk.tAlbum) &&
+		!line.hasPrefix(Disk.ttSong)
 	}
-	private func isSong(_ line: Substring) -> Substring? {
-		let prefix = "\t\t"
-		guard line.hasPrefix(prefix) else { return nil }
-		let content = line.dropFirst(prefix.count)
-		guard let char = content.first, char != "\t" else { return nil }
-		return content
+	private func isSong(at iLine: Int) -> Bool {
+		let line = lines[iLine]
+		return line.count > Disk.ttSong.count &&
+		line.hasPrefix(Disk.ttSong)
 	}
 }
