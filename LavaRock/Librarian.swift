@@ -19,8 +19,6 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 			NotificationCenter.default.post(name: Self.didMerge, object: nil)
 		}
 	}}
-	@ObservationIgnored private(set) var __mkAlbumIDs: [AlbumID: MusicItemID] = [:]
-	@ObservationIgnored private(set) var __mkSongIDs: [SongID: MusicItemID] = [:]
 	
 	private init() {}
 	@ObservationIgnored private let context = Database.viewContext

@@ -130,11 +130,7 @@ import MediaPlayer
 		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
 	private var artwork: MusicKit.Artwork? {
-		let librarian = Librarian.shared
-		if let mkAlbumID = librarian.__mkAlbumIDs[albumID] {
-			return librarian.mkSections[mkAlbumID]?.artwork
-		}
-		return librarian.mkSection(albumID: albumID)?.artwork
+		return Librarian.shared.mkSection(albumID: albumID)?.artwork
 	}
 }
 
@@ -161,6 +157,7 @@ import MediaPlayer
 	private static let workingOnOverflowAlbum = 10 == 1
 	
 	@ViewBuilder private var textStack: some View {
+		let mkSection = Librarian.shared.mkSection(albumID: albumID)
 		let titleAndInputLabel: String = {
 #if targetEnvironment(simulator)
 			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
@@ -209,13 +206,6 @@ import MediaPlayer
 			case .view, .selectAlbums: return false
 			case .selectSongs: return true
 		}
-	}
-	private var mkSection: MKSection? {
-		let librarian = Librarian.shared
-		if let mkAlbumID = librarian.__mkAlbumIDs[albumID] {
-			return librarian.mkSections[mkAlbumID]
-		}
-		return librarian.mkSection(albumID: albumID)
 	}
 }
 
