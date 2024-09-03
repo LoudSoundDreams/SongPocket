@@ -127,7 +127,7 @@ extension Librarian {
 		defer { signposter.endInterval("merge", _merge) }
 		
 		let _load = signposter.beginInterval("load")
-		let _ = Disk.loadCrates()
+		theCrate = Disk.loadCrates().first
 		signposter.endInterval("load", _load)
 		
 		let newMKSections: [MKSection] = {
