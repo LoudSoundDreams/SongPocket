@@ -90,60 +90,6 @@ extension AlbumListState {
 final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
 	
-	private lazy var ellipsisButton = {
-		let result = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!)
-		result.preferredMenuElementOrder = .fixed
-		var menuChildren: [UIMenuElement] = [
-			UIDeferredMenuElement.uncached { [weak self] use in use([
-				UIAction(
-					title: InterfaceText.play, image: UIImage(systemName: "play"),
-					attributes: {
-						guard
-							MusicAuthorization.currentStatus == .authorized,
-							let self,
-							!self.albumListState.items.isEmpty
-						else { return .disabled }
-						return []
-					}()) { [weak self] _ in
-						guard let self else { return }
-						let albumIDs = albumListState.albums().map { $0.albumPersistentID }
-						let sections = albumIDs.compactMap { Librarian.shared.mkSection(albumID: $0) }
-						let mkSongs = sections.flatMap { $0.items }
-						SystemMusicPlayer._shared?.playNow(mkSongs)
-					}
-			])},
-			UIDeferredMenuElement.uncached { [weak self] use in use([
-				UIAction(
-					title: InterfaceText.playLater, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward"),
-					attributes: {
-						guard
-							MusicAuthorization.currentStatus == .authorized,
-							let self,
-							!self.albumListState.items.isEmpty
-						else { return .disabled }
-						return []
-					}()) { _ in
-					}
-			])},
-		]
-		if Self.workingOnShuffleAll { menuChildren.append(shuffleMenuElement) }
-		result.menu = UIMenu(children: menuChildren)
-		return result
-	}()
-	private static let workingOnShuffleAll = 10 == 1
-	private lazy var shuffleMenuElement = UIDeferredMenuElement.uncached { [weak self] use in use([
-		UIAction(
-			title: InterfaceText.shuffle, image: UIImage(systemName: "shuffle"),
-			attributes: {
-				guard
-					MusicAuthorization.currentStatus == .authorized,
-					let self,
-					!self.albumListState.items.isEmpty
-				else { return .disabled }
-				return []
-			}()) { _ in SystemMusicPlayer._shared?.shuffleAll() }
-	])}
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
