@@ -214,12 +214,10 @@ final class AlbumsTVC: LibraryTVC {
 			albumListState.refreshItems()
 			switch albumListState.selectMode { // In case the user was in the middle of doing something with an item we’ve deleted.
 				case .view(let activatedID):
-					var newActivated = activatedID
 					if let activatedID, albumListState.songs(with: [activatedID]).isEmpty {
 						dismiss(animated: true) // In case “confirm play” action sheet is presented.
-						newActivated = nil
+						albumListState.selectMode = .view(nil)
 					}
-					albumListState.selectMode = .view(newActivated)
 				case .selectAlbums(let selectedIDs):
 					let newSelected: Set<AlbumID> = Set(albumListState.albums(with: selectedIDs).map { $0.albumPersistentID })
 					albumListState.selectMode = .selectAlbums(newSelected)
