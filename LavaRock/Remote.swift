@@ -5,8 +5,8 @@
 import MediaPlayer
 
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
-@MainActor final class __MainToolbar {
-	static let shared = __MainToolbar()
+@MainActor final class Remote {
+	static let shared = Remote()
 	let playPauseButton = UIBarButtonItem()
 	let overflowButton = UIBarButtonItem()
 	var albumsTVC: WeakRef<AlbumsTVC>? = nil

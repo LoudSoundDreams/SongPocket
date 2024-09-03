@@ -154,7 +154,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
-		__MainToolbar.shared.albumsTVC = WeakRef(self)
+		Remote.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
@@ -425,7 +425,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .selectSongs:
 				albumListState.selectMode = .view(nil)
 		}
-		setToolbarItems([beginSelectingButton, .flexibleSpace(), __MainToolbar.shared.playPauseButton, .flexibleSpace(), __MainToolbar.shared.overflowButton], animated: true)
+		setToolbarItems([beginSelectingButton, .flexibleSpace(), Remote.shared.playPauseButton, .flexibleSpace(), Remote.shared.overflowButton], animated: true)
 	}
 	
 	private let album_arranger = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))

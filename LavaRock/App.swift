@@ -32,7 +32,7 @@ import MusicKit
 	
 	@MainActor static func integrateAppleMusic() {
 		Librarian.shared.observeMediaPlayerLibrary()
-		__MainToolbar.shared.observeMediaPlayerController()
+		Remote.shared.observeMediaPlayerController()
 	}
 }
 private struct RootVCRep: UIViewControllerRepresentable {
