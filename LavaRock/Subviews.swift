@@ -149,7 +149,7 @@ import MediaPlayer
 			textStack // Align with `SongRow`
 			if Self.workingOnOverflowAlbum {
 				Spacer()
-				Menu { albumMenu } label: { OverflowImage() }
+				Menu {} label: { OverflowImage() }
 					.onTapGesture {}
 					.disabled({ switch albumListState.selectMode { // We should also disable this when any album is expanded.
 						case .view: return false
@@ -217,19 +217,6 @@ import MediaPlayer
 		}
 		return librarian.mkSection(albumID: albumID)
 	}
-	
-	@ViewBuilder private var albumMenu: some View {
-		Button {
-		} label: { Label(InterfaceText.play, systemImage: "play") }
-		Button {
-		} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
-		if Self.workingOnShuffleAlbum {
-			Button {
-				SystemMusicPlayer._shared?.shuffleNow(albumID)
-			} label: { Label(InterfaceText.shuffle, systemImage: "shuffle") }
-		}
-	}
-	private static let workingOnShuffleAlbum = 10 == 1
 }
 
 // MARK: - Song row
