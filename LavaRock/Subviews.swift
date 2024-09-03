@@ -126,7 +126,7 @@ import MediaPlayer
 			}
 #endif
 		}
-		.animation(.default, value: artwork)
+		.animation(nil, value: albumID) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
 		.accessibilityLabel(InterfaceText.albumArtwork)
 	}
 	private var artwork: MusicKit.Artwork? {
