@@ -27,7 +27,7 @@ import MediaPlayer
 		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay(alignment: .topLeading) { select_indicator } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay(alignment: .topLeading) { select_indicator.padding() } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityElement(children: .combine)
@@ -58,14 +58,9 @@ import MediaPlayer
 			case .view, .selectSongs: EmptyView()
 			case .selectAlbums(let selectedIDs):
 				if selectedIDs.contains(albumID) {
-					Image(systemName: "checkmark.circle.fill")
-						.symbolRenderingMode(.palette)
-						.foregroundStyle(.white, .tint)
-						.padding()
+					SelectedIndicator()
 				} else {
-					Image(systemName: "circle")
-						.foregroundStyle(.secondary)
-						.padding()
+					UnselectedIndicator()
 				}
 		}
 	}
@@ -332,17 +327,11 @@ import MediaPlayer
 				case .view, .selectAlbums: EmptyView()
 				case .selectSongs(let selectedIDs):
 					ZStack {
-						Image(systemName: "circle")
-							.foregroundStyle(.secondary)
-							.padding(.trailing)
+						UnselectedIndicator()
 						if selectedIDs.contains(songID) {
-							Image(systemName: "checkmark.circle.fill")
-								.symbolRenderingMode(.palette)
-								.foregroundStyle(.white, .tint)
-								.padding(.trailing)
-								.transition(.identity) // Prevents animation when selecting or deselecting (but not when inserting or removing entire stack)
+							SelectedIndicator().transition(.identity) // Prevents animation when selecting or deselecting (but not when inserting or removing entire stack)
 						}
-					}
+					}.padding(.trailing)
 			}
 		}.animation(.default, value: albumListState.selectMode)
 	}
@@ -467,6 +456,20 @@ struct NowPlayingIndicator: View {
 }
 
 // MARK: - Multipurpose
+
+struct SelectedIndicator: View {
+	var body: some View {
+		Image(systemName: "checkmark.circle.fill")
+			.symbolRenderingMode(.palette)
+			.foregroundStyle(.white, .tint)
+	}
+}
+struct UnselectedIndicator: View {
+	var body: some View {
+		Image(systemName: "circle")
+			.foregroundStyle(.secondary)
+	}
+}
 
 struct OverflowImage: View {
 	var body: some View {
