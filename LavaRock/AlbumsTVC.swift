@@ -85,7 +85,7 @@ extension AlbumListState {
 	static let songSelecting = Notification.Name("LRSongSelecting")
 }
 
-// MARK: - Table view controller
+// MARK: - View controller
 
 final class AlbumsTVC: LibraryTVC {
 	private let albumListState = AlbumListState()
