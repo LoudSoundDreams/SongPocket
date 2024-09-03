@@ -8,27 +8,27 @@ struct LRCrate: Equatable {
 	let albums: [LRAlbum]
 }
 struct LRAlbum: Equatable {
-	let id: String
+	let rawID: String
 	let songs: [LRSong]
 }
 struct LRSong: Equatable {
-	let id: String
+	let rawID: String
 }
 
 enum Disk {
-	static func save(_ collections: [Collection]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
+	static func save(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let filer = FileManager.default
 		try! filer.createDirectory(at: pDatabase, withIntermediateDirectories: true)
 		
 		let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 		let _serialize = signposter.beginInterval("serialize")
 		var output: String = ""
-		collections.forEach {
-			output.append(contentsOf: "\($0.title ?? "")\n")
-			$0.albums(sorted: true).forEach { album in
-				output.append(contentsOf: "\(tAlbum)\(String(album.albumPersistentID))\n")
-				album.songs(sorted: true).forEach { song in
-					output.append(contentsOf: "\(ttSong)\(String(song.persistentID))\n")
+		crates.forEach {
+			output.append(contentsOf: "\($0.title)\n")
+			$0.albums.forEach { album in
+				output.append(contentsOf: "\(tAlbum)\(album.rawID)\n")
+				album.songs.forEach { song in
+					output.append(contentsOf: "\(ttSong)\(song.rawID)\n")
 				}
 			}
 		}
@@ -119,7 +119,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRAlbum(id: String(albumID), songs: songs)
+				LRAlbum(rawID: String(albumID), songs: songs)
 			)
 		}
 		return (iLine, result)
@@ -145,7 +145,7 @@ struct Parser {
 			iLine += 1
 			
 			result.append(
-				LRSong(id: String(songID))
+				LRSong(rawID: String(songID))
 			)
 		}
 		return (iLine, result)

@@ -9,6 +9,7 @@ typealias MKSong = MusicKit.Song
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
 @MainActor @Observable final class Librarian {
+	@ObservationIgnored private(set) var theCrate: LRCrate? = nil
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
 	private(set) var isMerging = false { didSet {
@@ -129,11 +130,7 @@ extension Librarian {
 		let _ = Disk.loadCrates()
 		signposter.endInterval("load", _load)
 		
-		let theCollection = Collection(context: context)
-		theCollection.index = 0
-		theCollection.title = InterfaceText.tilde
-		
-		let toInsertAtBeginning: [MKSection] = {
+		let newMKSections: [MKSection] = {
 			// Only sort albums themselves; we’ll sort the songs within each album later.
 			let now = Date.now
 			let sectionsAndDatesCreated: [(section: MKSection, dateCreated: Date)] = unsortedSections.map {(
@@ -147,36 +144,19 @@ extension Librarian {
 			}
 			return sorted.map { $0.section }
 		}()
-		context.fetchPlease(Album.fetchRequest()).forEach {
-			$0.index += Int64(toInsertAtBeginning.count)
+		let newAlbums: [LRAlbum] = newMKSections.map { mkSection in
+			LRAlbum(rawID: mkSection.id.rawValue, songs: {
+				let mkSongs = mkSection.items.sorted {
+					SongOrder.precedesNumerically(strict: true, $0, $1)
+				}
+				return mkSongs.map { LRSong(rawID: $0.id.rawValue) }
+			}())
 		}
-		var nextSongID: SongID = SongID(-11)
-		toInsertAtBeginning.indices.forEach { albumIndex in
-			let mkSection = toInsertAtBeginning[albumIndex]
-			
-			let newAlbum = Album(context: context)
-			newAlbum.container = theCollection
-			newAlbum.index = Int64(albumIndex)
-			let albumID = AlbumID((albumIndex + 1) * -10)
-			newAlbum.albumPersistentID = albumID
-			__mkAlbumIDs[albumID] = mkSection.id
-			
-			let toAddToAlbum = mkSection.items.sorted {
-				SongOrder.precedesNumerically(strict: true, $0, $1)
-			}
-			toAddToAlbum.indices.forEach { songIndex in
-				let newSong = Song(context: context)
-				newSong.container = newAlbum
-				newSong.index = Int64(songIndex)
-				let songID = nextSongID
-				nextSongID -= 10
-				newSong.persistentID = songID
-				__mkSongIDs[songID] = toAddToAlbum[songIndex].id
-			}
-		}
+		let newCrate = LRCrate(title: InterfaceText.tilde, albums: newAlbums)
+		theCrate = newCrate
 		
 		let _save = signposter.beginInterval("save")
-		Disk.save([theCollection])
+		Disk.save([newCrate])
 		signposter.endInterval("save", _save)
 	}
 	
