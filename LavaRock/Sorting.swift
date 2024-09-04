@@ -169,7 +169,7 @@ enum SongOrder {
 		} areInOrder: {
 			guard let right = $1.info else { return true }
 			guard let left = $0.info else { return false }
-			return Self.precedesNumerically(strict: false, left, right)
+			return Self.__precedesNumerically(strict: false, left, right)
 		}
 		return sorted.map { $0.song }
 	}
@@ -203,7 +203,7 @@ enum SongOrder {
 		
 		return left.id.rawValue < right.id.rawValue
 	}
-	static func precedesNumerically(
+	static func __precedesNumerically(
 		strict: Bool,
 		_ left: some SongInfo, _ right: some SongInfo
 	) -> Bool {

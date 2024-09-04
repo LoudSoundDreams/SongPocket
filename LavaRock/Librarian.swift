@@ -343,10 +343,9 @@ extension Librarian {
 		if let existingAlbum = existingAlbums[albumID] {
 			// …then add the `Song`s to that `Album`.
 			let isInDefaultOrder: Bool = {
-				let userOrder: [ZZZSong] = existingAlbum.songs(sorted: true)
-				let defaultOrder: [ZZZSong] = SongOrder.sortedNumerically(strict: true, userOrder)
-				return userOrder.indices.allSatisfy { counter in
-					userOrder[counter].objectID == defaultOrder[counter].objectID
+				let existingSongInfos: [some SongInfo] = existingAlbum.songs(sorted: true).compactMap { ZZZSong.info(mpID: $0.persistentID) }
+				return existingSongInfos.allNeighborsSatisfy {
+					SongOrder.__precedesNumerically(strict: true, $0, $1)
 				}
 			}()
 			let songIDs = newInfos.map { $0.songID }
@@ -382,7 +381,7 @@ extension Librarian {
 			
 			// …and then add the `Song`s to that `Album`.
 			let sortedInfos = newInfos.sorted {
-				return SongOrder.precedesNumerically(strict: true, $0, $1)
+				return SongOrder.__precedesNumerically(strict: true, $0, $1)
 			}
 			sortedInfos.indices.forEach { index in
 				let newSong = ZZZSong(context: context)
