@@ -19,8 +19,8 @@ import MediaPlayer
 }
 extension AlbumListState {
 	fileprivate enum Item {
-		case album(Album)
-		case song(Song)
+		case album(ZZZAlbum)
+		case song(ZZZSong)
 	}
 	fileprivate func refreshItems() {
 		items = {
@@ -43,8 +43,8 @@ extension AlbumListState {
 			}
 		}()
 	}
-	private static func freshAlbums() -> [Album] {
-		return Database.viewContext.fetchPlease(Album.fetchRequest_sorted())
+	private static func freshAlbums() -> [ZZZAlbum] {
+		return Database.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
 	}
 	fileprivate func rowIdentifiers() -> [AnyHashable] {
 		return items.map { switch $0 {
@@ -52,7 +52,7 @@ extension AlbumListState {
 			case .song(let song): return song.objectID
 		}}
 	}
-	func albums(with chosenIDs: Set<AlbumID>? = nil) -> [Album] {
+	func albums(with chosenIDs: Set<AlbumID>? = nil) -> [ZZZAlbum] {
 		return items.compactMap { switch $0 {
 			case .song: return nil
 			case .album(let album):
@@ -61,7 +61,7 @@ extension AlbumListState {
 				return album
 		}}
 	}
-	fileprivate func songs(with chosenIDs: Set<SongID>? = nil) -> [Song] {
+	fileprivate func songs(with chosenIDs: Set<SongID>? = nil) -> [ZZZSong] {
 		return items.compactMap { switch $0 {
 			case .album: return nil
 			case .song(let song):
@@ -486,7 +486,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func album_toArrange() -> [Album] {
+	private func album_toArrange() -> [ZZZAlbum] {
 		switch albumListState.selectMode {
 			case .selectSongs: return []
 			case .view: break
@@ -496,7 +496,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		return albumListState.albums()
 	}
-	private func song_toArrange() -> [Song] {
+	private func song_toArrange() -> [ZZZSong] {
 		switch albumListState.selectMode {
 			case .selectAlbums: return []
 			case .view: break
@@ -517,10 +517,10 @@ final class AlbumsTVC: LibraryTVC {
 			
 			let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
 			let range = (target...back)
-			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
 			let toPromote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [Album] = toPromote + toDisplace
+			let newBlock: [ZZZAlbum] = toPromote + toDisplace
 			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
@@ -541,10 +541,10 @@ final class AlbumsTVC: LibraryTVC {
 			
 			let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
 			let range = (target...back)
-			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
 			let toPromote = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [Song] = toPromote + toDisplace
+			let newBlock: [ZZZSong] = toPromote + toDisplace
 			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
@@ -573,10 +573,10 @@ final class AlbumsTVC: LibraryTVC {
 			
 			let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.albums().count)-1) : back
 			let range = (front...target)
-			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
 			let toDemote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [Album] = toDisplace + toDemote
+			let newBlock: [ZZZAlbum] = toDisplace + toDemote
 			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
@@ -597,10 +597,10 @@ final class AlbumsTVC: LibraryTVC {
 			
 			let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.songs().count)-1) : back
 			let range = (front...target)
-			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
 			let toDemote = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [Song] = toDisplace + toDemote
+			let newBlock: [ZZZSong] = toDisplace + toDemote
 			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
@@ -630,10 +630,10 @@ final class AlbumsTVC: LibraryTVC {
 			guard let back = selectedIndices.last else { return }
 			
 			let range = (0...back)
-			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
 			let toFloat = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [Album] = toFloat + toDisplace
+			let newBlock: [ZZZAlbum] = toFloat + toDisplace
 			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectAlbums([])
@@ -651,10 +651,10 @@ final class AlbumsTVC: LibraryTVC {
 			guard let back = selectedIndices.last else { return }
 			
 			let range = (0...back)
-			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
 			let toFloat = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [Song] = toFloat + toDisplace
+			let newBlock: [ZZZSong] = toFloat + toDisplace
 			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectSongs([])
@@ -673,10 +673,10 @@ final class AlbumsTVC: LibraryTVC {
 			guard let front = selectedIndices.first else { return }
 			
 			let range = (front...Int64(albumListState.albums().count)-1)
-			let inRange: [Album] = range.map { int64 in albumListState.albums()[Int(int64)] }
+			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
 			let toSink = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [Album] = toDisplace + toSink
+			let newBlock: [ZZZAlbum] = toDisplace + toSink
 			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectAlbums([])
@@ -694,10 +694,10 @@ final class AlbumsTVC: LibraryTVC {
 			guard let front = selectedIndices.first else { return }
 			
 			let range = (front...(Int64(albumListState.songs().count)-1))
-			let inRange: [Song] = range.map { int64 in albumListState.songs()[Int(int64)] }
+			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
 			let toSink = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [Song] = toDisplace + toSink
+			let newBlock: [ZZZSong] = toDisplace + toSink
 			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectSongs([])

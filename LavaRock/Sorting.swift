@@ -40,9 +40,9 @@ enum AlbumOrder {
 			handler: { _ in handler() })
 	}
 	
-	@MainActor func reindex(_ inOriginalOrder: [Album]) {
+	@MainActor func reindex(_ inOriginalOrder: [ZZZAlbum]) {
 		let replaceAt: [Int64] = inOriginalOrder.map { $0.index }
-		let arranged: [Album] = { switch self {
+		let arranged: [ZZZAlbum] = { switch self {
 			case .random: return inOriginalOrder.inAnyOtherOrder()
 			case .reverse: return inOriginalOrder.reversed()
 				
@@ -51,12 +51,12 @@ enum AlbumOrder {
 			case .recentlyAdded:
 				// 10,000 albums takes 11.4s in 2024.
 				let now = Date.now // Keeps `Album`s without date added at the beginning, maintaining their current order.
-				let albumsAndFirstAdded: [(album: Album, firstAdded: Date)] = inOriginalOrder.map { album in (
+				let albumsAndFirstAdded: [(album: ZZZAlbum, firstAdded: Date)] = inOriginalOrder.map { album in (
 					album: album,
 					firstAdded: {
 						let mkSongs = Librarian.shared.mkSection(albumID: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
-						return Album.dateCreated(mkSongs) ?? now
+						return ZZZAlbum.dateCreated(mkSongs) ?? now
 					}()
 				)}
 				let sorted = albumsAndFirstAdded.sortedStably { // 10,000 albums takes 41ms in 2024.
@@ -66,7 +66,7 @@ enum AlbumOrder {
 				}
 				return sorted.map { $0.album }
 			case .recentlyReleased:
-				let albumsAndReleaseDates: [(album: Album, releaseDate: Date?)] = inOriginalOrder.map {(
+				let albumsAndReleaseDates: [(album: ZZZAlbum, releaseDate: Date?)] = inOriginalOrder.map {(
 					album: $0,
 					releaseDate: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
 				)}
@@ -81,7 +81,7 @@ enum AlbumOrder {
 				return sorted.map { $0.album }
 			case .artist:
 				// 10,000 albums takes 30.3s in 2024.
-				let albumsAndArtists: [(album: Album, artist: String?)] = inOriginalOrder.map {(
+				let albumsAndArtists: [(album: ZZZAlbum, artist: String?)] = inOriginalOrder.map {(
 					album: $0,
 					artist: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.artistName
 				)}
@@ -94,7 +94,7 @@ enum AlbumOrder {
 				}
 				return sorted.map { $0.album }
 			case .title:
-				let albumsAndTitles: [(album: Album, title: String?)] = inOriginalOrder.map {(
+				let albumsAndTitles: [(album: ZZZAlbum, title: String?)] = inOriginalOrder.map {(
 					album: $0,
 					title: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.title
 				)}
@@ -142,9 +142,9 @@ enum SongOrder {
 			handler: { _ in handler() })
 	}
 	
-	@MainActor func reindex(_ inOriginalOrder: [Song]) {
+	@MainActor func reindex(_ inOriginalOrder: [ZZZSong]) {
 		let replaceAt: [Int64] = inOriginalOrder.map { $0.index }
-		let arranged: [Song] = { switch self {
+		let arranged: [ZZZSong] = { switch self {
 			case .random: return inOriginalOrder.inAnyOtherOrder()
 			case .reverse: return inOriginalOrder.reversed()
 				
@@ -155,10 +155,10 @@ enum SongOrder {
 		}
 	}
 	
-	@MainActor static func sortedNumerically(strict: Bool, _ input: [Song]) -> [Song] {
-		let songsAndInfos: [(song: Song, info: (some SongInfo)?)] = input.map {(
+	@MainActor static func sortedNumerically(strict: Bool, _ input: [ZZZSong]) -> [ZZZSong] {
+		let songsAndInfos: [(song: ZZZSong, info: (some SongInfo)?)] = input.map {(
 			song: $0,
-			info: Song.info(mpID: $0.persistentID)
+			info: ZZZSong.info(mpID: $0.persistentID)
 		)}
 		let sorted = songsAndInfos.sortedStably {
 			let left = $0.info; let right = $1.info

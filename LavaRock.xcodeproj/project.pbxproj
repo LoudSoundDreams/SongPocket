@@ -54,6 +54,7 @@
 		070056902C8275C0006F1069 /* Disk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disk.swift; sourceTree = "<group>"; };
 		071A0B9D277E76510017F76D /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		071B30932C88CD3400239BF3 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
+		071B30952C88CDDE00239BF3 /* LavaRock v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LavaRock v2.xcdatamodel"; sourceTree = "<group>"; };
 		073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		075218A1257C498D0077AE9B /* InterfaceText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceText.swift; sourceTree = "<group>"; };
 		075FC9032B46765D00219146 /* Sample Artwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Sample Artwork.xcassets"; sourceTree = "<group>"; };
@@ -673,9 +674,10 @@
 		0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				071B30952C88CDDE00239BF3 /* LavaRock v2.xcdatamodel */,
 				0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */,
 			);
-			currentVersion = 0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */;
+			currentVersion = 071B30952C88CDDE00239BF3 /* LavaRock v2.xcdatamodel */;
 			path = LavaRock.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

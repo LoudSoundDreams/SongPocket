@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ZZZAlbum" representedClassName="ZZZAlbum" elementID="Album" syncable="YES" codeGenerationType="class">
+        <attribute name="albumPersistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
+        <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="releaseDateEstimate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="ZZZCollection" inverseName="contents" inverseEntity="ZZZCollection"/>
+        <relationship name="contents" toMany="YES" deletionRule="Deny" destinationEntity="ZZZSong" inverseName="container" inverseEntity="ZZZSong"/>
+    </entity>
+    <entity name="ZZZCollection" representedClassName="ZZZCollection" elementID="Collection" syncable="YES" codeGenerationType="class">
+        <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
+        <relationship name="contents" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="ZZZAlbum" inverseName="container" inverseEntity="ZZZAlbum"/>
+    </entity>
+    <entity name="ZZZSong" representedClassName="ZZZSong" elementID="Song" syncable="YES" codeGenerationType="class">
+        <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="persistentID" attributeType="Integer 64" usesScalarValueType="YES"/>
+        <relationship name="container" maxCount="1" deletionRule="Nullify" destinationEntity="ZZZAlbum" inverseName="contents" inverseEntity="ZZZAlbum"/>
+    </entity>
+</model>

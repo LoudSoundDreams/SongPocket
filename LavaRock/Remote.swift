@@ -97,7 +97,7 @@ import MediaPlayer
 	private func newOverflowTitle() -> String {
 		if
 			MusicAuthorization.currentStatus == .authorized,
-			Database.viewContext.fetchPlease(Collection.fetchRequest()).isEmpty
+			Database.viewContext.fetchPlease(ZZZCollection.fetchRequest()).isEmpty
 		{ return InterfaceText._emptyLibraryMessage }
 		return ""
 	}

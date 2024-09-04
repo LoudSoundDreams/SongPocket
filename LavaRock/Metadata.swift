@@ -16,7 +16,7 @@ protocol SongInfo {
 	var dateAddedOnDisk: Date { get }
 }
 
-extension Album {
+extension ZZZAlbum {
 	static func dateCreated(_ mkSongs: any Sequence<MKSong>) -> Date? {
 		return mkSongs.reduce(into: nil) { earliestSoFar, mkSong in
 			let dateAdded = mkSong.libraryAddedDate
@@ -31,7 +31,7 @@ extension Album {
 	}
 }
 
-extension Song {
+extension ZZZSong {
 	@MainActor static func info(mpID: SongID) -> (some SongInfo)? {
 #if targetEnvironment(simulator)
 		return Sim_MusicLibrary.shared.songInfos[mpID]

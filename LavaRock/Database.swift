@@ -35,19 +35,19 @@ enum Database {
 
 // MARK: - Collection
 
-extension Collection {
+extension ZZZCollection {
 	// Similar to `Album.fetchRequest_sorted`.
-	static func fetchRequest_sorted() -> NSFetchRequest<Collection> {
+	static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
 		let result = fetchRequest()
 		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return result
 	}
 	
 	// Similar to `Album.songs`.
-	final func albums(sorted: Bool) -> [Album] {
+	final func albums(sorted: Bool) -> [ZZZAlbum] {
 		guard let contents else { return [] }
 		
-		let unsorted = contents.map { $0 as! Album }
+		let unsorted = contents.map { $0 as! ZZZAlbum }
 		guard sorted else { return unsorted }
 		
 		return unsorted.sorted { $0.index < $1.index }
@@ -56,25 +56,25 @@ extension Collection {
 
 // MARK: - Album
 
-extension Album {
+extension ZZZAlbum {
 	// Similar to `Collection.fetchRequest_sorted`.
-	static func fetchRequest_sorted() -> NSFetchRequest<Album> {
+	static func fetchRequest_sorted() -> NSFetchRequest<ZZZAlbum> {
 		let result = fetchRequest()
 		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return result
 	}
 	
 	// Similar to `Collection.albums`.
-	final func songs(sorted: Bool) -> [Song] {
+	final func songs(sorted: Bool) -> [ZZZSong] {
 		guard let contents else { return [] }
 		
-		let unsorted = contents.map { $0 as! Song }
+		let unsorted = contents.map { $0 as! ZZZSong }
 		guard sorted else { return unsorted }
 		
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	convenience init?(atBeginningOf collection: Collection, albumID: AlbumID) {
+	convenience init?(atBeginningOf collection: ZZZCollection, albumID: AlbumID) {
 		guard let context = collection.managedObjectContext else { return nil }
 		
 		collection.albums(sorted: false).forEach { $0.index += 1 }
@@ -88,8 +88,8 @@ extension Album {
 
 // MARK: - Song
 
-extension Song {
-	convenience init?(atBeginningOf album: Album, songID: SongID) {
+extension ZZZSong {
+	convenience init?(atBeginningOf album: ZZZAlbum, songID: SongID) {
 		guard let context = album.managedObjectContext else { return nil }
 		
 		album.songs(sorted: false).forEach { $0.index += 1 }
@@ -106,7 +106,7 @@ extension Song {
 import MusicKit
 extension NSManagedObjectContext {
 	final func printLibrary(referencing: [MusicItemID: MKSection]) {
-		fetchPlease(Collection.fetchRequest_sorted()).forEach { collection in
+		fetchPlease(ZZZCollection.fetchRequest_sorted()).forEach { collection in
 			print(collection.index, collection.title ?? "")
 			
 			collection.albums(sorted: true).forEach { album in
@@ -120,16 +120,16 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	final func fetchSong(mpID: SongID) -> Song? {
-		let request = Song.fetchRequest()
-		request.predicate = NSPredicate(#Predicate<Song> {
+	final func fetchSong(mpID: SongID) -> ZZZSong? {
+		let request = ZZZSong.fetchRequest()
+		request.predicate = NSPredicate(#Predicate<ZZZSong> {
 			mpID == $0.persistentID
 		})
 		return fetchPlease(request).first
 	}
-	final func fetchAlbum(id albumIDToMatch: AlbumID) -> Album? {
-		let request = Album.fetchRequest()
-		request.predicate = NSPredicate(#Predicate<Album> {
+	final func fetchAlbum(id albumIDToMatch: AlbumID) -> ZZZAlbum? {
+		let request = ZZZAlbum.fetchRequest()
+		request.predicate = NSPredicate(#Predicate<ZZZAlbum> {
 			albumIDToMatch == $0.albumPersistentID
 		})
 		return fetchPlease(request).first
@@ -155,14 +155,14 @@ extension NSManagedObjectContext {
 	
 	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
 	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
-		fetchPlease(Album.fetchRequest()).forEach { album in
+		fetchPlease(ZZZAlbum.fetchRequest()).forEach { album in
 			if album.contents?.count == 0 {
 				delete(album)
 			}
 		}
 	}
 	final func deleteEmptyCollections() {
-		var all = fetchPlease(Collection.fetchRequest_sorted())
+		var all = fetchPlease(ZZZCollection.fetchRequest_sorted())
 		all.enumerated().reversed().forEach { (index, collection) in
 			if collection.contents?.count == 0 {
 				delete(collection)
@@ -181,7 +181,7 @@ extension NSManagedObjectContext {
 #endif
 		// Move all `Album`s into the first `Collection`, and give it the default title.
 		
-		let all = fetchPlease(Collection.fetchRequest_sorted())
+		let all = fetchPlease(ZZZCollection.fetchRequest_sorted())
 		guard let top = all.first else { return }
 		
 		let rest = all.dropFirst()
@@ -200,52 +200,52 @@ extension NSManagedObjectContext {
 		savePlease()
 	}
 	private func mockMulticollection() {
-		fetchPlease(Song.fetchRequest()).forEach { delete($0) }
-		fetchPlease(Album.fetchRequest()).forEach { delete($0) }
-		fetchPlease(Collection.fetchRequest()).forEach { delete($0) }
+		fetchPlease(ZZZSong.fetchRequest()).forEach { delete($0) }
+		fetchPlease(ZZZAlbum.fetchRequest()).forEach { delete($0) }
+		fetchPlease(ZZZCollection.fetchRequest()).forEach { delete($0) }
 		
-		let one = Collection(context: self)
+		let one = ZZZCollection(context: self)
 		one.index = Int64(0)
 		one.title = ""
 		
-		let two = Collection(context: self)
+		let two = ZZZCollection(context: self)
 		two.index = Int64(1)
 		two.title = nil
 		
-		let three = Collection(context: self)
+		let three = ZZZCollection(context: self)
 		three.index = Int64(2)
 		three.title = one.title // Duplicate titles allowed
 		
-		let alpha = Album(context: self)
+		let alpha = ZZZAlbum(context: self)
 		alpha.container = one; alpha.index = Int64(0)
 		alpha.albumPersistentID = Int64.max
 		alpha.releaseDateEstimate = nil // Absence of release date allowed
 		
-		let bravo = Album(context: self)
+		let bravo = ZZZAlbum(context: self)
 		bravo.container = one; bravo.index = Int64(1)
 		bravo.albumPersistentID = Int64.min
 		bravo.releaseDateEstimate = Date.now
 		
-		let charlie = Album(context: self)
+		let charlie = ZZZAlbum(context: self)
 		charlie.container = two; charlie.index = Int64(0)
 		charlie.albumPersistentID = Int64.max - 1
 		bravo.releaseDateEstimate = Date.distantPast
 		
-		let delta = Album(context: self)
+		let delta = ZZZAlbum(context: self)
 		delta.container = three; delta.index = Int64(0)
 		delta.albumPersistentID = Int64.max - 2
 		delta.releaseDateEstimate = Date.distantFuture
 		
-		let uno = Song(context: self)
+		let uno = ZZZSong(context: self)
 		uno.container = alpha; uno.index = Int64(0)
 		uno.persistentID = Int64.min
-		let dos = Song(context: self)
+		let dos = ZZZSong(context: self)
 		dos.container = bravo; dos.index = Int64(0)
 		dos.persistentID = Int64.max
-		let tres = Song(context: self)
+		let tres = ZZZSong(context: self)
 		tres.container = charlie; tres.index = Int64(0)
 		tres.persistentID = Int64(42)
-		let cuatro = Song(context: self)
+		let cuatro = ZZZSong(context: self)
 		cuatro.container = delta; cuatro.index = Int64(0)
 		cuatro.persistentID = Int64(-10000)
 	}
