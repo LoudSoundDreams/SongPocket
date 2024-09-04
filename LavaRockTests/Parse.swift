@@ -23,21 +23,22 @@ private let badStructure: String = """
 		43
 47
 	53
+		
 """
 
 @Test private func parseBadStructure() {
 	let crates = Parser(badStructure).crates()
 	#expect(crates == [
 		LRCrate(title: "7", albums: [
-			LRAlbum(id: "13", songs: [
-				LRSong(id: "17"),
-				LRSong(id: "19"),
-				LRSong(id: "23"),
+			LRAlbum(rawID: "13", songs: [
+				LRSong(rawID: "17"),
+				LRSong(rawID: "19"),
+				LRSong(rawID: "23"),
 			]),
 		]),
 		LRCrate(title: "37", albums: [
-			LRAlbum(id: "41", songs: [
-				LRSong(id: "43"),
+			LRAlbum(rawID: "41", songs: [
+				LRSong(rawID: "43"),
 			]),
 		]),
 	])
