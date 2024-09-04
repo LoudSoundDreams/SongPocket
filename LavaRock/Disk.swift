@@ -3,29 +3,6 @@
 import Foundation
 import os
 
-struct LRCrate: Equatable {
-	let title: String
-	let albums: [LRAlbum]
-}
-extension LRCrate: CustomStringConvertible {
-	var description: String { "\(title) • albums: \(albums.count)" }
-}
-
-struct LRAlbum: Equatable {
-	let rawID: String
-	let songs: [LRSong]
-}
-extension LRAlbum: CustomStringConvertible {
-	var description: String { "\(rawID) • songs: \(songs.count)" }
-}
-
-struct LRSong: Equatable {
-	let rawID: String
-}
-extension LRSong: CustomStringConvertible {
-	var description: String { rawID }
-}
-
 enum Disk {
 	static func save(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let filer = FileManager.default
