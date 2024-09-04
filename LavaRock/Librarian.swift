@@ -342,7 +342,6 @@ extension Librarian {
 		let albumID = firstInfo.albumID
 		if let existingAlbum = existingAlbums[albumID] {
 			// …then add the `Song`s to that `Album`.
-			let songIDs = newInfos.map { $0.songID }
 			let isInDefaultOrder: Bool = {
 				let userOrder: [ZZZSong] = existingAlbum.songs(sorted: true)
 				let defaultOrder: [ZZZSong] = SongOrder.sortedNumerically(strict: true, userOrder)
@@ -350,6 +349,7 @@ extension Librarian {
 					userOrder[counter].objectID == defaultOrder[counter].objectID
 				}
 			}()
+			let songIDs = newInfos.map { $0.songID }
 			if isInDefaultOrder {
 				songIDs.reversed().forEach {
 					let _ = ZZZSong(atBeginningOf: existingAlbum, songID: $0)
