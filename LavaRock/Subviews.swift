@@ -162,7 +162,11 @@ import MediaPlayer
 #if targetEnvironment(simulator)
 			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
 #else
-			mkSection?.title ?? InterfaceText.unknownAlbum
+			guard
+				let albumTitle = mkSection?.title,
+				albumTitle != ""
+			else { return InterfaceText.unknownAlbum }
+			return albumTitle
 #endif
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {

@@ -11,9 +11,9 @@ enum InterfaceText {
 	static let more = NSLocalizedString("More", comment: "Button")
 	
 	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
-	static let tilde = NSLocalizedString("~", comment: "Invisible, but here for consistency. Default title for a new folder, which used to contain albums.")
 	static let octothorpe = NSLocalizedString("#", comment: "Number sign. Stand-in for missing number")
-	static let emDash = NSLocalizedString("—", comment: "Em dash. Stand-in for missing general text: currently for missing song title")
+	static let emDash = NSLocalizedString("—", comment: "Em dash. Stand-in for missing general text: song titles, album titles, album artists, etc.")
+	static let tilde = NSLocalizedString("~", comment: "Invisible, but here for consistency. Default title for a new crate, which used to contain albums.")
 	
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "Stand-in for missing info on albums and songs")
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Stand-in for missing album title")
