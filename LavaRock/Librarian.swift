@@ -402,7 +402,6 @@ extension Librarian {
 	) {
 		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. Later, you must delete empty `Album`s and reindex the `Song`s within each `Album`.
 		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
-		context.deleteEmptyCollections()
 		
 		// Always reindex all `Album`s, because we might have deleted some, which leaves gaps in the indices.
 		let allAlbums = context.fetchPlease(ZZZAlbum.fetchRequest_sorted())

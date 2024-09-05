@@ -161,16 +161,6 @@ extension NSManagedObjectContext {
 			}
 		}
 	}
-	final func deleteEmptyCollections() {
-		var all = fetchPlease(ZZZCollection.fetchRequest_sorted())
-		all.enumerated().reversed().forEach { (index, collection) in
-			if collection.contents?.count == 0 {
-				delete(collection)
-				all.remove(at: index)
-			}
-		}
-		Database.renumber(all)
-	}
 	
 	// MARK: - Migration
 	
