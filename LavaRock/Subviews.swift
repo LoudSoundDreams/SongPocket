@@ -355,7 +355,7 @@ import MediaPlayer
 					
 					SystemMusicPlayer._shared?.playLater([mkSong])
 				}
-			} label: { Label(InterfaceText.playLater, systemImage: "text.line.last.and.arrowtriangle.forward") }
+			} label: { Label(InterfaceText.addToQueue, systemImage: "text.line.last.and.arrowtriangle.forward") }
 			// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 			Button {
 				Task {
@@ -373,7 +373,7 @@ import MediaPlayer
 					SystemMusicPlayer._shared?.playLater(mkSongs)
 				}
 			} label: {
-				Label(InterfaceText.playRestOfAlbumLater, systemImage: "text.line.last.and.arrowtriangle.forward")
+				Label(InterfaceText.addRestOfAlbumToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
 			}.disabled(
 				(signal_tappedMenu && false) || // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 				{

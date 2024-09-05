@@ -37,7 +37,7 @@ enum InterfaceText {
 	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Button")
 	
 	static let shuffle = NSLocalizedString("Shuffle", comment: "Button")
-	static let playLater = NSLocalizedString("Play Later", comment: "Button")
+	static let addToQueue = NSLocalizedString("Add to Queue", comment: "Button")
 	
 	// MARK: Library
 	
@@ -47,7 +47,7 @@ enum InterfaceText {
 	
 	static let startPlaying = NSLocalizedString("Start Playing", comment: "Button")
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
-	static let playRestOfAlbumLater = NSLocalizedString("Play Rest of Album Later", comment: "Button")
+	static let addRestOfAlbumToQueue = NSLocalizedString("Add Rest of Album to Queue", comment: "Button")
 	
 	static let select = NSLocalizedString("Select", comment: "Button")
 	static let selected = NSLocalizedString("Selected", comment: "Accessibility label")
