@@ -153,15 +153,6 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	// WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
-	final func unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade() {
-		fetchPlease(ZZZAlbum.fetchRequest()).forEach { album in
-			if album.contents?.count == 0 {
-				delete(album)
-			}
-		}
-	}
-	
 	// MARK: - Migration
 	
 	final func migrateFromMulticollection() {

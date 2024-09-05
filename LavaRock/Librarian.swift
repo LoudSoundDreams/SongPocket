@@ -239,7 +239,11 @@ extension Librarian {
 			song.container = destination
 		}
 		
-		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
+		context.fetchPlease(ZZZAlbum.fetchRequest()).forEach { album in
+			if album.contents?.count == 0 {
+				context.delete(album) // WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
+			}
+		}
 		
 		return topmostUniqueAlbums
 	}
@@ -400,16 +404,18 @@ extension Librarian {
 		songsToDelete: [ZZZSong],
 		allInfos: [SongInfo]
 	) {
-		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. Later, you must delete empty `Album`s and reindex the `Song`s within each `Album`.
-		context.unsafe_DeleteEmptyAlbums_WithoutReindexOrCascade()
-		
-		// Always reindex all `Album`s, because we might have deleted some, which leaves gaps in the indices.
-		let allAlbums = context.fetchPlease(ZZZAlbum.fetchRequest_sorted())
-		Database.renumber(allAlbums)
-		allAlbums.forEach {
-			$0.releaseDateEstimate = nil // Deprecated
-			let songs = $0.songs(sorted: true)
-			Database.renumber(songs)
+		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. You must reindex all `Song`s, delete empty `Album`s, and reindex all `Album`s.
+		var allAlbums = context.fetchPlease(ZZZAlbum.fetchRequest_sorted())
+		allAlbums.enumerated().reversed().forEach { (iAlbum, album) in
+			let songsInAlbum = album.songs(sorted: true)
+			guard !songsInAlbum.isEmpty else {
+				context.delete(album)
+				allAlbums.remove(at: iAlbum)
+				return
+			}
+			album.releaseDateEstimate = nil // Deprecated
+			Database.renumber(songsInAlbum)
 		}
+		Database.renumber(allAlbums)
 	}
 }
