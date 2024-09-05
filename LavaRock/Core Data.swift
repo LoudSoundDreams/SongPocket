@@ -195,8 +195,8 @@ extension NSManagedObjectContext {
 				album.index = Int64(top.contents?.count ?? 0)
 				album.container = top
 			}
+			delete(collection)
 		}
-		deleteEmptyCollections()
 		savePlease()
 	}
 	private func mockMulticollection() {
