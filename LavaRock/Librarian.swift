@@ -97,18 +97,13 @@ extension Librarian {
 #endif
 		}
 	}
-	private static let workingOnMusicKitIDs = 10 == 1
 	private static let workingOnPlainDatabase = 10 == 1
 	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
 		isMerging = true
 		defer { isMerging = false }
 		
-		if Self.workingOnMusicKitIDs {
-			ZZZDatabase.destroy()
-			mergeFromMusicKit(unsortedSections)
-		} else {
-			mergeFromMediaPlayer(unorderedMediaItems)
-		}
+//		mergeFromMusicKit(unsortedSections)
+		mergeFromMediaPlayer(unorderedMediaItems)
 		
 		if Self.workingOnPlainDatabase {
 			let crate: LRCrate? = {
