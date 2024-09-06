@@ -44,7 +44,7 @@ extension AlbumListState {
 		}()
 	}
 	private static func freshAlbums() -> [ZZZAlbum] {
-		return Database.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
+		return ZZZDatabase.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
 	}
 	fileprivate func rowIdentifiers() -> [AnyHashable] {
 		return items.map { switch $0 {
@@ -247,7 +247,7 @@ final class AlbumsTVC: LibraryTVC {
 	func showCurrent() {
 		guard
 			let currentSongID = MPMusicPlayerController.nowPlayingID,
-			let currentSong = Database.viewContext.fetchSong(mpID: currentSongID),
+			let currentSong = ZZZDatabase.viewContext.fetchSong(mpID: currentSongID),
 			let currentAlbumID = currentSong.container?.albumPersistentID
 		else { return }
 		guard let currentAlbumRow = albumListState.items.firstIndex(where: { switch $0 {
@@ -362,7 +362,7 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
 	
 	private func endSelecting() {
-		Database.viewContext.savePlease()
+		ZZZDatabase.viewContext.savePlease()
 		
 		switch albumListState.selectMode {
 			case .view: break

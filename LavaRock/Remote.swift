@@ -97,7 +97,7 @@ import MediaPlayer
 	private func newOverflowTitle() -> String {
 		if
 			MusicAuthorization.currentStatus == .authorized,
-			Database.viewContext.fetchPlease(ZZZCollection.fetchRequest()).isEmpty
+			ZZZDatabase.viewContext.fetchPlease(ZZZCollection.fetchRequest()).isEmpty
 		{ return InterfaceText._emptyLibraryMessage }
 		return ""
 	}
@@ -111,7 +111,7 @@ import MediaPlayer
 #else
 						guard
 							let currentSongID = MPMusicPlayerController.nowPlayingID,
-							nil != Database.viewContext.fetchSong(mpID: currentSongID)
+							nil != ZZZDatabase.viewContext.fetchSong(mpID: currentSongID)
 						else { return .disabled }
 						return []
 #endif

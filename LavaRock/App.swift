@@ -11,7 +11,7 @@ import MusicKit
 			defaults.removeObject(forKey: existingKey)
 		}
 		
-		Database.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
+		ZZZDatabase.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
 	}
 	var body: some Scene {
 		let workingOnAlbumView = 1

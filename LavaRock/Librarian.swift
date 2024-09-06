@@ -21,7 +21,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 	}}
 	
 	private init() {}
-	@ObservationIgnored private let context = Database.viewContext
+	@ObservationIgnored private let context = ZZZDatabase.viewContext
 	private let signposter = OSSignposter(subsystem: "persistence", category: "librarian")
 }
 extension Librarian {
@@ -360,7 +360,7 @@ extension Librarian {
 				
 				let songsInAlbum = existingAlbum.songs(sorted: true)
 				let sorted = SongOrder.sortedNumerically(strict: true, songsInAlbum)
-				Database.renumber(sorted)
+				ZZZDatabase.renumber(sorted)
 			} else {
 				songIDs.reversed().forEach {
 					let _ = ZZZSong(atBeginningOf: existingAlbum, songID: $0)
@@ -414,8 +414,8 @@ extension Librarian {
 				return
 			}
 			album.releaseDateEstimate = nil // Deprecated
-			Database.renumber(songsInAlbum)
+			ZZZDatabase.renumber(songsInAlbum)
 		}
-		Database.renumber(allAlbums)
+		ZZZDatabase.renumber(allAlbums)
 	}
 }

@@ -359,7 +359,7 @@ import MediaPlayer
 			// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 			Button {
 				Task {
-					guard let album = Database.viewContext.fetchAlbum(id: albumID) else { return }
+					guard let album = ZZZDatabase.viewContext.fetchAlbum(id: albumID) else { return }
 					let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
 					let mkSongs: [MKSong] = await {
 						var result: [MKSong] = []
@@ -379,7 +379,7 @@ import MediaPlayer
 				{
 					let _ = albumListState.selectMode // In case you add or remove the bottom song while the menu is open.
 					guard
-						let album = Database.viewContext.fetchAlbum(id: albumID),
+						let album = ZZZDatabase.viewContext.fetchAlbum(id: albumID),
 						let bottomSong = album.songs(sorted: true).last
 					else { return false }
 					return songID == bottomSong.persistentID

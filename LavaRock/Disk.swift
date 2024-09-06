@@ -6,7 +6,7 @@ import os
 enum Disk {
 	static func save(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let filer = FileManager.default
-		try! filer.createDirectory(at: pDatabase, withIntermediateDirectories: true)
+		try! filer.createDirectory(at: pFolder, withIntermediateDirectories: true)
 		
 		let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 		let _serialize = signposter.beginInterval("serialize")
@@ -22,11 +22,11 @@ enum Disk {
 		}
 		signposter.endInterval("serialize", _serialize)
 		let data = Data(output.utf8)
-		try! data.write(to: pDatabase.appending(path: cCrates), options: [.atomic, .completeFileProtection])
+		try! data.write(to: pFolder.appending(path: cCrates), options: [.atomic, .completeFileProtection])
 	}
 	
 	static func loadCrates() -> [LRCrate] {
-		guard let data = try? Data(contentsOf: pDatabase.appending(path: cCrates)) else {
+		guard let data = try? Data(contentsOf: pFolder.appending(path: cCrates)) else {
 			// Maybe the file doesn’t exist.
 			return []
 		}
@@ -40,7 +40,7 @@ enum Disk {
 	fileprivate static let tAlbum = "\t"
 	fileprivate static let ttSong = "\t\t"
 	
-	private static let pDatabase = URL.applicationSupportDirectory.appending(path: "v1/")
+	private static let pFolder = URL.applicationSupportDirectory.appending(path: "v1/")
 	private static let cCrates = "crates"
 }
 

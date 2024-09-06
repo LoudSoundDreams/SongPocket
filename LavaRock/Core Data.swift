@@ -2,7 +2,7 @@
 
 import CoreData
 
-enum Database {
+enum ZZZDatabase {
 	@MainActor static let viewContext = container.viewContext
 	private static let container: NSPersistentContainer = {
 		let container = NSPersistentContainer(name: "LavaRock")
