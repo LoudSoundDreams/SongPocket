@@ -146,7 +146,7 @@ extension NSManagedObjectContext {
 		do {
 			result = try fetch(request)
 		} catch {
-			fatalError("Couldn’t load items from Core Data using the fetch request: \(request)")
+			fatalError("Core Data couldn’t fetch: \(request). \(error)")
 		}
 		return result
 	}
@@ -156,7 +156,7 @@ extension NSManagedObjectContext {
 		do {
 			try save()
 		} catch {
-			fatalError("Crashed while trying to save changes synchronously: \(error)")
+			fatalError("Core Data couldn’t save. \(error)")
 		}
 	}
 	
