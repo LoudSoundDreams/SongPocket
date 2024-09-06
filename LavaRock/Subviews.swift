@@ -20,8 +20,7 @@ import MediaPlayer
 					Rectangle().foregroundStyle(.thinMaterial)
 				}}
 			ZStack { if expansion_labeled {
-				AlbumLabel(albumID: albumID, albumListState: albumListState)
-					.accessibilitySortPriority(10)
+				AlbumLabel(albumID: albumID, albumListState: albumListState).accessibilitySortPriority(10)
 			}}
 		}
 		.animation(.linear(duration: .oneEighth), value: expansion_labeled)

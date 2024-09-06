@@ -207,8 +207,8 @@ extension Librarian {
 				return LRCrate(title: zzzCollection.title ?? "", albums: lrAlbums)
 			}()
 			
-			Disk.save([lrCrate].compacted())
-			ZZZDatabase.destroy()
+//			Disk.save([lrCrate].compacted())
+//			ZZZDatabase.destroy()
 			
 			Library.shared.lrCrate = lrCrate
 		} else {

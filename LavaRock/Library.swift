@@ -1,12 +1,5 @@
 // 2024-09-04
 
-@MainActor final class Library {
-	static let shared = Library()
-	var lrCrate: LRCrate? = nil
-	
-	private init() {}
-}
-
 struct LRCrate: Equatable {
 	let title: String
 	var albums: [LRAlbum]
@@ -17,6 +10,13 @@ struct LRAlbum: Equatable {
 }
 struct LRSong: Equatable {
 	let mpSongID: MPID
+}
+
+@MainActor final class Library {
+	static let shared = Library()
+	var lrCrate: LRCrate? = nil
+	
+	private init() {}
 }
 
 extension LRCrate: CustomStringConvertible {

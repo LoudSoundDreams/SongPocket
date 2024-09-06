@@ -311,7 +311,7 @@ final class AlbumsTVC: LibraryTVC {
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
 				Task {
-					guard 
+					guard
 						let chosenSong = self.albumListState.songs(with: [chosenSongID]).first,
 						let chosenAlbum = chosenSong.container,
 						let chosenMKSong = await Librarian.shared.mkSongFetched(mpID: chosenSong.persistentID)
