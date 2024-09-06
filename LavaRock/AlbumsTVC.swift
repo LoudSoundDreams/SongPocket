@@ -362,7 +362,9 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
 	
 	private func endSelecting() {
-		ZZZDatabase.viewContext.savePlease()
+		if !WorkingOn.plainDatabase {
+			ZZZDatabase.viewContext.savePlease()
+		}
 		
 		switch albumListState.selectMode {
 			case .view: break

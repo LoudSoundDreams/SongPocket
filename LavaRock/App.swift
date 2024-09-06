@@ -3,6 +3,10 @@
 import SwiftUI
 import MusicKit
 
+enum WorkingOn {
+	static let plainDatabase = 10 == 1
+}
+
 @main struct LavaRock: App {
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
