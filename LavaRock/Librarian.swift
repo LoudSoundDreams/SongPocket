@@ -366,7 +366,7 @@ extension Librarian {
 			// Otherwise, create the `Album` to add the `Song`s to…
 			let newAlbum: ZZZAlbum = {
 				let collection: ZZZCollection = {
-					if let existing = context.fetchPlease(ZZZCollection.fetchRequest()).first { // Order doesn’t matter, because our database should contain exactly 0 or 1 `Collection`s at this point.
+					if let existing = context.fetchCollection() {
 						return existing
 					}
 					let new = ZZZCollection(context: context)
@@ -401,24 +401,26 @@ extension Librarian {
 		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s.
 		
 		// Delete empty containers and reindex everything.
-		context.fetchPlease(ZZZCollection.fetchRequest()).forEach {
-			var albums = $0.albums(sorted: true)
-			albums.indices.reversed().forEach { iAlbum in
-				let album = albums[iAlbum]
-				let songs = album.songs(sorted: true)
-				guard !songs.isEmpty else {
-					context.delete(album)
-					albums.remove(at: iAlbum)
-					return
-				}
-				album.releaseDateEstimate = nil // Deprecated
-				ZZZDatabase.renumber(songs)
-			}
-			guard !albums.isEmpty else {
-				context.delete($0)
+		
+		guard let collection = context.fetchCollection() else { return }
+		
+		var albums = collection.albums(sorted: true)
+		albums.indices.reversed().forEach { iAlbum in
+			let album = albums[iAlbum]
+			let songs = album.songs(sorted: true)
+			guard !songs.isEmpty else {
+				context.delete(album)
+				albums.remove(at: iAlbum)
 				return
 			}
-			ZZZDatabase.renumber(albums)
+			album.releaseDateEstimate = nil // Deprecated
+			ZZZDatabase.renumber(songs)
 		}
+		guard !albums.isEmpty else {
+			context.delete(collection)
+			return
+		}
+		
+		ZZZDatabase.renumber(albums)
 	}
 }

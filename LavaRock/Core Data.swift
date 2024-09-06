@@ -52,7 +52,7 @@ extension ZZZCollection {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
+	fileprivate static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
 		let result = fetchRequest()
 		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return result
@@ -124,6 +124,9 @@ extension NSManagedObjectContext {
 		}
 	}
 	
+	final func fetchCollection() -> ZZZCollection? {
+		return fetchPlease(ZZZCollection.fetchRequest_sorted()).first
+	}
 	final func fetchAlbum(id albumIDToMatch: AlbumID) -> ZZZAlbum? {
 		let request = ZZZAlbum.fetchRequest()
 		request.predicate = NSPredicate(#Predicate<ZZZAlbum> {
