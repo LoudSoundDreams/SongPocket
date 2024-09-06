@@ -97,40 +97,12 @@ extension Librarian {
 #endif
 		}
 	}
-	private static let workingOnPlainDatabase = 10 == 1
 	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
 		isMerging = true
 		defer { isMerging = false }
 		
 //		mergeFromMusicKit(unsortedSections)
 		mergeFromMediaPlayer(unorderedMediaItems)
-		
-		if Self.workingOnPlainDatabase {
-			let crate: LRCrate? = {
-				guard let zzzCollection = context.fetchCollection() else { return nil }
-				var lrAlbums: [LRAlbum] = []
-				zzzCollection.albums(sorted: true).forEach { zzzAlbum in
-					var lrSongs: [LRSong] = []
-					zzzAlbum.songs(sorted: true).forEach { zzzSong in
-						lrSongs.append(
-							LRSong(mpSongID: MPID(zzzSong.persistentID))
-						)
-					}
-					lrAlbums.append(
-						LRAlbum(
-							mpAlbumID: MPID(zzzAlbum.albumPersistentID),
-							songs: lrSongs)
-					)
-				}
-				return LRCrate(title: zzzCollection.title ?? "", albums: lrAlbums)
-			}()
-			
-			Library.shared.lrCrate = crate
-			
-			Disk.save([crate].compacted())
-		}
-		
-		context.savePlease()
 	}
 	
 	// MARK: - MUSICKIT
@@ -177,6 +149,7 @@ extension Librarian {
 	
 	// MARK: - MEDIA PLAYER
 	
+	private static let workingOnPlainDatabase = 10 == 1
 	private func mergeFromMediaPlayer(_ unorderedMediaItems: [SongInfo]) {
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
@@ -214,6 +187,33 @@ extension Librarian {
 		updateLibraryItems(existingAndFresh: toUpdate)
 		createLibraryItems(newInfos: toCreate)
 		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: unorderedMediaItems)
+		
+		if Self.workingOnPlainDatabase {
+			let crate: LRCrate? = {
+				guard let zzzCollection = context.fetchCollection() else { return nil }
+				var lrAlbums: [LRAlbum] = []
+				zzzCollection.albums(sorted: true).forEach { zzzAlbum in
+					var lrSongs: [LRSong] = []
+					zzzAlbum.songs(sorted: true).forEach { zzzSong in
+						lrSongs.append(
+							LRSong(mpSongID: MPID(zzzSong.persistentID))
+						)
+					}
+					lrAlbums.append(
+						LRAlbum(
+							mpAlbumID: MPID(zzzAlbum.albumPersistentID),
+							songs: lrSongs)
+					)
+				}
+				return LRCrate(title: zzzCollection.title ?? "", albums: lrAlbums)
+			}()
+			
+			Library.shared.lrCrate = crate
+			
+			Disk.save([crate].compacted())
+		}
+		
+		context.savePlease()
 	}
 	
 	// MARK: - Update
