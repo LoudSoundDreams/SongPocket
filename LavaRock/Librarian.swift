@@ -98,6 +98,7 @@ extension Librarian {
 		}
 	}
 	private static let workingOnMusicKitIDs = 10 == 1
+	private static let workingOnPlainDatabase = 10 == 1
 	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
 		isMerging = true
 		defer { isMerging = false }
@@ -109,12 +110,38 @@ extension Librarian {
 			mergeFromMediaPlayer(unorderedMediaItems)
 		}
 		
+		if Self.workingOnPlainDatabase {
+			let crate: LRCrate? = {
+				guard let zzzCollection = context.fetchCollection() else { return nil }
+				var lrAlbums: [LRAlbum] = []
+				zzzCollection.albums(sorted: true).forEach { zzzAlbum in
+					var lrSongs: [LRSong] = []
+					zzzAlbum.songs(sorted: true).forEach { zzzSong in
+						lrSongs.append(
+							LRSong(mpSongID: MPID(zzzSong.persistentID))
+						)
+					}
+					lrAlbums.append(
+						LRAlbum(
+							mpAlbumID: MPID(zzzAlbum.albumPersistentID),
+							songs: lrSongs)
+					)
+				}
+				return LRCrate(title: zzzCollection.title ?? "", albums: lrAlbums)
+			}()
+			
+			Library.shared.lrCrate = crate
+			
+			Disk.save([crate].compacted())
+		}
+		
 		context.savePlease()
 	}
 	
 	// MARK: - MUSICKIT
 	
 	private func mergeFromMusicKit(_ unsortedSections: [MKSection]) {
+		/*
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }
 		
@@ -150,6 +177,7 @@ extension Librarian {
 		let _save = signposter.beginInterval("save")
 		Disk.save([newCrate])
 		signposter.endInterval("save", _save)
+		 */
 	}
 	
 	// MARK: - MEDIA PLAYER

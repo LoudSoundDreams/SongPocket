@@ -2,28 +2,29 @@
 
 @MainActor final class Library {
 	static let shared = Library()
+	var lrCrate: LRCrate? = nil
 	
 	private init() {}
 }
 
 struct LRCrate: Equatable {
 	let title: String
-	let albums: [LRAlbum]
+	var albums: [LRAlbum]
 }
 struct LRAlbum: Equatable {
-	let rawID: String
-	let songs: [LRSong]
+	let mpAlbumID: MPID
+	var songs: [LRSong]
 }
 struct LRSong: Equatable {
-	let rawID: String
+	let mpSongID: MPID
 }
 
 extension LRCrate: CustomStringConvertible {
-	var description: String { "\(title) • albums: \(albums.count)" }
+	var description: String { "\(title) → albums: \(albums.count)" }
 }
 extension LRAlbum: CustomStringConvertible {
-	var description: String { "\(rawID) • songs: \(songs.count)" }
+	var description: String { "\(mpAlbumID) → songs: \(songs.count)" }
 }
 extension LRSong: CustomStringConvertible {
-	var description: String { rawID }
+	var description: String { "\(mpSongID)" }
 }

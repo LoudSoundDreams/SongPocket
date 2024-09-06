@@ -2,6 +2,7 @@
 
 import MediaPlayer
 
+typealias MPID = MPMediaEntityPersistentID
 typealias AlbumID = Int64
 typealias SongID = Int64
 

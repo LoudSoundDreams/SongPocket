@@ -31,15 +31,15 @@ private let badStructure: String = """
 	let crates = Parser(badStructure).crates()
 	#expect(crates == [
 		LRCrate(title: "7", albums: [
-			LRAlbum(rawID: "13", songs: [
-				LRSong(rawID: "17"),
-				LRSong(rawID: "19"),
-				LRSong(rawID: "23"),
+			LRAlbum(mpAlbumID: MPID("13")!, songs: [
+				LRSong(mpSongID: MPID("17")!),
+				LRSong(mpSongID: MPID("19")!),
+				LRSong(mpSongID: MPID("23")!),
 			]),
 		]),
 		LRCrate(title: "", albums: [
-			LRAlbum(rawID: "41", songs: [
-				LRSong(rawID: "43"),
+			LRAlbum(mpAlbumID: MPID("41")!, songs: [
+				LRSong(mpSongID: MPID("43")!),
 			]),
 		]),
 	])

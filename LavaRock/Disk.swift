@@ -14,9 +14,9 @@ enum Disk {
 		crates.forEach {
 			output.append(contentsOf: "\($0.title)\n")
 			$0.albums.forEach { album in
-				output.append(contentsOf: "\(tAlbum)\(album.rawID)\n")
+				output.append(contentsOf: "\(tAlbum)\(album.mpAlbumID)\n")
 				album.songs.forEach { song in
-					output.append(contentsOf: "\(ttSong)\(song.rawID)\n")
+					output.append(contentsOf: "\(ttSong)\(song.mpSongID)\n")
 				}
 			}
 		}
@@ -59,13 +59,14 @@ struct Parser {
 		var result: [LRCrate] = []
 		var iLine = 0
 		while iLine < lines.count {
+			let content = lines[iLine]
+			
 			guard isCrate(at: iLine) else {
 				// Not a crate line. Skip it.
 				iLine += 1
 				continue
 			}
 			
-			let crateTitle = lines[iLine]
 			iLine += 1
 			let (nextILine, albums) = albumsUntilOutdent(from: iLine)
 			
@@ -75,7 +76,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRCrate(title: String(crateTitle), albums: albums)
+				LRCrate(title: String(content), albums: albums)
 			)
 		}
 		return result
@@ -90,14 +91,19 @@ struct Parser {
 			iLine < lines.count,
 			!isCrate(at: iLine) // Parse albums until outdent.
 		{
-			guard isAlbum(at: iLine) else {
+			let line = lines[iLine]
+			let content = line.dropFirst(Disk.tAlbum.count)
+			let mpAlbumID: MPID? = MPID(String(content))
+			
+			guard
+				isAlbum(at: iLine),
+				let mpAlbumID
+			else {
 				// Not an album line. Skip it.
 				iLine += 1
 				continue
 			}
 			
-			let line = lines[iLine]
-			let albumID = line.dropFirst(Disk.tAlbum.count)
 			iLine += 1
 			let (nextILine, songs) = songsUntilOutdent(from: iLine)
 			
@@ -107,7 +113,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRAlbum(rawID: String(albumID), songs: songs)
+				LRAlbum(mpAlbumID: mpAlbumID, songs: songs)
 			)
 		}
 		return (iLine, result)
@@ -118,21 +124,26 @@ struct Parser {
 		
 		var result: [LRSong] = []
 		var iLine = start
-		while 
+		while
 			iLine < lines.count,
 			!isCrate(at: iLine), !isAlbum(at: iLine) // Parse songs until outdent.
 		{
-			guard isSong(at: iLine) else {
+			let line = lines[iLine]
+			let content = line.dropFirst(Disk.ttSong.count)
+			let mpSongID: MPID? = MPID(String(content))
+			
+			guard
+				isSong(at: iLine),
+				let mpSongID
+			else {
 				// Not a valid song line. Skip it.
 				iLine += 1
 				continue
 			}
 			
-			let line = lines[iLine]
-			let songID = line.dropFirst(Disk.ttSong.count)
 			iLine += 1
 			result.append(
-				LRSong(rawID: String(songID))
+				LRSong(mpSongID: mpSongID)
 			)
 		}
 		return (iLine, result)
