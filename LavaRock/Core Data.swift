@@ -4,6 +4,22 @@ import CoreData
 
 enum ZZZDatabase {
 	@MainActor static let viewContext = container.viewContext
+	
+	static func renumber(_ items: [NSManagedObject]) {
+		items.enumerated().forEach { (currentIndex, item) in
+			item.setValue(Int64(currentIndex), forKey: "index")
+		}
+	}
+	
+	static func destroy() {
+		let coordinator = container.persistentStoreCoordinator
+		coordinator.persistentStores.forEach { store in
+			try! coordinator.destroyPersistentStore(
+				at: store.url!,
+				type: NSPersistentStore.StoreType(rawValue: store.type))
+		}
+	}
+	
 	private static let container: NSPersistentContainer = {
 		let container = NSPersistentContainer(name: "LavaRock")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -21,24 +37,11 @@ enum ZZZDatabase {
 		})
 		return container
 	}()
-	
-	static func renumber(_ items: [NSManagedObject]) {
-		items.enumerated().forEach { (currentIndex, item) in
-			item.setValue(Int64(currentIndex), forKey: "index")
-		}
-	}
 }
 
 // MARK: - Collection
 
 extension ZZZCollection {
-	// Similar to `Album.fetchRequest_sorted`.
-	static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
-		let result = fetchRequest()
-		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		return result
-	}
-	
 	// Similar to `Album.songs`.
 	final func albums(sorted: Bool) -> [ZZZAlbum] {
 		guard let contents else { return [] }
@@ -48,12 +51,17 @@ extension ZZZCollection {
 		
 		return unsorted.sorted { $0.index < $1.index }
 	}
+	
+	static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
+		let result = fetchRequest()
+		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		return result
+	}
 }
 
 // MARK: - Album
 
 extension ZZZAlbum {
-	// Similar to `Collection.fetchRequest_sorted`.
 	static func fetchRequest_sorted() -> NSFetchRequest<ZZZAlbum> {
 		let result = fetchRequest()
 		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
@@ -116,17 +124,17 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	final func fetchSong(mpID: SongID) -> ZZZSong? {
-		let request = ZZZSong.fetchRequest()
-		request.predicate = NSPredicate(#Predicate<ZZZSong> {
-			mpID == $0.persistentID
-		})
-		return fetchPlease(request).first
-	}
 	final func fetchAlbum(id albumIDToMatch: AlbumID) -> ZZZAlbum? {
 		let request = ZZZAlbum.fetchRequest()
 		request.predicate = NSPredicate(#Predicate<ZZZAlbum> {
 			albumIDToMatch == $0.albumPersistentID
+		})
+		return fetchPlease(request).first
+	}
+	final func fetchSong(mpID: SongID) -> ZZZSong? {
+		let request = ZZZSong.fetchRequest()
+		request.predicate = NSPredicate(#Predicate<ZZZSong> {
+			mpID == $0.persistentID
 		})
 		return fetchPlease(request).first
 	}

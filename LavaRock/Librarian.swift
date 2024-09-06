@@ -103,13 +103,7 @@ extension Librarian {
 		defer { isMerging = false }
 		
 		if Self.workingOnMusicKitIDs {
-			let allSongs = context.fetchPlease(ZZZSong.fetchRequest())
-			allSongs.forEach { context.delete($0) }
-			let allAlbums = context.fetchPlease(ZZZAlbum.fetchRequest())
-			allAlbums.forEach { context.delete($0) }
-			let allCollections = context.fetchPlease(ZZZCollection.fetchRequest())
-			allCollections.forEach { context.delete($0) }
-			
+			ZZZDatabase.destroy()
 			mergeFromMusicKit(unsortedSections)
 		} else {
 			mergeFromMediaPlayer(unorderedMediaItems)
@@ -241,7 +235,7 @@ extension Librarian {
 		
 		context.fetchPlease(ZZZAlbum.fetchRequest()).forEach { album in
 			if album.contents?.count == 0 {
-				context.delete(album) // WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. You must call `deleteEmptyCollections` later.
+				context.delete(album) // WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. Fix those later.
 			}
 		}
 		

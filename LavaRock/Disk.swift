@@ -44,7 +44,7 @@ enum Disk {
 	private static let cCrates = "crates"
 }
 
-struct Parser {
+private struct Parser {
 	private let signposter = OSSignposter(subsystem: "persistence", category: "parser")
 	
 	init(_ string: String) {
