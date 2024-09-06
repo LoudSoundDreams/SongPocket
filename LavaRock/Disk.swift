@@ -44,11 +44,11 @@ enum Disk {
 	private static let cCrates = "crates"
 }
 
-private struct Parser {
+struct Parser {
 	private let signposter = OSSignposter(subsystem: "persistence", category: "parser")
 	
 	init(_ string: String) {
-		self.lines = string.split(separator: "\n", omittingEmptySubsequences: true)
+		self.lines = string.split(separator: "\n", omittingEmptySubsequences: false)
 	}
 	private let lines: [Substring]
 	
@@ -86,7 +86,7 @@ private struct Parser {
 		
 		var result: [LRAlbum] = []
 		var iLine = start
-		while 
+		while
 			iLine < lines.count,
 			!isCrate(at: iLine) // Parse albums until outdent.
 		{

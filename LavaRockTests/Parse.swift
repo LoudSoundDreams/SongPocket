@@ -18,7 +18,8 @@ private let badStructure: String = """
 		23
 	29
 31
-37
+
+	37
 	41
 		43
 47
@@ -36,7 +37,7 @@ private let badStructure: String = """
 				LRSong(rawID: "23"),
 			]),
 		]),
-		LRCrate(title: "37", albums: [
+		LRCrate(title: "", albums: [
 			LRAlbum(rawID: "41", songs: [
 				LRSong(rawID: "43"),
 			]),
