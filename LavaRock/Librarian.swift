@@ -404,18 +404,27 @@ extension Librarian {
 		songsToDelete: [ZZZSong],
 		allInfos: [SongInfo]
 	) {
-		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s. You must reindex all `Song`s, delete empty `Album`s, and reindex all `Album`s.
-		var allAlbums = context.fetchPlease(ZZZAlbum.fetchRequest_sorted())
-		allAlbums.enumerated().reversed().forEach { (iAlbum, album) in
-			let songsInAlbum = album.songs(sorted: true)
-			guard !songsInAlbum.isEmpty else {
-				context.delete(album)
-				allAlbums.remove(at: iAlbum)
+		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s.
+		
+		// Delete empty containers and reindex everything.
+		context.fetchPlease(ZZZCollection.fetchRequest()).forEach {
+			var albums = $0.albums(sorted: true)
+			albums.indices.reversed().forEach { iAlbum in
+				let album = albums[iAlbum]
+				let songs = album.songs(sorted: true)
+				guard !songs.isEmpty else {
+					context.delete(album)
+					albums.remove(at: iAlbum)
+					return
+				}
+				album.releaseDateEstimate = nil // Deprecated
+				ZZZDatabase.renumber(songs)
+			}
+			guard !albums.isEmpty else {
+				context.delete($0)
 				return
 			}
-			album.releaseDateEstimate = nil // Deprecated
-			ZZZDatabase.renumber(songsInAlbum)
+			ZZZDatabase.renumber(albums)
 		}
-		ZZZDatabase.renumber(allAlbums)
 	}
 }
