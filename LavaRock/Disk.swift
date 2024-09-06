@@ -67,8 +67,8 @@ struct Parser {
 			
 			let crateTitle = lines[iLine]
 			iLine += 1
-			
 			let (nextILine, albums) = albumsUntilOutdent(from: iLine)
+			
 			iLine = nextILine
 			guard !albums.isEmpty else {
 				// No valid albums for this crate. Skip this crate line.
@@ -99,8 +99,8 @@ struct Parser {
 			let line = lines[iLine]
 			let albumID = line.dropFirst(Disk.tAlbum.count)
 			iLine += 1
-			
 			let (nextILine, songs) = songsUntilOutdent(from: iLine)
+			
 			iLine = nextILine
 			guard !songs.isEmpty else {
 				// No valid songs for this album. Skip this album line.
@@ -131,7 +131,6 @@ struct Parser {
 			let line = lines[iLine]
 			let songID = line.dropFirst(Disk.ttSong.count)
 			iLine += 1
-			
 			result.append(
 				LRSong(rawID: String(songID))
 			)

@@ -25,7 +25,7 @@ extension Sequence {
 	}
 }
 
-extension Array  {
+extension Array {
 	func inAnyOtherOrder() -> Self
 	where Element: Equatable
 	{
