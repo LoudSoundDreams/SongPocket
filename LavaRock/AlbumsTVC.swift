@@ -394,7 +394,9 @@ final class AlbumsTVC: LibraryTVC {
 			case .view: return true
 			case .selectAlbums(let selectedIDs):
 				if selectedIDs.isEmpty { return true }
-				let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+				let selectedIndices: [Int] = albumListState.albums().indices__ {
+					selectedIDs.contains($0.albumPersistentID)
+				}
 				return selectedIndices.isConsecutive()
 		}}()
 		album_refreshArrangeMenu()
@@ -514,7 +516,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_promote() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+				selectedIDs.contains($0.albumPersistentID)
+			}.map { Int64($0) }
 			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
 			
 			let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
@@ -570,7 +574,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_demote() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+				selectedIDs.contains($0.albumPersistentID)
+			}.map { Int64($0) }
 			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
 			
 			let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.albums().count)-1) : back
@@ -628,7 +634,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_float() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+				selectedIDs.contains($0.albumPersistentID)
+			}.map { Int64($0) }
 			guard let back = selectedIndices.last else { return }
 			
 			let range = (0...back)
@@ -671,7 +679,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_sink() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums(with: selectedIDs).map { $0.index }
+			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+				selectedIDs.contains($0.albumPersistentID)
+			}.map { Int64($0) }
 			guard let front = selectedIndices.first else { return }
 			
 			let range = (front...Int64(albumListState.albums().count)-1)

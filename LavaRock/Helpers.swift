@@ -25,6 +25,15 @@ extension Sequence {
 	}
 }
 
+extension Collection {
+	func indices__(where isGood: (Element) -> Bool) -> [Index] {
+		return indices.filter { iElement in
+			let element = self[iElement]
+			return isGood(element)
+		}
+	}
+}
+
 extension Array {
 	func inAnyOtherOrder() -> Self
 	where Element: Equatable
