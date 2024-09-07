@@ -16,11 +16,23 @@
 #endif
 	}
 	
+	private static let workingOnStickyRepeat = 10 == 1
 	final func playNow<ToPlay: PlayableMusicItem>(_ playables: [ToPlay], startingAt: ToPlay? = nil) {
 		state.shuffleMode = .none // As of iOS 17.6 developer beta 3, you must do this before setting `queue`, not after. Otherwise, if you happen to set the queue with the same contents, this does nothing.
-		state.repeatMode = RepeatMode.none // As of iOS 17.6 developer beta 3, this line of code sometimes does nothing; I haven’t figured out the exact conditions. It’s more reliable if we run it before setting `queue`, not after.
+		var oldRepeatMode: RepeatMode? = nil
+		if Self.workingOnStickyRepeat {
+			oldRepeatMode = state.repeatMode
+		} else {
+			state.repeatMode = RepeatMode.none // As of iOS 17.6 developer beta 3, this line of code sometimes does nothing; I haven’t figured out the exact conditions. It’s more reliable if we run it before setting `queue`, not after.
+		}
 		queue = Queue(for: playables, startingAt: startingAt) // Slow.
-		Task { try? await play() }
+		Task {
+			try? await play()
+			
+			if Self.workingOnStickyRepeat {
+				state.repeatMode = oldRepeatMode
+			}
+		}
 	}
 	
 	final func playLater(_ playables: [some PlayableMusicItem]) {
