@@ -18,19 +18,15 @@ enum WorkingOn {
 		ZZZDatabase.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
 	}
 	var body: some Scene {
-		let workingOnAlbumView = 1
 		WindowGroup {
-			switch workingOnAlbumView {
-				case 10: AlbumShelf()
-				case 100: AlbumList()
-				default:
-					RootVCRep()
-						.ignoresSafeArea()
-						.task {
-							guard MusicAuthorization.currentStatus == .authorized else { return }
-							Self.integrateAppleMusic()
-						}
-			}
+//			AlbumShelf()
+//			AlbumList()
+			RootVCRep()
+				.ignoresSafeArea()
+				.task {
+					guard MusicAuthorization.currentStatus == .authorized else { return }
+					Self.integrateAppleMusic()
+				}
 		}
 	}
 	
