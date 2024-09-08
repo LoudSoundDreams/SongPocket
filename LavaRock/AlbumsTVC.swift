@@ -28,17 +28,15 @@ extension AlbumListState {
 			switch expansion {
 				case .collapsed: return albums.map { .album($0) }
 				case .expanded(let expandedAlbumID):
-					guard let expandedAlbum = albums.first(where: { album in
+					guard let iExpandedAlbum = albums.firstIndex(where: { album in
 						expandedAlbumID == album.albumPersistentID
 					}) else {
 						expansion = .collapsed
 						return albums.map { .album($0) }
 					}
-					let inlineSongs = expandedAlbum.songs(sorted: true)
+					let songs: [Item] = albums[iExpandedAlbum].songs(sorted: true).map { .song($0) }
 					var result: [Item] = albums.map { .album($0) }
-					result.insert(
-						contentsOf: inlineSongs.map { .song($0) },
-						at: Int(expandedAlbum.index) + 1)
+					result.insert(contentsOf: songs, at: iExpandedAlbum + 1)
 					return result
 			}
 		}()
