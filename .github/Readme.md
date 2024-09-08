@@ -1,4 +1,4 @@
-SongPocket is a library-focused music player.
+SongPocket is a music player for iOS inspired by record crates.
 
 It’s on the [App Store](https://apps.apple.com/us/app/songpocket/id1538037231).
 
