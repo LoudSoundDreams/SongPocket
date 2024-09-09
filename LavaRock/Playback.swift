@@ -21,7 +21,7 @@
 		let oldRepeatMode: RepeatMode? = state.repeatMode
 		queue = Queue(for: playables, startingAt: startingAt) // Slow.
 		Task {
-			try? await play()
+			guard let _ = try? await play() else { return }
 			
 			state.repeatMode = oldRepeatMode
 		}
@@ -29,7 +29,7 @@
 	
 	final func playLater(_ playables: [some PlayableMusicItem]) {
 		Task {
-			try? await queue.insert(playables, position: .tail)
+			guard let _ = try? await queue.insert(playables, position: .tail) else { return }
 			
 			let impactor = UIImpactFeedbackGenerator(style: .heavy)
 			impactor.impactOccurred()
