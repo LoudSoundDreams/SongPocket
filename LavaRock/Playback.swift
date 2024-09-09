@@ -17,12 +17,12 @@
 	}
 	
 	final func playNow<ToPlay: PlayableMusicItem>(_ playables: [ToPlay], startingAt: ToPlay? = nil) {
-		state.shuffleMode = .none // As of iOS 17.6 developer beta 3, you must do this before setting `queue`, not after. Otherwise, if you happen to set the queue with the same contents, this does nothing.
 		let oldRepeatMode: RepeatMode? = state.repeatMode
 		queue = Queue(for: playables, startingAt: startingAt) // Slow.
 		Task {
 			guard let _ = try? await play() else { return }
 			
+			state.shuffleMode = .off // Not `.none`; this property is an optional.
 			state.repeatMode = oldRepeatMode
 		}
 	}
