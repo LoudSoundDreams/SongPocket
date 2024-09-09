@@ -116,7 +116,7 @@ import MediaPlayer
 				ArtworkImage(artwork, width: maxSideLength)
 			} else {
 				ZStack {
-					Color(uiColor: .secondarySystemBackground) // Close to what Apple Music uses
+					Color(white: .oneFourth)
 						.frame(width: maxSideLength, height: maxSideLength)
 					Image(systemName: "music.note")
 						.foregroundStyle(.secondary)
