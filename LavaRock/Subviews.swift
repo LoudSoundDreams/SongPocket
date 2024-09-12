@@ -221,7 +221,7 @@ import MediaPlayer
 	}
 	@ViewBuilder private var mainStack: some View {
 		let title: String? = mkSong?.title
-		let mkSection: MKSection? = librarian.mkSection(albumID: albumID)
+		let albumInfo: AlbumInfo? = librarian.mkSectionInfo(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
 			NowPlayingIndicator(songID: songID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
@@ -230,7 +230,7 @@ import MediaPlayer
 				if
 					let songArtist = mkSong?.artistName,
 					songArtist != "",
-					songArtist != mkSection?.artistName
+					songArtist != albumInfo?._artist
 				{
 					Text(songArtist)
 						.foregroundStyle(.secondary)
@@ -239,15 +239,12 @@ import MediaPlayer
 			}
 			Spacer()
 			Text({
-				guard let mkSong, let mkSection else { return InterfaceText.octothorpe }
-				let discCount = mkSection.items.reduce(into: 1) { highest, mkSong in
-					if let disc = mkSong.discNumber, disc > highest { highest = disc }
-				}
+				guard let mkSong, let albumInfo else { return InterfaceText.octothorpe }
 				let trackFormatted: String = {
 					guard let track = mkSong.trackNumber else { return InterfaceText.octothorpe }
 					return String(track)
 				}()
-				if discCount >= 2 {
+				if albumInfo._discCount >= 2 {
 					let discFormatted: String = {
 						guard let disc = mkSong.discNumber else { return InterfaceText.octothorpe }
 						return String(disc)

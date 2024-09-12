@@ -6,6 +6,7 @@ struct AlbumInfo {
 	var _title: String
 	var _artist: String
 	var _releaseDate: Date?
+	var _discCount: Int
 }
 #if targetEnvironment(simulator)
 struct Sim_Album {
