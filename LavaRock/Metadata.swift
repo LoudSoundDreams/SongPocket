@@ -20,6 +20,13 @@ struct Sim_Album {
 }
 #endif
 
+struct SongInfo__ {
+	let _title: String
+	let _artist: String
+	let _disc: Int?
+	let _track: Int?
+}
+
 import MediaPlayer
 
 typealias MPID = MPMediaEntityPersistentID

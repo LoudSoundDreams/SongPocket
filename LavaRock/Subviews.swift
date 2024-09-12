@@ -220,7 +220,26 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var mainStack: some View {
-		let title: String? = mkSong?.title
+		let songInfo: SongInfo__? = {
+#if targetEnvironment(simulator)
+			guard let sim_song = Sim_MusicLibrary.shared.sim_songs[songID]
+			else { return nil }
+			return SongInfo__(
+				_title: sim_song.titleOnDisk ?? "",
+				_artist: "",
+				_disc: 1,
+				_track: sim_song.trackNumberOnDisk)
+#else
+			guard let mkSong
+			else { return nil }
+			return SongInfo__(
+				_title: mkSong.title,
+				_artist: mkSong.artistName,
+				_disc: mkSong.discNumber,
+				_track: mkSong.trackNumber)
+#endif
+		}()
+		let title: String? = songInfo?._title
 		let albumInfo: AlbumInfo? = librarian.mkSectionInfo(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
@@ -228,7 +247,7 @@ import MediaPlayer
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(title ?? InterfaceText.emDash)
 				if
-					let songArtist = mkSong?.artistName,
+					let songArtist = songInfo?._artist,
 					songArtist != "",
 					songArtist != albumInfo?._artist
 				{
@@ -239,14 +258,14 @@ import MediaPlayer
 			}
 			Spacer()
 			Text({
-				guard let mkSong, let albumInfo else { return InterfaceText.octothorpe }
+				guard let songInfo, let albumInfo else { return InterfaceText.octothorpe }
 				let trackFormatted: String = {
-					guard let track = mkSong.trackNumber else { return InterfaceText.octothorpe }
+					guard let track = songInfo._track else { return InterfaceText.octothorpe }
 					return String(track)
 				}()
 				if albumInfo._discCount >= 2 {
 					let discFormatted: String = {
-						guard let disc = mkSong.discNumber else { return InterfaceText.octothorpe }
+						guard let disc = songInfo._disc else { return InterfaceText.octothorpe }
 						return String(disc)
 					}()
 					return "\(discFormatted)\(InterfaceText.interpunct)\(trackFormatted)"
