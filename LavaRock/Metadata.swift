@@ -33,7 +33,6 @@ protocol SongInfo {
 	var discNumberOnDisk: Int { get }
 	var trackNumberOnDisk: Int { get }
 	var titleOnDisk: String? { get }
-	var artistOnDisk: String? { get }
 	var dateAddedOnDisk: Date { get }
 }
 
@@ -80,7 +79,6 @@ extension MPMediaItem: SongInfo {
 	final var discNumberOnDisk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
 	final var trackNumberOnDisk: Int { albumTrackNumber }
 	final var titleOnDisk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
-	final var artistOnDisk: String? { artist }
 	final var dateAddedOnDisk: Date { dateAdded }
 }
 
@@ -94,7 +92,6 @@ struct Sim_Song: SongInfo {
 	let discNumberOnDisk: Int
 	let trackNumberOnDisk: Int
 	let titleOnDisk: String?
-	let artistOnDisk: String?
 	let dateAddedOnDisk: Date
 }
 
@@ -144,7 +141,6 @@ private extension Date {
 					discNumberOnDisk: 1,
 					trackNumberOnDisk: indexInAlbum + 1,
 					titleOnDisk: demoSong.title,
-					artistOnDisk: demoSong.artist,
 					dateAddedOnDisk: demoDate)
 				songDict[songIDNext] = result
 				return result
