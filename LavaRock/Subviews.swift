@@ -156,26 +156,16 @@ import MediaPlayer
 	private static let workingOnOverflowAlbum = 10 == 1
 	
 	@ViewBuilder private var textStack: some View {
-		let mkSection = Librarian.shared.mkSection(albumID: albumID)
+		let albumInfo: AlbumInfo? = Librarian.shared.mkSectionInfo(albumID: albumID)
 		let titleAndInputLabel: String = {
-#if targetEnvironment(simulator)
-			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ??
-			InterfaceText.unknownAlbum
-#else
-			guard let albumTitle = mkSection?.title, albumTitle != ""
+			guard let albumTitle = albumInfo?._title, albumTitle != ""
 			else { return InterfaceText.unknownAlbum }
 			return albumTitle
-#endif
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
-#if targetEnvironment(simulator)
-				guard let date = Sim_MusicLibrary.shared.albumInfos[albumID]?._releaseDate
+				guard let date = albumInfo?._releaseDate
 				else { return InterfaceText.emDash }
-#else
-				guard let date = mkSection?.releaseDate
-				else { return InterfaceText.emDash }
-#endif
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
@@ -183,14 +173,9 @@ import MediaPlayer
 			.monospacedDigit()
 			.accessibilitySortPriority(10)
 			Text({
-#if targetEnvironment(simulator)
-				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ??
-				InterfaceText.unknownArtist
-#else
-				guard let albumArtist = mkSection?.artistName, albumArtist != ""
+				guard let albumArtist = albumInfo?._artist, albumArtist != ""
 				else { return InterfaceText.unknownArtist }
 				return albumArtist
-#endif
 			}())
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
 			.font_caption2Bold()

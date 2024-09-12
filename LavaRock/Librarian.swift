@@ -34,6 +34,23 @@ extension Librarian {
 	}
 	static let willMerge = Notification.Name("LRMusicLibraryWillMerge")
 	static let didMerge = Notification.Name("LRMusicLibraryDidMerge")
+	func mkSectionInfo(albumID: AlbumID) -> AlbumInfo? {
+#if targetEnvironment(simulator)
+		guard let sim_album = Sim_MusicLibrary.shared.albumInfos[albumID]
+		else { return nil }
+		return AlbumInfo(
+			_title: sim_album.title,
+			_artist: sim_album.artist,
+			_releaseDate: sim_album.releaseDate)
+#else
+		guard let mkAlbum = mkSection(albumID: albumID)
+		else { return nil }
+		return AlbumInfo(
+			_title: mkAlbum.title,
+			_artist: mkAlbum.artistName,
+			_releaseDate: mkAlbum.releaseDate)
+#endif
+	}
 	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}

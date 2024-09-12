@@ -1,5 +1,24 @@
 // 2021-12-24
 
+import MusicKit
+
+struct AlbumInfo {
+	var _title: String
+	var _artist: String
+	var _releaseDate: Date?
+}
+#if targetEnvironment(simulator)
+struct Sim_Album {
+	let title: String
+	let artist: String
+	let releaseDate: Date?
+	
+	let _dateAdded: Date?
+	let artFileName: String
+	let _items: [Sim_Song]
+}
+#endif
+
 import MediaPlayer
 
 typealias MPID = MPMediaEntityPersistentID
@@ -67,15 +86,6 @@ extension MPMediaItem: SongInfo {
 // MARK: - Simulator
 
 #if targetEnvironment(simulator)
-struct Sim_Album {
-	let _title: String
-	let _artist: String
-	let _releaseDate: Date?
-	let _dateAdded: Date?
-	let artFileName: String
-	let _items: [Sim_Song]
-}
-
 struct Sim_Song: SongInfo {
 	let albumID: AlbumID
 	let songID: SongID
@@ -139,9 +149,9 @@ private extension Date {
 				return result
 			}
 			albumDict[albumIDNext] = Sim_Album(
-				_title: demoAlbum.title,
-				_artist: demoAlbum.artist,
-				_releaseDate: demoAlbum.releaseDate,
+				title: demoAlbum.title,
+				artist: demoAlbum.artist,
+				releaseDate: demoAlbum.releaseDate,
 				_dateAdded: demoDate,
 				artFileName: demoAlbum.artFileName,
 				_items: sim_songs)

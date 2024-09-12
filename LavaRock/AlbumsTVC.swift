@@ -448,11 +448,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded, .title, .artist: return true
 			case .recentlyReleased: return album_toArrange().contains {
-#if targetEnvironment(simulator)
-				nil != Sim_MusicLibrary.shared.albumInfos[$0.albumPersistentID]?._releaseDate
-#else
-				nil != Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate
-#endif
+				nil != Librarian.shared.mkSectionInfo(albumID: $0.albumPersistentID)?._releaseDate
 			}
 		}
 	}
