@@ -98,7 +98,7 @@ import MediaPlayer
 	var body: some View {
 		ZStack {
 #if targetEnvironment(simulator)
-			if let sim_album = Sim_MusicLibrary.shared.albumInfos[albumID] {
+			if let sim_album = Sim_MusicLibrary.shared.sim_albums[albumID] {
 				Image(sim_album.artFileName)
 					.resizable()
 					.scaledToFit()
@@ -261,7 +261,7 @@ import MediaPlayer
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 		.task {
-			mkSong = await librarian.mkSongFetched(mpID: songID)
+			mkSong = await librarian.mkSong_fetched(mpID: songID)
 		}
 	}
 	@State private var mkSong: MKSong? = nil
@@ -324,7 +324,7 @@ import MediaPlayer
 		Menu {
 			Button {
 				Task {
-					guard let mkSong = await librarian.mkSongFetched(mpID: songID) else { return }
+					guard let mkSong = await librarian.mkSong_fetched(mpID: songID) else { return }
 					
 					SystemMusicPlayer._shared?.playNow([mkSong])
 				}
@@ -332,7 +332,7 @@ import MediaPlayer
 			Divider()
 			Button {
 				Task {
-					guard let mkSong = await librarian.mkSongFetched(mpID: songID) else { return }
+					guard let mkSong = await librarian.mkSong_fetched(mpID: songID) else { return }
 					
 					SystemMusicPlayer._shared?.playLater([mkSong])
 				}
@@ -345,7 +345,7 @@ import MediaPlayer
 					let mkSongs: [MKSong] = await {
 						var result: [MKSong] = []
 						for song in restOfAlbum {
-							guard let mkSong = await librarian.mkSongFetched(mpID: song.persistentID) else { continue }
+							guard let mkSong = await librarian.mkSong_fetched(mpID: song.persistentID) else { continue }
 							result.append(mkSong)
 						}
 						return result
@@ -406,7 +406,7 @@ struct NowPlayingIndicator: View {
 	}
 	@MainActor private var status: Status {
 #if targetEnvironment(simulator)
-		guard songID == Sim_MusicLibrary.shared.currentSongInfo?.songID else { return .notPlaying }
+		guard songID == Sim_MusicLibrary.shared.current_sim_song?.songID else { return .notPlaying }
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.

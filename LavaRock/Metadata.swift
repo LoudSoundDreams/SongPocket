@@ -3,10 +3,10 @@
 import MusicKit
 
 struct AlbumInfo {
-	var _title: String
-	var _artist: String
-	var _releaseDate: Date?
-	var _discCount: Int
+	let _title: String
+	let _artist: String
+	let _releaseDate: Date?
+	let _discCount: Int
 }
 #if targetEnvironment(simulator)
 struct Sim_Album {
@@ -54,7 +54,7 @@ extension ZZZAlbum {
 extension ZZZSong {
 	@MainActor static func songInfo(mpID: SongID) -> (some SongInfo)? {
 #if targetEnvironment(simulator)
-		return Sim_MusicLibrary.shared.songInfos[mpID]
+		return Sim_MusicLibrary.shared.sim_songs[mpID]
 #else
 		return mpMediaItem(id: mpID)
 #endif
@@ -120,9 +120,9 @@ private extension Date {
 
 @MainActor final class Sim_MusicLibrary {
 	static let shared = Sim_MusicLibrary()
-	let albumInfos: [AlbumID: Sim_Album]
-	let songInfos: [SongID: Sim_Song]
-	let currentSongInfo: Sim_Song?
+	let sim_albums: [AlbumID: Sim_Album]
+	let sim_songs: [SongID: Sim_Song]
+	let current_sim_song: Sim_Song?
 	
 	private init() {
 		var albumDict: [AlbumID: Sim_Album] = [:]
@@ -132,7 +132,7 @@ private extension Date {
 		let demoDate = Date.now
 		Self.demoAlbums.forEach { demoAlbum in
 			defer { albumIDNext += 1 }
-			let sim_songs: [Sim_Song] = demoAlbum.tracks.indices.map { indexInAlbum in
+			let items: [Sim_Song] = demoAlbum.tracks.indices.map { indexInAlbum in
 				defer { songIDNext += 1 }
 				let demoSong = demoAlbum.tracks[indexInAlbum]
 				let result = Sim_Song(
@@ -151,11 +151,11 @@ private extension Date {
 				releaseDate: demoAlbum.releaseDate,
 				_dateAdded: demoDate,
 				artFileName: demoAlbum.artFileName,
-				_items: sim_songs)
+				_items: items)
 		}
-		self.albumInfos = albumDict
-		self.songInfos = songDict
-		currentSongInfo = songInfos[SongID(0)]
+		self.sim_albums = albumDict
+		self.sim_songs = songDict
+		current_sim_song = sim_songs[SongID(0)]
 	}
 	private static let demoAlbums: [DemoAlbum] = [
 		DemoAlbum(

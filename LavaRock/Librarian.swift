@@ -36,7 +36,7 @@ extension Librarian {
 	static let didMerge = Notification.Name("LRMusicLibraryDidMerge")
 	func mkSectionInfo(albumID: AlbumID) -> AlbumInfo? {
 #if targetEnvironment(simulator)
-		guard let sim_album = Sim_MusicLibrary.shared.albumInfos[albumID]
+		guard let sim_album = Sim_MusicLibrary.shared.sim_albums[albumID]
 		else { return nil }
 		return AlbumInfo(
 			_title: sim_album.title,
@@ -61,7 +61,7 @@ extension Librarian {
 	func mkSection(albumID: AlbumID) -> MKSection? {
 		return mkSections[MusicItemID(String(albumID))]
 	}
-	func mkSongFetched(mpID: SongID) async -> MKSong? { // Slow; 11ms in 2024.
+	func mkSong_fetched(mpID: SongID) async -> MKSong? { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MKSong>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(mpID)))
 		guard
@@ -84,7 +84,7 @@ extension Librarian {
 	@objc private func mergeChanges() {
 		Task {
 #if targetEnvironment(simulator)
-			mergeFromAppleMusic(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.songInfos.values))
+			mergeFromAppleMusic(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
 			

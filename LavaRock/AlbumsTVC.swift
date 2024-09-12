@@ -312,12 +312,12 @@ final class AlbumsTVC: LibraryTVC {
 					guard
 						let chosenSong = self.albumListState.songs(with: [chosenSongID]).first,
 						let chosenAlbum = chosenSong.container,
-						let chosenMKSong = await Librarian.shared.mkSongFetched(mpID: chosenSong.persistentID)
+						let chosenMKSong = await Librarian.shared.mkSong_fetched(mpID: chosenSong.persistentID)
 					else { return }
 					let mkSongs: [MKSong] = await {
 						var result: [MKSong] = []
 						for song in chosenAlbum.songs(sorted: true) {
-							guard let mkSong = await Librarian.shared.mkSongFetched(mpID: song.persistentID) else { continue }
+							guard let mkSong = await Librarian.shared.mkSong_fetched(mpID: song.persistentID) else { continue }
 							result.append(mkSong)
 						}
 						return result
