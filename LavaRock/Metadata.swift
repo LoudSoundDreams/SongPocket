@@ -33,7 +33,7 @@ extension ZZZAlbum {
 }
 
 extension ZZZSong {
-	@MainActor static func info(mpID: SongID) -> (some SongInfo)? {
+	@MainActor static func songInfo(mpID: SongID) -> (some SongInfo)? {
 #if targetEnvironment(simulator)
 		return Sim_MusicLibrary.shared.songInfos[mpID]
 #else

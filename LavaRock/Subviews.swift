@@ -159,11 +159,10 @@ import MediaPlayer
 		let mkSection = Librarian.shared.mkSection(albumID: albumID)
 		let titleAndInputLabel: String = {
 #if targetEnvironment(simulator)
-			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ?? InterfaceText.unknownAlbum
+			return Sim_MusicLibrary.shared.albumInfos[albumID]?._title ??
+			InterfaceText.unknownAlbum
 #else
-			guard
-				let albumTitle = mkSection?.title,
-				albumTitle != ""
+			guard let albumTitle = mkSection?.title, albumTitle != ""
 			else { return InterfaceText.unknownAlbum }
 			return albumTitle
 #endif
@@ -171,9 +170,11 @@ import MediaPlayer
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
 #if targetEnvironment(simulator)
-				guard let date = Sim_MusicLibrary.shared.albumInfos[albumID]?._releaseDate else { return InterfaceText.emDash }
+				guard let date = Sim_MusicLibrary.shared.albumInfos[albumID]?._releaseDate
+				else { return InterfaceText.emDash }
 #else
-				guard let date = mkSection?.releaseDate else { return InterfaceText.emDash }
+				guard let date = mkSection?.releaseDate
+				else { return InterfaceText.emDash }
 #endif
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
@@ -183,11 +184,10 @@ import MediaPlayer
 			.accessibilitySortPriority(10)
 			Text({
 #if targetEnvironment(simulator)
-				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ?? InterfaceText.unknownArtist
+				return Sim_MusicLibrary.shared.albumInfos[albumID]?._artist ??
+				InterfaceText.unknownArtist
 #else
-				guard
-					let albumArtist = mkSection?.artistName,
-					albumArtist != ""
+				guard let albumArtist = mkSection?.artistName, albumArtist != ""
 				else { return InterfaceText.unknownArtist }
 				return albumArtist
 #endif

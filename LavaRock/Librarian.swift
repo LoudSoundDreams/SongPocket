@@ -364,7 +364,7 @@ extension Librarian {
 		if let existingAlbum = existingAlbums[albumID] {
 			// …then add the `Song`s to that `Album`.
 			let isInDefaultOrder: Bool = {
-				let existingSongInfos: [some SongInfo] = existingAlbum.songs(sorted: true).compactMap { ZZZSong.info(mpID: $0.persistentID) }
+				let existingSongInfos: [some SongInfo] = existingAlbum.songs(sorted: true).compactMap { ZZZSong.songInfo(mpID: $0.persistentID) }
 				return existingSongInfos.allNeighborsSatisfy {
 					SongOrder.__precedesNumerically(strict: true, $0, $1)
 				}

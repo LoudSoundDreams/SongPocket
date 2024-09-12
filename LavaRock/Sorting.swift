@@ -158,7 +158,7 @@ enum SongOrder {
 	@MainActor static func sortedNumerically(strict: Bool, _ input: [ZZZSong]) -> [ZZZSong] {
 		let songsAndInfos: [(song: ZZZSong, info: (some SongInfo)?)] = input.map {(
 			song: $0,
-			info: ZZZSong.info(mpID: $0.persistentID)
+			info: ZZZSong.songInfo(mpID: $0.persistentID)
 		)}
 		let sorted = songsAndInfos.sortedStably {
 			let left = $0.info; let right = $1.info
