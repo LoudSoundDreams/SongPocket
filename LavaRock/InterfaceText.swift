@@ -23,7 +23,6 @@ enum InterfaceText {
 	static let _emptyLibraryMessage = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
 	
 	static let nowPlaying = NSLocalizedString("Now Playing", comment: "Button and accessibility label")
-	static let repeatOff = NSLocalizedString("Repeat Off", comment: "Button")
 	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
 	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
