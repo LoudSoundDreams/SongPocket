@@ -339,6 +339,7 @@ import MediaPlayer
 	let songID: SongID
 	let albumID: AlbumID
 	let albumListState: AlbumListState
+	private static let workingOnAddToQueue = 10 == 1
 	var body: some View {
 		Menu {
 			Button {
@@ -353,9 +354,15 @@ import MediaPlayer
 				Task {
 					guard let mkSong = await librarian.mkSong_fetched(mpID: songID) else { return }
 					
-					SystemMusicPlayer._shared?.playLater([mkSong])
+					SystemMusicPlayer._shared?.playLater([mkSong], actuallyNextNotLater: !Self.workingOnAddToQueue)
 				}
-			} label: { Label(InterfaceText.addToQueue, systemImage: "text.line.last.and.arrowtriangle.forward") }
+			} label: {
+				if Self.workingOnAddToQueue {
+					Label(InterfaceText.addToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
+				} else {
+					Label(InterfaceText.playNext, systemImage: "text.line.first.and.arrowtriangle.forward")
+				}
+			}
 			// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 			Button {
 				Task {
@@ -370,10 +377,14 @@ import MediaPlayer
 						return result
 					}()
 					
-					SystemMusicPlayer._shared?.playLater(mkSongs)
+					SystemMusicPlayer._shared?.playLater(mkSongs, actuallyNextNotLater: !Self.workingOnAddToQueue)
 				}
 			} label: {
-				Label(InterfaceText.addRestOfAlbumToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
+				if Self.workingOnAddToQueue {
+					Label(InterfaceText.addRestOfAlbumToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
+				} else {
+					Label(InterfaceText.playRestOfAlbumNext, systemImage: "text.line.first.and.arrowtriangle.forward")
+				}
 			}.disabled(
 				(signal_tappedMenu && false) || // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
 				{
