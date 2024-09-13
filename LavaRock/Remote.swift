@@ -117,20 +117,10 @@ import MediaPlayer
 #endif
 					}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrent() }
 				])},
-				// We want to indicate which mode is active by selecting it, not disabling it.
-				// However, as of iOS 17.4 developer beta 1, when using `UIMenu.ElementSize.small`, neither `UIMenu.Options.singleSelection` nor `UIMenuElement.State.on` visually selects any menu item.
-				// Disabling the selected mode is a compromise.
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(
 						title: InterfaceText.repeat1,
-						image: {
-							if
-								let __player = MPMusicPlayerController._system,
-								!SystemMusicPlayer.isEmpty,
-								__player.repeatMode == .one
-							{ return UIImage(systemName: "repeat.1.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)) }
-							return UIImage(systemName: "repeat.1")
-						}(),
+						image: UIImage(systemName: "repeat.1"),
 						attributes: SystemMusicPlayer.isEmpty ? .disabled : [],
 						state: {
 							if
