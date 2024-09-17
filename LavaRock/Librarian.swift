@@ -1,7 +1,7 @@
 // 2020-08-10
 
 import CoreData
-@preconcurrency import MusicKit
+import MusicKit
 import MediaPlayer
 import os
 

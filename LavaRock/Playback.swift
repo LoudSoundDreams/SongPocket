@@ -1,6 +1,6 @@
 // 2022-03-19
 
-@preconcurrency import MusicKit
+import MusicKit
 
 @MainActor extension SystemMusicPlayer {
 	static var _shared: SystemMusicPlayer? {
