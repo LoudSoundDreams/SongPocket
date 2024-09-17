@@ -33,7 +33,6 @@ enum WorkingOn {
 	@MainActor static func integrateAppleMusic() {
 		Librarian.shared.observeMPLibrary()
 		PlayerState.shared.observeMKPlayer()
-		Remote.shared.observeMediaPlayerController()
 	}
 }
 private struct RootVCRep: UIViewControllerRepresentable {

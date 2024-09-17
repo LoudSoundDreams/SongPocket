@@ -14,12 +14,17 @@ import Combine
 extension PlayerState {
 	func observeMKPlayer() {
 		SystemMusicPlayer._shared?.state.objectWillChange
-			.sink { [weak self] in self?.signal.toggle() }
-			.store(in: &cancellables)
+			.sink { [weak self] in
+				self?.signal.toggle()
+				NotificationCenter.default.post(name: Self.musicKit, object: nil)
+			}.store(in: &cancellables)
 		SystemMusicPlayer._shared?.queue.objectWillChange
-			.sink { [weak self] in self?.signal.toggle() }
-			.store(in: &cancellables)
+			.sink { [weak self] in
+				self?.signal.toggle()
+				NotificationCenter.default.post(name: Self.musicKit, object: nil)
+			}.store(in: &cancellables)
 	}
+	static let musicKit = Notification.Name("LRMusicKitPlayerStateOrQueue")
 }
 
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
@@ -28,18 +33,12 @@ extension PlayerState {
 	let playPauseButton = UIBarButtonItem()
 	let overflowButton = UIBarButtonItem()
 	var albumsTVC: WeakRef<AlbumsTVC>? = nil
-	func observeMediaPlayerController() {
-		refresh()
-		MPMusicPlayerController._system?.beginGeneratingPlaybackNotifications()
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
-	}
 	
 	private init() {
 		refresh()
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: Librarian.didMerge, object: nil) // Because when Media Player enters or exits the “Not Playing” state, it doesn’t post “now-playing item changed” notifications.
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: PlayerState.musicKit, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: Librarian.didMerge, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
 	}
-	
 	@objc private func refresh() {
 		refreshPlayPause()
 		refreshOverflow()
@@ -51,7 +50,7 @@ extension PlayerState {
 		playPauseButton.isEnabled = true
 #else
 		guard
-			let __player = MPMusicPlayerController._system,
+			let player = SystemMusicPlayer._shared,
 			!SystemMusicPlayer.isEmpty
 		else {
 			showPlay()
@@ -65,7 +64,7 @@ extension PlayerState {
 		playPauseButton.isEnabled = true
 		playPauseButton.accessibilityTraits.subtract(.notEnabled)
 		
-		if __player.playbackState == .playing {
+		if player.state.playbackStatus == .playing {
 			showPause()
 		} else {
 			showPlay()
