@@ -82,7 +82,7 @@ import MediaPlayer
 			!SystemMusicPlayer.isEmpty,
 			let repeatMode = SystemMusicPlayer._shared?.state.repeatMode
 		{
-			switch repeatMode {
+			switch repeatMode { // As of iOS 18, this is unreliable; it sometimes returns `.none` even if the Apple Music app shows “repeat one”.
 				case .one:
 					newImage = UIImage(systemName: "repeat.1.circle.fill")!
 					newLabel = [InterfaceText.repeat1, regularLabel].formattedAsNarrowList()
@@ -124,17 +124,19 @@ import MediaPlayer
 						attributes: SystemMusicPlayer.isEmpty ? .disabled : [],
 						state: {
 							if
-								let __player = MPMusicPlayerController._system,
 								!SystemMusicPlayer.isEmpty,
-								__player.repeatMode == .one
+								SystemMusicPlayer._shared?.state.repeatMode == .one
 							{ return .on }
 							return .off
 						}()) { _ in
-							guard let __player = MPMusicPlayerController._system else { return }
-							if __player.repeatMode == .one {
-								__player.repeatMode = MPMusicRepeatMode.none
+							guard
+								let player = SystemMusicPlayer._shared,
+								let repeatMode = player.state.repeatMode
+							else { return }
+							if repeatMode == .one {
+								player.state.repeatMode = MusicPlayer.RepeatMode.none
 							} else {
-								__player.repeatMode = .one
+								player.state.repeatMode = .one
 							}
 						}
 				])},
