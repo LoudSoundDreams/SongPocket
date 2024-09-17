@@ -80,14 +80,14 @@ import MediaPlayer
 		let regularLabel = InterfaceText.more
 		if
 			!SystemMusicPlayer.isEmpty,
-			let __player = MPMusicPlayerController._system
+			let repeatMode = SystemMusicPlayer._shared?.state.repeatMode
 		{
-			switch __player.repeatMode {
+			switch repeatMode {
 				case .one:
 					newImage = UIImage(systemName: "repeat.1.circle.fill")!
 					newLabel = [InterfaceText.repeat1, regularLabel].formattedAsNarrowList()
 					return
-				case .all, .none, .default: break
+				case .none, .all: break
 				@unknown default: break
 			}
 		}
