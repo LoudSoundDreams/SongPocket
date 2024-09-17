@@ -26,7 +26,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 }
 extension Librarian {
 	static let shared = Librarian()
-	func observeMediaPlayerLibrary() {
+	func observeMPLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)

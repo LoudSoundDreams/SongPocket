@@ -31,7 +31,7 @@ enum WorkingOn {
 	}
 	
 	@MainActor static func integrateAppleMusic() {
-		Librarian.shared.observeMediaPlayerLibrary()
+		Librarian.shared.observeMPLibrary()
 		PlayerState.shared.observeMKPlayer()
 		Remote.shared.observeMediaPlayerController()
 	}
