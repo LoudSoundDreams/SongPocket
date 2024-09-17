@@ -243,7 +243,7 @@ import MediaPlayer
 		let albumInfo: AlbumInfo? = librarian.mkSectionInfo(albumID: albumID)
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
-			NowPlayingIndicator(songID: songID, state: SystemMusicPlayer._shared!.state, queue: SystemMusicPlayer._shared!.queue)
+			NowPlayingIndicator(songID: songID)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
 				Text(title ?? InterfaceText.emDash)
 				if
@@ -407,8 +407,6 @@ import MediaPlayer
 
 struct NowPlayingIndicator: View {
 	let songID: SongID
-	@ObservedObject var state: SystemMusicPlayer.State
-	@ObservedObject var queue: SystemMusicPlayer.Queue
 	var body: some View {
 		ZStack {
 			NowPlayingImage().hidden()
@@ -436,15 +434,21 @@ struct NowPlayingIndicator: View {
 	}
 	@MainActor private var status: Status {
 #if targetEnvironment(simulator)
-		guard songID == Sim_MusicLibrary.shared.current_sim_song?.songID else { return .notPlaying }
+		guard songID == Sim_MusicLibrary.shared.current_sim_song?.songID
+		else { return .notPlaying }
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
-		guard songID == MPMusicPlayerController.nowPlayingID else { return .notPlaying }
+		let _ = signal
+		guard
+			let state = SystemMusicPlayer._shared?.state,
+			songID == MPMusicPlayerController.nowPlayingID
+		else { return .notPlaying }
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
 	}
 	private enum Status { case notPlaying, paused, playing }
+	private var signal: Bool { PlayerState.shared.signal }
 }
 
 // MARK: - Multipurpose

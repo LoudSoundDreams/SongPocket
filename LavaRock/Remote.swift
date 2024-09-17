@@ -3,6 +3,24 @@
 import UIKit
 @preconcurrency import MusicKit
 import MediaPlayer
+import Combine
+
+@MainActor @Observable final class PlayerState {
+	@ObservationIgnored static let shared = PlayerState()
+	var signal = false
+	private init() {}
+	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
+}
+extension PlayerState {
+	func observeMKPlayer() {
+		SystemMusicPlayer._shared?.state.objectWillChange
+			.sink { [weak self] in self?.signal.toggle() }
+			.store(in: &cancellables)
+		SystemMusicPlayer._shared?.queue.objectWillChange
+			.sink { [weak self] in self?.signal.toggle() }
+			.store(in: &cancellables)
+	}
+}
 
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor final class Remote {
