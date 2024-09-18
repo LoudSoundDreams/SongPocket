@@ -56,12 +56,8 @@ import MusicKit
 
 import MediaPlayer
 @MainActor extension MPMusicPlayerController {
-	static var _system: MPMusicPlayerController? {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
-		return .systemMusicPlayer
-	}
-	
 	static var nowPlayingID: SongID? {
-		return _system?.nowPlayingItem?.songID
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
+		return systemMusicPlayer.nowPlayingItem?.songID
 	}
 }
