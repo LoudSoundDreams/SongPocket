@@ -142,18 +142,16 @@ import MediaPlayer
 		HStack(alignment: .lastTextBaseline) {
 			NowPlayingImage().hidden()
 			textStack // Align with `SongRow`
-			if Self.workingOnOverflowAlbum {
-				Spacer()
-				Menu {} label: { OverflowImage() }
-					.onTapGesture {}
-					.disabled({ switch albumListState.selectMode { // We should also disable this when any album is expanded.
-						case .view: return false
-						case .selectAlbums, .selectSongs: return true
-					}}())
-			}
+//			Spacer()
+//			Menu {
+//				Button("Coming Soon", systemImage: "hammer") {}.disabled(true)
+//			} label: { OverflowImage() }
+//				.disabled({ switch albumListState.selectMode { // We should also disable this when any album is expanded.
+//					case .view: return false
+//					case .selectAlbums, .selectSongs: return true
+//				}}())
 		}.padding()
 	}
-	private static let workingOnOverflowAlbum = 10 == 1
 	
 	@ViewBuilder private var textStack: some View {
 		let albumInfo: AlbumInfo? = Librarian.shared.mkSectionInfo(albumID: albumID)
