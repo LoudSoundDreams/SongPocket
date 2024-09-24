@@ -378,24 +378,28 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
-	private let album_arranger = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var album_promoter = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up"), primaryAction: UIAction { [weak self] _ in self?.album_promote() }, menu: UIMenu(children: [aAlbumFloat]))
-	private lazy var album_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down"), primaryAction: UIAction { [weak self] _ in self?.album_demote() }, menu: UIMenu(children: [aAlbumSink]))
+	private let bAlbumSort = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var bAlbumUp = UIBarButtonItem(primaryAction: aAlbumPromote, menu: UIMenu(children: [aAlbumFloat]))
+	private lazy var bAlbumDown = UIBarButtonItem(primaryAction: aAlbumDemote, menu: UIMenu(children: [aAlbumSink]))
 	
+	private lazy var aAlbumPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up")) { [weak self] _ in self?.album_promote() }
+	private lazy var aAlbumDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down")) { [weak self] _ in self?.album_demote() }
 	private lazy var aAlbumFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.album_float() }
 	private lazy var aAlbumSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.album_sink() }
 	
-	private let song_arranger = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
-	private lazy var song_promoter = UIBarButtonItem(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up"), primaryAction: UIAction { [weak self] _ in self?.song_promote() }, menu: UIMenu(children: [aSongFloat]))
-	private lazy var song_demoter = UIBarButtonItem(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down"), primaryAction: UIAction { [weak self] _ in self?.song_demote() }, menu: UIMenu(children: [aSongSink]))
+	private let bSongSort = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
+	private lazy var bSongUp = UIBarButtonItem(primaryAction: aSongPromote, menu: UIMenu(children: [aSongFloat]))
+	private lazy var bSongDown = UIBarButtonItem(primaryAction: aSongDemote, menu: UIMenu(children: [aSongSink]))
 	
+	private lazy var aSongPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up")) { [weak self] _ in self?.song_promote() }
+	private lazy var aSongDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down")) { [weak self] _ in self?.song_demote() }
 	private lazy var aSongFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.song_float() }
 	private lazy var aSongSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }
 	
 	@objc private func album_reflectSelected() {
-		setToolbarItems([endSelectingButton, .flexibleSpace(), album_arranger, .flexibleSpace(), album_promoter, .flexibleSpace(), album_demoter], animated: true)
+		setToolbarItems([endSelectingButton, .flexibleSpace(), bAlbumSort, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown], animated: true)
 		
-		album_arranger.isEnabled = { switch albumListState.selectMode {
+		bAlbumSort.isEnabled = { switch albumListState.selectMode {
 			case .selectSongs: return false
 			case .view: return true
 			case .selectAlbums(let selectedIDs):
@@ -406,16 +410,16 @@ final class AlbumsTVC: LibraryTVC {
 				return selectedIndices.isConsecutive()
 		}}()
 		album_refreshArrangeMenu()
-		album_promoter.isEnabled = { switch albumListState.selectMode {
+		bAlbumUp.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedIDs): return !selectedIDs.isEmpty
 		}}()
-		album_demoter.isEnabled = album_promoter.isEnabled
+		bAlbumDown.isEnabled = bAlbumUp.isEnabled
 	}
 	@objc private func song_reflectSelected() {
-		setToolbarItems([endSelectingButton, .flexibleSpace(), song_arranger, .flexibleSpace(), song_promoter, .flexibleSpace(), song_demoter], animated: true)
+		setToolbarItems([endSelectingButton, .flexibleSpace(), bSongSort, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown], animated: true)
 		
-		song_arranger.isEnabled = { switch albumListState.selectMode {
+		bSongSort.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs(let selectedIDs):
 				if selectedIDs.isEmpty { return true }
@@ -425,17 +429,17 @@ final class AlbumsTVC: LibraryTVC {
 				return selectedIndices.isConsecutive()
 		}}()
 		song_refreshArrangeMenu()
-		song_promoter.isEnabled = { switch albumListState.selectMode {
+		bSongUp.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs(let selectedIDs): return !selectedIDs.isEmpty
 		}}()
-		song_demoter.isEnabled = song_promoter.isEnabled
+		bSongDown.isEnabled = bSongUp.isEnabled
 	}
 	
 	// MARK: - Sorting
 	
 	private func album_refreshArrangeMenu() {
-		album_arranger.preferredMenuElementOrder = .fixed
+		bAlbumSort.preferredMenuElementOrder = .fixed
 		
 		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased, .artist, .title], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
@@ -449,7 +453,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		album_arranger.menu = UIMenu(children: submenus)
+		bAlbumSort.menu = UIMenu(children: submenus)
 	}
 	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
 		guard album_toArrange().count >= 2 else { return false }
@@ -461,7 +465,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private func song_refreshArrangeMenu() {
-		song_arranger.preferredMenuElementOrder = .fixed
+		bSongSort.preferredMenuElementOrder = .fixed
 		
 		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
@@ -474,7 +478,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		song_arranger.menu = UIMenu(children: submenus)
+		bSongSort.menu = UIMenu(children: submenus)
 	}
 	
 	private func album_arrange(by albumOrder: AlbumOrder) {
