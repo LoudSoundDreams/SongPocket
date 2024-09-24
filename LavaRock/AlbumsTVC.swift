@@ -95,6 +95,10 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		endSelecting()
 		refreshBeginSelectingButton()
+		bAlbumSort.preferredMenuElementOrder = .fixed
+		bAlbumSort.menu = newAlbumSortMenu()
+		bSongSort.preferredMenuElementOrder = .fixed
+		bSongSort.menu = newSongSortMenu()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
@@ -410,7 +414,6 @@ final class AlbumsTVC: LibraryTVC {
 				}
 				return selectedIndices.isConsecutive()
 		}}()
-		album_refreshArrangeMenu()
 		bAlbumUp.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedIDs): return !selectedIDs.isEmpty
@@ -429,7 +432,6 @@ final class AlbumsTVC: LibraryTVC {
 				}
 				return selectedIndices.isConsecutive()
 		}}()
-		song_refreshArrangeMenu()
 		bSongUp.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs(let selectedIDs): return !selectedIDs.isEmpty
@@ -439,9 +441,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Sorting
 	
-	private func album_refreshArrangeMenu() {
-		bAlbumSort.preferredMenuElementOrder = .fixed
-		
+	private func newAlbumSortMenu() -> UIMenu {
 		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased, .artist, .title], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
 			UIMenu(options: .displayInline, children: group.map { albumOrder in
@@ -454,7 +454,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		bAlbumSort.menu = UIMenu(children: submenus)
+		return UIMenu(children: submenus)
 	}
 	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
 		guard album_toArrange().count >= 2 else { return false }
@@ -465,9 +465,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 		}
 	}
-	private func song_refreshArrangeMenu() {
-		bSongSort.preferredMenuElementOrder = .fixed
-		
+	private func newSongSortMenu() -> UIMenu {
 		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
 			UIMenu(options: .displayInline, children: group.map { songOrder in
@@ -479,7 +477,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		bSongSort.menu = UIMenu(children: submenus)
+		return UIMenu(children: submenus)
 	}
 	
 	private func album_arrange(by albumOrder: AlbumOrder) {
