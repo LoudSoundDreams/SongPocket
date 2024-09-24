@@ -341,7 +341,8 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Editing
 	
 	@objc private func refreshBeginSelectingButton() {
-		beginSelectingButton.isEnabled = !albumListState.items.isEmpty &&
+		beginSelectingButton.isEnabled =
+		!albumListState.items.isEmpty &&
 		MusicAuthorization.currentStatus == .authorized && // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 		!Librarian.shared.isMerging
 	}

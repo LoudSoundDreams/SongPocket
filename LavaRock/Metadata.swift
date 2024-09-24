@@ -160,6 +160,10 @@ private extension Date {
 				artFileName: demoAlbum.artFileName,
 				_items: items)
 		}
+		
+//		self.sim_albums = [:]
+//		self.sim_songs = [:]
+		
 		self.sim_albums = albumDict
 		self.sim_songs = songDict
 		current_sim_song = sim_songs[SongID(0)]
