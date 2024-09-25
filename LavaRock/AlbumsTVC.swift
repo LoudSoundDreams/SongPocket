@@ -313,23 +313,16 @@ final class AlbumsTVC: LibraryTVC {
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
 				Task {
+					self.albumListState.selectMode = .view(nil)
+					
 					guard
 						let chosenSong = self.albumListState.songs(with: [chosenSongID]).first,
-						let chosenAlbum = chosenSong.container,
-						let chosenMKSong = await Librarian.shared.mkSong_fetched(mpID: chosenSong.persistentID)
+						let chosenAlbum = chosenSong.container
 					else { return }
-					let mkSongs: [MKSong] = await {
-						var result: [MKSong] = []
-						for song in chosenAlbum.songs(sorted: true) {
-							guard let mkSong = await Librarian.shared.mkSong_fetched(mpID: song.persistentID) else { continue }
-							result.append(mkSong)
-						}
-						return result
-					}()
 					
-					SystemMusicPlayer._shared?.playNow(mkSongs, startingAt: chosenMKSong)
-					
-					self.albumListState.selectMode = .view(nil)
+					SystemMusicPlayer._shared?.playNow(
+						chosenAlbum.songs(sorted: true).map { $0.persistentID },
+						startingAt: chosenSong.persistentID)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)

@@ -341,19 +341,11 @@ import MediaPlayer
 	var body: some View {
 		Menu {
 			Button {
-				Task {
-					guard let mkSong = await librarian.mkSong_fetched(mpID: songID) else { return }
-					
-					SystemMusicPlayer._shared?.playNow([mkSong])
-				}
+				SystemMusicPlayer._shared?.playNow([songID])
 			} label: { Label(InterfaceText.play, systemImage: "play") }
 			Divider()
 			Button {
-				Task {
-					guard let mkSong = await librarian.mkSong_fetched(mpID: songID) else { return }
-					
-					SystemMusicPlayer._shared?.playLater([mkSong], actuallyNextNotLater: !Self.workingOnAddToQueue)
-				}
+				SystemMusicPlayer._shared?.playLater([songID], actuallyNextNotLater: !Self.workingOnAddToQueue)
 			} label: {
 				if Self.workingOnAddToQueue {
 					Label(InterfaceText.addToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
@@ -363,20 +355,11 @@ import MediaPlayer
 			}
 			// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
 			Button {
-				Task {
-					guard let album = ZZZDatabase.viewContext.fetchAlbum(id: albumID) else { return }
-					let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
-					let mkSongs: [MKSong] = await {
-						var result: [MKSong] = []
-						for song in restOfAlbum {
-							guard let mkSong = await librarian.mkSong_fetched(mpID: song.persistentID) else { continue }
-							result.append(mkSong)
-						}
-						return result
-					}()
-					
-					SystemMusicPlayer._shared?.playLater(mkSongs, actuallyNextNotLater: !Self.workingOnAddToQueue)
-				}
+				guard let album = ZZZDatabase.viewContext.fetchAlbum(id: albumID) else { return }
+				let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
+				SystemMusicPlayer._shared?.playLater(
+					restOfAlbum.map { $0.persistentID },
+					actuallyNextNotLater: !Self.workingOnAddToQueue)
 			} label: {
 				if Self.workingOnAddToQueue {
 					Label(InterfaceText.addRestOfAlbumToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
