@@ -200,14 +200,9 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Events
 	
-	override func viewWillTransition(
-		to size: CGSize,
-		with coordinator: UIViewControllerTransitionCoordinator
-	) {
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		albumListState.viewportSize = (
-			width: size.width,
-			height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		albumListState.viewportSize = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 	}
 	
 	@objc private func refreshLibraryItems() {
@@ -226,7 +221,7 @@ final class AlbumsTVC: LibraryTVC {
 						albumListState.selectMode = .selectAlbums(newSelected)
 					}
 				case .selectSongs(let selectedIDs):
-					guard !albumListState.songs().isEmpty else {// case .expanded = albumListState.expansion, albumListState.songs().isEmpty {
+					guard !albumListState.songs().isEmpty else {
 						endSelecting()
 						break
 					}
@@ -262,7 +257,7 @@ final class AlbumsTVC: LibraryTVC {
 			self.expandAndAlignTo(currentAlbumID)
 		}
 	}
-	
+    
 	@objc private func expandAlbumID(notification: Notification) {
 		guard let idToOpen = notification.object as? AlbumID else { return }
 		expandAndAlignTo(idToOpen)
