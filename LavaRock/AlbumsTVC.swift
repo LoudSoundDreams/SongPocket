@@ -6,7 +6,7 @@ import MusicKit
 import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var items: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
+	@ObservationIgnored fileprivate var listItems: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
 	var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 	var expansion: Expansion = .collapsed
 	var selectMode: SelectMode = .view(nil) { didSet {
@@ -23,7 +23,7 @@ extension AlbumListState {
 		case song(ZZZSong)
 	}
 	fileprivate func refreshItems() {
-		items = {
+		listItems = {
 			let albums = Self.freshAlbums()
 			switch expansion {
 				case .collapsed: return albums.map { .album($0) }
@@ -45,13 +45,13 @@ extension AlbumListState {
 		return ZZZDatabase.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
 	}
 	fileprivate func rowIdentifiers() -> [AnyHashable] {
-		return items.map { switch $0 {
+		return listItems.map { switch $0 {
 			case .album(let album): return album.objectID
 			case .song(let song): return song.objectID
 		}}
 	}
 	func albums(with chosenIDs: Set<AlbumID>? = nil) -> [ZZZAlbum] {
-		return items.compactMap { switch $0 {
+		return listItems.compactMap { switch $0 {
 			case .song: return nil
 			case .album(let album):
 				guard let chosenIDs else { return album }
@@ -60,7 +60,7 @@ extension AlbumListState {
 		}}
 	}
 	fileprivate func songs(with chosenIDs: Set<SongID>? = nil) -> [ZZZSong] {
-		return items.compactMap { switch $0 {
+		return listItems.compactMap { switch $0 {
 			case .album: return nil
 			case .song(let song):
 				guard let chosenIDs else { return song }
@@ -143,7 +143,7 @@ final class AlbumsTVC: LibraryTVC {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if albumListState.items.isEmpty {
+			if albumListState.listItems.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
 						Button { Librarian.openAppleMusic() } label: { Image(systemName: "plus") }
@@ -155,11 +155,11 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
-		return albumListState.items.count
+		return albumListState.listItems.count
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch albumListState.items[indexPath.row] {
+		switch albumListState.listItems[indexPath.row] {
 			case .album(let rowAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
@@ -230,7 +230,7 @@ final class AlbumsTVC: LibraryTVC {
 						albumListState.selectMode = .selectSongs(newSelected)
 					}
 			}
-			if albumListState.items.isEmpty {
+			if albumListState.listItems.isEmpty {
 				endSelecting()
 			}
 			refreshBeginSelectingButton()
@@ -247,7 +247,7 @@ final class AlbumsTVC: LibraryTVC {
 			let currentSong = ZZZDatabase.viewContext.fetchSong(mpID: currentSongID),
 			let currentAlbumID = currentSong.container?.albumPersistentID
 		else { return }
-		guard let currentAlbumRow = albumListState.items.firstIndex(where: { switch $0 {
+		guard let currentAlbumRow = albumListState.listItems.firstIndex(where: { switch $0 {
 			case .song: return false
 			case .album(let album): return currentAlbumID == album.albumPersistentID
 		}}) else { return }
@@ -269,7 +269,7 @@ final class AlbumsTVC: LibraryTVC {
 			albumListState.expansion = .expanded(idToExpand)
 			albumListState.refreshItems()
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				let expandingRow: Int = self.albumListState.items.firstIndex(where: { switch $0 {
+				let expandingRow: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
 					case .song: return false
 					case .album(let album): return idToExpand == album.albumPersistentID
 				}})!
@@ -290,7 +290,7 @@ final class AlbumsTVC: LibraryTVC {
 		guard
 			let chosenSongID = notification.object as? SongID,
 			let popoverSource: UIView = { () -> UIView? in
-				guard let chosenRow = albumListState.items.firstIndex(where: { switch $0 {
+				guard let chosenRow = albumListState.listItems.firstIndex(where: { switch $0 {
 					case .album: return false
 					case .song(let song): return chosenSongID == song.persistentID
 				}}) else { return nil }
@@ -334,7 +334,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	@objc private func refreshBeginSelectingButton() {
 		beginSelectingButton.isEnabled =
-		!albumListState.items.isEmpty &&
+		!albumListState.listItems.isEmpty &&
 		MusicAuthorization.currentStatus == .authorized && // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
 		!Librarian.shared.isMerging
 	}
@@ -558,7 +558,7 @@ final class AlbumsTVC: LibraryTVC {
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let frontSong = newBlock.first,
-					let targetRow = self.albumListState.items.firstIndex(where: { switch $0 {
+					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
 						case .song(let song): return frontSong.persistentID == song.persistentID
 					}})
@@ -618,7 +618,7 @@ final class AlbumsTVC: LibraryTVC {
 			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let backSong = newBlock.last,
-					let targetRow = self.albumListState.items.firstIndex(where: { switch $0 {
+					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
 						case .song(let song): return backSong.persistentID == song.persistentID
 					}})
