@@ -33,8 +33,6 @@ enum InterfaceText {
 	static let startPlaying = NSLocalizedString("Start Playing", comment: "Button")
 	static let addToQueue = NSLocalizedString("Add to Queue", comment: "Button")
 	static let addRestOfAlbumToQueue = NSLocalizedString("Add Rest of Album to Queue", comment: "Button")
-	static let playNext = NSLocalizedString("Play Next", comment: "Button")
-	static let playRestOfAlbumNext = NSLocalizedString("Play Rest of Album Next", comment: "Button")
 	
 	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")

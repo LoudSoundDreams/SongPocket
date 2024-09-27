@@ -40,7 +40,7 @@ import MusicKit
 		}
 	}
 	
-	final func playLater(_ idsToAppend: [SongID], actuallyNextNotLater: Bool) {
+	final func playLater(_ idsToAppend: [SongID]) {
 		Task {
 			let toAppend: [MKSong] = await {
 				var result: [MKSong] = []
@@ -50,11 +50,7 @@ import MusicKit
 				}
 				return result
 			}()
-			
-			let position: SystemMusicPlayer.Queue.EntryInsertionPosition = actuallyNextNotLater
-			? .afterCurrentEntry
-			: .tail // As of iOS 18 RC, this always fails, printing: appendQueueDescriptor failed error=<MPMusicPlayerControllerErrorDomain.6 "Failed to prepare queue for append" {}>
-			guard let _ = try? await queue.insert(toAppend, position: position) else { return }
+			guard let _ = try? await queue.insert(toAppend, position: .tail) else { return }
 			
 			let impactor = UIImpactFeedbackGenerator(style: .heavy)
 			impactor.impactOccurred()
