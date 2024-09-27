@@ -367,7 +367,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .selectSongs:
 				albumListState.selectMode = .view(nil)
 		}
-		setToolbarItems([beginSelectingButton, .flexibleSpace(), Remote.shared.playPauseButton, .flexibleSpace(), Remote.shared.overflowButton], animated: true)
+		setToolbarItems([beginSelectingButton, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
 	}
 	
 	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))

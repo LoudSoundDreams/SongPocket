@@ -30,8 +30,7 @@ extension PlayerState {
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor final class Remote {
 	static let shared = Remote()
-	let playPauseButton = UIBarButtonItem()
-	let overflowButton = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!)
+	let bRemote = UIBarButtonItem()
 	var albumsTVC: WeakRef<AlbumsTVC>? = nil
 	
 	private init() {
@@ -40,31 +39,21 @@ extension PlayerState {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: Librarian.didMerge, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
 	}
 	@objc private func refresh() {
-		refreshPlayPause()
-		overflowButton.preferredMenuElementOrder = .fixed
-		overflowButton.menu = newMenu()
-	}
-	
-	private func refreshPlayPause() {
+		// Refresh menu title
+		bRemote.preferredMenuElementOrder = .fixed
+		bRemote.menu = newMenu()
+		
+		// Make button reflect playback status
 #if targetEnvironment(simulator)
 		showPause()
-		playPauseButton.isEnabled = true
 #else
 		guard
 			let player = ApplicationMusicPlayer._shared,
 			!ApplicationMusicPlayer.isEmpty
 		else {
 			showPlay()
-			
-			playPauseButton.isEnabled = false
-			playPauseButton.accessibilityTraits.formUnion(.notEnabled) // As of iOS 15.3 developer beta 1, setting `isEnabled` doesn’t do this automatically.
-			
 			return
 		}
-		
-		playPauseButton.isEnabled = true
-		playPauseButton.accessibilityTraits.subtract(.notEnabled)
-		
 		if player.state.playbackStatus == .playing {
 			showPause()
 		} else {
@@ -73,14 +62,10 @@ extension PlayerState {
 #endif
 	}
 	private func showPlay() {
-		playPauseButton.title = InterfaceText.play
-		playPauseButton.primaryAction = UIAction(image: Self.iPlay) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
-		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
+		bRemote.image = Self.iPlay
 	}
 	private func showPause() {
-		playPauseButton.title = InterfaceText.pause
-		playPauseButton.primaryAction = UIAction(image: Self.iPause) { _ in ApplicationMusicPlayer._shared?.pause() }
-		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
+		bRemote.image = Self.iPause
 	}
 	private static let iPlay = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	private static let iPause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
@@ -134,13 +119,14 @@ extension PlayerState {
 							}
 						}
 				])},
+				Self.aAppleMusic,
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					// Ideally, disable this when there are no previous tracks to skip to.
 					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
-				Self.dmeRestart,
+				Self.dmePlayPause,
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
 				])},
@@ -149,6 +135,7 @@ extension PlayerState {
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
 				])},
+				Self.dmeRestart,
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
 				])},
