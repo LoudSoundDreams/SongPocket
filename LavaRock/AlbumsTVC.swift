@@ -239,9 +239,6 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			refreshBeginSelectingButton()
 			guard await applyRowIdentifiers(albumListState.rowIdentifiers()) else { return }
-			
-			// Update the data within each row, which might be outdated.
-			tableView.reconfigureRows(at: tableView.allIndexPaths()) // TO DO: Do we need this?
 		}
 	}
 	
