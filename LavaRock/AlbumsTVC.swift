@@ -6,7 +6,7 @@ import MusicKit
 import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var listItems: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
+	@ObservationIgnored fileprivate var listItems: [Item] = AlbumListState.freshAlbums().map { .album($0) }
 	var expansion: Expansion = .collapsed
 	var selectMode: SelectMode = .view(nil) { didSet {
 		switch selectMode {
@@ -74,7 +74,7 @@ extension AlbumListState {
 			case .song(let song): return song.objectID
 		}}
 	}
-	func albums(with chosenIDs: Set<AlbumID>? = nil) -> [ZZZAlbum] {
+	fileprivate func albums(with chosenIDs: Set<AlbumID>? = nil) -> [ZZZAlbum] {
 		return listItems.compactMap { switch $0 {
 			case .song: return nil
 			case .album(let album):
