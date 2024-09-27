@@ -535,7 +535,7 @@ final class AlbumsTVC: LibraryTVC {
 				newBlock[offset].index = target + Int64(offset)
 			}
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.albumSelecting, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			album_reflectSelected() // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
@@ -560,7 +560,7 @@ final class AlbumsTVC: LibraryTVC {
 				newBlock[offset].index = target + Int64(offset)
 			}
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.songSelecting, object: albumListState)
+			song_reflectSelected()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let frontSong = newBlock.first,
