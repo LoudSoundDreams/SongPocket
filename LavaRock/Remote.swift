@@ -31,7 +31,7 @@ extension PlayerState {
 @MainActor final class Remote {
 	static let shared = Remote()
 	let playPauseButton = UIBarButtonItem()
-	let overflowButton = UIBarButtonItem()
+	let overflowButton = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!)
 	var albumsTVC: WeakRef<AlbumsTVC>? = nil
 	
 	private init() {
@@ -41,7 +41,8 @@ extension PlayerState {
 	}
 	@objc private func refresh() {
 		refreshPlayPause()
-		refreshOverflow()
+		overflowButton.preferredMenuElementOrder = .fixed
+		overflowButton.menu = newMenu()
 	}
 	
 	private func refreshPlayPause() {
@@ -84,35 +85,6 @@ extension PlayerState {
 	private static let iPlay = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	private static let iPause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	
-	private func refreshOverflow() {
-		overflowButton.preferredMenuElementOrder = .fixed
-		overflowButton.menu = newMenu()
-		
-		let newImage: UIImage
-		let newLabel: String
-		defer {
-			overflowButton.image = newImage
-			overflowButton.accessibilityLabel = newLabel
-			overflowButton.accessibilityUserInputLabels = [InterfaceText.more] // Still says “Repeat One More” for some reason.
-		}
-		let regularImage = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
-		let regularLabel = InterfaceText.more
-		if
-			!ApplicationMusicPlayer.isEmpty,
-			let repeatMode = ApplicationMusicPlayer._shared?.state.repeatMode
-		{
-			switch repeatMode { // As of iOS 18, this is unreliable; it sometimes returns `.none` even if the Apple Music app shows “repeat one”.
-				case .one:
-					newImage = UIImage(systemName: "repeat.1.circle.fill")!
-					newLabel = [InterfaceText.repeat1, regularLabel].formattedAsNarrowList()
-					return
-				case .none, .all: break
-				@unknown default: break
-			}
-		}
-		newImage = regularImage
-		newLabel = regularLabel
-	}
 	private func newMenuTitle() -> String {
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return ""
