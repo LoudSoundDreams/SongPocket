@@ -9,7 +9,6 @@ typealias MKSong = MusicKit.Song
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
 @MainActor @Observable final class Librarian {
-	@ObservationIgnored private(set) var theCrate: LRCrate? = nil
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
 	private(set) var isMerging = false { didSet {
