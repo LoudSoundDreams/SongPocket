@@ -7,15 +7,15 @@ import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate var listItems: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
-	var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
-	var expansion: Expansion = .collapsed
-	var selectMode: SelectMode = .view(nil) { didSet {
-		switch selectMode {
-			case .view: break
-			case .selectAlbums: NotificationCenter.default.post(name: Self.albumSelecting, object: self)
-			case .selectSongs: NotificationCenter.default.post(name: Self.songSelecting, object: self)
-		}
-	}}
+    var expansion: Expansion = .collapsed
+    var selectMode: SelectMode = .view(nil) { didSet {
+        switch selectMode {
+            case .view: break
+            case .selectAlbums: NotificationCenter.default.post(name: Self.albumSelecting, object: self)
+            case .selectSongs: NotificationCenter.default.post(name: Self.songSelecting, object: self)
+        }
+    }}
+    var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
 extension AlbumListState {
 	fileprivate enum Item {
