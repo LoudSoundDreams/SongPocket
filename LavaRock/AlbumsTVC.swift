@@ -154,9 +154,14 @@ final class AlbumsTVC: LibraryTVC {
 		}()
 	}
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		if !hasSetOnscreenRowIdentifiers {
+			hasSetOnscreenRowIdentifiers = true
+			onscreenRowIdentifiers = albumListState.rowIdentifiers()
+		}
 		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
 		return albumListState.listItems.count
 	}
+	private var hasSetOnscreenRowIdentifiers = false
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch albumListState.listItems[indexPath.row] {
@@ -207,7 +212,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	@objc private func refreshLibraryItems() {
 		Task {
-			let oldRows = albumListState.rowIdentifiers()
 			albumListState.refreshItems()
 			switch albumListState.selectMode { // In case the user was in the middle of doing something with an item we’ve deleted.
 				case .view(let activatedID):
@@ -234,7 +238,7 @@ final class AlbumsTVC: LibraryTVC {
 				endSelecting()
 			}
 			refreshBeginSelectingButton()
-			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
+			guard await applyRowIdentifiers(albumListState.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
 			tableView.reconfigureRows(at: tableView.allIndexPaths()) // TO DO: Do we need this?
@@ -265,10 +269,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func expandAndAlignTo(_ idToExpand: AlbumID) {
 		Task {
 			guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return } // Because `showCurrent` calls this method in a completion handler, we might have removed the `Album` by now.
-			let oldRows = albumListState.rowIdentifiers()
 			albumListState.expansion = .expanded(idToExpand)
 			albumListState.refreshItems()
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				let expandingRow: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
 					case .song: return false
 					case .album(let album): return idToExpand == album.albumPersistentID
@@ -279,10 +282,9 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	@objc private func collapse() {
 		Task {
-			let oldRows = albumListState.rowIdentifiers()
 			albumListState.expansion = .collapsed
 			albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	
@@ -470,18 +472,16 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func album_arrange(by albumOrder: AlbumOrder) {
 		Task {
-			let oldRows = albumListState.rowIdentifiers()
 			albumOrder.reindex(album_toArrange())
 			albumListState.refreshItems()
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_arrange(by songOrder: SongOrder) {
 		Task {
-			let oldRows = albumListState.rowIdentifiers()
 			songOrder.reindex(song_toArrange())
 			albumListState.refreshItems()
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	
@@ -522,14 +522,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toPromote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
 			let newBlock: [ZZZAlbum] = toPromote + toDisplace
-			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = target + Int64(offset)
 			}
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.albumSelecting, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
 		}
@@ -548,14 +547,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toPromote = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
 			let newBlock: [ZZZSong] = toPromote + toDisplace
-			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = target + Int64(offset)
 			}
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.songSelecting, object: albumListState)
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let frontSong = newBlock.first,
 					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
@@ -582,14 +580,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toDemote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
 			let newBlock: [ZZZAlbum] = toDisplace + toDemote
-			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.albumSelecting, object: albumListState)
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
 		}
@@ -608,14 +605,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toDemote = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
 			let newBlock: [ZZZSong] = toDisplace + toDemote
-			let oldRows = albumListState.rowIdentifiers()
 			
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.songSelecting, object: albumListState)
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let backSong = newBlock.last,
 					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
@@ -643,14 +639,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toFloat = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
 			let newBlock: [ZZZAlbum] = toFloat + toDisplace
-			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectAlbums([])
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = Int64(offset)
 			}
 			albumListState.refreshItems()
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_float() {
@@ -666,14 +661,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toFloat = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
 			let newBlock: [ZZZSong] = toFloat + toDisplace
-			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectSongs([])
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = Int64(offset)
 			}
 			albumListState.refreshItems()
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	
@@ -690,14 +684,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toSink = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
 			let newBlock: [ZZZAlbum] = toDisplace + toSink
-			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectAlbums([])
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
 			albumListState.refreshItems()
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_sink() {
@@ -713,14 +706,13 @@ final class AlbumsTVC: LibraryTVC {
 			let toSink = inRange.filter { selectedIDs.contains($0.persistentID) }
 			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
 			let newBlock: [ZZZSong] = toDisplace + toSink
-			let oldRows = albumListState.rowIdentifiers()
 			
 			albumListState.selectMode = .selectSongs([])
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
 			albumListState.refreshItems()
-			let _ = await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers())
+			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 }
