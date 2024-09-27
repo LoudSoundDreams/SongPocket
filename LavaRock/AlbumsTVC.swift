@@ -7,15 +7,15 @@ import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate var listItems: [Item] = AlbumListState.freshAlbums().map { .album($0) } // Retain old items until we explicitly refresh them, so we can diff them for updating the table view.
-    var expansion: Expansion = .collapsed
-    var selectMode: SelectMode = .view(nil) { didSet {
-        switch selectMode {
-            case .view: break
-            case .selectAlbums: NotificationCenter.default.post(name: Self.albumSelecting, object: self)
-            case .selectSongs: NotificationCenter.default.post(name: Self.songSelecting, object: self)
-        }
-    }}
-    var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
+	var expansion: Expansion = .collapsed
+	var selectMode: SelectMode = .view(nil) { didSet {
+		switch selectMode {
+			case .view: break
+			case .selectAlbums: NotificationCenter.default.post(name: Self.albumSelecting, object: self)
+			case .selectSongs: NotificationCenter.default.post(name: Self.songSelecting, object: self)
+		}
+	}}
+	var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
 extension AlbumListState {
 	fileprivate enum Item {
@@ -237,7 +237,7 @@ final class AlbumsTVC: LibraryTVC {
 			guard await moveRows(oldIdentifiers: oldRows, newIdentifiers: albumListState.rowIdentifiers()) else { return }
 			
 			// Update the data within each row, which might be outdated.
-			tableView.reconfigureRows(at: tableView.allIndexPaths())
+			tableView.reconfigureRows(at: tableView.allIndexPaths()) // TO DO: Do we need this?
 		}
 	}
 	
@@ -257,7 +257,7 @@ final class AlbumsTVC: LibraryTVC {
 			self.expandAndAlignTo(currentAlbumID)
 		}
 	}
-    
+	
 	@objc private func expandAlbumID(notification: Notification) {
 		guard let idToOpen = notification.object as? AlbumID else { return }
 		expandAndAlignTo(idToOpen)
