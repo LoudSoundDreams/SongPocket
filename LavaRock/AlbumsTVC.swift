@@ -123,10 +123,8 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		endSelecting()
 		refreshBeginSelectingButton()
-		bAlbumSort.preferredMenuElementOrder = .fixed
-		bAlbumSort.menu = newAlbumSortMenu()
-		bSongSort.preferredMenuElementOrder = .fixed
-		bSongSort.menu = newSongSortMenu()
+		bEllipsis.preferredMenuElementOrder = .fixed
+		bEllipsis.menu = newAlbumSortMenu()
 		
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
@@ -372,60 +370,39 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
-	private let bAlbumSort = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var bAlbumUp = UIBarButtonItem(primaryAction: aAlbumPromote, menu: UIMenu(children: [aAlbumFloat]))
 	private lazy var bAlbumDown = UIBarButtonItem(primaryAction: aAlbumDemote, menu: UIMenu(children: [aAlbumSink]))
 	
-	private lazy var aAlbumPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up")) { [weak self] _ in self?.album_promote() }
-	private lazy var aAlbumDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down")) { [weak self] _ in self?.album_demote() }
+	private lazy var aAlbumPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.album_promote() }
+	private lazy var aAlbumDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.album_demote() }
 	private lazy var aAlbumFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.album_float() }
 	private lazy var aAlbumSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.album_sink() }
 	
-	private let bSongSort = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down"))
 	private lazy var bSongUp = UIBarButtonItem(primaryAction: aSongPromote, menu: UIMenu(children: [aSongFloat]))
 	private lazy var bSongDown = UIBarButtonItem(primaryAction: aSongDemote, menu: UIMenu(children: [aSongSink]))
 	
-	private lazy var aSongPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up")) { [weak self] _ in self?.song_promote() }
-	private lazy var aSongDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down")) { [weak self] _ in self?.song_demote() }
+	private lazy var aSongPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.song_promote() }
+	private lazy var aSongDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.song_demote() }
 	private lazy var aSongFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.song_float() }
 	private lazy var aSongSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }
 	
 	@objc private func album_reflectSelected() {
-		setToolbarItems([endSelectingButton, .flexibleSpace(), bAlbumSort, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown], animated: true)
-		
-		bAlbumSort.isEnabled = { switch albumListState.selectMode {
-			case .selectSongs: return false
-			case .view: return true
-			case .selectAlbums(let selectedIDs):
-				if selectedIDs.isEmpty { return true }
-				let selectedIndices: [Int] = albumListState.albums().indices__ {
-					selectedIDs.contains($0.albumPersistentID)
-				}
-				return selectedIndices.isConsecutive()
-		}}()
+		setToolbarItems([endSelectingButton, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown, .flexibleSpace(), bEllipsis], animated: true)
 		bAlbumUp.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectSongs: return false
 			case .selectAlbums(let selectedIDs): return !selectedIDs.isEmpty
 		}}()
 		bAlbumDown.isEnabled = bAlbumUp.isEnabled
+		bEllipsis.menu = newAlbumSortMenu()
 	}
 	@objc private func song_reflectSelected() {
-		setToolbarItems([endSelectingButton, .flexibleSpace(), bSongSort, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown], animated: true)
-		
-		bSongSort.isEnabled = { switch albumListState.selectMode {
-			case .view, .selectAlbums: return false
-			case .selectSongs(let selectedIDs):
-				if selectedIDs.isEmpty { return true }
-				let selectedIndices: [Int] = albumListState.songs().indices__ {
-					selectedIDs.contains($0.persistentID)
-				}
-				return selectedIndices.isConsecutive()
-		}}()
+		setToolbarItems([endSelectingButton, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown, .flexibleSpace(), bEllipsis], animated: true)
 		bSongUp.isEnabled = { switch albumListState.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs(let selectedIDs): return !selectedIDs.isEmpty
 		}}()
 		bSongDown.isEnabled = bSongUp.isEnabled
+		bEllipsis.menu = newSongSortMenu()
 	}
 	
 	// MARK: - Sorting
