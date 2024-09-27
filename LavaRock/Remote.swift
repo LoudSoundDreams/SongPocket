@@ -73,18 +73,20 @@ extension PlayerState {
 	}
 	private func showPlay() {
 		playPauseButton.title = InterfaceText.play
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+		playPauseButton.primaryAction = UIAction(image: Self.iPlay) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
 	private func showPause() {
 		playPauseButton.title = InterfaceText.pause
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in ApplicationMusicPlayer._shared?.pause() }
+		playPauseButton.primaryAction = UIAction(image: Self.iPause) { _ in ApplicationMusicPlayer._shared?.pause() }
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
+	private static let iPlay = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
+	private static let iPause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	
 	private func refreshOverflow() {
 		overflowButton.preferredMenuElementOrder = .fixed
-		overflowButton.menu = newOverflowMenu()
+		overflowButton.menu = newMenu()
 		
 		let newImage: UIImage
 		let newLabel: String
@@ -111,15 +113,17 @@ extension PlayerState {
 		newImage = regularImage
 		newLabel = regularLabel
 	}
-	private func newOverflowTitle() -> String {
-		if
-			MusicAuthorization.currentStatus == .authorized,
-			ZZZDatabase.viewContext.fetchCollection() == nil
-		{ return InterfaceText._emptyLibraryMessage }
+	private func newMenuTitle() -> String {
+		guard MusicAuthorization.currentStatus == .authorized else {
+			return ""
+		}
+		guard nil != ZZZDatabase.viewContext.fetchCollection() else {
+			return InterfaceText._emptyLibraryMessage
+		}
 		return ""
 	}
-	private func newOverflowMenu() -> UIMenu {
-		return UIMenu(title: newOverflowTitle(), children: [
+	private func newMenu() -> UIMenu {
+		return UIMenu(title: newMenuTitle(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { [weak self] use in use([
 					UIAction(title: InterfaceText.nowPlaying, image: UIImage(systemName: "waveform"), attributes: {
@@ -140,11 +144,12 @@ extension PlayerState {
 						image: UIImage(systemName: "repeat.1"),
 						attributes: ApplicationMusicPlayer.isEmpty ? .disabled : [],
 						state: {
-							if
+							guard
 								!ApplicationMusicPlayer.isEmpty,
-								ApplicationMusicPlayer._shared?.state.repeatMode == .one
-							{ return .on }
-							return .off
+								let repeatMode = ApplicationMusicPlayer._shared?.state.repeatMode,
+								repeatMode == .one
+							else { return .off }
+							return .on
 						}()) { _ in
 							guard
 								let player = ApplicationMusicPlayer._shared,
@@ -163,10 +168,7 @@ extension PlayerState {
 					// Ideally, disable this when there are no previous tracks to skip to.
 					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
-				UIDeferredMenuElement.uncached { use in use([
-					// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-					UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : []) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
-				])},
+				Self.dmeRestart,
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
 				])},
@@ -181,4 +183,28 @@ extension PlayerState {
 			]),
 		])
 	}
+	private static let dmeRestart = UIDeferredMenuElement.uncached { use in use([
+		// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
+		UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : []) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
+	])}
+	private static let dmePlayPause = UIDeferredMenuElement.uncached { use in
+#if targetEnvironment(simulator)
+		use([aPause])
+#else
+		if ApplicationMusicPlayer._shared?.state.playbackStatus == .playing {
+			use([aPause])
+		} else {
+			let action = aPlay
+			if ApplicationMusicPlayer.isEmpty {
+				action.attributes.formUnion(.disabled)
+			} else {
+				action.attributes.subtract(.disabled)
+			}
+			use([action])
+		}
+#endif
+	}
+	private static let aPlay = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play"), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+	private static let aPause = UIAction(title: InterfaceText.pause, image: UIImage(systemName: "pause"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
+	private static let aAppleMusic = UIAction(title: InterfaceText.appleMusic, image: UIImage(systemName: "arrow.up.forward.app")) { _ in Librarian.openAppleMusic() }
 }
