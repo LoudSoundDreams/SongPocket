@@ -42,6 +42,28 @@ extension AlbumListState {
 					return result
 			}
 		}()
+		
+		// In case we removed items the user was doing something with.
+		switch selectMode {
+			case .view(let activatedID):
+				if let activatedID, songs(with: [activatedID]).isEmpty {
+					selectMode = .view(nil)
+				}
+			case .selectAlbums(let selectedIDs):
+				let selectable: Set<AlbumID> = Set(
+					albums(with: selectedIDs).map { $0.albumPersistentID }
+				)
+				if selectedIDs != selectable {
+					selectMode = .selectAlbums(selectable)
+				}
+			case .selectSongs(let selectedIDs):
+				let selectable: Set<SongID> = Set(
+					songs(with: selectedIDs).map { $0.persistentID }
+				)
+				if selectedIDs != selectable{
+					selectMode = .selectSongs(selectable)
+				}
+		}
 	}
 	private static func freshAlbums() -> [ZZZAlbum] {
 		return ZZZDatabase.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
@@ -215,29 +237,19 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func refreshLibraryItems() {
 		Task {
 			albumListState.refreshItems()
-			switch albumListState.selectMode { // In case the user was in the middle of doing something with an item we’ve deleted.
+			switch albumListState.selectMode {
 				case .view(let activatedID):
-					if let activatedID, albumListState.songs(with: [activatedID]).isEmpty {
+					if activatedID == nil {
 						dismiss(animated: true) // In case “confirm play” action sheet is presented.
-						albumListState.selectMode = .view(nil)
 					}
-				case .selectAlbums(let selectedIDs):
-					let newSelected: Set<AlbumID> = Set(albumListState.albums(with: selectedIDs).map { $0.albumPersistentID })
-					if selectedIDs != newSelected {
-						albumListState.selectMode = .selectAlbums(newSelected)
-					}
-				case .selectSongs(let selectedIDs):
-					guard !albumListState.songs().isEmpty else {
+				case .selectAlbums:
+					if albumListState.albums().isEmpty {
 						endSelecting()
-						break
 					}
-					let newSelected: Set<SongID> = Set(albumListState.songs(with: selectedIDs).map { $0.persistentID })
-					if selectedIDs != newSelected {
-						albumListState.selectMode = .selectSongs(newSelected)
+				case .selectSongs:
+					if albumListState.songs().isEmpty { // Also works if we removed all albums.
+						endSelecting()
 					}
-			}
-			if albumListState.listItems.isEmpty {
-				endSelecting()
 			}
 			refreshBeginSelectingButton()
 			guard await applyRowIdentifiers(albumListState.rowIdentifiers()) else { return }
