@@ -325,7 +325,7 @@ final class AlbumsTVC: LibraryTVC {
 						let chosenAlbum = chosenSong.container
 					else { return }
 					
-					SystemMusicPlayer._shared?.playNow(
+					ApplicationMusicPlayer._shared?.playNow(
 						chosenAlbum.songs(sorted: true).map { $0.persistentID },
 						startingAt: chosenSong.persistentID)
 				}

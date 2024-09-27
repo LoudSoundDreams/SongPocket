@@ -2,8 +2,8 @@
 
 import MusicKit
 
-@MainActor extension SystemMusicPlayer {
-	static var _shared: SystemMusicPlayer? {
+@MainActor extension ApplicationMusicPlayer {
+	static var _shared: ApplicationMusicPlayer? {
 		guard MusicAuthorization.currentStatus == .authorized else { return nil }
 		return .shared
 	}
@@ -74,6 +74,6 @@ import MediaPlayer
 @MainActor extension MPMusicPlayerController {
 	static var nowPlayingID: SongID? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
-		return systemMusicPlayer.nowPlayingItem?.songID
+		return applicationQueuePlayer.nowPlayingItem?.songID
 	}
 }

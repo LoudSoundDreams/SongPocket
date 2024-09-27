@@ -340,11 +340,11 @@ import MediaPlayer
 	var body: some View {
 		Menu {
 			Button {
-				SystemMusicPlayer._shared?.playNow([songID])
+				ApplicationMusicPlayer._shared?.playNow([songID])
 			} label: { Label(InterfaceText.play, systemImage: "play") }
 			Divider()
 			Button {
-				SystemMusicPlayer._shared?.playLater([songID])
+				ApplicationMusicPlayer._shared?.playLater([songID])
 			} label: {
 				Label(InterfaceText.addToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
 			}
@@ -352,7 +352,7 @@ import MediaPlayer
 			Button {
 				guard let album = ZZZDatabase.viewContext.fetchAlbum(id: albumID) else { return }
 				let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
-				SystemMusicPlayer._shared?.playLater(restOfAlbum.map { $0.persistentID })
+				ApplicationMusicPlayer._shared?.playLater(restOfAlbum.map { $0.persistentID })
 			} label: {
 				Label(InterfaceText.addRestOfAlbumToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
 			}.disabled(
@@ -411,7 +411,7 @@ struct NowPlayingIndicator: View {
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
 		let _ = signal
 		guard
-			let state = SystemMusicPlayer._shared?.state,
+			let state = ApplicationMusicPlayer._shared?.state,
 			songID == MPMusicPlayerController.nowPlayingID
 		else { return .notPlaying }
 		return (state.playbackStatus == .playing) ? .playing : .paused

@@ -13,12 +13,12 @@ import Combine
 }
 extension PlayerState {
 	func observeMKPlayer() {
-		SystemMusicPlayer._shared?.state.objectWillChange
+		ApplicationMusicPlayer._shared?.state.objectWillChange
 			.sink { [weak self] in
 				self?.signal.toggle()
 				NotificationCenter.default.post(name: Self.musicKit, object: nil)
 			}.store(in: &cancellables)
-		SystemMusicPlayer._shared?.queue.objectWillChange
+		ApplicationMusicPlayer._shared?.queue.objectWillChange
 			.sink { [weak self] in
 				self?.signal.toggle()
 				NotificationCenter.default.post(name: Self.musicKit, object: nil)
@@ -50,8 +50,8 @@ extension PlayerState {
 		playPauseButton.isEnabled = true
 #else
 		guard
-			let player = SystemMusicPlayer._shared,
-			!SystemMusicPlayer.isEmpty
+			let player = ApplicationMusicPlayer._shared,
+			!ApplicationMusicPlayer.isEmpty
 		else {
 			showPlay()
 			
@@ -73,12 +73,12 @@ extension PlayerState {
 	}
 	private func showPlay() {
 		playPauseButton.title = InterfaceText.play
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in Task { try await SystemMusicPlayer._shared?.play() } }
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
 		playPauseButton.accessibilityTraits.formUnion(.startsMediaSession)
 	}
 	private func showPause() {
 		playPauseButton.title = InterfaceText.pause
-		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in SystemMusicPlayer._shared?.pause() }
+		playPauseButton.primaryAction = UIAction(image: UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { _ in ApplicationMusicPlayer._shared?.pause() }
 		playPauseButton.accessibilityTraits.subtract(.startsMediaSession)
 	}
 	
@@ -96,8 +96,8 @@ extension PlayerState {
 		let regularImage = UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))!
 		let regularLabel = InterfaceText.more
 		if
-			!SystemMusicPlayer.isEmpty,
-			let repeatMode = SystemMusicPlayer._shared?.state.repeatMode
+			!ApplicationMusicPlayer.isEmpty,
+			let repeatMode = ApplicationMusicPlayer._shared?.state.repeatMode
 		{
 			switch repeatMode { // As of iOS 18, this is unreliable; it sometimes returns `.none` even if the Apple Music app shows “repeat one”.
 				case .one:
@@ -138,16 +138,16 @@ extension PlayerState {
 					UIAction(
 						title: InterfaceText.repeat1,
 						image: UIImage(systemName: "repeat.1"),
-						attributes: SystemMusicPlayer.isEmpty ? .disabled : [],
+						attributes: ApplicationMusicPlayer.isEmpty ? .disabled : [],
 						state: {
 							if
-								!SystemMusicPlayer.isEmpty,
-								SystemMusicPlayer._shared?.state.repeatMode == .one
+								!ApplicationMusicPlayer.isEmpty,
+								ApplicationMusicPlayer._shared?.state.repeatMode == .one
 							{ return .on }
 							return .off
 						}()) { _ in
 							guard
-								let player = SystemMusicPlayer._shared,
+								let player = ApplicationMusicPlayer._shared,
 								let repeatMode = player.state.repeatMode
 							else { return }
 							if repeatMode == .one {
@@ -161,22 +161,22 @@ extension PlayerState {
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					// Ideally, disable this when there are no previous tracks to skip to.
-					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: SystemMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await SystemMusicPlayer._shared?.skipToPreviousEntry() } }
+					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-					UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: SystemMusicPlayer.isEmpty ? .disabled : []) { _ in SystemMusicPlayer._shared?.restartCurrentEntry() }
+					UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : []) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: SystemMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await SystemMusicPlayer._shared?.skipToNextEntry() } }
+					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
 				])},
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: SystemMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in SystemMusicPlayer._shared?.playbackTime -= 15 }
+					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: SystemMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in SystemMusicPlayer._shared?.playbackTime += 15 }
+					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
 				])},
 			]),
 		])
