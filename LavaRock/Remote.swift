@@ -157,7 +157,7 @@ extension PlayerState {
 	}
 	private static let dmeRestart = UIDeferredMenuElement.uncached { use in use([
 		// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-		UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
+		UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : []) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
 	])}
 	private static let dmePlayPause = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)
@@ -176,7 +176,7 @@ extension PlayerState {
 		}
 #endif
 	}
-	private static let aPlay = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play"), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
-	private static let aPause = UIAction(title: InterfaceText.pause, image: UIImage(systemName: "pause"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
+	private static let aPlay = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play")) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+	private static let aPause = UIAction(title: InterfaceText.pause, image: UIImage(systemName: "pause")) { _ in ApplicationMusicPlayer._shared?.pause() }
 	private static let aAppleMusic = UIAction(title: InterfaceText.appleMusic, image: UIImage(systemName: "arrow.up.forward.app")) { _ in Librarian.openAppleMusic() }
 }
