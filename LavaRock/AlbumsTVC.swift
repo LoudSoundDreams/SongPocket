@@ -11,11 +11,7 @@ import MediaPlayer
 		NotificationCenter.default.post(name: Self.expansionChanged, object: self)
 	}}
 	var selectMode: SelectMode = .view(nil) { didSet {
-		switch selectMode {
-			case .view: break
-			case .selectAlbums: NotificationCenter.default.post(name: Self.albumSelecting, object: self)
-			case .selectSongs: NotificationCenter.default.post(name: Self.songSelecting, object: self)
-		}
+		NotificationCenter.default.post(name: Self.selectionChanged, object: self)
 	}}
 	var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
@@ -52,6 +48,10 @@ extension AlbumListState {
 					selectMode = .view(nil)
 				}
 			case .selectAlbums(let selectedIDs):
+				guard !albums().isEmpty else {
+					selectMode = .view(nil)
+					break
+				}
 				let selectable: Set<AlbumID> = Set(
 					albums(with: selectedIDs).map { $0.albumPersistentID }
 				)
@@ -59,6 +59,10 @@ extension AlbumListState {
 					selectMode = .selectAlbums(selectable)
 				}
 			case .selectSongs(let selectedIDs):
+				guard !songs().isEmpty else {
+					selectMode = .view(nil)
+					break
+				}
 				let selectable: Set<SongID> = Set(
 					songs(with: selectedIDs).map { $0.persistentID }
 				)
@@ -107,8 +111,7 @@ extension AlbumListState {
 		case selectAlbums(Set<AlbumID>)
 		case selectSongs(Set<SongID>) // Should always be within the same album.
 	}
-	static let albumSelecting = Notification.Name("LRAlbumSelecting")
-	static let songSelecting = Notification.Name("LRSongSelecting")
+	static let selectionChanged = Notification.Name("LRSelectModeOrSelectionChanged")
 }
 
 // MARK: - View controller
@@ -121,7 +124,7 @@ final class AlbumsTVC: LibraryTVC {
 		
 		view.backgroundColor = UIColor(Color(white: .oneEighth))
 		tableView.separatorStyle = .none
-		endSelecting()
+		reflectSelection()
 		refreshBeginSelectingButton()
 		bEllipsis.preferredMenuElementOrder = .fixed
 		bEllipsis.menu = newAlbumSortMenu()
@@ -131,8 +134,7 @@ final class AlbumsTVC: LibraryTVC {
 		Remote.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: albumListState)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.albumSelecting, object: albumListState)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(song_reflectSelected), name: AlbumListState.songSelecting, object: albumListState)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelection), name: AlbumListState.selectionChanged, object: albumListState)
 	}
 	
 	// MARK: - Table view
@@ -237,20 +239,6 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func refreshLibraryItems() {
 		Task {
 			albumListState.refreshItems()
-			switch albumListState.selectMode {
-				case .view(let activatedID):
-					if activatedID == nil {
-						dismiss(animated: true) // In case “confirm play” action sheet is presented.
-					}
-				case .selectAlbums:
-					if albumListState.albums().isEmpty {
-						endSelecting()
-					}
-				case .selectSongs:
-					if albumListState.songs().isEmpty { // Also works if we removed all albums.
-						endSelecting()
-					}
-			}
 			refreshBeginSelectingButton()
 			guard await applyRowIdentifiers(albumListState.rowIdentifiers()) else { return }
 		}
@@ -278,12 +266,14 @@ final class AlbumsTVC: LibraryTVC {
 			case .collapsed:
 				Task {
 					albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+					bEllipsis.menu = newAlbumSortMenu()
 					let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 				}
 			case .expanded(let idToExpand):
 				Task {
 					guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
 					albumListState.refreshItems()
+					bEllipsis.menu = newSongSortMenu()
 					let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 						let expandingRow: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
 							case .song: return false
@@ -292,6 +282,26 @@ final class AlbumsTVC: LibraryTVC {
 						self.tableView.scrollToRow(at: IndexPath(row: expandingRow, section: 0), at: .top, animated: true)
 					})
 				}
+		}
+	}
+	
+	@objc private func reflectSelection() {
+		switch albumListState.selectMode {
+			case .view(let activatedID):
+				setToolbarItems([beginSelectingButton, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
+				if activatedID == nil {
+					dismiss(animated: true) // In case “confirm play” action sheet is presented.
+				}
+			case .selectAlbums(let selectedIDs):
+				setToolbarItems([endSelectingButton, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown, .flexibleSpace(), bEllipsis], animated: true)
+				bEllipsis.menu = newAlbumSortMenu() // In case it’s open.
+				bAlbumUp.isEnabled = !selectedIDs.isEmpty
+				bAlbumDown.isEnabled = bAlbumUp.isEnabled
+			case .selectSongs(let selectedIDs):
+				setToolbarItems([endSelectingButton, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown, .flexibleSpace(), bEllipsis], animated: true)
+				bEllipsis.menu = newSongSortMenu()
+				bSongUp.isEnabled = !selectedIDs.isEmpty
+				bSongDown.isEnabled = bSongUp.isEnabled
 		}
 	}
 	
@@ -353,20 +363,9 @@ final class AlbumsTVC: LibraryTVC {
 				albumListState.selectMode = .selectSongs([])
 		}
 	})
-	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
-	
-	private func endSelecting() {
-		switch albumListState.selectMode {
-			case .view: break
-			case .selectAlbums:
-				withAnimation {
-					albumListState.selectMode = .view(nil)
-				}
-			case .selectSongs:
-				albumListState.selectMode = .view(nil)
-		}
-		setToolbarItems([beginSelectingButton, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
-	}
+	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in
+		self?.albumListState.selectMode = .view(nil)
+	})
 	
 	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
@@ -385,25 +384,6 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var aSongDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.song_demote() }
 	private lazy var aSongFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.song_float() }
 	private lazy var aSongSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }
-	
-	@objc private func album_reflectSelected() {
-		setToolbarItems([endSelectingButton, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown, .flexibleSpace(), bEllipsis], animated: true)
-		bAlbumUp.isEnabled = { switch albumListState.selectMode {
-			case .view, .selectSongs: return false
-			case .selectAlbums(let selectedIDs): return !selectedIDs.isEmpty
-		}}()
-		bAlbumDown.isEnabled = bAlbumUp.isEnabled
-		bEllipsis.menu = newAlbumSortMenu()
-	}
-	@objc private func song_reflectSelected() {
-		setToolbarItems([endSelectingButton, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown, .flexibleSpace(), bEllipsis], animated: true)
-		bSongUp.isEnabled = { switch albumListState.selectMode {
-			case .view, .selectAlbums: return false
-			case .selectSongs(let selectedIDs): return !selectedIDs.isEmpty
-		}}()
-		bSongDown.isEnabled = bSongUp.isEnabled
-		bEllipsis.menu = newSongSortMenu()
-	}
 	
 	// MARK: - Sorting
 	
@@ -506,7 +486,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
-			album_reflectSelected() // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
@@ -532,7 +512,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
-			song_reflectSelected()
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let frontSong = newBlock.first,
@@ -566,7 +546,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.albumSelecting, object: albumListState)
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
 			})
@@ -592,7 +572,7 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.songSelecting, object: albumListState)
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let backSong = newBlock.last,
