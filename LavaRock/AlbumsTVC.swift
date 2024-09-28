@@ -7,7 +7,9 @@ import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate var listItems: [Item] = AlbumListState.freshAlbums().map { .album($0) }
-	var expansion: Expansion = .collapsed
+	var expansion: Expansion = .collapsed { didSet {
+		NotificationCenter.default.post(name: Self.expansionChanged, object: self)
+	}}
 	var selectMode: SelectMode = .view(nil) { didSet {
 		switch selectMode {
 			case .view: break
@@ -97,6 +99,7 @@ extension AlbumListState {
 		case collapsed
 		case expanded(AlbumID)
 	}
+	static let expansionChanged = Notification.Name("LRAlbumExpandingOrCollapsing")
 	
 	enum SelectMode: Equatable {
 		case view(SongID?)
@@ -127,8 +130,7 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
 		Remote.shared.albumsTVC = WeakRef(self)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(expandAlbumID), name: AlbumRow.expandAlbumID, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(collapse), name: AlbumRow.collapse, object: nil)
+		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: albumListState)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(album_reflectSelected), name: AlbumListState.albumSelecting, object: albumListState)
 		NotificationCenter.default.addObserverOnce(self, selector: #selector(song_reflectSelected), name: AlbumListState.songSelecting, object: albumListState)
@@ -269,33 +271,29 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: currentAlbumRow, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.expandAndAlignTo(currentAlbumID)
+			self.albumListState.expansion = .expanded(currentAlbumID)
 		}
 	}
 	
-	@objc private func expandAlbumID(notification: Notification) {
-		guard let idToOpen = notification.object as? AlbumID else { return }
-		expandAndAlignTo(idToOpen)
-	}
-	private func expandAndAlignTo(_ idToExpand: AlbumID) {
-		Task {
-			guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return } // Because `showCurrent` calls this method in a completion handler, we might have removed the `Album` by now.
-			albumListState.expansion = .expanded(idToExpand)
-			albumListState.refreshItems()
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				let expandingRow: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
-					case .song: return false
-					case .album(let album): return idToExpand == album.albumPersistentID
-				}})!
-				self.tableView.scrollToRow(at: IndexPath(row: expandingRow, section: 0), at: .top, animated: true)
-			})
-		}
-	}
-	@objc private func collapse() {
-		Task {
-			albumListState.expansion = .collapsed
-			albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+	@objc private func reflectExpansion() {
+		switch albumListState.expansion {
+			case .collapsed:
+				Task {
+					albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+					let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+				}
+			case .expanded(let idToExpand):
+				Task {
+					guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
+					albumListState.refreshItems()
+					let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+						let expandingRow: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
+							case .song: return false
+							case .album(let album): return idToExpand == album.albumPersistentID
+						}})!
+						self.tableView.scrollToRow(at: IndexPath(row: expandingRow, section: 0), at: .top, animated: true)
+					})
+				}
 		}
 	}
 	

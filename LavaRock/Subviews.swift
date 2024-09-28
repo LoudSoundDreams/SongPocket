@@ -7,8 +7,6 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	static let expandAlbumID = Notification.Name("LRAlbumExpandWithID")
-	static let collapse = Notification.Name("LRAlbumCollapse")
 	let albumID: AlbumID
 	let albumListState: AlbumListState
 	var body: some View {
@@ -70,12 +68,12 @@ import MediaPlayer
 			case .view:
 				switch albumListState.expansion {
 					case .collapsed:
-						NotificationCenter.default.post(name: Self.expandAlbumID, object: albumID)
+						albumListState.expansion = .expanded(albumID)
 					case .expanded(let expandedID):
 						if albumID == expandedID {
-							NotificationCenter.default.post(name: Self.collapse, object: nil)
+							albumListState.expansion = .collapsed
 						} else {
-							NotificationCenter.default.post(name: Self.expandAlbumID, object: albumID)
+							albumListState.expansion = .expanded(albumID)
 						}
 				}
 			case .selectAlbums(let selectedIDs):
