@@ -363,10 +363,6 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
 	
 	private func endSelecting() {
-		if !WorkingOn.plainDatabase {
-			ZZZDatabase.viewContext.savePlease()
-		}
-		
 		switch albumListState.selectMode {
 			case .view: break
 			case .selectAlbums:
@@ -481,6 +477,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_arrange(by albumOrder: AlbumOrder) {
 		Task {
 			albumOrder.reindex(album_toArrange())
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
@@ -488,6 +485,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func song_arrange(by songOrder: SongOrder) {
 		Task {
 			songOrder.reindex(song_toArrange())
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
@@ -534,6 +532,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = target + Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			album_reflectSelected() // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
@@ -559,6 +558,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = target + Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			song_reflectSelected()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
@@ -592,6 +592,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.albumSelecting, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
@@ -617,6 +618,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.songSelecting, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
@@ -652,6 +654,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
@@ -674,6 +677,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
@@ -697,6 +701,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
@@ -719,6 +724,7 @@ final class AlbumsTVC: LibraryTVC {
 			newBlock.indices.forEach { offset in
 				newBlock[offset].index = front + Int64(offset)
 			}
+			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
