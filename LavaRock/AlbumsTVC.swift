@@ -68,6 +68,7 @@ extension AlbumListState {
 		}
 	}
 	private static func freshAlbums() -> [ZZZAlbum] {
+		guard MusicAuthorization.currentStatus == .authorized else { return [] }
 		return ZZZDatabase.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
 	}
 	fileprivate func rowIdentifiers() -> [AnyHashable] {
@@ -184,7 +185,6 @@ final class AlbumsTVC: LibraryTVC {
 			hasSetOnscreenRowIdentifiers = true
 			onscreenRowIdentifiers = albumListState.rowIdentifiers()
 		}
-		guard MusicAuthorization.currentStatus == .authorized else { return 0 }
 		return albumListState.listItems.count
 	}
 	private var hasSetOnscreenRowIdentifiers = false
@@ -341,10 +341,7 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Editing
 	
 	@objc private func refreshBeginSelectingButton() {
-		beginSelectingButton.isEnabled =
-		!albumListState.listItems.isEmpty &&
-		MusicAuthorization.currentStatus == .authorized && // If the user revokes access, we’re showing the placeholder, but the view model is probably non-empty.
-		!Librarian.shared.isMerging
+		beginSelectingButton.isEnabled = !albumListState.listItems.isEmpty && !Librarian.shared.isMerging
 	}
 	
 	private lazy var beginSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
