@@ -407,7 +407,7 @@ struct NowPlayingIndicator: View {
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
-		let _ = signal
+		let _ = PlayerState.shared.signal
 		guard
 			let state = ApplicationMusicPlayer._shared?.state,
 			songID == MPMusicPlayerController.nowPlayingID
@@ -416,7 +416,6 @@ struct NowPlayingIndicator: View {
 #endif
 	}
 	private enum Status { case notPlaying, paused, playing }
-	private var signal: Bool { PlayerState.shared.signal }
 }
 
 // MARK: - Multipurpose
