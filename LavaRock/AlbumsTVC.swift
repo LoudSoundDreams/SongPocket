@@ -404,6 +404,14 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
 		guard album_toArrange().count >= 2 else { return false }
+		switch albumListState.selectMode {
+			case .selectSongs, .view: break
+			case .selectAlbums(let selectedIDs):
+				let rsSelected = albumListState.albums().indices(where: { album in
+					selectedIDs.contains(album.albumPersistentID)
+				})
+				guard rsSelected.ranges.count <= 1 else { return false }
+		}
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded, .title, .artist: return true
 			case .recentlyReleased: return album_toArrange().contains {
@@ -418,7 +426,17 @@ final class AlbumsTVC: LibraryTVC {
 				UIDeferredMenuElement.uncached { [weak self] useElements in
 					guard let self else { return }
 					let action = songOrder.newUIAction { [weak self] in self?.song_arrange(by: songOrder) }
-					if song_toArrange().count <= 1 { action.attributes.formUnion(.disabled) }
+					var enabling = true
+					if song_toArrange().count <= 1 { enabling = false }
+					switch albumListState.selectMode {
+						case .selectAlbums, .view: break
+						case .selectSongs(let selectedIDs):
+							let rsSelected = albumListState.songs().indices(where: { song in
+								selectedIDs.contains(song.persistentID)
+							})
+							if rsSelected.ranges.count >= 2 { enabling = false }
+					}
+					if !enabling { action.attributes.formUnion(.disabled) }
 					useElements([action])
 				}
 			})
