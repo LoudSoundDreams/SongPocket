@@ -408,6 +408,7 @@ struct NowPlayingIndicator: View {
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
 		let _ = PlayerState.shared.signal
+		let _ = Librarian.shared.isMerging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 		guard
 			let state = ApplicationMusicPlayer._shared?.state,
 			songID == MPMusicPlayerController.nowPlayingID
