@@ -25,15 +25,6 @@ extension Sequence {
 	}
 }
 
-extension Collection {
-	func indices__(where isGood: (Element) -> Bool) -> [Index] {
-		return indices.filter { iElement in
-			let element = self[iElement]
-			return isGood(element)
-		}
-	}
-}
-
 extension Array {
 	func inAnyOtherOrder() -> Self
 	where Element: Equatable
@@ -44,13 +35,6 @@ extension Array {
 			result = shuffled()
 		} while result == self
 		return result
-	}
-	
-	// Whether the integers are increasing and contiguous.
-	func isConsecutive() -> Bool
-	where Element: BinaryInteger
-	{
-		return allNeighborsSatisfy { $0 + 1 == $1 }
 	}
 	
 	func differenceInferringMoves(
