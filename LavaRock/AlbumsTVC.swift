@@ -464,22 +464,20 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_toArrange() -> [ZZZAlbum] {
 		switch albumListState.selectMode {
 			case .selectSongs: return []
-			case .view: break
+			case .view:
+				return albumListState.albums()
 			case .selectAlbums(let selectedIDs):
-				if selectedIDs.isEmpty { break }
 				return albumListState.albums(with: selectedIDs)
 		}
-		return albumListState.albums()
 	}
 	private func song_toArrange() -> [ZZZSong] {
 		switch albumListState.selectMode {
 			case .selectAlbums: return []
-			case .view: break
+			case .view:
+				return albumListState.songs()
 			case .selectSongs(let selectedIDs):
-				if selectedIDs.isEmpty { break }
 				return albumListState.songs(with: selectedIDs)
 		}
-		return albumListState.songs()
 	}
 	
 	// MARK: - Moving up and down
