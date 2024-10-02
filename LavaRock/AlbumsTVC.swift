@@ -597,46 +597,34 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_float() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+			let rsSelected = albumListState.albums().indices {
 				selectedIDs.contains($0.albumPersistentID)
-			}.map { Int64($0) }
-			guard let back = selectedIndices.last else { return }
-			
-			let range = (0...back)
-			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
-			let toFloat = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [ZZZAlbum] = toFloat + toDisplace
-			
-			albumListState.selectMode = .selectAlbums([])
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = Int64(offset)
 			}
+			var inList = albumListState.albums()
+			
+			inList.moveSubranges(rsSelected, to: 0)
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
+			albumListState.selectMode = .selectAlbums([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_float() {
 		Task {
 			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.songs().indices__ {
+			let rsSelected = albumListState.songs().indices {
 				selectedIDs.contains($0.persistentID)
-			}.map { Int64($0) }
-			guard let back = selectedIndices.last else { return }
-			
-			let range = (0...back)
-			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
-			let toFloat = inRange.filter { selectedIDs.contains($0.persistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [ZZZSong] = toFloat + toDisplace
-			
-			albumListState.selectMode = .selectSongs([])
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = Int64(offset)
 			}
+			var inList = albumListState.songs()
+			
+			inList.moveSubranges(rsSelected, to: 0)
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
+			albumListState.selectMode = .selectSongs([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
@@ -644,46 +632,34 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_sink() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+			let rsSelected = albumListState.albums().indices {
 				selectedIDs.contains($0.albumPersistentID)
-			}.map { Int64($0) }
-			guard let front = selectedIndices.first else { return }
-			
-			let range = (front...Int64(albumListState.albums().count)-1)
-			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
-			let toSink = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [ZZZAlbum] = toDisplace + toSink
-			
-			albumListState.selectMode = .selectAlbums([])
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = front + Int64(offset)
 			}
+			var inList = albumListState.albums()
+			
+			inList.moveSubranges(rsSelected, to: inList.count)
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
+			albumListState.selectMode = .selectAlbums([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_sink() {
 		Task {
 			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.songs().indices__ {
+			let rsSelected = albumListState.songs().indices {
 				selectedIDs.contains($0.persistentID)
-			}.map { Int64($0) }
-			guard let front = selectedIndices.first else { return }
-			
-			let range = (front...(Int64(albumListState.songs().count)-1))
-			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
-			let toSink = inRange.filter { selectedIDs.contains($0.persistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [ZZZSong] = toDisplace + toSink
-			
-			albumListState.selectMode = .selectSongs([])
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = front + Int64(offset)
 			}
+			var inList = albumListState.songs()
+			
+			inList.moveSubranges(rsSelected, to: inList.count)
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
+			albumListState.selectMode = .selectSongs([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
 		}
 	}
