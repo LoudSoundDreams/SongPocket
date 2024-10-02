@@ -27,6 +27,12 @@ enum InterfaceText {
 	static let welcome_message = NSLocalizedString("SongPocket shows and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let welcome_button = NSLocalizedString("Continue", comment: "Button")
 	static let _emptyLibraryMessage = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
+	static func NUMBER_albums(_ number: Int) -> String {
+		if number == 1 {
+			return "\(number) album"
+		}
+		return "\(number) albums"
+	}
 	static func NUMBER_songs(_ number: Int) -> String {
 		if number == 1 {
 			return "\(number) song"

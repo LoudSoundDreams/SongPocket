@@ -289,6 +289,10 @@ final class AlbumsTVC: LibraryTVC {
 		switch albumListState.selectMode {
 			case .view(let activatedID):
 				setToolbarItems([beginSelectingButton, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
+				switch albumListState.expansion {
+					case .collapsed: bEllipsis.menu = newAlbumSortMenu()
+					case .expanded: bEllipsis.menu = newSongSortMenu()
+				}
 				if activatedID == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
@@ -385,6 +389,35 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var aSongFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.song_float() }
 	private lazy var aSongSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }
 	
+	// MARK: - Focused
+	
+	private func newTitleFocused() -> String {
+		switch albumListState.selectMode {
+			case .selectAlbums(let selectedIDs):
+				return InterfaceText.NUMBER_albums(albumListState.albums(with: selectedIDs).count)
+			case .selectSongs(let selectedIDs):
+				return InterfaceText.NUMBER_songs(albumListState.songs(with: selectedIDs).count)
+			case .view:
+				switch albumListState.expansion {
+					case .collapsed:
+						return InterfaceText.NUMBER_albums(albumListState.albums().count)
+					case .expanded(let expandedAlbumID):
+						let songCount: Int = {
+							guard let expandedAlbum = albumListState.albums().first(where: {
+								expandedAlbumID == $0.albumPersistentID
+							}) else { return 0 }
+							return expandedAlbum.songs(sorted: false).count
+						}()
+						return InterfaceText.NUMBER_songs(songCount)
+				}
+		}
+	}
+	
+	private func newMenuFocused() -> UIMenu {
+		return UIMenu(options: .displayInline, children: [
+		])
+	}
+	
 	// MARK: - Sorting
 	
 	private func newAlbumSortMenu() -> UIMenu {
@@ -400,7 +433,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(children: submenus)
+		return UIMenu(title: newTitleFocused(), children: submenus + [newMenuFocused()])
 	}
 	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
 		guard album_toArrange().count >= 2 else { return false }
@@ -441,7 +474,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(children: submenus)
+		return UIMenu(title: newTitleFocused(), children: submenus + [newMenuFocused()])
 	}
 	
 	private func album_arrange(by albumOrder: AlbumOrder) {
