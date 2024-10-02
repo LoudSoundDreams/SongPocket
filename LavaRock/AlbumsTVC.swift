@@ -407,9 +407,9 @@ final class AlbumsTVC: LibraryTVC {
 		switch albumListState.selectMode {
 			case .selectSongs, .view: break
 			case .selectAlbums(let selectedIDs):
-				let rsSelected = albumListState.albums().indices(where: { album in
-					selectedIDs.contains(album.albumPersistentID)
-				})
+				let rsSelected = albumListState.albums().indices {
+					selectedIDs.contains($0.albumPersistentID)
+				}
 				guard rsSelected.ranges.count <= 1 else { return false }
 		}
 		switch albumOrder {
@@ -431,9 +431,9 @@ final class AlbumsTVC: LibraryTVC {
 					switch albumListState.selectMode {
 						case .selectAlbums, .view: break
 						case .selectSongs(let selectedIDs):
-							let rsSelected = albumListState.songs().indices(where: { song in
-								selectedIDs.contains(song.persistentID)
-							})
+							let rsSelected = albumListState.songs().indices {
+								selectedIDs.contains($0.persistentID)
+							}
 							if rsSelected.ranges.count >= 2 { enabling = false }
 					}
 					if !enabling { action.attributes.formUnion(.disabled) }
