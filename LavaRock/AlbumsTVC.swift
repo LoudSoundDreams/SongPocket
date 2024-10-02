@@ -487,21 +487,18 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_promote() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+			let rsSelected = albumListState.albums().indices {
 				selectedIDs.contains($0.albumPersistentID)
-			}.map { Int64($0) }
-			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-			
-			let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
-			let range = (target...back)
-			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
-			let toPromote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [ZZZAlbum] = toPromote + toDisplace
-			
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = target + Int64(offset)
 			}
+			guard let front: Int = rsSelected.ranges.first?.first else { return }
+			let target: Int = (rsSelected.ranges.count == 1)
+			? max(front-1, 0)
+			: front
+			var inList = albumListState.albums()
+			
+			inList.moveSubranges(rsSelected, to: target)
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
@@ -513,30 +510,27 @@ final class AlbumsTVC: LibraryTVC {
 	private func song_promote() {
 		Task {
 			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.songs().indices__ {
+			let rsSelected = albumListState.songs().indices {
 				selectedIDs.contains($0.persistentID)
-			}.map { Int64($0) }
-			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-			
-			let target: Int64 = selectedIndices.isConsecutive() ? max(front-1, 0) : front
-			let range = (target...back)
-			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
-			let toPromote = inRange.filter { selectedIDs.contains($0.persistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [ZZZSong] = toPromote + toDisplace
-			
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = target + Int64(offset)
 			}
+			guard let front = rsSelected.ranges.first?.first else { return }
+			let target: Int = (rsSelected.ranges.count == 1)
+			? max(front-1, 0)
+			: front
+			var inList = albumListState.songs()
+			let idFrontSong = inList[front].persistentID
+			
+			inList.moveSubranges(rsSelected, to: target)
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let frontSong = newBlock.first,
 					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
-						case .song(let song): return frontSong.persistentID == song.persistentID
+						case .song(let song): return idFrontSong == song.persistentID
 					}})
 				else { return }
 				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
@@ -547,21 +541,18 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_demote() {
 		Task {
 			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.albums().indices__ {
+			let rsSelected = albumListState.albums().indices {
 				selectedIDs.contains($0.albumPersistentID)
-			}.map { Int64($0) }
-			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-			
-			let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.albums().count)-1) : back
-			let range = (front...target)
-			let inRange: [ZZZAlbum] = range.map { int64 in albumListState.albums()[Int(int64)] }
-			let toDemote = inRange.filter { selectedIDs.contains($0.albumPersistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.albumPersistentID) }
-			let newBlock: [ZZZAlbum] = toDisplace + toDemote
-			
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = front + Int64(offset)
 			}
+			guard let back = rsSelected.ranges.last?.last else { return }
+			let target: Int = (rsSelected.ranges.count == 1)
+			? min(back+1, albumListState.albums().count-1)
+			: back
+			var inList = albumListState.albums()
+			
+			inList.moveSubranges(rsSelected, to: target+1) // This method puts the last in-range element before the `to:` index.
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
@@ -573,30 +564,27 @@ final class AlbumsTVC: LibraryTVC {
 	private func song_demote() {
 		Task {
 			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let selectedIndices: [Int64] = albumListState.songs().indices__ {
+			let rsSelected = albumListState.songs().indices {
 				selectedIDs.contains($0.persistentID)
-			}.map { Int64($0) }
-			guard let front = selectedIndices.first, let back = selectedIndices.last else { return }
-			
-			let target: Int64 = selectedIndices.isConsecutive() ? min(back+1, Int64(albumListState.songs().count)-1) : back
-			let range = (front...target)
-			let inRange: [ZZZSong] = range.map { int64 in albumListState.songs()[Int(int64)] }
-			let toDemote = inRange.filter { selectedIDs.contains($0.persistentID) }
-			let toDisplace = inRange.filter { !selectedIDs.contains($0.persistentID) }
-			let newBlock: [ZZZSong] = toDisplace + toDemote
-			
-			newBlock.indices.forEach { offset in
-				newBlock[offset].index = front + Int64(offset)
 			}
+			guard let back = rsSelected.ranges.last?.last else { return }
+			let target: Int = (rsSelected.ranges.count == 1)
+			? min(back+1, albumListState.songs().count-1)
+			: back
+			var inList = albumListState.songs()
+			let idBackSong = inList[back].persistentID
+			
+			inList.moveSubranges(rsSelected, to: target+1)
+			ZZZDatabase.renumber(inList)
+			
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let backSong = newBlock.last,
 					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
-						case .song(let song): return backSong.persistentID == song.persistentID
+						case .song(let song): return idBackSong == song.persistentID
 					}})
 				else { return }
 				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
