@@ -372,7 +372,16 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	})
 	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in
-		self?.albumListState.selectMode = .view(nil)
+		guard let self else { return }
+		switch albumListState.selectMode {
+			case .view: break
+			case .selectAlbums:
+				withAnimation {
+					self.albumListState.selectMode = .view(nil)
+				}
+			case .selectSongs:
+				albumListState.selectMode = .view(nil)
+		}
 	})
 	
 	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
