@@ -50,7 +50,13 @@ import MusicKit
 				}
 				return result
 			}()
-			guard let _ = try? await queue.insert(toAppend, position: .tail) else { return }
+			
+			if queue.currentEntry == nil {
+				queue = Queue(for: toAppend)
+				guard let _ = try? await prepareToPlay() else { return }
+			} else {
+				guard let _ = try? await queue.insert(toAppend, position: .tail) else { return }
+			}
 			
 			let impactor = UIImpactFeedbackGenerator(style: .heavy)
 			impactor.impactOccurred()
