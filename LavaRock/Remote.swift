@@ -163,7 +163,11 @@ extension PlayerState {
 		}
 #endif
 	}
-	private static let aPlay = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play")) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+	private static let aPlay: UIAction = {
+		let result = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play")) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+		result.accessibilityTraits.formUnion(.startsMediaSession)
+		return result
+	}()
 	private static let aPause = UIAction(title: InterfaceText.pause, image: UIImage(systemName: "pause")) { _ in ApplicationMusicPlayer._shared?.pause() }
 	private static let aAppleMusic = UIAction(title: InterfaceText.appleMusic, image: UIImage(systemName: "arrow.up.forward.app")) { _ in Librarian.openAppleMusic() }
 }
