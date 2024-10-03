@@ -402,13 +402,10 @@ final class AlbumsTVC: LibraryTVC {
 					case .collapsed:
 						return InterfaceText.NUMBER_albums(albumListState.albums().count)
 					case .expanded(let expandedAlbumID):
-						let songCount: Int = {
-							guard let expandedAlbum = albumListState.albums().first(where: {
-								expandedAlbumID == $0.albumPersistentID
-							}) else { return 0 }
-							return expandedAlbum.songs(sorted: false).count
-						}()
-						return InterfaceText.NUMBER_songs(songCount)
+						guard let expandedAlbum = albumListState.albums().first(where: {
+							expandedAlbumID == $0.albumPersistentID
+						}) else { return "" }
+						return InterfaceText.NUMBER_songs(expandedAlbum.songs(sorted: false).count)
 				}
 		}
 	}
