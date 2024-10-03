@@ -240,6 +240,10 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			albumListState.refreshItems()
 			refreshBeginSelectingButton()
+			switch albumListState.expansion {
+				case .collapsed: bEllipsis.menu = newAlbumSortMenu()
+				case .expanded: bEllipsis.menu = newSongSortMenu()
+			}
 			guard await applyRowIdentifiers(albumListState.rowIdentifiers()) else { return }
 		}
 	}
@@ -394,9 +398,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func newTitleFocused() -> String {
 		switch albumListState.selectMode {
 			case .selectAlbums(let selectedIDs):
-				return InterfaceText.NUMBER_albums(albumListState.albums(with: selectedIDs).count)
+				return InterfaceText.NUMBER_albums_selected(albumListState.albums(with: selectedIDs).count)
 			case .selectSongs(let selectedIDs):
-				return InterfaceText.NUMBER_songs(albumListState.songs(with: selectedIDs).count)
+				return InterfaceText.NUMBER_songs_selected(albumListState.songs(with: selectedIDs).count)
 			case .view:
 				switch albumListState.expansion {
 					case .collapsed:
