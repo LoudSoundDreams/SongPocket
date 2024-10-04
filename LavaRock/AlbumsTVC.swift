@@ -431,7 +431,7 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Sorting
 	
 	private func newAlbumSortMenu() -> UIMenu {
-		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased, .artist, .title], [.random, .reverse]]
+		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased], [.random, .reverse]]
 		let submenus: [UIMenu] = groups.map { group in
 			UIMenu(options: .displayInline, children: group.map { albumOrder in
 				UIDeferredMenuElement.uncached { [weak self] useElements in
@@ -456,7 +456,7 @@ final class AlbumsTVC: LibraryTVC {
 				guard rsSelected.ranges.count <= 1 else { return false }
 		}
 		switch albumOrder {
-			case .random, .reverse, .recentlyAdded, .title, .artist: return true
+			case .random, .reverse, .recentlyAdded: return true
 			case .recentlyReleased: return album_toArrange().contains {
 				nil != Librarian.shared.mkSectionInfo(albumID: $0.albumPersistentID)?._releaseDate
 			}

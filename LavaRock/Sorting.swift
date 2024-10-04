@@ -8,8 +8,6 @@ enum AlbumOrder {
 	
 	case recentlyAdded
 	case recentlyReleased
-	case artist
-	case title
 	
 	@MainActor func newUIAction(handler: @escaping () -> Void) -> UIAction {
 		return UIAction(
@@ -18,8 +16,6 @@ enum AlbumOrder {
 				case .reverse: return InterfaceText.reverse
 				case .recentlyAdded: return InterfaceText.recentlyAdded
 				case .recentlyReleased: return InterfaceText.recentlyReleased
-				case .artist: return InterfaceText.artist
-				case .title: return InterfaceText.title
 			}}(),
 			image: UIImage(systemName: { switch self {
 				case .random:
@@ -34,8 +30,6 @@ enum AlbumOrder {
 				case .reverse: return "arrow.up.and.down"
 				case .recentlyAdded: return "plus.square"
 				case .recentlyReleased: return "calendar"
-				case .artist: return "music.mic"
-				case .title: return "character"
 			}}()),
 			handler: { _ in handler() })
 	}
@@ -77,33 +71,6 @@ enum AlbumOrder {
 					guard let rightDate = $1.releaseDate else { return true }
 					guard let leftDate = $0.releaseDate else { return false }
 					return leftDate > rightDate
-				}
-				return sorted.map { $0.album }
-			case .artist:
-				// 10,000 albums takes 30.3s in 2024.
-				let albumsAndArtists: [(album: ZZZAlbum, artist: String?)] = inOriginalOrder.map {(
-					album: $0,
-					artist: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.artistName
-				)}
-				let sorted = albumsAndArtists.sortedStably {
-					$0.artist == $1.artist
-				} areInOrder: {
-					guard let rightArtist = $1.artist else { return true }
-					guard let leftArtist = $0.artist else { return false }
-					return leftArtist.precedesInFinder(rightArtist)
-				}
-				return sorted.map { $0.album }
-			case .title:
-				let albumsAndTitles: [(album: ZZZAlbum, title: String?)] = inOriginalOrder.map {(
-					album: $0,
-					title: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.title
-				)}
-				let sorted = albumsAndTitles.sortedStably {
-					$0.title == $1.title
-				} areInOrder: {
-					guard let rightTitle = $1.title else { return true }
-					guard let leftTitle = $0.title else { return false }
-					return leftTitle.precedesInFinder(rightTitle)
 				}
 				return sorted.map { $0.album }
 		}}()
