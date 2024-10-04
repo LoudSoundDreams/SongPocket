@@ -573,24 +573,22 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func album_promote() {
 		Task {
-			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.albums().indices {
-				selectedIDs.contains($0.albumPersistentID)
-			}
-			guard let front: Int = rsSelected.ranges.first?.first else { return }
-			let target: Int = (rsSelected.ranges.count == 1)
-			? max(front-1, 0)
-			: front
-			var inList = albumListState.albums()
+			guard
+				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				let crate = ZZZDatabase.viewContext.fetchCollection()
+			else { return }
+			crate.promoteAlbums(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: target)
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
+				guard
+					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
+						case .song: return false
+						case .album(let album): return idsSelected.contains(album.albumPersistentID)
+					}})
+				else { return }
+				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
@@ -619,24 +617,22 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func album_demote() {
 		Task {
-			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.albums().indices {
-				selectedIDs.contains($0.albumPersistentID)
-			}
-			guard let back = rsSelected.ranges.last?.last else { return }
-			let target: Int = (rsSelected.ranges.count == 1)
-			? min(back+1, albumListState.albums().count-1)
-			: back
-			var inList = albumListState.albums()
+			guard
+				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				let crate = ZZZDatabase.viewContext.fetchCollection()
+			else { return }
+			crate.demoteAlbums(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: target+1) // This method puts the last in-range element before the `to:` index.
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
-				self.tableView.scrollToRow(at: IndexPath(row: Int(target), section: 0), at: .middle, animated: true)
+				guard
+					let targetRow = self.albumListState.listItems.lastIndex(where: { switch $0 {
+						case .song: return false
+						case .album(let album): return idsSelected.contains(album.albumPersistentID)
+					}})
+				else { return }
+				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
