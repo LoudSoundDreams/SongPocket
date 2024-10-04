@@ -201,15 +201,15 @@ import MediaPlayer
 	let albumID: AlbumID
 	let albumListState: AlbumListState
 	var body: some View {
-		HStack(alignment: .firstTextBaseline) {
-			mainStack
-			SongMenu(songID: songID, albumID: albumID, albumListState: albumListState)
-				.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
-					case .selectAlbums: return false
-					case .view: return false
-					case .selectSongs: return true
-				}}())
-		}
+//		HStack(alignment: .firstTextBaseline) {
+		mainStack
+//			SongMenu(songID: songID, albumID: albumID, albumListState: albumListState)
+//				.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
+//					case .selectAlbums: return false
+//					case .view: return false
+//					case .selectSongs: return true
+//				}}())
+//		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
 		.background { select_highlight }
 		.contentShape(Rectangle())
