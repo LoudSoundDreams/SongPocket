@@ -422,7 +422,56 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func newMenuFocused() -> UIMenu {
 		return UIMenu(options: .displayInline, children: [
+			UIDeferredMenuElement.uncached { [weak self] use in
+				guard let self else { return }
+				let idsSongs = idsSongsFocused()
+				let action = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play")) { [weak self] _ in
+					guard let self else { return }
+					ApplicationMusicPlayer._shared?.playNow(idsSongs)
+					endSelecting()
+				}
+				if idsSongs.isEmpty { action.attributes.formUnion(.disabled) }
+				use([action])
+			},
+			UIDeferredMenuElement.uncached { [weak self] use in
+				guard let self else { return }
+				let idsSongs = idsSongsFocused()
+				let action = UIAction(title: InterfaceText.shuffle, image: UIImage(systemName: "shuffle")) { [weak self] _ in
+					guard let self else { return }
+					ApplicationMusicPlayer._shared?.playNow(idsSongs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+					endSelecting()
+				}
+				if idsSongs.count <= 1 { action.attributes.formUnion(.disabled) }
+				use([action])
+			},
+			UIDeferredMenuElement.uncached { [weak self] use in
+				guard let self else { return }
+				let idsSongs = idsSongsFocused()
+				let action = UIAction(title: InterfaceText.addToQueue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
+					guard let self else { return }
+					ApplicationMusicPlayer._shared?.playLater(idsSongs)
+					endSelecting()
+				}
+				if idsSongs.isEmpty { action.attributes.formUnion(.disabled) }
+				use([action])
+			},
 		])
+	}
+	
+	private func idsSongsFocused() -> [SongID] {
+		switch albumListState.selectMode {
+			case .selectAlbums(let idsSelected):
+				return albumListState.albums(with: idsSelected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+			case .selectSongs(let idsSelected):
+				return albumListState.songs(with: idsSelected).map { $0.persistentID }
+			case .view:
+				switch albumListState.expansion {
+					case .collapsed:
+						return albumListState.albums().flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+					case .expanded:
+						return albumListState.songs().map { $0.persistentID }
+				}
+		}
 	}
 	
 	// MARK: - Sorting
