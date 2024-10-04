@@ -82,7 +82,7 @@ extension PlayerState {
 	private func newMenu() -> UIMenu {
 		return UIMenu(title: newMenuTitle(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				UIDeferredMenuElement.uncached { [weak self] use in use([
+				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.nowPlaying, image: UIImage(systemName: "waveform"), attributes: {
 #if targetEnvironment(simulator)
 						return []

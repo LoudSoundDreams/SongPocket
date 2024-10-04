@@ -55,10 +55,11 @@ enum InterfaceText {
 	// MARK: Playback
 	
 	static let startPlaying = NSLocalizedString("Start Playing", comment: "Button")
+	static let play = NSLocalizedString("Play", comment: "Button")
+	static let shuffle = NSLocalizedString("Shuffle", comment: "Button")
 	static let addToQueue = NSLocalizedString("Add to Queue", comment: "Button")
 	static let addRestOfAlbumToQueue = NSLocalizedString("Add Rest of Album to Queue", comment: "Button")
 	
-	static let play = NSLocalizedString("Play", comment: "Button")
 	static let pause = NSLocalizedString("Pause", comment: "Button")
 	static let skipBack15Seconds = NSLocalizedString("Skip back 15 seconds", comment: "Button") // As of iOS 16.5 RC 1, picture-in-picture videos use “Skip back 10 seconds” and “Skip forward 10 seconds”.
 	static let skipForward15Seconds = NSLocalizedString("Skip forward 15 seconds", comment: "Button")
@@ -66,8 +67,6 @@ enum InterfaceText {
 	static let previous = NSLocalizedString("Previous", comment: "Button")
 	static let restart = NSLocalizedString("Restart", comment: "Button")
 	static let next = NSLocalizedString("Next", comment: "Button")
-	
-	static let shuffle = NSLocalizedString("Shuffle", comment: "Button")
 	static let repeat1 = NSLocalizedString("Repeat One", comment: "Button")
 	
 	// MARK: Editing

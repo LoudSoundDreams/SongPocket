@@ -35,7 +35,6 @@ import MusicKit
 			queue = Queue(for: toPlay, startingAt: start) // Slow.
 			guard let _ = try? await play() else { return }
 			
-			state.shuffleMode = .off // Not `.none`; this property is an optional.
 			state.repeatMode = oldRepeatMode
 		}
 	}

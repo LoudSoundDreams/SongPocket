@@ -356,10 +356,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	@objc private func refreshBeginSelectingButton() {
-		beginSelectingButton.isEnabled = !albumListState.listItems.isEmpty && !Librarian.shared.isMerging
-	}
-	
 	private lazy var beginSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
 		guard let self else { return }
 		switch albumListState.expansion {
@@ -371,8 +367,12 @@ final class AlbumsTVC: LibraryTVC {
 				albumListState.selectMode = .selectSongs([])
 		}
 	})
-	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in
-		guard let self else { return }
+	@objc private func refreshBeginSelectingButton() {
+		beginSelectingButton.isEnabled = !albumListState.listItems.isEmpty && !Librarian.shared.isMerging
+	}
+	
+	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
+	private func endSelecting() {
 		switch albumListState.selectMode {
 			case .view: break
 			case .selectAlbums:
@@ -382,7 +382,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .selectSongs:
 				albumListState.selectMode = .view(nil)
 		}
-	})
+	}
 	
 	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
@@ -414,11 +414,8 @@ final class AlbumsTVC: LibraryTVC {
 				switch albumListState.expansion {
 					case .collapsed:
 						return InterfaceText.NUMBER_albums(albumListState.albums().count)
-					case .expanded(let expandedAlbumID):
-						guard let expandedAlbum = albumListState.albums().first(where: {
-							expandedAlbumID == $0.albumPersistentID
-						}) else { return "" }
-						return InterfaceText.NUMBER_songs(expandedAlbum.songs(sorted: false).count)
+					case .expanded:
+						return InterfaceText.NUMBER_songs(albumListState.songs().count)
 				}
 		}
 	}
@@ -432,18 +429,18 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func newAlbumSortMenu() -> UIMenu {
 		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased], [.random, .reverse]]
-		let submenus: [UIMenu] = groups.map { group in
-			UIMenu(options: .displayInline, children: group.map { albumOrder in
+		let menuSections: [UIMenu] = groups.map { albumOrders in
+			UIMenu(options: .displayInline, children: albumOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] useElements in
 					// Runs each time the button presents the menu
 					guard let self else { return }
-					let action = albumOrder.newUIAction { [weak self] in self?.album_arrange(by: albumOrder) }
-					if !album_allowsArrange(by: albumOrder) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
+					let action = order.newUIAction { [weak self] in self?.album_arrange(by: order) }
+					if !album_allowsArrange(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
 					useElements([action])
 				}
 			})
 		}
-		return UIMenu(title: newTitleFocused(), children: submenus + [newMenuFocused()])
+		return UIMenu(title: newTitleFocused(), children: menuSections + [newMenuFocused()])
 	}
 	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
 		guard album_toArrange().count >= 2 else { return false }
@@ -464,11 +461,11 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func newSongSortMenu() -> UIMenu {
 		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
-		let submenus: [UIMenu] = groups.map { group in
-			UIMenu(options: .displayInline, children: group.map { songOrder in
+		let menuSections: [UIMenu] = groups.map { songOrders in
+			UIMenu(options: .displayInline, children: songOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] useElements in
 					guard let self else { return }
-					let action = songOrder.newUIAction { [weak self] in self?.song_arrange(by: songOrder) }
+					let action = order.newUIAction { [weak self] in self?.song_arrange(by: order) }
 					var enabling = true
 					if song_toArrange().count <= 1 { enabling = false }
 					switch albumListState.selectMode {
@@ -484,7 +481,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(title: newTitleFocused(), children: submenus + [newMenuFocused()])
+		return UIMenu(title: newTitleFocused(), children: menuSections + [newMenuFocused()])
 	}
 	
 	private func album_arrange(by albumOrder: AlbumOrder) {
