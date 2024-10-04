@@ -142,10 +142,18 @@ extension PlayerState {
 			]),
 		])
 	}
-	private static let dmeRestart = UIDeferredMenuElement.uncached { use in use([
-		// I want to disable this when the playhead is already at start of track, but can’t reliably check that.
-		UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : []) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
-	])}
+	private static let dmeRestart = UIDeferredMenuElement.uncached { use in
+		let action = UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise")) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
+		if
+			ApplicationMusicPlayer.isEmpty ||
+				ApplicationMusicPlayer._shared?.playbackTime == 0 // We don’t notice when this changes while the menu is open.
+		{
+			action.attributes.formUnion(.disabled)
+		} else {
+			action.attributes.subtract(.disabled)
+		}
+		use([action])
+	}
 	private static let dmePlayPause = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)
 		use([aPause])
