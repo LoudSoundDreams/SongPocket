@@ -139,15 +139,19 @@ import MediaPlayer
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
 			NowPlayingImage().hidden()
-			textStack // Align with `SongRow`
+			textStack // Align with `SongRow`.
 //			Spacer()
 //			Menu {
-//				Button("Coming Soon", systemImage: "hammer") {}.disabled(true)
+//				Button(InterfaceText.select, systemImage: "checkmark.circle") {
+//					albumListState.selectMode = .selectAlbums([albumID])
+//				}
 //			} label: { OverflowImage() }
-//				.disabled({ switch albumListState.selectMode { // We should also disable this when any album is expanded.
-//					case .view: return false
-//					case .selectAlbums, .selectSongs: return true
-//				}}())
+//				.disabled({
+//					switch albumListState.expansion {
+//						case .expanded: return true
+//						case .collapsed: return false
+//					}}())
+//				.animation(.default, value: albumListState.expansion)
 		}.padding()
 	}
 	
@@ -240,7 +244,7 @@ import MediaPlayer
 		HStack(alignment: .firstTextBaseline) {
 			select_indicator
 			NowPlayingIndicator(songID: songID)
-			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`
+			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 				Text(title ?? InterfaceText.emDash)
 				if
 					let songArtist = songInfo?._artist,

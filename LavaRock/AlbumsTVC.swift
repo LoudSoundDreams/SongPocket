@@ -100,7 +100,7 @@ extension AlbumListState {
 		}}
 	}
 	
-	enum Expansion {
+	enum Expansion: Equatable {
 		case collapsed
 		case expanded(AlbumID)
 	}
