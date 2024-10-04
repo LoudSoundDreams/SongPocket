@@ -596,28 +596,20 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func song_promote() {
 		Task {
-			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.songs().indices {
-				selectedIDs.contains($0.persistentID)
-			}
-			guard let front = rsSelected.ranges.first?.first else { return }
-			let target: Int = (rsSelected.ranges.count == 1)
-			? max(front-1, 0)
-			: front
-			var inList = albumListState.songs()
-			let idFrontSong = inList[front].persistentID
+			guard
+				case let .selectSongs(idsSelected) = albumListState.selectMode,
+				case let .expanded(idExpanded) = albumListState.expansion,
+				let album = albumListState.albums(with: [idExpanded]).first
+			else { return }
+			album.promoteSongs(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: target)
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
-						case .song(let song): return idFrontSong == song.persistentID
+						case .song(let song): return idsSelected.contains(song.persistentID)
 					}})
 				else { return }
 				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
@@ -650,28 +642,20 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func song_demote() {
 		Task {
-			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.songs().indices {
-				selectedIDs.contains($0.persistentID)
-			}
-			guard let back = rsSelected.ranges.last?.last else { return }
-			let target: Int = (rsSelected.ranges.count == 1)
-			? min(back+1, albumListState.songs().count-1)
-			: back
-			var inList = albumListState.songs()
-			let idBackSong = inList[back].persistentID
+			guard
+				case let .selectSongs(idsSelected) = albumListState.selectMode,
+				case let .expanded(idExpanded) = albumListState.expansion,
+				let album = albumListState.albums(with: [idExpanded]).first
+			else { return }
+			album.demoteSongs(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: target+1)
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
+					let targetRow = self.albumListState.listItems.lastIndex(where: { switch $0 {
 						case .album: return false
-						case .song(let song): return idBackSong == song.persistentID
+						case .song(let song): return idsSelected.contains(song.persistentID)
 					}})
 				else { return }
 				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)

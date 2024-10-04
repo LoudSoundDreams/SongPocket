@@ -88,6 +88,31 @@ extension ZZZAlbum {
 		container = collection
 		albumPersistentID = albumID
 	}
+	
+	final func promoteSongs(with idsToPromote: Set<SongID>) {
+		var mySongs = songs(sorted: true)
+		let rsToPromote = mySongs.indices { idsToPromote.contains($0.persistentID) }
+		guard let front: Int = rsToPromote.ranges.first?.first else { return }
+		let target: Int = (rsToPromote.ranges.count == 1)
+		? max(front-1, 0)
+		: front
+		
+		mySongs.moveSubranges(rsToPromote, to: target)
+		ZZZDatabase.renumber(mySongs)
+		managedObjectContext!.savePlease()
+	}
+	final func demoteSongs(with idsToDemote: Set<SongID>) {
+		var mySongs = songs(sorted: true)
+		let rsToDemote = mySongs.indices { idsToDemote.contains($0.persistentID) }
+		guard let back: Int = rsToDemote.ranges.last?.last else { return }
+		let target: Int = (rsToDemote.ranges.count == 1)
+		? min(back+1, mySongs.count-1)
+		: back
+		
+		mySongs.moveSubranges(rsToDemote, to: target+1) // This method puts the last in-range element before the `to:` index.
+		ZZZDatabase.renumber(mySongs)
+		managedObjectContext!.savePlease()
+	}
 }
 
 // MARK: - Song
