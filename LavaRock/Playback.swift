@@ -57,13 +57,8 @@ import MusicKit
 				guard let _ = try? await queue.insert(toAppend, position: .tail) else { return }
 			}
 			
-			let impactor = UIImpactFeedbackGenerator(style: .heavy)
-			impactor.impactOccurred()
-			
-			guard toAppend.count >= 2 else { return }
-			try? await Task.sleep(for: .seconds(0.2))
-			
-			impactor.impactOccurred()
+			let rumbler = UINotificationFeedbackGenerator()
+			rumbler.notificationOccurred(.success)
 		}
 	}
 }
