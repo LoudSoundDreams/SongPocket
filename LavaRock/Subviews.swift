@@ -143,7 +143,16 @@ import MediaPlayer
 //			Spacer()
 //			Menu {
 //				Button(InterfaceText.select, systemImage: "checkmark.circle") {
-//					albumListState.selectMode = .selectAlbums([albumID])
+//					switch albumListState.selectMode {
+//						case .selectSongs: return
+//						case .view:
+//							withAnimation(nil) {
+//								albumListState.selectMode = .selectAlbums([albumID])
+//							}
+//						case .selectAlbums(let idsSelected):
+//							let newSelected = idsSelected.union([albumID])
+//							albumListState.selectMode = .selectAlbums(newSelected)
+//					}
 //				}
 //			} label: { OverflowImage() }
 //				.disabled({
@@ -205,15 +214,21 @@ import MediaPlayer
 	let albumID: AlbumID
 	let albumListState: AlbumListState
 	var body: some View {
-//		HStack(alignment: .firstTextBaseline) {
-		mainStack
-//			SongMenu(songID: songID, albumID: albumID, albumListState: albumListState)
-//				.disabled({ switch albumListState.selectMode { // It’d be nice to animate this, but SwiftUI unnecessarily moves the button if the text stack resizes.
-//					case .selectAlbums: return false
-//					case .view: return false
-//					case .selectSongs: return true
-//				}}())
-//		}
+		HStack(alignment: .firstTextBaseline) {
+			mainStack
+//			Menu {
+//				Button(InterfaceText.select, systemImage: "checkmark.circle") {
+//					switch albumListState.selectMode {
+//						case .selectAlbums: return
+//						case .view:
+//							albumListState.selectMode = .selectSongs([songID])
+//						case .selectSongs(let idsSelected):
+//							let newSelected = idsSelected.union([songID])
+//							albumListState.selectMode = .selectSongs(newSelected)
+//					}
+//				}
+//			} label: { OverflowImage() }
+		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
 		.background { select_highlight }
 		.contentShape(Rectangle())
