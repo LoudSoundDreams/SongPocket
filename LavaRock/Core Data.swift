@@ -42,6 +42,12 @@ enum ZZZDatabase {
 // MARK: - Collection
 
 extension ZZZCollection {
+	fileprivate static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
+		let result = fetchRequest()
+		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+		return result
+	}
+	
 	// Similar to `Album.songs`.
 	final func albums(sorted: Bool) -> [ZZZAlbum] {
 		guard let contents else { return [] }
@@ -50,12 +56,6 @@ extension ZZZCollection {
 		guard sorted else { return unsorted }
 		
 		return unsorted.sorted { $0.index < $1.index }
-	}
-	
-	fileprivate static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
-		let result = fetchRequest()
-		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		return result
 	}
 }
 
