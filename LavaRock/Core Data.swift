@@ -82,6 +82,23 @@ extension ZZZCollection {
 		ZZZDatabase.renumber(myAlbums)
 		managedObjectContext!.savePlease()
 	}
+	
+	final func floatAlbums(with idsToFloat: Set<AlbumID>) {
+		var myAlbums = albums(sorted: true)
+		let rsToFloat = myAlbums.indices { idsToFloat.contains($0.albumPersistentID) }
+		
+		myAlbums.moveSubranges(rsToFloat, to: 0)
+		ZZZDatabase.renumber(myAlbums)
+		managedObjectContext!.savePlease()
+	}
+	final func sinkAlbums(with idsToSink: Set<AlbumID>) {
+		var myAlbums = albums(sorted: true)
+		let rsToSink = myAlbums.indices { idsToSink.contains($0.albumPersistentID) }
+		
+		myAlbums.moveSubranges(rsToSink, to: myAlbums.count)
+		ZZZDatabase.renumber(myAlbums)
+		managedObjectContext!.savePlease()
+	}
 }
 
 // MARK: - Album
@@ -135,6 +152,23 @@ extension ZZZAlbum {
 		: back
 		
 		mySongs.moveSubranges(rsToDemote, to: target+1)
+		ZZZDatabase.renumber(mySongs)
+		managedObjectContext!.savePlease()
+	}
+	
+	final func floatSongs(with idsToFloat: Set<SongID>) {
+		var mySongs = songs(sorted: true)
+		let rsToFloat = mySongs.indices { idsToFloat.contains($0.persistentID) }
+		
+		mySongs.moveSubranges(rsToFloat, to: 0)
+		ZZZDatabase.renumber(mySongs)
+		managedObjectContext!.savePlease()
+	}
+	final func sinkSongs(with idsToSink: Set<SongID>) {
+		var mySongs = songs(sorted: true)
+		let rsToSink = mySongs.indices { idsToSink.contains($0.persistentID) }
+		
+		mySongs.moveSubranges(rsToSink, to: mySongs.count)
 		ZZZDatabase.renumber(mySongs)
 		managedObjectContext!.savePlease()
 	}

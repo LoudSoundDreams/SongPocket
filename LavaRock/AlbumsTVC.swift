@@ -663,16 +663,12 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func album_float() {
 		Task {
-			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.albums().indices {
-				selectedIDs.contains($0.albumPersistentID)
-			}
-			var inList = albumListState.albums()
+			guard
+				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				let crate = ZZZDatabase.viewContext.fetchCollection()
+			else { return }
+			crate.floatAlbums(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: 0)
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectAlbums([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
@@ -680,16 +676,13 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func song_float() {
 		Task {
-			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.songs().indices {
-				selectedIDs.contains($0.persistentID)
-			}
-			var inList = albumListState.songs()
+			guard
+				case let .selectSongs(idsSelected) = albumListState.selectMode,
+				case let .expanded(idExpanded) = albumListState.expansion,
+				let album = albumListState.albums(with: [idExpanded]).first
+			else { return }
+			album.floatSongs(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: 0)
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectSongs([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
@@ -698,16 +691,12 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func album_sink() {
 		Task {
-			guard case let .selectAlbums(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.albums().indices {
-				selectedIDs.contains($0.albumPersistentID)
-			}
-			var inList = albumListState.albums()
+			guard
+				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				let crate = ZZZDatabase.viewContext.fetchCollection()
+			else { return }
+			crate.sinkAlbums(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: inList.count)
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectAlbums([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
@@ -715,16 +704,13 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func song_sink() {
 		Task {
-			guard case let .selectSongs(selectedIDs) = albumListState.selectMode else { return }
-			let rsSelected = albumListState.songs().indices {
-				selectedIDs.contains($0.persistentID)
-			}
-			var inList = albumListState.songs()
+			guard
+				case let .selectSongs(idsSelected) = albumListState.selectMode,
+				case let .expanded(idExpanded) = albumListState.expansion,
+				let album = albumListState.albums(with: [idExpanded]).first
+			else { return }
+			album.sinkSongs(with: idsSelected)
 			
-			inList.moveSubranges(rsSelected, to: inList.count)
-			ZZZDatabase.renumber(inList)
-			
-			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectSongs([])
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
