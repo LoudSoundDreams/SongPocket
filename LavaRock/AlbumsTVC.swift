@@ -25,10 +25,10 @@ extension AlbumListState {
 			let albums = Self.freshAlbums()
 			switch expansion {
 				case .collapsed: return albums.map { .album($0) }
-				case .expanded(let expandedAlbumID):
+				case .expanded(let idExpanded):
 					// If we removed the expanded album, go to collapsed mode.
 					guard let iExpandedAlbum = albums.firstIndex(where: { album in
-						expandedAlbumID == album.albumPersistentID
+						idExpanded == album.albumPersistentID
 					}) else {
 						expansion = .collapsed
 						return albums.map { .album($0) }
@@ -43,22 +43,22 @@ extension AlbumListState {
 		
 		// In case we removed items the user was doing something with.
 		switch selectMode {
-			case .view(let activatedID):
-				if let activatedID, songs(with: [activatedID]).isEmpty {
+			case .view(let idActivated):
+				if let idActivated, songs(with: [idActivated]).isEmpty {
 					selectMode = .view(nil)
 				}
-			case .selectAlbums(let selectedIDs):
+			case .selectAlbums(let idsSelected):
 				let selectable: Set<AlbumID> = Set(
-					albums(with: selectedIDs).map { $0.albumPersistentID }
+					albums(with: idsSelected).map { $0.albumPersistentID }
 				)
-				if selectedIDs != selectable {
+				if idsSelected != selectable {
 					selectMode = .selectAlbums(selectable)
 				}
-			case .selectSongs(let selectedIDs):
+			case .selectSongs(let idsSelected):
 				let selectable: Set<SongID> = Set(
-					songs(with: selectedIDs).map { $0.persistentID }
+					songs(with: idsSelected).map { $0.persistentID }
 				)
-				if selectedIDs != selectable{
+				if idsSelected != selectable{
 					selectMode = .selectSongs(selectable)
 				}
 		}
@@ -196,13 +196,13 @@ final class AlbumsTVC: LibraryTVC {
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumRow(albumID: rowAlbum.albumPersistentID, albumListState: albumListState)
+					AlbumRow(idAlbum: rowAlbum.albumPersistentID, listState: albumListState)
 				}.margins(.all, .zero)
 				return cell
 			case .song(let rowSong):
 				switch albumListState.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
-					case .expanded(let expandedAlbumID):
+					case .expanded(let idExpanded):
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
 						cell.backgroundColor = .clear
@@ -212,7 +212,7 @@ final class AlbumsTVC: LibraryTVC {
 							return result
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {
-							SongRow(songID: rowSong.persistentID, albumID: expandedAlbumID, albumListState: albumListState)
+							SongRow(idSong: rowSong.persistentID, idAlbum: idExpanded, listState: albumListState)
 						}.margins(.all, .zero)
 						return cell
 				}
@@ -241,18 +241,18 @@ final class AlbumsTVC: LibraryTVC {
 	
 	func showCurrent() {
 		guard
-			let currentSongID = MPMusicPlayerController.nowPlayingID,
-			let currentSong = ZZZDatabase.viewContext.fetchSong(mpID: currentSongID),
-			let currentAlbumID = currentSong.container?.albumPersistentID
+			let idSongCurrent = MPMusicPlayerController.nowPlayingID,
+			let songCurrent = ZZZDatabase.viewContext.fetchSong(mpID: idSongCurrent),
+			let idAlbumCurrent = songCurrent.container?.albumPersistentID
 		else { return }
-		guard let currentAlbumRow = albumListState.listItems.firstIndex(where: { switch $0 {
+		guard let rowAlbumCurrent = albumListState.listItems.firstIndex(where: { switch $0 {
 			case .song: return false
-			case .album(let album): return currentAlbumID == album.albumPersistentID
+			case .album(let album): return idAlbumCurrent == album.albumPersistentID
 		}}) else { return }
 		tableView.performBatchUpdates {
-			tableView.scrollToRow(at: IndexPath(row: currentAlbumRow, section: 0), at: .top, animated: true)
+			tableView.scrollToRow(at: IndexPath(row: rowAlbumCurrent, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.albumListState.expansion = .expanded(currentAlbumID)
+			self.albumListState.expansion = .expanded(idAlbumCurrent)
 		}
 	}
 	
@@ -270,11 +270,11 @@ final class AlbumsTVC: LibraryTVC {
 					albumListState.refreshItems()
 					bEllipsis.menu = newSongSortMenu()
 					let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
-						let expandingRow: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
+						let rowTarget: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
 							case .song: return false
 							case .album(let album): return idToExpand == album.albumPersistentID
 						}})!
-						self.tableView.scrollToRow(at: IndexPath(row: expandingRow, section: 0), at: .top, animated: true)
+						self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .top, animated: true)
 					})
 				}
 		}
@@ -282,41 +282,41 @@ final class AlbumsTVC: LibraryTVC {
 	
 	@objc private func reflectSelection() {
 		switch albumListState.selectMode {
-			case .view(let activatedID):
+			case .view(let idActivated):
 				setToolbarItems([bBeginSelecting, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
 				switch albumListState.expansion {
 					case .collapsed: bEllipsis.menu = newAlbumSortMenu()
 					case .expanded: bEllipsis.menu = newSongSortMenu()
 				}
-				if activatedID == nil {
+				if idActivated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
-			case .selectAlbums(let selectedIDs):
-				setToolbarItems([endSelectingButton, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown, .flexibleSpace(), bEllipsis], animated: true)
+			case .selectAlbums(let idsSelected):
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown, .flexibleSpace(), bEllipsis], animated: true)
 				bEllipsis.menu = newAlbumSortMenu() // In case it’s open.
-				bAlbumUp.isEnabled = !selectedIDs.isEmpty
+				bAlbumUp.isEnabled = !idsSelected.isEmpty
 				bAlbumDown.isEnabled = bAlbumUp.isEnabled
-			case .selectSongs(let selectedIDs):
-				setToolbarItems([endSelectingButton, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown, .flexibleSpace(), bEllipsis], animated: true)
+			case .selectSongs(let idsSelected):
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown, .flexibleSpace(), bEllipsis], animated: true)
 				bEllipsis.menu = newSongSortMenu()
-				bSongUp.isEnabled = !selectedIDs.isEmpty
+				bSongUp.isEnabled = !idsSelected.isEmpty
 				bSongDown.isEnabled = bSongUp.isEnabled
 		}
 	}
 	
 	@objc private func confirmPlay(notification: Notification) {
 		guard
-			let chosenSongID = notification.object as? SongID,
+			let idActivated = notification.object as? SongID,
 			let popoverSource: UIView = { () -> UIView? in
-				guard let chosenRow = albumListState.listItems.firstIndex(where: { switch $0 {
+				guard let rowActivated = albumListState.listItems.firstIndex(where: { switch $0 {
 					case .album: return false
-					case .song(let song): return chosenSongID == song.persistentID
+					case .song(let song): return idActivated == song.persistentID
 				}}) else { return nil }
-				return tableView.cellForRow(at: IndexPath(row: chosenRow, section: 0))
+				return tableView.cellForRow(at: IndexPath(row: rowActivated, section: 0))
 			}()
 		else { return }
 		
-		albumListState.selectMode = .view(chosenSongID) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		albumListState.selectMode = .view(idActivated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverSource
@@ -326,13 +326,13 @@ final class AlbumsTVC: LibraryTVC {
 					self.albumListState.selectMode = .view(nil)
 					
 					guard
-						let chosenSong = self.albumListState.songs(with: [chosenSongID]).first,
-						let chosenAlbum = chosenSong.container
+						let songActivated = self.albumListState.songs(with: [idActivated]).first,
+						let albumActivated = songActivated.container
 					else { return }
 					
 					ApplicationMusicPlayer._shared?.playNow(
-						chosenAlbum.songs(sorted: true).map { $0.persistentID },
-						startingAt: chosenSong.persistentID)
+						albumActivated.songs(sorted: true).map { $0.persistentID },
+						startingAt: songActivated.persistentID)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -362,7 +362,7 @@ final class AlbumsTVC: LibraryTVC {
 		bBeginSelecting.isEnabled = !Librarian.shared.isMerging
 	}
 	
-	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
+	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
 	private func endSelecting_animated() {
 		switch albumListState.selectMode {
 			case .view: break
@@ -397,10 +397,10 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func newTitleFocused() -> String {
 		switch albumListState.selectMode {
-			case .selectAlbums(let selectedIDs):
-				return InterfaceText.NUMBER_albums_selected(albumListState.albums(with: selectedIDs).count)
-			case .selectSongs(let selectedIDs):
-				return InterfaceText.NUMBER_songs_selected(albumListState.songs(with: selectedIDs).count)
+			case .selectAlbums(let idsSelected):
+				return InterfaceText.NUMBER_albums_selected(albumListState.albums(with: idsSelected).count)
+			case .selectSongs(let idsSelected):
+				return InterfaceText.NUMBER_songs_selected(albumListState.songs(with: idsSelected).count)
 			case .view:
 				switch albumListState.expansion {
 					case .collapsed:
@@ -486,9 +486,9 @@ final class AlbumsTVC: LibraryTVC {
 		guard album_toArrange().count >= 2 else { return false }
 		switch albumListState.selectMode {
 			case .selectSongs, .view: break
-			case .selectAlbums(let selectedIDs):
+			case .selectAlbums(let idsSelected):
 				let rsSelected = albumListState.albums().indices {
-					selectedIDs.contains($0.albumPersistentID)
+					idsSelected.contains($0.albumPersistentID)
 				}
 				guard rsSelected.ranges.count <= 1 else { return false }
 		}
@@ -510,9 +510,9 @@ final class AlbumsTVC: LibraryTVC {
 					if song_toArrange().count <= 1 { enabling = false }
 					switch albumListState.selectMode {
 						case .selectAlbums, .view: break
-						case .selectSongs(let selectedIDs):
+						case .selectSongs(let idsSelected):
 							let rsSelected = albumListState.songs().indices {
-								selectedIDs.contains($0.persistentID)
+								idsSelected.contains($0.persistentID)
 							}
 							if rsSelected.ranges.count >= 2 { enabling = false }
 					}
@@ -544,19 +544,15 @@ final class AlbumsTVC: LibraryTVC {
 	private func album_toArrange() -> [ZZZAlbum] {
 		switch albumListState.selectMode {
 			case .selectSongs: return []
-			case .view:
-				return albumListState.albums()
-			case .selectAlbums(let selectedIDs):
-				return albumListState.albums(with: selectedIDs)
+			case .view: return albumListState.albums()
+			case .selectAlbums(let idsSelected): return albumListState.albums(with: idsSelected)
 		}
 	}
 	private func song_toArrange() -> [ZZZSong] {
 		switch albumListState.selectMode {
 			case .selectAlbums: return []
-			case .view:
-				return albumListState.songs()
-			case .selectSongs(let selectedIDs):
-				return albumListState.songs(with: selectedIDs)
+			case .view: return albumListState.songs()
+			case .selectSongs(let idsSelected): return albumListState.songs(with: idsSelected)
 		}
 	}
 	
@@ -574,12 +570,12 @@ final class AlbumsTVC: LibraryTVC {
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
+					let rowTarget = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .song: return false
 						case .album(let album): return idsSelected.contains(album.albumPersistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
@@ -596,12 +592,12 @@ final class AlbumsTVC: LibraryTVC {
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let targetRow = self.albumListState.listItems.firstIndex(where: { switch $0 {
+					let rowTarget = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
 						case .song(let song): return idsSelected.contains(song.persistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
@@ -618,12 +614,12 @@ final class AlbumsTVC: LibraryTVC {
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let targetRow = self.albumListState.listItems.lastIndex(where: { switch $0 {
+					let rowTarget = self.albumListState.listItems.lastIndex(where: { switch $0 {
 						case .song: return false
 						case .album(let album): return idsSelected.contains(album.albumPersistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
@@ -640,12 +636,12 @@ final class AlbumsTVC: LibraryTVC {
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
 			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let targetRow = self.albumListState.listItems.lastIndex(where: { switch $0 {
+					let rowTarget = self.albumListState.listItems.lastIndex(where: { switch $0 {
 						case .album: return false
 						case .song(let song): return idsSelected.contains(song.persistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: targetRow, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
