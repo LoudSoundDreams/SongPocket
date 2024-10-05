@@ -125,11 +125,11 @@ final class AlbumsTVC: LibraryTVC {
 		view.backgroundColor = UIColor(Color(white: .oneEighth))
 		tableView.separatorStyle = .none
 		reflectSelection()
-		refreshBeginSelectingButton()
 		bEllipsis.preferredMenuElementOrder = .fixed
 		bEllipsis.menu = newAlbumSortMenu()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.willMerge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.didMerge, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
 		Remote.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: albumListState)
@@ -239,7 +239,6 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func refreshLibraryItems() {
 		Task {
 			albumListState.refreshItems()
-			refreshBeginSelectingButton()
 			switch albumListState.expansion {
 				case .collapsed: bEllipsis.menu = newAlbumSortMenu()
 				case .expanded: bEllipsis.menu = newSongSortMenu()
@@ -292,7 +291,7 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func reflectSelection() {
 		switch albumListState.selectMode {
 			case .view(let activatedID):
-				setToolbarItems([beginSelectingButton, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
+				setToolbarItems([bBeginSelecting, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
 				switch albumListState.expansion {
 					case .collapsed: bEllipsis.menu = newAlbumSortMenu()
 					case .expanded: bEllipsis.menu = newSongSortMenu()
@@ -356,7 +355,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	private lazy var beginSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
+	private lazy var bBeginSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
 		guard let self else { return }
 		switch albumListState.expansion {
 			case .collapsed:
@@ -367,8 +366,8 @@ final class AlbumsTVC: LibraryTVC {
 				albumListState.selectMode = .selectSongs([])
 		}
 	})
-	@objc private func refreshBeginSelectingButton() {
-		beginSelectingButton.isEnabled = !albumListState.listItems.isEmpty && !Librarian.shared.isMerging
+	@objc private func refresh_bBeginSelecting() {
+		bBeginSelecting.isEnabled = !Librarian.shared.isMerging
 	}
 	
 	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
