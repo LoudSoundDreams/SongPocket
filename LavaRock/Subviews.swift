@@ -348,48 +348,6 @@ import MediaPlayer
 	}
 }
 
-// MARK: Song menu
-
-@MainActor private struct SongMenu: View {
-	let songID: SongID
-	let albumID: AlbumID
-	let albumListState: AlbumListState
-	var body: some View {
-		Menu {
-			Button {
-				ApplicationMusicPlayer._shared?.playNow([songID])
-			} label: { Label(InterfaceText.play, systemImage: "play") }
-			Divider()
-			Button {
-				ApplicationMusicPlayer._shared?.playLater([songID])
-			} label: {
-				Label(InterfaceText.addToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
-			}
-			// Disable multiple-song commands intelligently: when a single-song command would do the same thing.
-			Button {
-				guard let album = ZZZDatabase.viewContext.fetchAlbum(id: albumID) else { return }
-				let restOfAlbum = album.songs(sorted: true).drop { songID != $0.persistentID }
-				ApplicationMusicPlayer._shared?.playLater(restOfAlbum.map { $0.persistentID })
-			} label: {
-				Label(InterfaceText.addRestOfAlbumToQueue, systemImage: "text.line.last.and.arrowtriangle.forward")
-			}.disabled(
-				(signal_tappedMenu && false) || // Hopefully the compiler never optimizes away the dependency on the SwiftUI state property
-				{
-					let _ = albumListState.selectMode // In case you add or remove the bottom song while the menu is open.
-					guard
-						let album = ZZZDatabase.viewContext.fetchAlbum(id: albumID),
-						let bottomSong = album.songs(sorted: true).last
-					else { return false }
-					return songID == bottomSong.persistentID
-				}()
-			)
-		} label: { OverflowImage() }
-			.onTapGesture { signal_tappedMenu.toggle() }
-	}
-	@State private var signal_tappedMenu = false // Value doesn’t actually matter
-	private let librarian: Librarian = .shared
-}
-
 // MARK: Now-playing indicator
 
 struct NowPlayingIndicator: View {
