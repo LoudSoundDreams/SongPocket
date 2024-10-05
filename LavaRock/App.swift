@@ -21,7 +21,7 @@ enum WorkingOn {
 		WindowGroup {
 //			AlbumShelf()
 //			AlbumList()
-			RootVCRep()
+			VCRMain()
 				.ignoresSafeArea()
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
@@ -35,12 +35,12 @@ enum WorkingOn {
 		PlayerState.shared.observeMKPlayer()
 	}
 }
-private struct RootVCRep: UIViewControllerRepresentable {
-	typealias VCType = RootNC
-	func makeUIViewController(context: Context) -> VCType { RootNC.create() }
+private struct VCRMain: UIViewControllerRepresentable {
+	typealias VCType = NCMain
+	func makeUIViewController(context: Context) -> VCType { NCMain.create() }
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
 }
-private final class RootNC: UINavigationController {
+private final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
