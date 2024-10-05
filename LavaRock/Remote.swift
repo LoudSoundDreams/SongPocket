@@ -144,10 +144,7 @@ extension PlayerState {
 	}
 	private static let dmeRestart = UIDeferredMenuElement.uncached { use in
 		let action = UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise")) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
-		if
-			ApplicationMusicPlayer.isEmpty ||
-				ApplicationMusicPlayer._shared?.playbackTime == 0 // We don’t notice when this changes while the menu is open.
-		{
+		if ApplicationMusicPlayer.isEmpty { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
 			action.attributes.formUnion(.disabled)
 		} else {
 			action.attributes.subtract(.disabled)
