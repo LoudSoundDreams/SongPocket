@@ -355,7 +355,9 @@ final class AlbumsTVC: LibraryTVC {
 					self.albumListState.selectMode = .selectAlbums([])
 				}
 			case .expanded:
-				albumListState.selectMode = .selectSongs([])
+				withAnimation {
+					self.albumListState.selectMode = .selectSongs([])
+				}
 		}
 	})
 	@objc private func refresh_bBeginSelecting() {
@@ -364,14 +366,8 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
 	private func endSelecting_animated() {
-		switch albumListState.selectMode {
-			case .view: break
-			case .selectAlbums:
-				withAnimation {
-					self.albumListState.selectMode = .view(nil)
-				}
-			case .selectSongs:
-				albumListState.selectMode = .view(nil)
+		withAnimation {
+			self.albumListState.selectMode = .view(nil)
 		}
 	}
 	

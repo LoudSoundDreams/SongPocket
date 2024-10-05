@@ -24,7 +24,7 @@ import MediaPlayer
 		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay(alignment: .topLeading) { select_indicator.padding() } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay { select_border } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityElement(children: .combine)
@@ -50,14 +50,14 @@ import MediaPlayer
 		}}()
 		Color.accentColor.opacity(highlighting ? .oneHalf : .zero)
 	}
-	@ViewBuilder private var select_indicator: some View {
+	@ViewBuilder private var select_border: some View {
 		switch listState.selectMode {
 			case .view, .selectSongs: EmptyView()
 			case .selectAlbums(let idsSelected):
 				if idsSelected.contains(idAlbum) {
-					ImageSelected()
+					RectSelected()
 				} else {
-					ImageUnselected()
+					RectUnselected()
 				}
 		}
 	}
@@ -231,6 +231,7 @@ import MediaPlayer
 		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
 		.background { select_highlight }
+		.overlay { select_border }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
@@ -257,7 +258,6 @@ import MediaPlayer
 		let title: String? = infoSong?._title
 		let infoAlbum: AlbumInfo? = librarian.mkSectionInfo(albumID: idAlbum)
 		HStack(alignment: .firstTextBaseline) {
-			select_indicator
 			IndicatorNowPlaying(idSong: idSong)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 				Text(title ?? InterfaceText._emDash)
@@ -317,19 +317,16 @@ import MediaPlayer
 				}}(),
 				value: listState.selectMode)
 	}
-	private var select_indicator: some View {
-		ZStack {
-			switch listState.selectMode {
-				case .view, .selectAlbums: EmptyView()
-				case .selectSongs(let idsSelected):
-					ZStack {
-						ImageUnselected()
-						if idsSelected.contains(idSong) {
-							ImageSelected().transition(.identity) // Prevents animation when selecting or deselecting (but not when inserting or removing entire stack)
-						}
-					}.padding(.trailing)
-			}
-		}.animation(.default, value: listState.selectMode)
+	@ViewBuilder private var select_border: some View {
+		switch listState.selectMode {
+			case .view, .selectAlbums: EmptyView()
+			case .selectSongs(let idsSelected):
+				if idsSelected.contains(idSong) {
+					RectSelected()
+				} else {
+					RectUnselected()
+				}
+		}
 	}
 	
 	private func tapped() {
@@ -398,17 +395,18 @@ struct IndicatorNowPlaying: View {
 
 // MARK: - Multipurpose
 
-struct ImageSelected: View {
+struct RectSelected: View {
 	var body: some View {
-		Image(systemName: "checkmark.circle.fill")
-			.symbolRenderingMode(.palette)
-			.foregroundStyle(.white, .tint)
+		Rectangle()
+			.strokeBorder(lineWidth: .eight)
+			.foregroundStyle(.tint.opacity(.oneHalf))
 	}
 }
-struct ImageUnselected: View {
+struct RectUnselected: View {
 	var body: some View {
-		Image(systemName: "circle")
-			.foregroundStyle(.secondary)
+		Rectangle()
+			.strokeBorder(lineWidth: .eight)
+			.foregroundStyle(Material.ultraThin)
 	}
 }
 
