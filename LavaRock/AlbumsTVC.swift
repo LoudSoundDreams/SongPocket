@@ -55,6 +55,10 @@ extension AlbumListState {
 					selectMode = .selectAlbums(selectable)
 				}
 			case .selectSongs(let idsSelected):
+				guard !songs().isEmpty else {
+					selectMode = .view(nil)
+					break
+				}
 				let selectable: Set<SongID> = Set(
 					songs(with: idsSelected).map { $0.persistentID }
 				)
