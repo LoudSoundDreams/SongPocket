@@ -91,7 +91,7 @@ extension Array {
 
 extension NotificationCenter {
 	// Helps callers observe each kind of `Notification` exactly once.
-	final func addObserverOnce(_ observer: Any, selector: Selector, name: Notification.Name, object: Any?) {
+	final func addObserver_once(_ observer: Any, selector: Selector, name: Notification.Name, object: Any?) {
 		removeObserver(observer, name: name, object: object)
 		addObserver(observer, selector: selector, name: name, object: object)
 	}

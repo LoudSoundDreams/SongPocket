@@ -129,12 +129,12 @@ final class AlbumsTVC: LibraryTVC {
 		bEllipsis.preferredMenuElementOrder = .fixed
 		bEllipsis.menu = newAlbumSortMenu()
 		
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refreshBeginSelectingButton), name: Librarian.willMerge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
 		Remote.shared.albumsTVC = WeakRef(self)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: albumListState)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(reflectSelection), name: AlbumListState.selectionChanged, object: albumListState)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: albumListState)
+		NotificationCenter.default.addObserver(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflectSelection), name: AlbumListState.selectionChanged, object: albumListState)
 	}
 	
 	// MARK: - Table view

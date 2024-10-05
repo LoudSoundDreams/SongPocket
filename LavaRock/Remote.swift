@@ -35,8 +35,8 @@ extension PlayerState {
 	
 	private init() {
 		refresh()
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: PlayerState.musicKit, object: nil)
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(refresh), name: Librarian.didMerge, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(refresh), name: PlayerState.musicKit, object: nil)
+		NotificationCenter.default.addObserver_once(self, selector: #selector(refresh), name: Librarian.didMerge, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
 	}
 	@objc private func refresh() {
 		// Refresh menu title

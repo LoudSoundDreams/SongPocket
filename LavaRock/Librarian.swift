@@ -28,7 +28,7 @@ extension Librarian {
 	func observeMPLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
-		NotificationCenter.default.addObserverOnce(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
 		mergeChanges()
 	}
 	static let willMerge = Notification.Name("LRMusicLibraryWillMerge")
