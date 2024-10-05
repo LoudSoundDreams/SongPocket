@@ -65,7 +65,7 @@ import MusicKit
 
 import MediaPlayer
 @MainActor extension MPMusicPlayerController {
-	static var nowPlayingID: SongID? {
+	static var idSongCurrent: SongID? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return applicationQueuePlayer.nowPlayingItem?.songID
 	}

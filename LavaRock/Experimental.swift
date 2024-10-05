@@ -6,7 +6,7 @@ struct AlbumShelf: View {
 	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() { didSet {
 		FakeAlbum.renumber(albums)
 	}}
-	@State private var visibleIndex: Int? = 2
+	@State private var iVisible: Int? = 2
 	var body: some View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
@@ -17,7 +17,7 @@ struct AlbumShelf: View {
 				}}.scrollTargetLayout()
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
-			.scrollPosition(id: $visibleIndex)
+			.scrollPosition(id: $iVisible)
 			.toolbar(.visible, for: .bottomBar)
 			.toolbarBackground(.visible, for: .bottomBar)
 			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
@@ -26,25 +26,25 @@ struct AlbumShelf: View {
 				Spacer()
 				Button {
 					withAnimation {
-						if let pos = visibleIndex, pos > 0 { visibleIndex = pos - 1 }
+						if let pos = iVisible, pos > 0 { iVisible = pos - 1 }
 					}
 				} label: { Image(systemName: "arrow.backward") }
-					.disabled({ guard let visibleIndex else { return false }; return visibleIndex <= 0 }())
-					.animation(.none, value: visibleIndex) // Without this, if you enable the button by tapping “next”, the icon fades in.
+					.disabled({ guard let iVisible else { return false }; return iVisible <= 0 }())
+					.animation(.none, value: iVisible) // Without this, if you enable the button by tapping “next”, the icon fades in.
 				Spacer()
 				ZStack {
 					Text(String(albums.count - 1)).hidden()
-					Text({ guard let visibleIndex else { return "" }; return String(visibleIndex) }())
+					Text({ guard let iVisible else { return "" }; return String(iVisible) }())
 						.animation(.none)
 				}
 				Spacer()
 				Button {
 					withAnimation {
-						if let pos = visibleIndex, pos < albums.count - 1 { visibleIndex = pos + 1 }
+						if let pos = iVisible, pos < albums.count - 1 { iVisible = pos + 1 }
 					}
 				} label: { Image(systemName: "arrow.forward") }
-					.disabled({ guard let visibleIndex else { return false }; return visibleIndex >= albums.count - 1 }())
-					.animation(.none, value: visibleIndex)
+					.disabled({ guard let iVisible else { return false }; return iVisible >= albums.count - 1 }())
+					.animation(.none, value: iVisible)
 				Spacer()
 				Button {
 					albums.append(FakeAlbum(position: albums.count, title: .randomLowercaseLetter()))
@@ -58,9 +58,9 @@ struct AlbumList: View {
 	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() { didSet {
 		FakeAlbum.renumber(albums)
 	}}
-	@State private var selectedAlbums: Set<FakeAlbum> = []
+	@State private var selected: Set<FakeAlbum> = []
 	var body: some View {
-		List(selection: $selectedAlbums) {
+		List(selection: $selected) {
 			ForEach($albums, editActions: .move) { $album in
 				FakeAlbumCover(album: album)
 					.listRowInsets(EdgeInsets(top: .zero, leading: .zero, bottom: .zero, trailing: .zero))

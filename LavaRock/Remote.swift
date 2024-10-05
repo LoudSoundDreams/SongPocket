@@ -70,7 +70,7 @@ extension PlayerState {
 	private static let iPlay = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	private static let iPause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	
-	private func newMenuTitle() -> String {
+	private func newTitle() -> String {
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return ""
 		}
@@ -80,7 +80,7 @@ extension PlayerState {
 		return ""
 	}
 	private func newMenu() -> UIMenu {
-		return UIMenu(title: newMenuTitle(), children: [
+		return UIMenu(title: newTitle(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.nowPlaying, image: UIImage(systemName: "waveform"), attributes: {
@@ -88,8 +88,8 @@ extension PlayerState {
 						return []
 #else
 						guard
-							let currentSongID = MPMusicPlayerController.nowPlayingID,
-							nil != ZZZDatabase.viewContext.fetchSong(mpID: currentSongID)
+							let idSong = MPMusicPlayerController.idSongCurrent,
+							nil != ZZZDatabase.viewContext.fetchSong(mpID: idSong)
 						else { return .disabled }
 						return []
 #endif

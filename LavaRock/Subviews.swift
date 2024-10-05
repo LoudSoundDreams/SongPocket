@@ -388,7 +388,7 @@ struct IndicatorNowPlaying: View {
 		let _ = Librarian.shared.isMerging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 		guard
 			let state = ApplicationMusicPlayer._shared?.state,
-			idSong == MPMusicPlayerController.nowPlayingID
+			idSong == MPMusicPlayerController.idSongCurrent
 		else { return .notPlaying }
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif

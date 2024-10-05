@@ -218,12 +218,12 @@ extension Librarian {
 					var lrSongs: [LRSong] = []
 					zzzAlbum.songs(sorted: true).forEach { zzzSong in
 						lrSongs.append(
-							LRSong(mpSongID: MPID(zzzSong.persistentID))
+							LRSong(mpidSong: MPID(zzzSong.persistentID))
 						)
 					}
 					lrAlbums.append(
 						LRAlbum(
-							mpAlbumID: MPID(zzzAlbum.albumPersistentID),
+							mpidAlbum: MPID(zzzAlbum.albumPersistentID),
 							songs: lrSongs)
 					)
 				}

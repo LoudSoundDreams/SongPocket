@@ -14,9 +14,9 @@ enum Disk {
 		crates.forEach {
 			output.append(contentsOf: "\($0.title)\n")
 			$0.albums.forEach { album in
-				output.append(contentsOf: "\(tAlbum)\(album.mpAlbumID)\n")
+				output.append(contentsOf: "\(tAlbum)\(album.mpidAlbum)\n")
 				album.songs.forEach { song in
-					output.append(contentsOf: "\(ttSong)\(song.mpSongID)\n")
+					output.append(contentsOf: "\(ttSong)\(song.mpidSong)\n")
 				}
 			}
 		}
@@ -93,11 +93,11 @@ struct Parser {
 		{
 			let line = lines[iLine]
 			let content = line.dropFirst(Disk.tAlbum.count)
-			let mpAlbumID: MPID? = MPID(String(content))
+			let mpidAlbum: MPID? = MPID(String(content))
 			
 			guard
 				isAlbum(at: iLine),
-				let mpAlbumID
+				let mpidAlbum
 			else {
 				// Not an album line. Skip it.
 				iLine += 1
@@ -113,7 +113,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRAlbum(mpAlbumID: mpAlbumID, songs: songs)
+				LRAlbum(mpidAlbum: mpidAlbum, songs: songs)
 			)
 		}
 		return (iLine, result)
@@ -130,11 +130,11 @@ struct Parser {
 		{
 			let line = lines[iLine]
 			let content = line.dropFirst(Disk.ttSong.count)
-			let mpSongID: MPID? = MPID(String(content))
+			let mpidSong: MPID? = MPID(String(content))
 			
 			guard
 				isSong(at: iLine),
-				let mpSongID
+				let mpidSong
 			else {
 				// Not a valid song line. Skip it.
 				iLine += 1
@@ -143,7 +143,7 @@ struct Parser {
 			
 			iLine += 1
 			result.append(
-				LRSong(mpSongID: mpSongID)
+				LRSong(mpidSong: mpidSong)
 			)
 		}
 		return (iLine, result)

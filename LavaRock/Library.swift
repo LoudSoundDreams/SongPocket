@@ -5,11 +5,11 @@ struct LRCrate: Equatable {
 	var albums: [LRAlbum]
 }
 struct LRAlbum: Equatable {
-	let mpAlbumID: MPID
+	let mpidAlbum: MPID
 	var songs: [LRSong]
 }
 struct LRSong: Equatable {
-	let mpSongID: MPID
+	let mpidSong: MPID
 }
 
 @MainActor final class Library {
@@ -23,8 +23,8 @@ extension LRCrate: CustomStringConvertible {
 	var description: String { "\(title) → albums: \(albums.count)" }
 }
 extension LRAlbum: CustomStringConvertible {
-	var description: String { "\(mpAlbumID) → songs: \(songs.count)" }
+	var description: String { "\(mpidAlbum) → songs: \(songs.count)" }
 }
 extension LRSong: CustomStringConvertible {
-	var description: String { "\(mpSongID)" }
+	var description: String { "\(mpidSong)" }
 }

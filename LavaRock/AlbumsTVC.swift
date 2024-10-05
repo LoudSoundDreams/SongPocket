@@ -175,7 +175,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if !hasSetOnscreenRowIdentifiers {
 			hasSetOnscreenRowIdentifiers = true
-			onscreenRowIdentifiers = albumListState.rowIdentifiers()
+			idsRowsOnscreen = albumListState.rowIdentifiers()
 		}
 		return albumListState.listItems.count
 	}
@@ -235,24 +235,24 @@ final class AlbumsTVC: LibraryTVC {
 				case .collapsed: bEllipsis.menu = newAlbumSortMenu()
 				case .expanded: bEllipsis.menu = newSongSortMenu()
 			}
-			guard await applyRowIdentifiers(albumListState.rowIdentifiers()) else { return }
+			guard await applyIDsRows(albumListState.rowIdentifiers()) else { return }
 		}
 	}
 	
 	func showCurrent() {
 		guard
-			let idSongCurrent = MPMusicPlayerController.nowPlayingID,
-			let songCurrent = ZZZDatabase.viewContext.fetchSong(mpID: idSongCurrent),
-			let idAlbumCurrent = songCurrent.container?.albumPersistentID
+			let idSong = MPMusicPlayerController.idSongCurrent,
+			let song = ZZZDatabase.viewContext.fetchSong(mpID: idSong),
+			let idAlbum = song.container?.albumPersistentID
 		else { return }
-		guard let rowAlbumCurrent = albumListState.listItems.firstIndex(where: { switch $0 {
+		guard let rowAlbum = albumListState.listItems.firstIndex(where: { switch $0 {
 			case .song: return false
-			case .album(let album): return idAlbumCurrent == album.albumPersistentID
+			case .album(let album): return idAlbum == album.albumPersistentID
 		}}) else { return }
 		tableView.performBatchUpdates {
-			tableView.scrollToRow(at: IndexPath(row: rowAlbumCurrent, section: 0), at: .top, animated: true)
+			tableView.scrollToRow(at: IndexPath(row: rowAlbum, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.albumListState.expansion = .expanded(idAlbumCurrent)
+			self.albumListState.expansion = .expanded(idAlbum)
 		}
 	}
 	
@@ -262,14 +262,14 @@ final class AlbumsTVC: LibraryTVC {
 				Task {
 					albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					bEllipsis.menu = newAlbumSortMenu()
-					let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+					let _ = await applyIDsRows(albumListState.rowIdentifiers())
 				}
 			case .expanded(let idToExpand):
 				Task {
 					guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
 					albumListState.refreshItems()
 					bEllipsis.menu = newSongSortMenu()
-					let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+					let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 						let rowTarget: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
 							case .song: return false
 							case .album(let album): return idToExpand == album.albumPersistentID
@@ -475,7 +475,7 @@ final class AlbumsTVC: LibraryTVC {
 					// Runs each time the button presents the menu
 					guard let self else { return }
 					let action = order.newUIAction { [weak self] in self?.album_arrange(by: order) }
-					if !album_allowsArrange(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`. `UIMenu` caches `UIAction.attributes`.
+					if !album_allowsArrange(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
 					useElements([action])
 				}
 			})
@@ -529,7 +529,7 @@ final class AlbumsTVC: LibraryTVC {
 			albumOrder.reindex(album_toArrange())
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_arrange(by songOrder: SongOrder) {
@@ -537,7 +537,7 @@ final class AlbumsTVC: LibraryTVC {
 			songOrder.reindex(song_toArrange())
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
 	
@@ -568,7 +568,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let rowTarget = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .song: return false
@@ -590,7 +590,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let rowTarget = self.albumListState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
@@ -612,7 +612,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let rowTarget = self.albumListState.listItems.lastIndex(where: { switch $0 {
 						case .song: return false
@@ -634,7 +634,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
 					let rowTarget = self.albumListState.listItems.lastIndex(where: { switch $0 {
 						case .album: return false
@@ -658,7 +658,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectAlbums([])
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_float() {
@@ -672,7 +672,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectSongs([])
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
 	
@@ -686,7 +686,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectAlbums([])
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
 	private func song_sink() {
@@ -700,7 +700,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			albumListState.refreshItems()
 			albumListState.selectMode = .selectSongs([])
-			let _ = await applyRowIdentifiers(albumListState.rowIdentifiers())
+			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
 }
