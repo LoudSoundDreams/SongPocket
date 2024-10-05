@@ -15,7 +15,7 @@ import MediaPlayer
 				.opacity(select_opacity)
 				.animation(.default, value: listState.selectMode)
 				.overlay { if expansion_labeled {
-					Rectangle().foregroundStyle(.thinMaterial)
+					Rectangle().foregroundStyle(Material.thin)
 				}}
 			ZStack { if expansion_labeled {
 				AlbumLabel(idAlbum: idAlbum, listState: listState).accessibilitySortPriority(10)
