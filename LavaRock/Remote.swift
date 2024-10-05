@@ -126,7 +126,7 @@ extension PlayerState {
 					// Ideally, disable this when there are no previous tracks to skip to.
 					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
-				Self.dmePlayPause,
+				Self.dmeRestart,
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
 				])},
@@ -135,7 +135,7 @@ extension PlayerState {
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
 				])},
-				Self.dmeRestart,
+				Self.dmePlayPause,
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
 				])},
