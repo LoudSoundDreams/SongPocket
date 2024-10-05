@@ -48,10 +48,6 @@ extension AlbumListState {
 					selectMode = .view(nil)
 				}
 			case .selectAlbums(let selectedIDs):
-				guard !albums().isEmpty else {
-					selectMode = .view(nil)
-					break
-				}
 				let selectable: Set<AlbumID> = Set(
 					albums(with: selectedIDs).map { $0.albumPersistentID }
 				)
@@ -59,10 +55,6 @@ extension AlbumListState {
 					selectMode = .selectAlbums(selectable)
 				}
 			case .selectSongs(let selectedIDs):
-				guard !songs().isEmpty else {
-					selectMode = .view(nil)
-					break
-				}
 				let selectable: Set<SongID> = Set(
 					songs(with: selectedIDs).map { $0.persistentID }
 				)
@@ -370,8 +362,8 @@ final class AlbumsTVC: LibraryTVC {
 		bBeginSelecting.isEnabled = !Librarian.shared.isMerging
 	}
 	
-	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting() })
-	private func endSelecting() {
+	private lazy var endSelectingButton = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
+	private func endSelecting_animated() {
 		switch albumListState.selectMode {
 			case .view: break
 			case .selectAlbums:
@@ -427,7 +419,7 @@ final class AlbumsTVC: LibraryTVC {
 				let action = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play")) { [weak self] _ in
 					guard let self else { return }
 					ApplicationMusicPlayer._shared?.playNow(idsSongs)
-					endSelecting()
+					endSelecting_animated()
 				}
 				if idsSongs.isEmpty { action.attributes.formUnion(.disabled) }
 				use([action])
@@ -438,7 +430,7 @@ final class AlbumsTVC: LibraryTVC {
 				let action = UIAction(title: InterfaceText.shuffle, image: UIImage(systemName: "shuffle")) { [weak self] _ in
 					guard let self else { return }
 					ApplicationMusicPlayer._shared?.playNow(idsSongs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
-					endSelecting()
+					endSelecting_animated()
 				}
 				if idsSongs.count <= 1 { action.attributes.formUnion(.disabled) }
 				use([action])
@@ -449,7 +441,7 @@ final class AlbumsTVC: LibraryTVC {
 				let action = UIAction(title: InterfaceText.addToQueue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 					guard let self else { return }
 					ApplicationMusicPlayer._shared?.playLater(idsSongs)
-					endSelecting()
+					endSelecting_animated()
 				}
 				if idsSongs.isEmpty { action.attributes.formUnion(.disabled) }
 				use([action])
