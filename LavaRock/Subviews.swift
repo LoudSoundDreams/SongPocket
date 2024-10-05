@@ -174,7 +174,7 @@ import MediaPlayer
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
 				guard let date = infoAlbum?._releaseDate
-				else { return InterfaceText.emDash }
+				else { return InterfaceText._emDash }
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
@@ -260,7 +260,7 @@ import MediaPlayer
 			select_indicator
 			IndicatorNowPlaying(idSong: idSong)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
-				Text(title ?? InterfaceText.emDash)
+				Text(title ?? InterfaceText._emDash)
 				if
 					let songArtist = infoSong?._artist,
 					songArtist != "",
@@ -273,17 +273,17 @@ import MediaPlayer
 			}
 			Spacer()
 			Text({
-				guard let infoSong, let infoAlbum else { return InterfaceText.octothorpe }
+				guard let infoSong, let infoAlbum else { return InterfaceText._octothorpe }
 				let trackFormatted: String = {
-					guard let track = infoSong._track else { return InterfaceText.octothorpe }
+					guard let track = infoSong._track else { return InterfaceText._octothorpe }
 					return String(track)
 				}()
 				if infoAlbum._discCount >= 2 {
 					let discFormatted: String = {
-						guard let disc = infoSong._disc else { return InterfaceText.octothorpe }
+						guard let disc = infoSong._disc else { return InterfaceText._octothorpe }
 						return String(disc)
 					}()
-					return "\(discFormatted)\(InterfaceText.interpunct)\(trackFormatted)"
+					return "\(discFormatted)\(InterfaceText._interpunct)\(trackFormatted)"
 				} else {
 					return trackFormatted
 				}

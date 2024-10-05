@@ -139,9 +139,9 @@ final class AlbumsTVC: LibraryTVC {
 		contentUnavailableConfiguration = {
 			guard MusicAuthorization.currentStatus == .authorized else {
 				return UIHostingConfiguration {
-					ContentUnavailableView {} description: { Text(InterfaceText.welcome_message)
+					ContentUnavailableView {} description: { Text(InterfaceText._messageWelcome)
 					} actions: {
-						Button(InterfaceText.welcome_button) {
+						Button(InterfaceText.continue_) {
 							Task {
 								switch MusicAuthorization.currentStatus {
 									case .authorized: break // Should never run
@@ -398,9 +398,9 @@ final class AlbumsTVC: LibraryTVC {
 	private func newTitleFocused() -> String {
 		switch albumListState.selectMode {
 			case .selectAlbums(let idsSelected):
-				return InterfaceText.NUMBER_albums_selected(albumListState.albums(with: idsSelected).count)
+				return InterfaceText.NUMBER_albumsSelected(albumListState.albums(with: idsSelected).count)
 			case .selectSongs(let idsSelected):
-				return InterfaceText.NUMBER_songs_selected(albumListState.songs(with: idsSelected).count)
+				return InterfaceText.NUMBER_songsSelected(albumListState.songs(with: idsSelected).count)
 			case .view:
 				switch albumListState.expansion {
 					case .collapsed:

@@ -9,13 +9,14 @@ enum InterfaceText {
 	// MARK: General
 	
 	static let cancel = NSLocalizedString("Cancel", comment: "Button")
+	static let continue_ = NSLocalizedString("Continue", comment: "Button")
 	static let done = NSLocalizedString("Done", comment: "Button")
 	static let more = NSLocalizedString("More", comment: "Button")
 	
-	static let interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
-	static let octothorpe = NSLocalizedString("#", comment: "Number sign. Stand-in for missing number")
-	static let emDash = NSLocalizedString("—", comment: "Em dash. Stand-in for missing general text: song titles, album titles, album artists, etc.")
-	static let tilde = NSLocalizedString("~", comment: "Invisible, but here for consistency. Default title for a new crate, which used to contain albums.")
+	static let _interpunct = NSLocalizedString("·", comment: "Interpunct, for separating pieces of information")
+	static let _octothorpe = NSLocalizedString("#", comment: "Number sign. Stand-in for missing number")
+	static let _emDash = NSLocalizedString("—", comment: "Em dash. Stand-in for missing general text: song titles, album titles, album artists, etc.")
+	static let _tilde = NSLocalizedString("~", comment: "Invisible, but here for consistency. Default title for a new crate, which used to contain albums.")
 	
 	static let unknownArtist = NSLocalizedString("Unknown Artist", comment: "Stand-in for missing info on albums and songs")
 	static let unknownAlbum = NSLocalizedString("Unknown Album", comment: "Stand-in for missing album title")
@@ -24,10 +25,9 @@ enum InterfaceText {
 	static let paused = NSLocalizedString("Paused", comment: "Accessibility label")
 	static let appleMusic = NSLocalizedString("Apple Music", comment: "Button")
 	
-	static let welcome_message = NSLocalizedString("SongPocket shows and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
-	static let welcome_button = NSLocalizedString("Continue", comment: "Button")
-	static let _emptyLibraryMessage = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
-	static func NUMBER_albums_selected(_ number: Int) -> String {
+	static let _messageWelcome = NSLocalizedString("SongPocket shows and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
+	static let _messageEmpty = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
+	static func NUMBER_albumsSelected(_ number: Int) -> String {
 		if number == 1 {
 			return "\(number) album selected"
 		}
@@ -39,7 +39,7 @@ enum InterfaceText {
 		}
 		return "\(number) albums"
 	}
-	static func NUMBER_songs_selected(_ number: Int) -> String {
+	static func NUMBER_songsSelected(_ number: Int) -> String {
 		if number == 1 {
 			return "\(number) song selected"
 		}

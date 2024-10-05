@@ -161,7 +161,7 @@ extension Librarian {
 				return mkSongs.map { LRSong(rawID: $0.id.rawValue) }
 			}())
 		}
-		let newCrate = LRCrate(title: InterfaceText.tilde, albums: newAlbums)
+		let newCrate = LRCrate(title: InterfaceText._tilde, albums: newAlbums)
 		theCrate = newCrate
 		
 		let _save = signposter.beginInterval("save")
@@ -417,7 +417,7 @@ extension Librarian {
 					}
 					let new = ZZZCollection(context: context)
 					new.index = 0
-					new.title = InterfaceText.tilde
+					new.title = InterfaceText._tilde
 					return new
 				}()
 				return ZZZAlbum(atBeginningOf: collection, albumID: albumID)!
