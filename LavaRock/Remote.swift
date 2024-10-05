@@ -41,7 +41,7 @@ extension PlayerState {
 	@objc private func refresh() {
 		// Refresh menu title
 		bRemote.preferredMenuElementOrder = .fixed
-		bRemote.menu = newMenu()
+		bRemote.menu = menu()
 		
 		// Make button reflect playback status
 #if targetEnvironment(simulator)
@@ -70,7 +70,7 @@ extension PlayerState {
 	private static let iPlay = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	private static let iPause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	
-	private func newTitle() -> String {
+	private func menuTitle() -> String {
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return ""
 		}
@@ -79,8 +79,8 @@ extension PlayerState {
 		}
 		return ""
 	}
-	private func newMenu() -> UIMenu {
-		return UIMenu(title: newTitle(), children: [
+	private func menu() -> UIMenu {
+		return UIMenu(title: menuTitle(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(title: InterfaceText.nowPlaying, image: UIImage(systemName: "waveform"), attributes: {

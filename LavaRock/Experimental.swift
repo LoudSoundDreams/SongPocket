@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct AlbumShelf: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() { didSet {
+	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray() { didSet {
 		FakeAlbum.renumber(albums)
 	}}
 	@State private var iVisible: Int? = 2
@@ -47,7 +47,7 @@ struct AlbumShelf: View {
 					.animation(.none, value: iVisible)
 				Spacer()
 				Button {
-					albums.append(FakeAlbum(position: albums.count, title: .randomLowercaseLetter()))
+					albums.append(FakeAlbum(position: albums.count, title: .randomLetter()))
 				} label: { Image(systemName: "plus.circle") }
 			}}
 		}
@@ -55,7 +55,7 @@ struct AlbumShelf: View {
 }
 
 struct AlbumList: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.newDemoArray() { didSet {
+	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray() { didSet {
 		FakeAlbum.renumber(albums)
 	}}
 	@State private var selected: Set<FakeAlbum> = []
@@ -77,8 +77,8 @@ struct FakeAlbumCover: View {
 	let album: FakeAlbum
 	var body: some View {
 		ZStack {
-			Rectangle().foregroundStyle(album.squareColor)
-			Circle().foregroundStyle(album.circleColor)
+			Rectangle().foregroundStyle(album.colorSquare)
+			Circle().foregroundStyle(album.colorCircle)
 			Text(album.title)
 		}.aspectRatio(1, contentMode: .fit)
 	}
@@ -88,9 +88,9 @@ struct FakeAlbumCover: View {
 
 // If this were a struct, `[FakeAlbum].didSet` would loop infinitely when you set one of `FakeAlbum`’s properties.
 final class FakeAlbum: Identifiable {
-	static func newDemoArray() -> [FakeAlbum] {
+	static func demoArray() -> [FakeAlbum] {
 		return (0...3).map {
-			FakeAlbum(position: $0, title: .randomLowercaseLetter())
+			FakeAlbum(position: $0, title: .randomLetter())
 		}
 	}
 	static func renumber(_ albums: [FakeAlbum]) {
@@ -99,8 +99,8 @@ final class FakeAlbum: Identifiable {
 	
 	var position: Int
 	let title: String
-	let circleColor = Color.randomTranslucent()
-	let squareColor = Color.randomTranslucent()
+	let colorCircle = Color.randomTranslucent()
+	let colorSquare = Color.randomTranslucent()
 	
 	init(position: Int, title: String) {
 		self.position = position
@@ -124,7 +124,7 @@ extension FakeAlbum: Hashable {
 // MARK: - Helpers
 
 private extension String {
-	static func randomLowercaseLetter() -> Self {
+	static func randomLetter() -> Self {
 		let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
 		return String(character)
 	}

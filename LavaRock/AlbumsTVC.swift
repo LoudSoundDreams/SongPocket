@@ -118,7 +118,7 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		reflectSelection()
 		bEllipsis.preferredMenuElementOrder = .fixed
-		bEllipsis.menu = newAlbumSortMenu()
+		bEllipsis.menu = menuSortAlbums()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.willMerge, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.didMerge, object: nil)
@@ -232,8 +232,8 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			albumListState.refreshItems()
 			switch albumListState.expansion {
-				case .collapsed: bEllipsis.menu = newAlbumSortMenu()
-				case .expanded: bEllipsis.menu = newSongSortMenu()
+				case .collapsed: bEllipsis.menu = menuSortAlbums()
+				case .expanded: bEllipsis.menu = menuSortSongs()
 			}
 			guard await applyIDsRows(albumListState.rowIdentifiers()) else { return }
 		}
@@ -261,14 +261,14 @@ final class AlbumsTVC: LibraryTVC {
 			case .collapsed:
 				Task {
 					albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-					bEllipsis.menu = newAlbumSortMenu()
+					bEllipsis.menu = menuSortAlbums()
 					let _ = await applyIDsRows(albumListState.rowIdentifiers())
 				}
 			case .expanded(let idToExpand):
 				Task {
 					guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
 					albumListState.refreshItems()
-					bEllipsis.menu = newSongSortMenu()
+					bEllipsis.menu = menuSortSongs()
 					let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 						let rowTarget: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
 							case .song: return false
@@ -285,22 +285,22 @@ final class AlbumsTVC: LibraryTVC {
 			case .view(let idActivated):
 				setToolbarItems([bBeginSelecting, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
 				switch albumListState.expansion {
-					case .collapsed: bEllipsis.menu = newAlbumSortMenu()
-					case .expanded: bEllipsis.menu = newSongSortMenu()
+					case .collapsed: bEllipsis.menu = menuSortAlbums()
+					case .expanded: bEllipsis.menu = menuSortSongs()
 				}
 				if idActivated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .selectAlbums(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bAlbumUp, .flexibleSpace(), bAlbumDown, .flexibleSpace(), bEllipsis], animated: true)
-				bEllipsis.menu = newAlbumSortMenu() // In case it’s open.
-				bAlbumUp.isEnabled = !idsSelected.isEmpty
-				bAlbumDown.isEnabled = bAlbumUp.isEnabled
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bEllipsis], animated: true)
+				bEllipsis.menu = menuSortAlbums() // In case it’s open.
+				bPromoteAlbum.isEnabled = !idsSelected.isEmpty
+				bDemoteAlbum.isEnabled = bPromoteAlbum.isEnabled
 			case .selectSongs(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bSongUp, .flexibleSpace(), bSongDown, .flexibleSpace(), bEllipsis], animated: true)
-				bEllipsis.menu = newSongSortMenu()
-				bSongUp.isEnabled = !idsSelected.isEmpty
-				bSongDown.isEnabled = bSongUp.isEnabled
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bEllipsis], animated: true)
+				bEllipsis.menu = menuSortSongs()
+				bPromoteSong.isEnabled = !idsSelected.isEmpty
+				bDemoteSong.isEnabled = bPromoteSong.isEnabled
 		}
 	}
 	
@@ -377,25 +377,25 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
-	private lazy var bAlbumUp = UIBarButtonItem(primaryAction: aAlbumPromote, menu: UIMenu(children: [aAlbumFloat]))
-	private lazy var bAlbumDown = UIBarButtonItem(primaryAction: aAlbumDemote, menu: UIMenu(children: [aAlbumSink]))
+	private lazy var bPromoteAlbum = UIBarButtonItem(primaryAction: aPromoteAlbum, menu: UIMenu(children: [aFloatAlbum]))
+	private lazy var bDemoteAlbum = UIBarButtonItem(primaryAction: aDemoteAlbum, menu: UIMenu(children: [aSinkAlbum]))
 	
-	private lazy var aAlbumPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.album_promote() }
-	private lazy var aAlbumDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.album_demote() }
-	private lazy var aAlbumFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.album_float() }
-	private lazy var aAlbumSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.album_sink() }
+	private lazy var aPromoteAlbum = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteAlbums() }
+	private lazy var aDemoteAlbum = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteAlbums() }
+	private lazy var aFloatAlbum = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatAlbums() }
+	private lazy var aSinkAlbum = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkAlbums() }
 	
-	private lazy var bSongUp = UIBarButtonItem(primaryAction: aSongPromote, menu: UIMenu(children: [aSongFloat]))
-	private lazy var bSongDown = UIBarButtonItem(primaryAction: aSongDemote, menu: UIMenu(children: [aSongSink]))
+	private lazy var bPromoteSong = UIBarButtonItem(primaryAction: aPromoteSong, menu: UIMenu(children: [aFloatSong]))
+	private lazy var bDemoteSong = UIBarButtonItem(primaryAction: aDemoteSong, menu: UIMenu(children: [aSinkSong]))
 	
-	private lazy var aSongPromote = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.song_promote() }
-	private lazy var aSongDemote = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.song_demote() }
-	private lazy var aSongFloat = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.song_float() }
-	private lazy var aSongSink = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.song_sink() }
+	private lazy var aPromoteSong = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteSongs() }
+	private lazy var aDemoteSong = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteSongs() }
+	private lazy var aFloatSong = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatSongs() }
+	private lazy var aSinkSong = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkSongs() }
 	
 	// MARK: - Focused
 	
-	private func newTitleFocused() -> String {
+	private func titleFocused() -> String {
 		switch albumListState.selectMode {
 			case .selectAlbums(let idsSelected):
 				return InterfaceText.NUMBER_albumsSelected(albumListState.albums(with: idsSelected).count)
@@ -411,7 +411,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func newMenuFocused() -> UIMenu {
+	private func menuFocused() -> UIMenu {
 		return UIMenu(options: .displayInline, children: [
 			UIDeferredMenuElement.uncached { [weak self] use in
 				guard let self else { return }
@@ -467,23 +467,23 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Sorting
 	
-	private func newAlbumSortMenu() -> UIMenu {
+	private func menuSortAlbums() -> UIMenu {
 		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased], [.random, .reverse]]
 		let menuSections: [UIMenu] = groups.map { albumOrders in
 			UIMenu(options: .displayInline, children: albumOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] useElements in
 					// Runs each time the button presents the menu
 					guard let self else { return }
-					let action = order.newUIAction { [weak self] in self?.album_arrange(by: order) }
-					if !album_allowsArrange(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
+					let action = order.action { [weak self] in self?.sortAlbums(by: order) }
+					if !canSortAlbums(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
 					useElements([action])
 				}
 			})
 		}
-		return UIMenu(title: newTitleFocused(), children: menuSections + [newMenuFocused()])
+		return UIMenu(title: titleFocused(), children: menuSections + [menuFocused()])
 	}
-	private func album_allowsArrange(by albumOrder: AlbumOrder) -> Bool {
-		guard album_toArrange().count >= 2 else { return false }
+	private func canSortAlbums(by albumOrder: AlbumOrder) -> Bool {
+		guard albumsToSort().count >= 2 else { return false }
 		switch albumListState.selectMode {
 			case .selectSongs, .view: break
 			case .selectAlbums(let idsSelected):
@@ -494,20 +494,20 @@ final class AlbumsTVC: LibraryTVC {
 		}
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded: return true
-			case .recentlyReleased: return album_toArrange().contains {
+			case .recentlyReleased: return albumsToSort().contains {
 				nil != Librarian.shared.mkSectionInfo(albumID: $0.albumPersistentID)?._releaseDate
 			}
 		}
 	}
-	private func newSongSortMenu() -> UIMenu {
+	private func menuSortSongs() -> UIMenu {
 		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
 		let menuSections: [UIMenu] = groups.map { songOrders in
 			UIMenu(options: .displayInline, children: songOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] useElements in
 					guard let self else { return }
-					let action = order.newUIAction { [weak self] in self?.song_arrange(by: order) }
+					let action = order.action { [weak self] in self?.sortSongs(by: order) }
 					var enabling = true
-					if song_toArrange().count <= 1 { enabling = false }
+					if songsToSort().count <= 1 { enabling = false }
 					switch albumListState.selectMode {
 						case .selectAlbums, .view: break
 						case .selectSongs(let idsSelected):
@@ -521,34 +521,34 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(title: newTitleFocused(), children: menuSections + [newMenuFocused()])
+		return UIMenu(title: titleFocused(), children: menuSections + [menuFocused()])
 	}
 	
-	private func album_arrange(by albumOrder: AlbumOrder) {
+	private func sortAlbums(by albumOrder: AlbumOrder) {
 		Task {
-			albumOrder.reindex(album_toArrange())
+			albumOrder.reindex(albumsToSort())
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
-	private func song_arrange(by songOrder: SongOrder) {
+	private func sortSongs(by songOrder: SongOrder) {
 		Task {
-			songOrder.reindex(song_toArrange())
+			songOrder.reindex(songsToSort())
 			ZZZDatabase.viewContext.savePlease()
 			albumListState.refreshItems()
 			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
 	
-	private func album_toArrange() -> [ZZZAlbum] {
+	private func albumsToSort() -> [ZZZAlbum] {
 		switch albumListState.selectMode {
 			case .selectSongs: return []
 			case .view: return albumListState.albums()
 			case .selectAlbums(let idsSelected): return albumListState.albums(with: idsSelected)
 		}
 	}
-	private func song_toArrange() -> [ZZZSong] {
+	private func songsToSort() -> [ZZZSong] {
 		switch albumListState.selectMode {
 			case .selectAlbums: return []
 			case .view: return albumListState.songs()
@@ -558,7 +558,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Moving up and down
 	
-	private func album_promote() {
+	private func promoteAlbums() {
 		Task {
 			guard
 				case let .selectAlbums(idsSelected) = albumListState.selectMode,
@@ -579,7 +579,7 @@ final class AlbumsTVC: LibraryTVC {
 			})
 		}
 	}
-	private func song_promote() {
+	private func promoteSongs() {
 		Task {
 			guard
 				case let .selectSongs(idsSelected) = albumListState.selectMode,
@@ -602,7 +602,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func album_demote() {
+	private func demoteAlbums() {
 		Task {
 			guard
 				case let .selectAlbums(idsSelected) = albumListState.selectMode,
@@ -623,7 +623,7 @@ final class AlbumsTVC: LibraryTVC {
 			})
 		}
 	}
-	private func song_demote() {
+	private func demoteSongs() {
 		Task {
 			guard
 				case let .selectSongs(idsSelected) = albumListState.selectMode,
@@ -648,7 +648,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: To top and bottom
 	
-	private func album_float() {
+	private func floatAlbums() {
 		Task {
 			guard
 				case let .selectAlbums(idsSelected) = albumListState.selectMode,
@@ -661,7 +661,7 @@ final class AlbumsTVC: LibraryTVC {
 			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
-	private func song_float() {
+	private func floatSongs() {
 		Task {
 			guard
 				case let .selectSongs(idsSelected) = albumListState.selectMode,
@@ -676,7 +676,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func album_sink() {
+	private func sinkAlbums() {
 		Task {
 			guard
 				case let .selectAlbums(idsSelected) = albumListState.selectMode,
@@ -689,7 +689,7 @@ final class AlbumsTVC: LibraryTVC {
 			let _ = await applyIDsRows(albumListState.rowIdentifiers())
 		}
 	}
-	private func song_sink() {
+	private func sinkSongs() {
 		Task {
 			guard
 				case let .selectSongs(idsSelected) = albumListState.selectMode,

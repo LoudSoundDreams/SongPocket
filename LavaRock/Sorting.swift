@@ -9,7 +9,7 @@ enum AlbumOrder {
 	case recentlyAdded
 	case recentlyReleased
 	
-	@MainActor func newUIAction(handler: @escaping () -> Void) -> UIAction {
+	@MainActor func action(handler: @escaping () -> Void) -> UIAction {
 		return UIAction(
 			title: { switch self {
 				case .random: return InterfaceText.random
@@ -86,7 +86,7 @@ enum SongOrder {
 	
 	case track
 	
-	@MainActor func newUIAction(handler: @escaping () -> Void) -> UIAction {
+	@MainActor func action(handler: @escaping () -> Void) -> UIAction {
 		return UIAction(
 			title: { switch self {
 				case .random: return InterfaceText.random
