@@ -121,8 +121,10 @@ final class AlbumsTVC: LibraryTVC {
 		view.backgroundColor = UIColor(Color(white: .oneEighth))
 		tableView.separatorStyle = .none
 		reflectSelection()
-		bEllipsis.preferredMenuElementOrder = .fixed
-		bEllipsis.menu = menuSortAlbums()
+		bSort.preferredMenuElementOrder = .fixed
+		bSort.menu = menuSortAlbums()
+		bFocused.preferredMenuElementOrder = .fixed
+		bFocused.menu = menuFocused()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.willMerge, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.didMerge, object: nil)
@@ -236,8 +238,8 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			albumListState.refreshItems()
 			switch albumListState.expansion {
-				case .collapsed: bEllipsis.menu = menuSortAlbums()
-				case .expanded: bEllipsis.menu = menuSortSongs()
+				case .collapsed: bSort.menu = menuSortAlbums()
+				case .expanded: break // Should never run
 			}
 			guard await applyIDsRows(albumListState.rowIdentifiers()) else { return }
 		}
@@ -265,14 +267,16 @@ final class AlbumsTVC: LibraryTVC {
 			case .collapsed:
 				Task {
 					albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-					bEllipsis.menu = menuSortAlbums()
+					bSort.menu = menuSortAlbums()
+					bFocused.menu = menuFocused()
 					let _ = await applyIDsRows(albumListState.rowIdentifiers())
 				}
 			case .expanded(let idToExpand):
 				Task {
 					guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
 					albumListState.refreshItems()
-					bEllipsis.menu = menuSortSongs()
+					bSort.menu = menuSortSongs()
+					bFocused.menu = menuFocused()
 					let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
 						let rowTarget: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
 							case .song: return false
@@ -287,24 +291,25 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func reflectSelection() {
 		switch albumListState.selectMode {
 			case .view(let idActivated):
-				setToolbarItems([bBeginSelecting, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bEllipsis], animated: true)
+				setToolbarItems([bSort, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bFocused], animated: true)
 				switch albumListState.expansion {
-					case .collapsed: bEllipsis.menu = menuSortAlbums()
-					case .expanded: bEllipsis.menu = menuSortSongs()
+					case .collapsed: bSort.menu = menuSortAlbums()
+					case .expanded: bSort.menu = menuSortSongs()
 				}
+				bFocused.menu = menuFocused()
 				if idActivated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .selectAlbums(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bEllipsis], animated: true)
-				bEllipsis.menu = menuSortAlbums() // In case it’s open.
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bFocused], animated: true)
 				bPromoteAlbum.isEnabled = !idsSelected.isEmpty
 				bDemoteAlbum.isEnabled = bPromoteAlbum.isEnabled
+				bFocused.menu = menuFocused() // In case it’s open.
 			case .selectSongs(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bEllipsis], animated: true)
-				bEllipsis.menu = menuSortSongs()
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bFocused], animated: true)
 				bPromoteSong.isEnabled = !idsSelected.isEmpty
 				bDemoteSong.isEnabled = bPromoteSong.isEnabled
+				bFocused.menu = menuFocused()
 		}
 	}
 	
@@ -375,7 +380,8 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private let bEllipsis = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
+	private let bSort = UIBarButtonItem(title: InterfaceText.sort, image: UIImage(systemName: "arrow.up.arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
+	private let bFocused = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "line.3.horizontal.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
 	private lazy var bPromoteAlbum = UIBarButtonItem(primaryAction: aPromoteAlbum, menu: UIMenu(children: [aFloatAlbum]))
 	private lazy var bDemoteAlbum = UIBarButtonItem(primaryAction: aDemoteAlbum, menu: UIMenu(children: [aSinkAlbum]))
@@ -412,7 +418,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func menuFocused() -> UIMenu {
-		return UIMenu(options: .displayInline, children: [
+		return UIMenu(title: titleFocused(), options: .displayInline, children: [
 			UIDeferredMenuElement.uncached { [weak self] use in
 				guard let self else { return }
 				let idsSongs = idsSongsFocused()
@@ -480,7 +486,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(title: titleFocused(), children: menuSections + [menuFocused()])
+		return UIMenu(children: menuSections)
 	}
 	private func canSortAlbums(by albumOrder: AlbumOrder) -> Bool {
 		guard albumsToSort().count >= 2 else { return false }
@@ -521,7 +527,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(title: titleFocused(), children: menuSections + [menuFocused()])
+		return UIMenu(children: menuSections)
 	}
 	
 	private func sortAlbums(by albumOrder: AlbumOrder) {
