@@ -143,18 +143,24 @@ import MediaPlayer
 			if WorkingOn.beginSelecting {
 				Spacer()
 				Menu {
-					Button(InterfaceText.select, systemImage: "checkmark.circle") {
-						switch listState.selectMode {
-							case .selectSongs: return
-							case .view:
-								withAnimation {
-									listState.selectMode = .selectAlbums([idAlbum])
+					switch listState.selectMode {
+						case .selectSongs, .selectAlbums: EmptyView()
+						case .view:
+							Button(InterfaceText.select, systemImage: "checkmark.circle") {
+								switch listState.selectMode {
+									case .selectSongs: return
+									case .view:
+										withAnimation {
+											listState.selectMode = .selectAlbums([idAlbum])
+										}
+									case .selectAlbums(let idsSelected):
+										let newSelected = idsSelected.union([idAlbum])
+										listState.selectMode = .selectAlbums(newSelected)
 								}
-							case .selectAlbums(let idsSelected):
-								let newSelected = idsSelected.union([idAlbum])
-								listState.selectMode = .selectAlbums(newSelected)
-						}
-					}.disabled(Librarian.shared.isMerging)
+							}.disabled(Librarian.shared.isMerging)
+							Divider()
+					}
+					Button("Coming Soon", systemImage: "hammer") {}.disabled(true)
 				} label: { ImageOverflow() }
 					.disabled({
 						switch listState.expansion {
@@ -220,18 +226,24 @@ import MediaPlayer
 			mainStack
 			if WorkingOn.beginSelecting {
 				Menu {
-					Button(InterfaceText.select, systemImage: "checkmark.circle") {
-						switch listState.selectMode {
-							case .selectAlbums: return
-							case .view:
-								withAnimation {
-									listState.selectMode = .selectSongs([idSong])
+					switch listState.selectMode {
+						case .selectAlbums, .selectSongs: EmptyView()
+						case .view:
+							Button(InterfaceText.select, systemImage: "checkmark.circle") {
+								switch listState.selectMode {
+									case .selectAlbums: return
+									case .view:
+										withAnimation {
+											listState.selectMode = .selectSongs([idSong])
+										}
+									case .selectSongs(let idsSelected):
+										let newSelected = idsSelected.union([idSong])
+										listState.selectMode = .selectSongs(newSelected)
 								}
-							case .selectSongs(let idsSelected):
-								let newSelected = idsSelected.union([idSong])
-								listState.selectMode = .selectSongs(newSelected)
-						}
-					}.disabled(Librarian.shared.isMerging)
+							}.disabled(Librarian.shared.isMerging)
+							Divider()
+					}
+					Button("Coming Soon", systemImage: "hammer") {}.disabled(true)
 				} label: { ImageOverflow() }
 			}
 		}
