@@ -111,7 +111,7 @@ extension Librarian {
 			mkSections = sectionsUnion
 			mkSongs = songsUnion
 			
-			mergeFromAppleMusic(musicKit: freshSectionsOnly, mediaPlayer: freshMediaItems)
+			await mergeFromAppleMusic(musicKit: freshSectionsOnly, mediaPlayer: freshMediaItems)
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
@@ -120,7 +120,7 @@ extension Librarian {
 #endif
 		}
 	}
-	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) {
+	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [SongInfo]) async {
 		isMerging = true
 		defer { isMerging = false }
 		
