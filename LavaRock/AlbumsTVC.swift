@@ -291,6 +291,7 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func reflectSelection() {
 		switch albumListState.selectMode {
 			case .view(let idActivated):
+				navigationItem.setRightBarButtonItems([], animated: true)
 				setToolbarItems([bSort, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bFocused], animated: true)
 				switch albumListState.expansion {
 					case .collapsed: bSort.menu = menuSortAlbums()
@@ -301,12 +302,16 @@ final class AlbumsTVC: LibraryTVC {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .selectAlbums(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bFocused], animated: true)
+				navigationItem.setRightBarButtonItems([bEndSelecting], animated: true)
+				setToolbarItems([bSort, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bFocused], animated: true)
+				bSort.menu = menuSortAlbums()
 				bPromoteAlbum.isEnabled = !idsSelected.isEmpty
 				bDemoteAlbum.isEnabled = bPromoteAlbum.isEnabled
 				bFocused.menu = menuFocused() // In case it’s open.
 			case .selectSongs(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bFocused], animated: true)
+				navigationItem.setRightBarButtonItems([bEndSelecting], animated: true)
+				setToolbarItems([bSort, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bFocused], animated: true)
+				bSort.menu = menuSortSongs()
 				bPromoteSong.isEnabled = !idsSelected.isEmpty
 				bDemoteSong.isEnabled = bPromoteSong.isEnabled
 				bFocused.menu = menuFocused()
@@ -373,7 +378,7 @@ final class AlbumsTVC: LibraryTVC {
 		bBeginSelecting.isEnabled = !Librarian.shared.isMerging
 	}
 	
-	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
+	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.square.fill")) { [weak self] _ in self?.endSelecting_animated() })
 	private func endSelecting_animated() {
 		withAnimation {
 			self.albumListState.selectMode = .view(nil)
@@ -486,7 +491,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(children: menuSections)
+		return UIMenu(title: titleFocused(), children: menuSections)
 	}
 	private func canSortAlbums(by albumOrder: AlbumOrder) -> Bool {
 		guard albumsToSort().count >= 2 else { return false }
@@ -527,7 +532,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			})
 		}
-		return UIMenu(children: menuSections)
+		return UIMenu(title: titleFocused(), children: menuSections)
 	}
 	
 	private func sortAlbums(by albumOrder: AlbumOrder) {
