@@ -113,7 +113,7 @@ extension AlbumListState {
 // MARK: - View controller
 
 final class AlbumsTVC: LibraryTVC {
-	private let albumListState = AlbumListState()
+	private let listState = AlbumListState()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -130,9 +130,9 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.didMerge, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
 		Remote.shared.albumsTVC = WeakRef(self)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: albumListState)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: listState)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflectSelection), name: AlbumListState.selectionChanged, object: albumListState)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflectSelection), name: AlbumListState.selectionChanged, object: listState)
 	}
 	
 	// MARK: - Table view
@@ -168,7 +168,7 @@ final class AlbumsTVC: LibraryTVC {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if albumListState.listItems.isEmpty {
+			if listState.listItems.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
 						Button { Librarian.openAppleMusic() } label: { Image(systemName: "plus") }
@@ -181,14 +181,14 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if !hasSetOnscreenRowIdentifiers {
 			hasSetOnscreenRowIdentifiers = true
-			idsRowsOnscreen = albumListState.rowIdentifiers()
+			idsRowsOnscreen = listState.rowIdentifiers()
 		}
-		return albumListState.listItems.count
+		return listState.listItems.count
 	}
 	private var hasSetOnscreenRowIdentifiers = false
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch albumListState.listItems[indexPath.row] {
+		switch listState.listItems[indexPath.row] {
 			case .album(let rowAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
@@ -198,15 +198,15 @@ final class AlbumsTVC: LibraryTVC {
 					result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
 					return result
 				}()
-				albumListState.viewportSize = (
+				listState.viewportSize = (
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumRow(idAlbum: rowAlbum.albumPersistentID, listState: albumListState)
+					AlbumRow(idAlbum: rowAlbum.albumPersistentID, listState: listState)
 				}.margins(.all, .zero)
 				return cell
 			case .song(let rowSong):
-				switch albumListState.expansion {
+				switch listState.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
 					case .expanded(let idExpanded):
 						// The cell in the storyboard is completely default except for the reuse identifier.
@@ -218,7 +218,7 @@ final class AlbumsTVC: LibraryTVC {
 							return result
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {
-							SongRow(idSong: rowSong.persistentID, idAlbum: idExpanded, listState: albumListState)
+							SongRow(idSong: rowSong.persistentID, idAlbum: idExpanded, listState: listState)
 						}.margins(.all, .zero)
 						return cell
 				}
@@ -231,17 +231,17 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		albumListState.viewportSize = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		listState.viewportSize = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 	}
 	
 	@objc private func refreshLibraryItems() {
 		Task {
-			albumListState.refreshItems()
-			switch albumListState.expansion {
+			listState.refreshItems()
+			switch listState.expansion {
 				case .collapsed: bSort.menu = menuSortAlbums()
 				case .expanded: break // Should never run
 			}
-			guard await applyIDsRows(albumListState.rowIdentifiers()) else { return }
+			guard await applyIDsRows(listState.rowIdentifiers()) else { return }
 		}
 	}
 	
@@ -251,34 +251,34 @@ final class AlbumsTVC: LibraryTVC {
 			let song = ZZZDatabase.viewContext.fetchSong(mpID: idSong),
 			let idAlbum = song.container?.albumPersistentID
 		else { return }
-		guard let rowAlbum = albumListState.listItems.firstIndex(where: { switch $0 {
+		guard let rowAlbum = listState.listItems.firstIndex(where: { switch $0 {
 			case .song: return false
 			case .album(let album): return idAlbum == album.albumPersistentID
 		}}) else { return }
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: rowAlbum, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.albumListState.expansion = .expanded(idAlbum)
+			self.listState.expansion = .expanded(idAlbum)
 		}
 	}
 	
 	@objc private func reflectExpansion() {
-		switch albumListState.expansion {
+		switch listState.expansion {
 			case .collapsed:
 				Task {
-					albumListState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+					listState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					bSort.menu = menuSortAlbums()
 					bFocused.menu = menuFocused()
-					let _ = await applyIDsRows(albumListState.rowIdentifiers())
+					let _ = await applyIDsRows(listState.rowIdentifiers())
 				}
 			case .expanded(let idToExpand):
 				Task {
-					guard albumListState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
-					albumListState.refreshItems()
+					guard listState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
+					listState.refreshItems()
 					bSort.menu = menuSortSongs()
 					bFocused.menu = menuFocused()
-					let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
-						let rowTarget: Int = self.albumListState.listItems.firstIndex(where: { switch $0 {
+					let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
+						let rowTarget: Int = self.listState.listItems.firstIndex(where: { switch $0 {
 							case .song: return false
 							case .album(let album): return idToExpand == album.albumPersistentID
 						}})!
@@ -289,11 +289,11 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	@objc private func reflectSelection() {
-		switch albumListState.selectMode {
+		switch listState.selectMode {
 			case .view(let idActivated):
 				navigationItem.setRightBarButtonItems([], animated: true)
 				setToolbarItems([bSort, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bFocused], animated: true)
-				switch albumListState.expansion {
+				switch listState.expansion {
 					case .collapsed: bSort.menu = menuSortAlbums()
 					case .expanded: bSort.menu = menuSortSongs()
 				}
@@ -322,7 +322,7 @@ final class AlbumsTVC: LibraryTVC {
 		guard
 			let idActivated = notification.object as? SongID,
 			let popoverSource: UIView = { () -> UIView? in
-				guard let rowActivated = albumListState.listItems.firstIndex(where: { switch $0 {
+				guard let rowActivated = listState.listItems.firstIndex(where: { switch $0 {
 					case .album: return false
 					case .song(let song): return idActivated == song.persistentID
 				}}) else { return nil }
@@ -330,17 +330,17 @@ final class AlbumsTVC: LibraryTVC {
 			}()
 		else { return }
 		
-		albumListState.selectMode = .view(idActivated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		listState.selectMode = .view(idActivated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverSource
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
 				Task {
-					self.albumListState.selectMode = .view(nil)
+					self.listState.selectMode = .view(nil)
 					
 					guard
-						let songActivated = self.albumListState.songs(with: [idActivated]).first,
+						let songActivated = self.listState.songs(with: [idActivated]).first,
 						let albumActivated = songActivated.container
 					else { return }
 					
@@ -353,7 +353,7 @@ final class AlbumsTVC: LibraryTVC {
 		)
 		actionSheet.addAction(
 			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { _ in
-				self.albumListState.selectMode = .view(nil)
+				self.listState.selectMode = .view(nil)
 			}
 		)
 		present(actionSheet, animated: true)
@@ -363,14 +363,14 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private lazy var bBeginSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
 		guard let self else { return }
-		switch albumListState.expansion {
+		switch listState.expansion {
 			case .collapsed:
 				withAnimation {
-					self.albumListState.selectMode = .selectAlbums([])
+					self.listState.selectMode = .selectAlbums([])
 				}
 			case .expanded:
 				withAnimation {
-					self.albumListState.selectMode = .selectSongs([])
+					self.listState.selectMode = .selectSongs([])
 				}
 		}
 	})
@@ -381,7 +381,7 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.square.fill")) { [weak self] _ in self?.endSelecting_animated() })
 	private func endSelecting_animated() {
 		withAnimation {
-			self.albumListState.selectMode = .view(nil)
+			self.listState.selectMode = .view(nil)
 		}
 	}
 	
@@ -407,29 +407,29 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Focused
 	
 	private func titleFocused(alwaysSongs: Bool = false) -> String {
-		switch albumListState.selectMode {
+		switch listState.selectMode {
 			case .selectAlbums(let idsSelected):
 				guard !alwaysSongs else {
-					let nSongsSelected = albumListState.albums(with: idsSelected).reduce(into: 0) { nSongsSoFar, album in
+					let nSongsSelected = listState.albums(with: idsSelected).reduce(into: 0) { nSongsSoFar, album in
 						nSongsSoFar += album.songs(sorted: false).count
 					}
 					return InterfaceText.NUMBER_songsSelected(nSongsSelected)
 				}
-				return InterfaceText.NUMBER_albumsSelected(albumListState.albums(with: idsSelected).count)
+				return InterfaceText.NUMBER_albumsSelected(listState.albums(with: idsSelected).count)
 			case .selectSongs(let idsSelected):
-				return InterfaceText.NUMBER_songsSelected(albumListState.songs(with: idsSelected).count)
+				return InterfaceText.NUMBER_songsSelected(listState.songs(with: idsSelected).count)
 			case .view:
-				switch albumListState.expansion {
+				switch listState.expansion {
 					case .collapsed:
 						guard !alwaysSongs else {
-							let nSongs = albumListState.albums().reduce(into: 0) { nSongsSoFar, album in
+							let nSongs = listState.albums().reduce(into: 0) { nSongsSoFar, album in
 								nSongsSoFar += album.songs(sorted: false).count
 							}
 							return InterfaceText.NUMBER_songs(nSongs)
 						}
-						return InterfaceText.NUMBER_albums(albumListState.albums().count)
+						return InterfaceText.NUMBER_albums(listState.albums().count)
 					case .expanded:
-						return InterfaceText.NUMBER_songs(albumListState.songs().count)
+						return InterfaceText.NUMBER_songs(listState.songs().count)
 				}
 		}
 	}
@@ -473,17 +473,17 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func idsSongsFocused() -> [SongID] {
-		switch albumListState.selectMode {
+		switch listState.selectMode {
 			case .selectAlbums(let idsSelected):
-				return albumListState.albums(with: idsSelected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+				return listState.albums(with: idsSelected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
 			case .selectSongs(let idsSelected):
-				return albumListState.songs(with: idsSelected).map { $0.persistentID }
+				return listState.songs(with: idsSelected).map { $0.persistentID }
 			case .view:
-				switch albumListState.expansion {
+				switch listState.expansion {
 					case .collapsed:
-						return albumListState.albums().flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+						return listState.albums().flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
 					case .expanded:
-						return albumListState.songs().map { $0.persistentID }
+						return listState.songs().map { $0.persistentID }
 				}
 		}
 	}
@@ -507,10 +507,10 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func canSortAlbums(by albumOrder: AlbumOrder) -> Bool {
 		guard albumsToSort().count >= 2 else { return false }
-		switch albumListState.selectMode {
+		switch listState.selectMode {
 			case .selectSongs, .view: break
 			case .selectAlbums(let idsSelected):
-				let rsSelected = albumListState.albums().indices {
+				let rsSelected = listState.albums().indices {
 					idsSelected.contains($0.albumPersistentID)
 				}
 				guard rsSelected.ranges.count <= 1 else { return false }
@@ -531,10 +531,10 @@ final class AlbumsTVC: LibraryTVC {
 					let action = order.action { [weak self] in self?.sortSongs(by: order) }
 					var enabling = true
 					if songsToSort().count <= 1 { enabling = false }
-					switch albumListState.selectMode {
+					switch listState.selectMode {
 						case .selectAlbums, .view: break
 						case .selectSongs(let idsSelected):
-							let rsSelected = albumListState.songs().indices {
+							let rsSelected = listState.songs().indices {
 								idsSelected.contains($0.persistentID)
 							}
 							if rsSelected.ranges.count >= 2 { enabling = false }
@@ -551,31 +551,31 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			albumOrder.reindex(albumsToSort())
 			ZZZDatabase.viewContext.savePlease()
-			albumListState.refreshItems()
-			let _ = await applyIDsRows(albumListState.rowIdentifiers())
+			listState.refreshItems()
+			let _ = await applyIDsRows(listState.rowIdentifiers())
 		}
 	}
 	private func sortSongs(by songOrder: SongOrder) {
 		Task {
 			songOrder.reindex(songsToSort())
 			ZZZDatabase.viewContext.savePlease()
-			albumListState.refreshItems()
-			let _ = await applyIDsRows(albumListState.rowIdentifiers())
+			listState.refreshItems()
+			let _ = await applyIDsRows(listState.rowIdentifiers())
 		}
 	}
 	
 	private func albumsToSort() -> [ZZZAlbum] {
-		switch albumListState.selectMode {
+		switch listState.selectMode {
 			case .selectSongs: return []
-			case .view: return albumListState.albums()
-			case .selectAlbums(let idsSelected): return albumListState.albums(with: idsSelected)
+			case .view: return listState.albums()
+			case .selectAlbums(let idsSelected): return listState.albums(with: idsSelected)
 		}
 	}
 	private func songsToSort() -> [ZZZSong] {
-		switch albumListState.selectMode {
+		switch listState.selectMode {
 			case .selectAlbums: return []
-			case .view: return albumListState.songs()
-			case .selectSongs(let idsSelected): return albumListState.songs(with: idsSelected)
+			case .view: return listState.songs()
+			case .selectSongs(let idsSelected): return listState.songs(with: idsSelected)
 		}
 	}
 	
@@ -584,16 +584,16 @@ final class AlbumsTVC: LibraryTVC {
 	private func promoteAlbums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				case let .selectAlbums(idsSelected) = listState.selectMode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
 			crate.promoteAlbums(with: idsSelected)
 			
-			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			listState.refreshItems()
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let rowTarget = self.albumListState.listItems.firstIndex(where: { switch $0 {
+					let rowTarget = self.listState.listItems.firstIndex(where: { switch $0 {
 						case .song: return false
 						case .album(let album): return idsSelected.contains(album.albumPersistentID)
 					}})
@@ -605,17 +605,17 @@ final class AlbumsTVC: LibraryTVC {
 	private func promoteSongs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = albumListState.selectMode,
-				case let .expanded(idExpanded) = albumListState.expansion,
-				let album = albumListState.albums(with: [idExpanded]).first
+				case let .selectSongs(idsSelected) = listState.selectMode,
+				case let .expanded(idExpanded) = listState.expansion,
+				let album = listState.albums(with: [idExpanded]).first
 			else { return }
 			album.promoteSongs(with: idsSelected)
 			
-			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
-			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			listState.refreshItems()
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState)
+			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let rowTarget = self.albumListState.listItems.firstIndex(where: { switch $0 {
+					let rowTarget = self.listState.listItems.firstIndex(where: { switch $0 {
 						case .album: return false
 						case .song(let song): return idsSelected.contains(song.persistentID)
 					}})
@@ -628,16 +628,16 @@ final class AlbumsTVC: LibraryTVC {
 	private func demoteAlbums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				case let .selectAlbums(idsSelected) = listState.selectMode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
 			crate.demoteAlbums(with: idsSelected)
 			
-			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
-			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			listState.refreshItems()
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState)
+			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let rowTarget = self.albumListState.listItems.lastIndex(where: { switch $0 {
+					let rowTarget = self.listState.listItems.lastIndex(where: { switch $0 {
 						case .song: return false
 						case .album(let album): return idsSelected.contains(album.albumPersistentID)
 					}})
@@ -649,17 +649,17 @@ final class AlbumsTVC: LibraryTVC {
 	private func demoteSongs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = albumListState.selectMode,
-				case let .expanded(idExpanded) = albumListState.expansion,
-				let album = albumListState.albums(with: [idExpanded]).first
+				case let .selectSongs(idsSelected) = listState.selectMode,
+				case let .expanded(idExpanded) = listState.expansion,
+				let album = listState.albums(with: [idExpanded]).first
 			else { return }
 			album.demoteSongs(with: idsSelected)
 			
-			albumListState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: albumListState)
-			let _ = await applyIDsRows(albumListState.rowIdentifiers(), runningBeforeContinuation: {
+			listState.refreshItems()
+			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState)
+			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
 				guard
-					let rowTarget = self.albumListState.listItems.lastIndex(where: { switch $0 {
+					let rowTarget = self.listState.listItems.lastIndex(where: { switch $0 {
 						case .album: return false
 						case .song(let song): return idsSelected.contains(song.persistentID)
 					}})
@@ -674,56 +674,56 @@ final class AlbumsTVC: LibraryTVC {
 	private func floatAlbums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				case let .selectAlbums(idsSelected) = listState.selectMode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
 			crate.floatAlbums(with: idsSelected)
 			
-			albumListState.refreshItems()
-			albumListState.selectMode = .selectAlbums([])
-			let _ = await applyIDsRows(albumListState.rowIdentifiers())
+			listState.refreshItems()
+			listState.selectMode = .selectAlbums([])
+			let _ = await applyIDsRows(listState.rowIdentifiers())
 		}
 	}
 	private func floatSongs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = albumListState.selectMode,
-				case let .expanded(idExpanded) = albumListState.expansion,
-				let album = albumListState.albums(with: [idExpanded]).first
+				case let .selectSongs(idsSelected) = listState.selectMode,
+				case let .expanded(idExpanded) = listState.expansion,
+				let album = listState.albums(with: [idExpanded]).first
 			else { return }
 			album.floatSongs(with: idsSelected)
 			
-			albumListState.refreshItems()
-			albumListState.selectMode = .selectSongs([])
-			let _ = await applyIDsRows(albumListState.rowIdentifiers())
+			listState.refreshItems()
+			listState.selectMode = .selectSongs([])
+			let _ = await applyIDsRows(listState.rowIdentifiers())
 		}
 	}
 	
 	private func sinkAlbums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = albumListState.selectMode,
+				case let .selectAlbums(idsSelected) = listState.selectMode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
 			crate.sinkAlbums(with: idsSelected)
 			
-			albumListState.refreshItems()
-			albumListState.selectMode = .selectAlbums([])
-			let _ = await applyIDsRows(albumListState.rowIdentifiers())
+			listState.refreshItems()
+			listState.selectMode = .selectAlbums([])
+			let _ = await applyIDsRows(listState.rowIdentifiers())
 		}
 	}
 	private func sinkSongs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = albumListState.selectMode,
-				case let .expanded(idExpanded) = albumListState.expansion,
-				let album = albumListState.albums(with: [idExpanded]).first
+				case let .selectSongs(idsSelected) = listState.selectMode,
+				case let .expanded(idExpanded) = listState.expansion,
+				let album = listState.albums(with: [idExpanded]).first
 			else { return }
 			album.sinkSongs(with: idsSelected)
 			
-			albumListState.refreshItems()
-			albumListState.selectMode = .selectSongs([])
-			let _ = await applyIDsRows(albumListState.rowIdentifiers())
+			listState.refreshItems()
+			listState.selectMode = .selectSongs([])
+			let _ = await applyIDsRows(listState.rowIdentifiers())
 		}
 	}
 }
