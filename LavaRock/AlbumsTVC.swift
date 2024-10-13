@@ -372,18 +372,18 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func reflectSelection() {
 		switch listState.selectMode {
 			case .view(let idActivated):
-				setToolbarItems([bBeginSelecting, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bFocused], animated: true)
+				setToolbarItems([bFocused, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bBeginSelecting], animated: true)
 				bFocused.menu = menuFocused()
 				if idActivated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .selectAlbums(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bFocused], animated: true)
+				setToolbarItems([bFocused, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bEndSelecting], animated: true)
 				bPromoteAlbum.isEnabled = !idsSelected.isEmpty
 				bDemoteAlbum.isEnabled = bPromoteAlbum.isEnabled
 				bFocused.menu = menuFocused() // In case it’s open.
 			case .selectSongs(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bFocused], animated: true)
+				setToolbarItems([bFocused, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bEndSelecting], animated: true)
 				bPromoteSong.isEnabled = !idsSelected.isEmpty
 				bDemoteSong.isEnabled = bPromoteSong.isEnabled
 				bFocused.menu = menuFocused()
