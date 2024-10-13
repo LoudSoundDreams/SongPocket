@@ -406,15 +406,27 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Focused
 	
-	private func titleFocused() -> String {
+	private func titleFocused(alwaysSongs: Bool = false) -> String {
 		switch albumListState.selectMode {
 			case .selectAlbums(let idsSelected):
+				guard !alwaysSongs else {
+					let nSongsSelected = albumListState.albums(with: idsSelected).reduce(into: 0) { nSongsSoFar, album in
+						nSongsSoFar += album.songs(sorted: false).count
+					}
+					return InterfaceText.NUMBER_songsSelected(nSongsSelected)
+				}
 				return InterfaceText.NUMBER_albumsSelected(albumListState.albums(with: idsSelected).count)
 			case .selectSongs(let idsSelected):
 				return InterfaceText.NUMBER_songsSelected(albumListState.songs(with: idsSelected).count)
 			case .view:
 				switch albumListState.expansion {
 					case .collapsed:
+						guard !alwaysSongs else {
+							let nSongs = albumListState.albums().reduce(into: 0) { nSongsSoFar, album in
+								nSongsSoFar += album.songs(sorted: false).count
+							}
+							return InterfaceText.NUMBER_songs(nSongs)
+						}
 						return InterfaceText.NUMBER_albums(albumListState.albums().count)
 					case .expanded:
 						return InterfaceText.NUMBER_songs(albumListState.songs().count)
@@ -423,7 +435,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func menuFocused() -> UIMenu {
-		return UIMenu(title: titleFocused(), options: .displayInline, children: [
+		return UIMenu(title: titleFocused(alwaysSongs: true), options: .displayInline, children: [
 			UIDeferredMenuElement.uncached { [weak self] use in
 				guard let self else { return }
 				let idsSongs = idsSongsFocused()
