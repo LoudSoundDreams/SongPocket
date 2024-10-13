@@ -48,7 +48,11 @@ import MediaPlayer
 			case .view, .selectSongs: return false
 			case .selectAlbums(let idsSelected): return idsSelected.contains(idAlbum)
 		}}()
-		Color.accentColor.opacity(highlighting ? .oneHalf : .zero)
+		if highlighting {
+			Color.accentColor.opacity(.oneHalf)
+		} else {
+			EmptyView()
+		}
 	}
 	@ViewBuilder private var select_border: some View {
 		switch listState.selectMode {
@@ -140,7 +144,7 @@ import MediaPlayer
 		HStack(alignment: .lastTextBaseline) {
 			ImageNowPlaying().hidden()
 			textStack // Align with `SongRow`.
-			if WorkingOn.beginSelecting {
+			if WorkingOn.selectRange {
 				Spacer()
 				Menu {
 					switch listState.selectMode {
@@ -224,7 +228,7 @@ import MediaPlayer
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			mainStack
-			if WorkingOn.beginSelecting {
+			if WorkingOn.selectRange {
 				Menu {
 					switch listState.selectMode {
 						case .selectAlbums, .selectSongs: EmptyView()
