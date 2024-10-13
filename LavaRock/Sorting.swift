@@ -27,7 +27,7 @@ enum AlbumOrder {
 						case 5: return "die.face.5"
 						default: return "die.face.6"
 					}
-				case .reverse: return "arrow.up.and.down"
+				case .reverse: return "arrow.turn.right.up"
 				case .recentlyAdded: return "plus.square"
 				case .recentlyReleased: return "calendar"
 			}}()),
@@ -103,7 +103,7 @@ enum SongOrder {
 						case 5: return "die.face.5"
 						default: return "die.face.6"
 					}
-				case .reverse: return "arrow.up.and.down"
+				case .reverse: return "arrow.turn.right.up"
 				case .track: return "number"
 			}}()),
 			handler: { _ in handler() })
