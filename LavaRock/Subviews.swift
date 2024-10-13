@@ -260,7 +260,7 @@ import MediaPlayer
 				}
 			}
 		}
-		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
+		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * (WorkingOn.selectRange ? 7/4 : 2))
 		.background { select_highlight }
 		.overlay { select_border }
 		.contentShape(Rectangle())
