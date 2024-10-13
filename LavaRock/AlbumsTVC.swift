@@ -108,20 +108,29 @@ extension AlbumListState {
 				return sAnchor == sNeighbor
 		}
 	}
+	func hasSongRange(from idAnchor: SongID, forward: Bool) -> Bool {
+		guard let iAnchor = songs().firstIndex(where: { idAnchor == $0.persistentID }) else { return false }
+		let iNeighbor: Int = forward ? (iAnchor+1) : (iAnchor-1)
+		guard songs().indices.contains(iNeighbor) else { return false }
+		switch selectMode {
+			case .selectAlbums: return false
+			case .view: return true
+			case .selectSongs(let idsSelected):
+				let sAnchor = idsSelected.contains(idAnchor)
+				let sNeighbor = idsSelected.contains(songs()[iNeighbor].persistentID)
+				return sAnchor == sNeighbor
+		}
+	}
+	
 	func changeAlbumRange(from idAnchor: AlbumID, forward: Bool) {
 		guard let iAnchor = albums().firstIndex(where: { idAnchor == $0.albumPersistentID }) else { return }
-		let inserting: Bool = {
-			switch selectMode {
-				case .selectSongs, .view: return true
-				case .selectAlbums(let idsSelected): return !idsSelected.contains(idAnchor)
-			}
-		}()
 		let oldSelected: Set<AlbumID> = {
 			switch selectMode {
 				case .selectSongs, .view: return []
 				case .selectAlbums(let idsSelected): return idsSelected
 			}
 		}()
+		let inserting: Bool = !oldSelected.contains(idAnchor)
 		let newSelected: Set<AlbumID> = {
 			var result = oldSelected
 			var iInRange = iAnchor
@@ -141,6 +150,35 @@ extension AlbumListState {
 			return result
 		}()
 		selectMode = .selectAlbums(newSelected)
+	}
+	func changeSongRange(from idAnchor: SongID, forward: Bool) {
+		guard let iAnchor = songs().firstIndex(where: { idAnchor == $0.persistentID }) else { return }
+		let oldSelected: Set<SongID> = {
+			switch selectMode {
+				case .selectAlbums, .view: return []
+				case .selectSongs(let idsSelected): return idsSelected
+			}
+		}()
+		let inserting: Bool = !oldSelected.contains(idAnchor)
+		let newSelected: Set<SongID> = {
+			var result = oldSelected
+			var iInRange = iAnchor
+			while true {
+				guard songs().indices.contains(iInRange) else { break }
+				let idInRange = songs()[iInRange].persistentID
+				
+				if inserting {
+					guard !result.contains(idInRange) else { break }
+					result.insert(idInRange)
+				} else {
+					guard result.contains(idInRange) else { break }
+					result.remove(idInRange)
+				}
+				if forward { iInRange += 1 } else { iInRange -= 1 }
+			}
+			return result
+		}()
+		selectMode = .selectSongs(newSelected)
 	}
 	
 	enum Expansion: Equatable {
