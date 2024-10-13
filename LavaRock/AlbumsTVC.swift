@@ -96,6 +96,53 @@ extension AlbumListState {
 		}}
 	}
 	
+	func hasAlbumRange(from idAnchor: AlbumID, forward: Bool) -> Bool {
+		guard let iAnchor = albums().firstIndex(where: { idAnchor == $0.albumPersistentID }) else { return false }
+		let iNeighbor: Int = forward ? (iAnchor+1) : (iAnchor-1)
+		guard albums().indices.contains(iNeighbor) else { return false }
+		switch selectMode {
+			case .selectSongs, .view: return true
+			case .selectAlbums(let idsSelected):
+				let sAnchor = idsSelected.contains(idAnchor)
+				let sNeighbor = idsSelected.contains(albums()[iNeighbor].albumPersistentID)
+				return sAnchor == sNeighbor
+		}
+	}
+	func changeAlbumRange(from idAnchor: AlbumID, forward: Bool) {
+		guard let iAnchor = albums().firstIndex(where: { idAnchor == $0.albumPersistentID }) else { return }
+		let inserting: Bool = {
+			switch selectMode {
+				case .selectSongs, .view: return true
+				case .selectAlbums(let idsSelected): return !idsSelected.contains(idAnchor)
+			}
+		}()
+		let oldSelected: Set<AlbumID> = {
+			switch selectMode {
+				case .selectSongs, .view: return []
+				case .selectAlbums(let idsSelected): return idsSelected
+			}
+		}()
+		let newSelected: Set<AlbumID> = {
+			var result = oldSelected
+			var iInRange = iAnchor
+			while true {
+				guard albums().indices.contains(iInRange) else { break }
+				let idInRange = albums()[iInRange].albumPersistentID
+				
+				if inserting {
+					guard !result.contains(idInRange) else { break }
+					result.insert(idInRange)
+				} else {
+					guard result.contains(idInRange) else { break }
+					result.remove(idInRange)
+				}
+				if forward { iInRange += 1 } else { iInRange -= 1 }
+			}
+			return result
+		}()
+		selectMode = .selectAlbums(newSelected)
+	}
+	
 	enum Expansion: Equatable {
 		case collapsed
 		case expanded(AlbumID)

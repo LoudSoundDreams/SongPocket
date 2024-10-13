@@ -216,14 +216,16 @@ import MediaPlayer
 			isSelected ? InterfaceText.deselectRangeAbove : InterfaceText.selectRangeAbove,
 			systemImage: "chevron.up.circle"
 		) {
-		}
+			listState.changeAlbumRange(from: idAlbum, forward: false)
+		}.disabled(!listState.hasAlbumRange(from: idAlbum, forward: false))
 	}
 	@ViewBuilder private var belowButton: some View {
 		Button(
 			isSelected ? InterfaceText.deselectRangeBelow : InterfaceText.selectRangeBelow,
 			systemImage: "chevron.down.circle"
 		) {
-		}
+			listState.changeAlbumRange(from: idAlbum, forward: true)
+		}.disabled(!listState.hasAlbumRange(from: idAlbum, forward: true))
 	}
 	private var isSelected: Bool {
 		switch listState.selectMode {
