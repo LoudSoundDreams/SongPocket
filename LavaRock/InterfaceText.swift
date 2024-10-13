@@ -72,10 +72,10 @@ enum InterfaceText {
 	
 	static let select = NSLocalizedString("Select", comment: "Button")
 	static let selected = NSLocalizedString("Selected", comment: "Accessibility label")
-	static let selectUp = NSLocalizedString("Select Up", comment: "Button")
-	static let selectDown = NSLocalizedString("Select Down", comment: "Button")
-	static let deselectUp = NSLocalizedString("Deselect Up", comment: "Button")
-	static let deselectDown = NSLocalizedString("Deselect Down", comment: "Button")
+	static let selectRangeAbove = NSLocalizedString("Select Range Above", comment: "Button")
+	static let selectRangeBelow = NSLocalizedString("Select Range Below", comment: "Button")
+	static let deselectRangeAbove = NSLocalizedString("Deselect Range Above", comment: "Button")
+	static let deselectRangeBelow = NSLocalizedString("Deselect Range Below", comment: "Button")
 	
 	static let sort = NSLocalizedString("Sort", comment: "Button")
 	static let recentlyAdded = NSLocalizedString("Recently Added", comment: "Sort option")

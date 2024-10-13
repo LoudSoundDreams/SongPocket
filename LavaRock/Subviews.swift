@@ -147,31 +147,25 @@ import MediaPlayer
 			if WorkingOn.selectRange {
 				Spacer()
 				Menu {
+					aboveButton
+					belowButton
+				} label: {
 					switch listState.selectMode {
-						case .selectSongs, .selectAlbums: EmptyView()
-						case .view:
-							Button(InterfaceText.select, systemImage: "checkmark.circle") {
-								switch listState.selectMode {
-									case .selectSongs: return
-									case .view:
-										withAnimation {
-											listState.selectMode = .selectAlbums([idAlbum])
-										}
-									case .selectAlbums(let idsSelected):
-										let newSelected = idsSelected.union([idAlbum])
-										listState.selectMode = .selectAlbums(newSelected)
-								}
-							}.disabled(Librarian.shared.isMerging)
-							Divider()
+						case .selectSongs, .view: ImageOverflow()
+						case .selectAlbums(let idsSelected):
+							if idsSelected.contains(idAlbum) {
+								ImageOverflowSelected()
+							} else {
+								ImageOverflow()
+							}
 					}
-					Button("Coming Soon", systemImage: "hammer") {}.disabled(true)
-				} label: { ImageOverflow() }
-					.disabled({
-						switch listState.expansion {
-							case .expanded: return true
-							case .collapsed: return false
-						}}())
-					.animation(.default, value: listState.expansion)
+				}
+				.disabled({
+					switch listState.expansion {
+						case .expanded: return true
+						case .collapsed: return false
+					}}())
+				.animation(.default, value: listState.expansion)
 			}
 		}.padding()
 	}
@@ -216,6 +210,27 @@ import MediaPlayer
 			case .selectSongs: return true
 		}
 	}
+	
+	@ViewBuilder private var aboveButton: some View {
+		Button(
+			isSelected ? InterfaceText.deselectRangeAbove : InterfaceText.selectRangeAbove,
+			systemImage: "chevron.up.circle"
+		) {
+		}
+	}
+	@ViewBuilder private var belowButton: some View {
+		Button(
+			isSelected ? InterfaceText.deselectRangeBelow : InterfaceText.selectRangeBelow,
+			systemImage: "chevron.down.circle"
+		) {
+		}
+	}
+	private var isSelected: Bool {
+		switch listState.selectMode {
+			case .view, .selectSongs: return false
+			case .selectAlbums(let idsSelected): return idsSelected.contains(idAlbum)
+		}
+	}
 }
 
 // MARK: - Song row
@@ -230,25 +245,19 @@ import MediaPlayer
 			mainStack
 			if WorkingOn.selectRange {
 				Menu {
+					aboveButton
+					belowButton
+				} label: {
 					switch listState.selectMode {
-						case .selectAlbums, .selectSongs: EmptyView()
-						case .view:
-							Button(InterfaceText.select, systemImage: "checkmark.circle") {
-								switch listState.selectMode {
-									case .selectAlbums: return
-									case .view:
-										withAnimation {
-											listState.selectMode = .selectSongs([idSong])
-										}
-									case .selectSongs(let idsSelected):
-										let newSelected = idsSelected.union([idSong])
-										listState.selectMode = .selectSongs(newSelected)
-								}
-							}.disabled(Librarian.shared.isMerging)
-							Divider()
+						case .selectAlbums, .view: ImageOverflow()
+						case .selectSongs(let idsSelected):
+							if idsSelected.contains(idSong) {
+								ImageOverflowSelected()
+							} else {
+								ImageOverflow()
+							}
 					}
-					Button("Coming Soon", systemImage: "hammer") {}.disabled(true)
-				} label: { ImageOverflow() }
+				}
 			}
 		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 2)
@@ -365,6 +374,27 @@ import MediaPlayer
 				listState.selectMode = .selectSongs(newSelected)
 		}
 	}
+	
+	@ViewBuilder private var aboveButton: some View {
+		Button(
+			isSelected ? InterfaceText.deselectRangeAbove : InterfaceText.selectRangeAbove,
+			systemImage: "chevron.up.circle"
+		) {
+		}
+	}
+	@ViewBuilder private var belowButton: some View {
+		Button(
+			isSelected ? InterfaceText.deselectRangeBelow : InterfaceText.selectRangeBelow,
+			systemImage: "chevron.down.circle"
+		) {
+		}
+	}
+	private var isSelected: Bool {
+		switch listState.selectMode {
+			case .selectAlbums, .view: return false
+			case .selectSongs(let idsSelected): return idsSelected.contains(idSong)
+		}
+	}
 }
 
 // MARK: Now-playing indicator
@@ -432,6 +462,12 @@ struct RectUnselected: View {
 	}
 }
 
+struct ImageOverflowSelected: View {
+	var body: some View {
+		Image(systemName: "ellipsis.circle.fill")
+			.font_body_dynamicTypeSizeUpToXxxLarge()
+	}
+}
 struct ImageOverflow: View {
 	var body: some View {
 		Image(systemName: "ellipsis.circle.fill")
