@@ -17,20 +17,12 @@ enum AlbumOrder {
 				case .recentlyAdded: return InterfaceText.recentlyAdded
 				case .recentlyReleased: return InterfaceText.recentlyReleased
 			}}(),
-			image: UIImage(systemName: { switch self {
-				case .random:
-					switch Int.random(in: 1...6) {
-						case 1: return "die.face.1"
-						case 2: return "die.face.2"
-						case 3: return "die.face.3"
-						case 4: return "die.face.4"
-						case 5: return "die.face.5"
-						default: return "die.face.6"
-					}
-				case .reverse: return "arrow.turn.right.up"
-				case .recentlyAdded: return "plus.square"
-				case .recentlyReleased: return "calendar"
-			}}()),
+			image: { switch self {
+				case .random: return UIImage.randomDie()
+				case .reverse: return UIImage(systemName: "arrow.turn.right.up")
+				case .recentlyAdded: return UIImage(systemName: "plus.square")
+				case .recentlyReleased: return UIImage(systemName: "calendar")
+			}}(),
 			handler: { _ in handler() })
 	}
 	
@@ -93,19 +85,11 @@ enum SongOrder {
 				case .reverse: return InterfaceText.reverse
 				case .track: return InterfaceText.trackNumber
 			}}(),
-			image: UIImage(systemName: { switch self {
-				case .random:
-					switch Int.random(in: 1...6) {
-						case 1: return "die.face.1"
-						case 2: return "die.face.2"
-						case 3: return "die.face.3"
-						case 4: return "die.face.4"
-						case 5: return "die.face.5"
-						default: return "die.face.6"
-					}
-				case .reverse: return "arrow.turn.right.up"
-				case .track: return "number"
-			}}()),
+			image: { switch self {
+				case .random: return UIImage.randomDie()
+				case .reverse: return UIImage(systemName: "arrow.turn.right.up")
+				case .track: return UIImage(systemName: "number")
+			}}(),
 			handler: { _ in handler() })
 	}
 	

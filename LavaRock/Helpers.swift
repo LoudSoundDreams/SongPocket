@@ -136,6 +136,21 @@ extension View {
 
 import UIKit
 
+extension UIImage {
+	static func randomDie() -> Self {
+		return Self(systemName: {
+			switch Int.random(in: 1...6) {
+				case 1: return "die.face.1"
+				case 2: return "die.face.2"
+				case 3: return "die.face.3"
+				case 4: return "die.face.4"
+				case 5: return "die.face.5"
+				default: return "die.face.6"
+			}
+		}())!
+	}
+}
+
 extension UITableView {
 	final func allIndexPaths() -> [IndexPath] {
 		return Array(0 ..< numberOfSections).flatMap { section in
