@@ -83,7 +83,7 @@ extension Librarian {
 	@objc private func mergeChanges() {
 		Task {
 #if targetEnvironment(simulator)
-			mergeFromAppleMusic(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
+			await mergeFromAppleMusic(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
 #else
 			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
 			
