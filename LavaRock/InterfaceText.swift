@@ -56,7 +56,7 @@ enum InterfaceText {
 	
 	static let startPlaying = NSLocalizedString("Start Playing", comment: "Button")
 	static let play = NSLocalizedString("Play", comment: "Button")
-	static let shuffle = NSLocalizedString("Shuffle", comment: "Button")
+	static let randomize = NSLocalizedString("Randomize", comment: "Button")
 	static let addToQueue = NSLocalizedString("Add to Queue", comment: "Button")
 	
 	static let pause = NSLocalizedString("Pause", comment: "Button")
@@ -81,7 +81,7 @@ enum InterfaceText {
 	static let recentlyAdded = NSLocalizedString("Recently Added", comment: "Sort option")
 	static let recentlyReleased = NSLocalizedString("Recently Released", comment: "Sort option")
 	static let trackNumber = NSLocalizedString("Track Number", comment: "Sort option")
-	static let random = NSLocalizedString("Random", comment: "Sort option")
+	static let shuffle = NSLocalizedString("Shuffle", comment: "Sort option")
 	static let reverse = NSLocalizedString("Reverse", comment: "Sort option")
 	
 	static let moveUp = NSLocalizedString("Move up", comment: "Accessibility label")
