@@ -372,18 +372,18 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func reflectSelection() {
 		switch listState.selectMode {
 			case .view(let idActivated):
-				setToolbarItems([bFocused, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bBeginSelecting], animated: true)
+				setToolbarItems([bBeginSelecting, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bFocused], animated: true)
 				bFocused.menu = menuFocused()
 				if idActivated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .selectAlbums(let idsSelected):
-				setToolbarItems([bFocused, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bEndSelecting], animated: true)
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bFocused], animated: true)
 				bPromoteAlbum.isEnabled = !idsSelected.isEmpty
 				bDemoteAlbum.isEnabled = bPromoteAlbum.isEnabled
 				bFocused.menu = menuFocused() // In case it’s open.
 			case .selectSongs(let idsSelected):
-				setToolbarItems([bFocused, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bEndSelecting], animated: true)
+				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bFocused], animated: true)
 				bPromoteSong.isEnabled = !idsSelected.isEmpty
 				bDemoteSong.isEnabled = bPromoteSong.isEnabled
 				bFocused.menu = menuFocused()
@@ -457,7 +457,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private let bFocused = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "line.3.horizontal.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
+	private let bFocused = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
 	private lazy var bPromoteAlbum = UIBarButtonItem(primaryAction: aPromoteAlbum, menu: UIMenu(children: [aFloatAlbum]))
 	private lazy var bDemoteAlbum = UIBarButtonItem(primaryAction: aDemoteAlbum, menu: UIMenu(children: [aSinkAlbum]))
