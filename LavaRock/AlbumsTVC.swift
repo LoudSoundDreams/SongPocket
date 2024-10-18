@@ -149,7 +149,15 @@ extension AlbumListState {
 			}
 			return result
 		}()
-		selectMode = .selectAlbums(newSelected)
+		switch selectMode {
+			case .selectSongs: break
+			case .view:
+				withAnimation {
+					selectMode = .selectAlbums(newSelected)
+				}
+			case .selectAlbums:
+				selectMode = .selectAlbums(newSelected)
+		}
 	}
 	func changeSongRange(from idAnchor: SongID, forward: Bool) {
 		guard let iAnchor = songs().firstIndex(where: { idAnchor == $0.persistentID }) else { return }
@@ -178,7 +186,15 @@ extension AlbumListState {
 			}
 			return result
 		}()
-		selectMode = .selectSongs(newSelected)
+		switch selectMode {
+			case .selectAlbums: break
+			case .view:
+				withAnimation {
+					selectMode = .selectSongs(newSelected)
+				}
+			case .selectSongs:
+				selectMode = .selectSongs(newSelected)
+		}
 	}
 	
 	enum Expansion: Equatable {
