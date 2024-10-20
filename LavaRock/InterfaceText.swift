@@ -27,29 +27,33 @@ enum InterfaceText {
 	
 	static let _messageWelcome = NSLocalizedString("SongPocket shows and plays your Apple Music library.", comment: "Placeholder when no access to Apple Music; subtitle")
 	static let _messageEmpty = NSLocalizedString("Add music to your Apple Music library.", comment: "Message in menu when database is empty")
-	static func NUMBER_albumsSelected(_ number: Int) -> String {
-		if number == 1 {
-			return "\(number) album selected"
+	static func NUMBER_albumsSelected(_ num: Int) -> String {
+		let fNum = num.formatted()
+		if num == 1 {
+			return "\(fNum) album selected"
 		}
-		return "\(number) albums selected"
+		return "\(fNum) albums selected"
 	}
-	static func NUMBER_albums(_ number: Int) -> String {
-		if number == 1 {
-			return "\(number) album"
+	static func NUMBER_albums(_ num: Int) -> String {
+		let fNum = num.formatted()
+		if num == 1 {
+			return "\(fNum) album"
 		}
-		return "\(number) albums"
+		return "\(fNum) albums"
 	}
-	static func NUMBER_songsSelected(_ number: Int) -> String {
-		if number == 1 {
-			return "\(number) song selected"
+	static func NUMBER_songsSelected(_ num: Int) -> String {
+		let fNum = num.formatted()
+		if num == 1 {
+			return "\(fNum) song selected"
 		}
-		return "\(number) songs selected"
+		return "\(fNum) songs selected"
 	}
-	static func NUMBER_songs(_ number: Int) -> String {
-		if number == 1 {
-			return "\(number) song"
+	static func NUMBER_songs(_ num: Int) -> String {
+		let fNum = num.formatted()
+		if num == 1 {
+			return "\(fNum) song"
 		}
-		return "\(number) songs"
+		return "\(fNum) songs"
 	}
 	
 	// MARK: Playback
