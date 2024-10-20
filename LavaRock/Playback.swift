@@ -31,11 +31,10 @@ import MusicKit
 				return await Librarian.shared.mkSong_fetched(mpID: idStart)
 			}()
 			
-			let oldRepeatMode: RepeatMode? = state.repeatMode
 			queue = Queue(for: toPlay, startingAt: start) // Slow.
 			guard let _ = try? await play() else { return }
 			
-			state.repeatMode = oldRepeatMode
+			state.repeatMode = RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 		}
 	}
 	
