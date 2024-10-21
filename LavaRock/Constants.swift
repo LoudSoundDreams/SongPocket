@@ -1,6 +1,6 @@
 import CoreGraphics
 
-// Reference hard-coded numbers here to keep them consistent throughout the app.
+// Keep hard-coded numbers consistent throughout the app.
 extension Double {
 	static var oneEighth: Self { 1/8 }
 	static var oneFourth: Self { 1/4 }
@@ -11,7 +11,7 @@ extension CGFloat {
 	static var eight: Self { 8 }
 }
 
-// Keep keys here to ensure they’re unique.
+// Keep keys unique throughout the app.
 /*
  extension UserDefaults {
  enum Key: String, CaseIterable {

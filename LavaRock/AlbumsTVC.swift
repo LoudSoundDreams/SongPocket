@@ -257,9 +257,8 @@ final class AlbumsTVC: LibraryTVC {
 											@unknown default: break
 										}
 									case .denied, .restricted:
-										if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-											let _ = await UIApplication.shared.open(settingsURL)
-										}
+										guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+										let _ = await UIApplication.shared.open(settingsURL)
 									@unknown default: break
 								}
 							}
