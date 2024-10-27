@@ -24,7 +24,7 @@ import MediaPlayer
 		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay { select_border } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay { select_border.accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityElement(children: .combine)
@@ -59,7 +59,7 @@ import MediaPlayer
 			case .view, .selectSongs: EmptyView()
 			case .selectAlbums(let idsSelected):
 				if idsSelected.contains(idAlbum) {
-					RectSelected()
+					RectSelected().accessibilityLabel(Text(InterfaceText.Selected))
 				} else {
 					RectUnselected()
 				}
@@ -198,7 +198,7 @@ import MediaPlayer
 			Text(titleAndInputLabel)
 				.font_title2Bold()
 				.foregroundStyle(select_dimmed ? .secondary : .primary)
-				.accessibilitySortPriority(30)
+				.accessibilitySortPriority(30) // Higher means sooner.
 		}
 		.animation(.default, value: select_dimmed)
 		.accessibilityElement(children: .combine)
@@ -254,7 +254,7 @@ import MediaPlayer
 						case .selectAlbums, .view: ImageOverflow()
 						case .selectSongs(let idsSelected):
 							if idsSelected.contains(idSong) {
-								ImageOverflowSelected()
+								ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
 							} else {
 								ImageOverflow()
 							}

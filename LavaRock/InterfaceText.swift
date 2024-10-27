@@ -70,7 +70,7 @@ enum InterfaceText {
 	// MARK: - Editing
 	
 	static let select = "Select"
-	static let selected = "Selected"
+	static let Selected = "Selected"
 	static let selectRangeAbove = "Select Range Above"
 	static let selectRangeBelow = "Select Range Below"
 	static let deselectRangeAbove = "Deselect Range Above"
