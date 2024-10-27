@@ -128,7 +128,7 @@ import MediaPlayer
 #endif
 		}
 		.animation(nil, value: idAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
-		.accessibilityLabel(InterfaceText.albumArtwork)
+		.accessibilityLabel(InterfaceText.Album_artwork)
 	}
 	private var artwork: MusicKit.Artwork? {
 		return Librarian.shared.mkSection(albumID: idAlbum)?.artwork
@@ -174,13 +174,13 @@ import MediaPlayer
 		let infoAlbum: AlbumInfo? = Librarian.shared.mkSectionInfo(albumID: idAlbum)
 		let titleAndInputLabel: String = {
 			guard let albumTitle = infoAlbum?._title, albumTitle != ""
-			else { return InterfaceText.unknownAlbum }
+			else { return InterfaceText.Unknown_Album }
 			return albumTitle
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
 				guard let date = infoAlbum?._releaseDate
-				else { return InterfaceText._emDash }
+				else { return InterfaceText._em_dash }
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
@@ -189,7 +189,7 @@ import MediaPlayer
 			.accessibilitySortPriority(10)
 			Text({
 				guard let albumArtist = infoAlbum?._artist, albumArtist != ""
-				else { return InterfaceText.unknownArtist }
+				else { return InterfaceText.Unknown_Artist }
 				return albumArtist
 			}())
 			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
@@ -213,7 +213,7 @@ import MediaPlayer
 	
 	@ViewBuilder private var aboveButton: some View {
 		Button(
-			isSelected ? InterfaceText.deselectRangeAbove : InterfaceText.selectRangeAbove,
+			isSelected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
 			systemImage: "chevron.up.circle"
 		) {
 			listState.changeAlbumRange(from: idAlbum, forward: false)
@@ -221,7 +221,7 @@ import MediaPlayer
 	}
 	@ViewBuilder private var belowButton: some View {
 		Button(
-			isSelected ? InterfaceText.deselectRangeBelow : InterfaceText.selectRangeBelow,
+			isSelected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
 			systemImage: "chevron.down.circle"
 		) {
 			listState.changeAlbumRange(from: idAlbum, forward: true)
@@ -293,7 +293,7 @@ import MediaPlayer
 		HStack(alignment: .firstTextBaseline) {
 			IndicatorNowPlaying(idSong: idSong)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
-				Text(title ?? InterfaceText._emDash)
+				Text(title ?? InterfaceText._em_dash)
 				if
 					let songArtist = infoSong?._artist,
 					songArtist != "",
@@ -379,7 +379,7 @@ import MediaPlayer
 	
 	@ViewBuilder private var aboveButton: some View {
 		Button(
-			isSelected ? InterfaceText.deselectRangeAbove : InterfaceText.selectRangeAbove,
+			isSelected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
 			systemImage: "chevron.up.circle"
 		) {
 			listState.changeSongRange(from: idSong, forward: false)
@@ -387,7 +387,7 @@ import MediaPlayer
 	}
 	@ViewBuilder private var belowButton: some View {
 		Button(
-			isSelected ? InterfaceText.deselectRangeBelow : InterfaceText.selectRangeBelow,
+			isSelected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
 			systemImage: "chevron.down.circle"
 		) {
 			listState.changeSongRange(from: idSong, forward: true)
@@ -422,8 +422,8 @@ struct IndicatorNowPlaying: View {
 		.accessibilityElement()
 		.accessibilityLabel({ switch status {
 			case .notPlaying: return ""
-			case .paused: return InterfaceText.paused
-			case .playing: return InterfaceText.nowPlaying
+			case .paused: return InterfaceText.Paused
+			case .playing: return InterfaceText.Now_Playing
 		}}())
 		.accessibilityHidden({ switch status {
 			case .paused, .playing: return false

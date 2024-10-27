@@ -244,9 +244,9 @@ final class AlbumsTVC: LibraryTVC {
 		contentUnavailableConfiguration = {
 			guard MusicAuthorization.currentStatus == .authorized else {
 				return UIHostingConfiguration {
-					ContentUnavailableView {} description: { Text(InterfaceText._messageWelcome)
+					ContentUnavailableView {} description: { Text(InterfaceText._message_welcome)
 					} actions: {
-						Button(InterfaceText.continue_) {
+						Button(InterfaceText.Continue) {
 							Task {
 								switch MusicAuthorization.currentStatus {
 									case .authorized: break // Should never run
@@ -422,7 +422,7 @@ final class AlbumsTVC: LibraryTVC {
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		actionSheet.popoverPresentationController?.sourceView = popoverSource
 		actionSheet.addAction(
-			UIAlertAction(title: InterfaceText.startPlaying, style: .default) { _ in
+			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				Task {
 					self.listState.selectMode = .view(nil)
 					
@@ -439,7 +439,7 @@ final class AlbumsTVC: LibraryTVC {
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
 		actionSheet.addAction(
-			UIAlertAction(title: InterfaceText.cancel, style: .cancel) { _ in
+			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
 				self.listState.selectMode = .view(nil)
 			}
 		)
@@ -448,7 +448,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	private lazy var bBeginSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
+	private lazy var bBeginSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
 		guard let self else { return }
 		switch listState.expansion {
 			case .collapsed:
@@ -465,39 +465,39 @@ final class AlbumsTVC: LibraryTVC {
 		bBeginSelecting.isEnabled = !Librarian.shared.isMerging
 	}
 	
-	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
+	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
 	private func endSelecting_animated() {
 		withAnimation {
 			self.listState.selectMode = .view(nil)
 		}
 	}
 	
-	private let bFocused = UIBarButtonItem(title: InterfaceText.more, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
+	private let bFocused = UIBarButtonItem(title: InterfaceText.More, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
 	private lazy var bPromoteAlbum = UIBarButtonItem(primaryAction: aPromoteAlbum, menu: UIMenu(children: [aFloatAlbum]))
 	private lazy var bDemoteAlbum = UIBarButtonItem(primaryAction: aDemoteAlbum, menu: UIMenu(children: [aSinkAlbum]))
 	
-	private lazy var aPromoteAlbum = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteAlbums() }
-	private lazy var aDemoteAlbum = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteAlbums() }
-	private lazy var aFloatAlbum = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatAlbums() }
-	private lazy var aSinkAlbum = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkAlbums() }
+	private lazy var aPromoteAlbum = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteAlbums() }
+	private lazy var aDemoteAlbum = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteAlbums() }
+	private lazy var aFloatAlbum = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatAlbums() }
+	private lazy var aSinkAlbum = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkAlbums() }
 	
 	private lazy var bPromoteSong = UIBarButtonItem(primaryAction: aPromoteSong, menu: UIMenu(children: [aFloatSong]))
 	private lazy var bDemoteSong = UIBarButtonItem(primaryAction: aDemoteSong, menu: UIMenu(children: [aSinkSong]))
 	
-	private lazy var aPromoteSong = UIAction(title: InterfaceText.moveUp, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteSongs() }
-	private lazy var aDemoteSong = UIAction(title: InterfaceText.moveDown, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteSongs() }
-	private lazy var aFloatSong = UIAction(title: InterfaceText.toTop, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatSongs() }
-	private lazy var aSinkSong = UIAction(title: InterfaceText.toBottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkSongs() }
+	private lazy var aPromoteSong = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteSongs() }
+	private lazy var aDemoteSong = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteSongs() }
+	private lazy var aFloatSong = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatSongs() }
+	private lazy var aSinkSong = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkSongs() }
 	
 	// MARK: - Focused
 	
 	private func titleFocused() -> String {
 		switch listState.selectMode {
 			case .selectAlbums(let idsSelected):
-				return InterfaceText.NUMBER_albumsSelected(listState.albums(with: idsSelected).count)
+				return InterfaceText.NUMBER_albums_selected(listState.albums(with: idsSelected).count)
 			case .selectSongs(let idsSelected):
-				return InterfaceText.NUMBER_songsSelected(listState.songs(with: idsSelected).count)
+				return InterfaceText.NUMBER_songs_selected(listState.songs(with: idsSelected).count)
 			case .view:
 				switch listState.expansion {
 					case .collapsed:
@@ -520,7 +520,7 @@ final class AlbumsTVC: LibraryTVC {
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
 						let idsSongs = idsSongsFocused()
-						let action = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play")) { [weak self] _ in
+						let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 							guard let self else { return }
 							ApplicationMusicPlayer._shared?.playNow(idsSongs)
 							endSelecting_animated()
@@ -531,7 +531,7 @@ final class AlbumsTVC: LibraryTVC {
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
 						let idsSongs = idsSongsFocused()
-						let action = UIAction(title: InterfaceText.randomize, image: UIImage.randomDie()) { [weak self] _ in
+						let action = UIAction(title: InterfaceText.Randomize, image: UIImage.randomDie()) { [weak self] _ in
 							guard let self else { return }
 							ApplicationMusicPlayer._shared?.playNow(idsSongs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 							endSelecting_animated()
@@ -542,7 +542,7 @@ final class AlbumsTVC: LibraryTVC {
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
 						let idsSongs = idsSongsFocused()
-						let action = UIAction(title: InterfaceText.addToQueue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
+						let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 							guard let self else { return }
 							ApplicationMusicPlayer._shared?.playLater(idsSongs)
 							endSelecting_animated()

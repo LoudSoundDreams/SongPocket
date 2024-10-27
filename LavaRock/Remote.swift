@@ -75,7 +75,7 @@ extension PlayerState {
 			return ""
 		}
 		guard nil != ZZZDatabase.viewContext.fetchCollection() else {
-			return InterfaceText._messageEmpty
+			return InterfaceText._message_empty
 		}
 		return ""
 	}
@@ -83,7 +83,7 @@ extension PlayerState {
 		return UIMenu(title: menuTitle(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.nowPlaying, image: UIImage(systemName: "waveform"), attributes: {
+					UIAction(title: InterfaceText.Now_Playing, image: UIImage(systemName: "waveform"), attributes: {
 #if targetEnvironment(simulator)
 						return []
 #else
@@ -97,7 +97,7 @@ extension PlayerState {
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(
-						title: InterfaceText.repeat1,
+						title: InterfaceText.Repeat_One,
 						image: UIImage(systemName: "repeat.1"),
 						attributes: ApplicationMusicPlayer.isEmpty ? .disabled : [],
 						state: {
@@ -124,26 +124,26 @@ extension PlayerState {
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
 					// Ideally, disable this when there are no previous tracks to skip to.
-					UIAction(title: InterfaceText.previous, image: UIImage(systemName: "backward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
+					UIAction(title: InterfaceText.Previous, image: UIImage(systemName: "backward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
 				])},
 				Self.dmeRestart,
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.next, image: UIImage(systemName: "forward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
+					UIAction(title: InterfaceText.Next, image: UIImage(systemName: "forward.end"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
 				])},
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.skipBack15Seconds, image: UIImage(systemName: "gobackward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
+					UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: "gobackward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
 				])},
 				Self.dmePlayPause,
 				UIDeferredMenuElement.uncached { use in use([
-					UIAction(title: InterfaceText.skipForward15Seconds, image: UIImage(systemName: "goforward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
+					UIAction(title: InterfaceText.Skip_forward_15_seconds, image: UIImage(systemName: "goforward.15"), attributes: ApplicationMusicPlayer.isEmpty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
 				])},
 			]),
 		])
 	}
 	private static let dmeRestart = UIDeferredMenuElement.uncached { use in
-		let action = UIAction(title: InterfaceText.restart, image: UIImage(systemName: "arrow.counterclockwise")) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
+		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: "arrow.counterclockwise")) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
 		if ApplicationMusicPlayer.isEmpty { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
 			action.attributes.formUnion(.disabled)
 		} else {
@@ -169,10 +169,10 @@ extension PlayerState {
 #endif
 	}
 	private static let aPlay: UIAction = {
-		let result = UIAction(title: InterfaceText.play, image: UIImage(systemName: "play")) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
 		result.accessibilityTraits.formUnion(.startsMediaSession)
 		return result
 	}()
-	private static let aPause = UIAction(title: InterfaceText.pause, image: UIImage(systemName: "pause")) { _ in ApplicationMusicPlayer._shared?.pause() }
-	private static let aAppleMusic = UIAction(title: InterfaceText.appleMusic, image: UIImage(systemName: "arrow.up.forward.app")) { _ in Librarian.openAppleMusic() }
+	private static let aPause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause")) { _ in ApplicationMusicPlayer._shared?.pause() }
+	private static let aAppleMusic = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in Librarian.openAppleMusic() }
 }
