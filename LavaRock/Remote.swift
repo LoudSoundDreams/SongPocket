@@ -30,8 +30,8 @@ extension PlayerState {
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor final class Remote {
 	static let shared = Remote()
-	let bRemote = UIBarButtonItem()
-	var albumsTVC: WeakRef<AlbumsTVC>? = nil
+	let b_remote = UIBarButtonItem()
+	var tvc_albums: WeakRef<AlbumsTVC>? = nil
 	
 	private init() {
 		refresh()
@@ -40,8 +40,8 @@ extension PlayerState {
 	}
 	@objc private func refresh() {
 		// Refresh menu title
-		bRemote.preferredMenuElementOrder = .fixed
-		bRemote.menu = menu()
+		b_remote.preferredMenuElementOrder = .fixed
+		b_remote.menu = menu()
 		
 		// Make button reflect playback status
 #if targetEnvironment(simulator)
@@ -62,10 +62,10 @@ extension PlayerState {
 #endif
 	}
 	private func showPlay() {
-		bRemote.image = Self.iPlay
+		b_remote.image = Self.iPlay
 	}
 	private func showPause() {
-		bRemote.image = Self.iPause
+		b_remote.image = Self.iPause
 	}
 	private static let iPlay = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
 	private static let iPause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))
@@ -93,7 +93,7 @@ extension PlayerState {
 						else { return .disabled }
 						return []
 #endif
-					}()) { [weak self] _ in self?.albumsTVC?.referencee?.showCurrent() }
+					}()) { [weak self] _ in self?.tvc_albums?.referencee?.show_current() }
 				])},
 				UIDeferredMenuElement.uncached { use in use([
 					UIAction(

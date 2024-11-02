@@ -6,194 +6,194 @@ import MusicKit
 import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var listItems: [Item] = AlbumListState.freshAlbums().map { .album($0) }
+	@ObservationIgnored fileprivate var list_items: [Item] = AlbumListState.fresh_albums().map { .album($0) }
 	var expansion: Expansion = .collapsed { didSet {
-		NotificationCenter.default.post(name: Self.expansionChanged, object: self)
+		NotificationCenter.default.post(name: Self.expansion_changed, object: self)
 	}}
-	var selectMode: SelectMode = .view(nil) { didSet {
-		NotificationCenter.default.post(name: Self.selectionChanged, object: self)
+	var select_mode: SelectMode = .view(nil) { didSet {
+		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
-	var viewportSize: (width: CGFloat, height: CGFloat) = (.zero, .zero)
+	var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
 extension AlbumListState {
 	fileprivate enum Item {
 		case album(ZZZAlbum)
 		case song(ZZZSong)
 	}
-	fileprivate func refreshItems() {
-		listItems = {
-			let albums = Self.freshAlbums()
+	fileprivate func refresh_items() {
+		list_items = {
+			let albums = Self.fresh_albums()
 			switch expansion {
 				case .collapsed: return albums.map { .album($0) }
-				case .expanded(let idExpanded):
+				case .expanded(let id_expanded):
 					// If we removed the expanded album, go to collapsed mode.
-					guard let iExpandedAlbum = albums.firstIndex(where: { album in
-						idExpanded == album.albumPersistentID
+					guard let i_expanded = albums.firstIndex(where: { album in
+						id_expanded == album.albumPersistentID
 					}) else {
 						expansion = .collapsed
 						return albums.map { .album($0) }
 					}
 					
-					let songs: [Item] = albums[iExpandedAlbum].songs(sorted: true).map { .song($0) }
+					let songs: [Item] = albums[i_expanded].songs(sorted: true).map { .song($0) }
 					var result: [Item] = albums.map { .album($0) }
-					result.insert(contentsOf: songs, at: iExpandedAlbum + 1)
+					result.insert(contentsOf: songs, at: i_expanded + 1)
 					return result
 			}
 		}()
 		
 		// In case we removed items the user was doing something with.
-		switch selectMode {
-			case .view(let idActivated):
-				if let idActivated, songs(with: [idActivated]).isEmpty {
-					selectMode = .view(nil)
+		switch select_mode {
+			case .view(let id_activated):
+				if let id_activated, songs(with: [id_activated]).isEmpty {
+					select_mode = .view(nil)
 				}
-			case .selectAlbums(let idsSelected):
+			case .select_albums(let ids_selected):
 				let selectable: Set<AlbumID> = Set(
-					albums(with: idsSelected).map { $0.albumPersistentID }
+					albums(with: ids_selected).map { $0.albumPersistentID }
 				)
-				if idsSelected != selectable {
-					selectMode = .selectAlbums(selectable)
+				if ids_selected != selectable {
+					select_mode = .select_albums(selectable)
 				}
-			case .selectSongs(let idsSelected):
+			case .select_songs(let ids_selected):
 				guard !songs().isEmpty else {
-					selectMode = .view(nil)
+					select_mode = .view(nil)
 					break
 				}
 				let selectable: Set<SongID> = Set(
-					songs(with: idsSelected).map { $0.persistentID }
+					songs(with: ids_selected).map { $0.persistentID }
 				)
-				if idsSelected != selectable{
-					selectMode = .selectSongs(selectable)
+				if ids_selected != selectable{
+					select_mode = .select_songs(selectable)
 				}
 		}
 	}
-	private static func freshAlbums() -> [ZZZAlbum] {
+	private static func fresh_albums() -> [ZZZAlbum] {
 		guard MusicAuthorization.currentStatus == .authorized else { return [] }
 		return ZZZDatabase.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
 	}
-	fileprivate func rowIdentifiers() -> [AnyHashable] {
-		return listItems.map { switch $0 {
+	fileprivate func row_identifiers() -> [AnyHashable] {
+		return list_items.map { switch $0 {
 			case .album(let album): return album.objectID
 			case .song(let song): return song.objectID
 		}}
 	}
-	fileprivate func albums(with chosenIDs: Set<AlbumID>? = nil) -> [ZZZAlbum] {
-		return listItems.compactMap { switch $0 {
+	fileprivate func albums(with ids_chosen: Set<AlbumID>? = nil) -> [ZZZAlbum] {
+		return list_items.compactMap { switch $0 {
 			case .song: return nil
 			case .album(let album):
-				guard let chosenIDs else { return album }
-				guard chosenIDs.contains(album.albumPersistentID) else { return nil }
+				guard let ids_chosen else { return album }
+				guard ids_chosen.contains(album.albumPersistentID) else { return nil }
 				return album
 		}}
 	}
-	fileprivate func songs(with chosenIDs: Set<SongID>? = nil) -> [ZZZSong] {
-		return listItems.compactMap { switch $0 {
+	fileprivate func songs(with ids_chosen: Set<SongID>? = nil) -> [ZZZSong] {
+		return list_items.compactMap { switch $0 {
 			case .album: return nil
 			case .song(let song):
-				guard let chosenIDs else { return song }
-				guard chosenIDs.contains(song.persistentID) else { return nil }
+				guard let ids_chosen else { return song }
+				guard ids_chosen.contains(song.persistentID) else { return nil }
 				return song
 		}}
 	}
 	
-	func hasAlbumRange(from idAnchor: AlbumID, forward: Bool) -> Bool {
-		guard let iAnchor = albums().firstIndex(where: { idAnchor == $0.albumPersistentID }) else { return false }
-		let iNeighbor: Int = forward ? (iAnchor+1) : (iAnchor-1)
-		guard albums().indices.contains(iNeighbor) else { return false }
-		switch selectMode {
-			case .selectSongs, .view: return true
-			case .selectAlbums(let idsSelected):
-				let sAnchor = idsSelected.contains(idAnchor)
-				let sNeighbor = idsSelected.contains(albums()[iNeighbor].albumPersistentID)
-				return sAnchor == sNeighbor
+	func hasAlbumRange(from id_anchor: AlbumID, forward: Bool) -> Bool {
+		guard let i_anchor = albums().firstIndex(where: { id_anchor == $0.albumPersistentID }) else { return false }
+		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
+		guard albums().indices.contains(i_neighbor) else { return false }
+		switch select_mode {
+			case .select_songs, .view: return true
+			case .select_albums(let ids_selected):
+				let sel_anchor = ids_selected.contains(id_anchor)
+				let sel_neighbor = ids_selected.contains(albums()[i_neighbor].albumPersistentID)
+				return sel_anchor == sel_neighbor
 		}
 	}
-	func hasSongRange(from idAnchor: SongID, forward: Bool) -> Bool {
-		guard let iAnchor = songs().firstIndex(where: { idAnchor == $0.persistentID }) else { return false }
-		let iNeighbor: Int = forward ? (iAnchor+1) : (iAnchor-1)
-		guard songs().indices.contains(iNeighbor) else { return false }
-		switch selectMode {
-			case .selectAlbums: return false
+	func hasSongRange(from id_anchor: SongID, forward: Bool) -> Bool {
+		guard let i_anchor = songs().firstIndex(where: { id_anchor == $0.persistentID }) else { return false }
+		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
+		guard songs().indices.contains(i_neighbor) else { return false }
+		switch select_mode {
+			case .select_albums: return false
 			case .view: return true
-			case .selectSongs(let idsSelected):
-				let sAnchor = idsSelected.contains(idAnchor)
-				let sNeighbor = idsSelected.contains(songs()[iNeighbor].persistentID)
-				return sAnchor == sNeighbor
+			case .select_songs(let ids_selected):
+				let sel_anchor = ids_selected.contains(id_anchor)
+				let sel_neighbor = ids_selected.contains(songs()[i_neighbor].persistentID)
+				return sel_anchor == sel_neighbor
 		}
 	}
 	
-	func change_album_range(from idAnchor: AlbumID, forward: Bool) {
-		guard let iAnchor = albums().firstIndex(where: { idAnchor == $0.albumPersistentID }) else { return }
-		let oldSelected: Set<AlbumID> = {
-			switch selectMode {
-				case .selectSongs, .view: return []
-				case .selectAlbums(let idsSelected): return idsSelected
+	func change_album_range(from id_anchor: AlbumID, forward: Bool) {
+		guard let i_anchor = albums().firstIndex(where: { id_anchor == $0.albumPersistentID }) else { return }
+		let old_selected: Set<AlbumID> = {
+			switch select_mode {
+				case .select_songs, .view: return []
+				case .select_albums(let ids_selected): return ids_selected
 			}
 		}()
-		let inserting: Bool = !oldSelected.contains(idAnchor)
-		let newSelected: Set<AlbumID> = {
-			var result = oldSelected
-			var iInRange = iAnchor
+		let inserting: Bool = !old_selected.contains(id_anchor)
+		let new_selected: Set<AlbumID> = {
+			var result = old_selected
+			var i_in_range = i_anchor
 			while true {
-				guard albums().indices.contains(iInRange) else { break }
-				let idInRange = albums()[iInRange].albumPersistentID
+				guard albums().indices.contains(i_in_range) else { break }
+				let id_in_range = albums()[i_in_range].albumPersistentID
 				
 				if inserting {
-					guard !result.contains(idInRange) else { break }
-					result.insert(idInRange)
+					guard !result.contains(id_in_range) else { break }
+					result.insert(id_in_range)
 				} else {
-					guard result.contains(idInRange) else { break }
-					result.remove(idInRange)
+					guard result.contains(id_in_range) else { break }
+					result.remove(id_in_range)
 				}
-				if forward { iInRange += 1 } else { iInRange -= 1 }
+				if forward { i_in_range += 1 } else { i_in_range -= 1 }
 			}
 			return result
 		}()
-		switch selectMode {
-			case .selectSongs: break
+		switch select_mode {
+			case .select_songs: break
 			case .view:
 				withAnimation {
-					selectMode = .selectAlbums(newSelected)
+					select_mode = .select_albums(new_selected)
 				}
-			case .selectAlbums:
-				selectMode = .selectAlbums(newSelected)
+			case .select_albums:
+				select_mode = .select_albums(new_selected)
 		}
 	}
-	func change_song_range(from idAnchor: SongID, forward: Bool) {
-		guard let iAnchor = songs().firstIndex(where: { idAnchor == $0.persistentID }) else { return }
-		let oldSelected: Set<SongID> = {
-			switch selectMode {
-				case .selectAlbums, .view: return []
-				case .selectSongs(let idsSelected): return idsSelected
+	func change_song_range(from id_anchor: SongID, forward: Bool) {
+		guard let i_anchor = songs().firstIndex(where: { id_anchor == $0.persistentID }) else { return }
+		let old_selected: Set<SongID> = {
+			switch select_mode {
+				case .select_albums, .view: return []
+				case .select_songs(let ids_selected): return ids_selected
 			}
 		}()
-		let inserting: Bool = !oldSelected.contains(idAnchor)
-		let newSelected: Set<SongID> = {
-			var result = oldSelected
-			var iInRange = iAnchor
+		let inserting: Bool = !old_selected.contains(id_anchor)
+		let new_selected: Set<SongID> = {
+			var result = old_selected
+			var i_in_range = i_anchor
 			while true {
-				guard songs().indices.contains(iInRange) else { break }
-				let idInRange = songs()[iInRange].persistentID
+				guard songs().indices.contains(i_in_range) else { break }
+				let id_in_range = songs()[i_in_range].persistentID
 				
 				if inserting {
-					guard !result.contains(idInRange) else { break }
-					result.insert(idInRange)
+					guard !result.contains(id_in_range) else { break }
+					result.insert(id_in_range)
 				} else {
-					guard result.contains(idInRange) else { break }
-					result.remove(idInRange)
+					guard result.contains(id_in_range) else { break }
+					result.remove(id_in_range)
 				}
-				if forward { iInRange += 1 } else { iInRange -= 1 }
+				if forward { i_in_range += 1 } else { i_in_range -= 1 }
 			}
 			return result
 		}()
-		switch selectMode {
-			case .selectAlbums: break
+		switch select_mode {
+			case .select_albums: break
 			case .view:
 				withAnimation {
-					selectMode = .selectSongs(newSelected)
+					select_mode = .select_songs(new_selected)
 				}
-			case .selectSongs:
-				selectMode = .selectSongs(newSelected)
+			case .select_songs:
+				select_mode = .select_songs(new_selected)
 		}
 	}
 	
@@ -201,46 +201,46 @@ extension AlbumListState {
 		case collapsed
 		case expanded(AlbumID)
 	}
-	static let expansionChanged = Notification.Name("LRAlbumExpandingOrCollapsing")
+	static let expansion_changed = Notification.Name("LRAlbumExpandingOrCollapsing")
 	
 	enum SelectMode: Equatable {
 		case view(SongID?)
-		case selectAlbums(Set<AlbumID>)
-		case selectSongs(Set<SongID>) // Should always be within the same album.
+		case select_albums(Set<AlbumID>)
+		case select_songs(Set<SongID>) // Should always be within the same album.
 	}
-	static let selectionChanged = Notification.Name("LRSelectModeOrSelectionChanged")
+	static let selection_changed = Notification.Name("LRSelectModeOrSelectionChanged")
 }
 
 // MARK: - View controller
 
 final class AlbumsTVC: LibraryTVC {
-	private let listState = AlbumListState()
+	private let list_state = AlbumListState()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		view.backgroundColor = UIColor(Color(white: .oneEighth))
 		tableView.separatorStyle = .none
-		reflectSelection()
-		bFocused.preferredMenuElementOrder = .fixed
-		bFocused.menu = menuFocused()
+		reflect_selection()
+		b_focused.preferredMenuElementOrder = .fixed
+		b_focused.menu = menu_focused()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.willMerge, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_bBeginSelecting), name: Librarian.didMerge, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
-		Remote.shared.albumsTVC = WeakRef(self)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: listState)
-		NotificationCenter.default.addObserver(self, selector: #selector(confirmPlay), name: SongRow.confirm_play_id_song, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflectSelection), name: AlbumListState.selectionChanged, object: listState)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.willMerge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.didMerge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: Librarian.didMerge, object: nil)
+		Remote.shared.tvc_albums = WeakRef(self)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: AlbumListState.expansion_changed, object: list_state)
+		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_id_song, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
 	}
 	
 	// MARK: - Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		refreshPlaceholder()
+		refresh_placeholder()
 		return 1
 	}
-	private func refreshPlaceholder() {
+	private func refresh_placeholder() {
 		contentUnavailableConfiguration = {
 			guard MusicAuthorization.currentStatus == .authorized else {
 				return UIHostingConfiguration {
@@ -257,8 +257,8 @@ final class AlbumsTVC: LibraryTVC {
 											@unknown default: break
 										}
 									case .denied, .restricted:
-										guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
-										let _ = await UIApplication.shared.open(settingsURL)
+										guard let url_settings = URL(string: UIApplication.openSettingsURLString) else { return }
+										let _ = await UIApplication.shared.open(url_settings)
 									@unknown default: break
 								}
 							}
@@ -266,7 +266,7 @@ final class AlbumsTVC: LibraryTVC {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if listState.listItems.isEmpty {
+			if list_state.list_items.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
 						Button { Librarian.openAppleMusic() } label: { Image(systemName: "plus") }
@@ -277,17 +277,17 @@ final class AlbumsTVC: LibraryTVC {
 		}()
 	}
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if !hasSetOnscreenRowIdentifiers {
-			hasSetOnscreenRowIdentifiers = true
-			idsRowsOnscreen = listState.rowIdentifiers()
+		if !has_set_ids_rows_onscreen {
+			has_set_ids_rows_onscreen = true
+			ids_rows_onscreen = list_state.row_identifiers()
 		}
-		return listState.listItems.count
+		return list_state.list_items.count
 	}
-	private var hasSetOnscreenRowIdentifiers = false
+	private var has_set_ids_rows_onscreen = false
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch listState.listItems[indexPath.row] {
-			case .album(let rowAlbum):
+		switch list_state.list_items[indexPath.row] {
+			case .album(let album):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 				cell.backgroundColor = .clear
@@ -296,17 +296,17 @@ final class AlbumsTVC: LibraryTVC {
 					result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
 					return result
 				}()
-				listState.viewportSize = (
+				list_state.size_viewport = (
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumRow(id_album: rowAlbum.albumPersistentID, list_state: listState)
+					AlbumRow(id_album: album.albumPersistentID, list_state: list_state)
 				}.margins(.all, .zero)
 				return cell
-			case .song(let rowSong):
-				switch listState.expansion {
+			case .song(let song):
+				switch list_state.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
-					case .expanded(let idExpanded):
+					case .expanded(let id_expanded):
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
 						cell.backgroundColor = .clear
@@ -316,7 +316,7 @@ final class AlbumsTVC: LibraryTVC {
 							return result
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {
-							SongRow(id_song: rowSong.persistentID, id_album: idExpanded, list_state: listState)
+							SongRow(id_song: song.persistentID, id_album: id_expanded, list_state: list_state)
 						}.margins(.all, .zero)
 						return cell
 				}
@@ -329,484 +329,484 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		listState.viewportSize = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		list_state.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 	}
 	
-	@objc private func refreshLibraryItems() {
+	@objc private func refresh_list_items() {
 		Task {
-			listState.refreshItems()
-			switch listState.expansion {
-				case .collapsed: bFocused.menu = menuFocused()
+			list_state.refresh_items()
+			switch list_state.expansion {
+				case .collapsed: b_focused.menu = menu_focused()
 				case .expanded: break // Should never run
 			}
-			guard await applyIDsRows(listState.rowIdentifiers()) else { return }
+			guard await apply_ids_rows(list_state.row_identifiers()) else { return }
 		}
 	}
 	
-	func showCurrent() {
+	func show_current() {
 		guard
-			let idSong = MPMusicPlayerController.idSongCurrent,
-			let song = ZZZDatabase.viewContext.fetchSong(mpID: idSong),
-			let idAlbum = song.container?.albumPersistentID
+			let id_song = MPMusicPlayerController.idSongCurrent,
+			let song = ZZZDatabase.viewContext.fetchSong(mpID: id_song),
+			let id_album = song.container?.albumPersistentID
 		else { return }
-		guard let rowAlbum = listState.listItems.firstIndex(where: { switch $0 {
+		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
 			case .song: return false
-			case .album(let album): return idAlbum == album.albumPersistentID
+			case .album(let album): return id_album == album.albumPersistentID
 		}}) else { return }
 		tableView.performBatchUpdates {
-			tableView.scrollToRow(at: IndexPath(row: rowAlbum, section: 0), at: .top, animated: true)
+			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.listState.expansion = .expanded(idAlbum)
+			self.list_state.expansion = .expanded(id_album)
 		}
 	}
 	
-	@objc private func reflectExpansion() {
-		switch listState.expansion {
+	@objc private func reflect_expansion() {
+		switch list_state.expansion {
 			case .collapsed:
 				Task {
-					listState.refreshItems() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-					bFocused.menu = menuFocused()
-					let _ = await applyIDsRows(listState.rowIdentifiers())
+					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+					b_focused.menu = menu_focused()
+					let _ = await apply_ids_rows(list_state.row_identifiers())
 				}
-			case .expanded(let idToExpand):
+			case .expanded(let id_to_expand):
 				Task {
-					guard listState.albums().contains(where: { idToExpand == $0.albumPersistentID }) else { return }
-					listState.refreshItems()
-					bFocused.menu = menuFocused()
-					let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
-						let rowTarget: Int = self.listState.listItems.firstIndex(where: { switch $0 {
+					guard list_state.albums().contains(where: { id_to_expand == $0.albumPersistentID }) else { return }
+					list_state.refresh_items()
+					b_focused.menu = menu_focused()
+					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
+						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
 							case .song: return false
-							case .album(let album): return idToExpand == album.albumPersistentID
+							case .album(let album): return id_to_expand == album.albumPersistentID
 						}})!
-						self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .top, animated: true)
+						self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 					})
 				}
 		}
 	}
 	
-	@objc private func reflectSelection() {
-		switch listState.selectMode {
-			case .view(let idActivated):
-				setToolbarItems([bBeginSelecting, .flexibleSpace(), Remote.shared.bRemote, .flexibleSpace(), bFocused], animated: true)
-				bFocused.menu = menuFocused()
-				if idActivated == nil {
+	@objc private func reflect_selection() {
+		switch list_state.select_mode {
+			case .view(let id_activated):
+				setToolbarItems([b_select, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
+				b_focused.menu = menu_focused()
+				if id_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
-			case .selectAlbums(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteAlbum, .flexibleSpace(), bDemoteAlbum, .flexibleSpace(), bFocused], animated: true)
-				bPromoteAlbum.isEnabled = !idsSelected.isEmpty
-				bDemoteAlbum.isEnabled = bPromoteAlbum.isEnabled
-				bFocused.menu = menuFocused() // In case it’s open.
-			case .selectSongs(let idsSelected):
-				setToolbarItems([bEndSelecting, .flexibleSpace(), bPromoteSong, .flexibleSpace(), bDemoteSong, .flexibleSpace(), bFocused], animated: true)
-				bPromoteSong.isEnabled = !idsSelected.isEmpty
-				bDemoteSong.isEnabled = bPromoteSong.isEnabled
-				bFocused.menu = menuFocused()
+			case .select_albums(let ids_selected):
+				setToolbarItems([b_done, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
+				b_album_promote.isEnabled = !ids_selected.isEmpty
+				b_album_demote.isEnabled = b_album_promote.isEnabled
+				b_focused.menu = menu_focused() // In case it’s open.
+			case .select_songs(let ids_selected):
+				setToolbarItems([b_done, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
+				b_song_promote.isEnabled = !ids_selected.isEmpty
+				b_song_demote.isEnabled = b_song_promote.isEnabled
+				b_focused.menu = menu_focused()
 		}
 	}
 	
-	@objc private func confirmPlay(notification: Notification) {
+	@objc private func confirm_play(notification: Notification) {
 		guard
-			let idActivated = notification.object as? SongID,
-			let popoverSource: UIView = { () -> UIView? in
-				guard let rowActivated = listState.listItems.firstIndex(where: { switch $0 {
+			let id_activated = notification.object as? SongID,
+			let anchor_popover: UIView = { () -> UIView? in
+				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
 					case .album: return false
-					case .song(let song): return idActivated == song.persistentID
+					case .song(let song): return id_activated == song.persistentID
 				}}) else { return nil }
-				return tableView.cellForRow(at: IndexPath(row: rowActivated, section: 0))
+				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
 			}()
 		else { return }
 		
-		listState.selectMode = .view(idActivated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		list_state.select_mode = .view(id_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
-		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		actionSheet.popoverPresentationController?.sourceView = popoverSource
-		actionSheet.addAction(
+		let action_sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		action_sheet.popoverPresentationController?.sourceView = anchor_popover
+		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				Task {
-					self.listState.selectMode = .view(nil)
+					self.list_state.select_mode = .view(nil)
 					
 					guard
-						let songActivated = self.listState.songs(with: [idActivated]).first,
-						let albumActivated = songActivated.container
+						let song_activated = self.list_state.songs(with: [id_activated]).first,
+						let album_activated = song_activated.container
 					else { return }
 					
 					ApplicationMusicPlayer._shared?.playNow(
-						albumActivated.songs(sorted: true).map { $0.persistentID },
-						startingAt: songActivated.persistentID)
+						album_activated.songs(sorted: true).map { $0.persistentID },
+						startingAt: song_activated.persistentID)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
-		actionSheet.addAction(
+		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
-				self.listState.selectMode = .view(nil)
+				self.list_state.select_mode = .view(nil)
 			}
 		)
-		present(actionSheet, animated: true)
+		present(action_sheet, animated: true)
 	}
 	
 	// MARK: - Editing
 	
-	private lazy var bBeginSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
+	private lazy var b_select = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
 		guard let self else { return }
-		switch listState.expansion {
+		switch list_state.expansion {
 			case .collapsed:
 				withAnimation {
-					self.listState.selectMode = .selectAlbums([])
+					self.list_state.select_mode = .select_albums([])
 				}
 			case .expanded:
 				withAnimation {
-					self.listState.selectMode = .selectSongs([])
+					self.list_state.select_mode = .select_songs([])
 				}
 		}
 	})
-	@objc private func refresh_bBeginSelecting() {
-		bBeginSelecting.isEnabled = !Librarian.shared.isMerging
+	@objc private func refresh_b_select() {
+		b_select.isEnabled = !Librarian.shared.isMerging
 	}
 	
-	private lazy var bEndSelecting = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.endSelecting_animated() })
-	private func endSelecting_animated() {
+	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() })
+	private func end_selecting_animated() {
 		withAnimation {
-			self.listState.selectMode = .view(nil)
+			self.list_state.select_mode = .view(nil)
 		}
 	}
 	
-	private let bFocused = UIBarButtonItem(title: InterfaceText.More, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
+	private let b_focused = UIBarButtonItem(title: InterfaceText.More, image: UIImage(systemName: "ellipsis.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor)))
 	
-	private lazy var bPromoteAlbum = UIBarButtonItem(primaryAction: aPromoteAlbum, menu: UIMenu(children: [aFloatAlbum]))
-	private lazy var bDemoteAlbum = UIBarButtonItem(primaryAction: aDemoteAlbum, menu: UIMenu(children: [aSinkAlbum]))
+	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
+	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))
 	
-	private lazy var aPromoteAlbum = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteAlbums() }
-	private lazy var aDemoteAlbum = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteAlbums() }
-	private lazy var aFloatAlbum = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatAlbums() }
-	private lazy var aSinkAlbum = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkAlbums() }
+	private lazy var a_album_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promote_albums() }
+	private lazy var a_album_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demote_albums() }
+	private lazy var a_album_float = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float_albums() }
+	private lazy var a_album_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sink_albums() }
 	
-	private lazy var bPromoteSong = UIBarButtonItem(primaryAction: aPromoteSong, menu: UIMenu(children: [aFloatSong]))
-	private lazy var bDemoteSong = UIBarButtonItem(primaryAction: aDemoteSong, menu: UIMenu(children: [aSinkSong]))
+	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_song_promote, menu: UIMenu(children: [a_song_float]))
+	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_song_demote, menu: UIMenu(children: [a_song_sink]))
 	
-	private lazy var aPromoteSong = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promoteSongs() }
-	private lazy var aDemoteSong = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demoteSongs() }
-	private lazy var aFloatSong = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.floatSongs() }
-	private lazy var aSinkSong = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sinkSongs() }
+	private lazy var a_song_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: "arrow.up.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.promote_songs() }
+	private lazy var a_song_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: "arrow.down.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in self?.demote_songs() }
+	private lazy var a_song_float = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float_songs() }
+	private lazy var a_song_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sink_songs() }
 	
 	// MARK: - Focused
 	
-	private func titleFocused() -> String {
-		switch listState.selectMode {
-			case .selectAlbums(let idsSelected):
-				return InterfaceText.NUMBER_albums_selected(listState.albums(with: idsSelected).count)
-			case .selectSongs(let idsSelected):
-				return InterfaceText.NUMBER_songs_selected(listState.songs(with: idsSelected).count)
+	private func title_focused() -> String {
+		switch list_state.select_mode {
+			case .select_albums(let ids_selected):
+				return InterfaceText.NUMBER_albums_selected(list_state.albums(with: ids_selected).count)
+			case .select_songs(let ids_selected):
+				return InterfaceText.NUMBER_songs_selected(list_state.songs(with: ids_selected).count)
 			case .view:
-				switch listState.expansion {
+				switch list_state.expansion {
 					case .collapsed:
-						return InterfaceText.NUMBER_albums(listState.albums().count)
+						return InterfaceText.NUMBER_albums(list_state.albums().count)
 					case .expanded:
-						return InterfaceText.NUMBER_songs(listState.songs().count)
+						return InterfaceText.NUMBER_songs(list_state.songs().count)
 				}
 		}
 	}
 	
-	private func menuFocused() -> UIMenu {
-		let menuSections: [UIMenu] = {
+	private func menu_focused() -> UIMenu {
+		let menu_sections: [UIMenu] = {
 			var result: [UIMenu] = []
-			switch listState.expansion {
-				case .collapsed: result += menuSectionsSortAlbums
-				case .expanded: result += menuSectionsSortSongs
+			switch list_state.expansion {
+				case .collapsed: result += menu_sections_album_sort
+				case .expanded: result += menu_sections_song_sort
 			}
 			result += [
 				UIMenu(options: .displayInline, children: [
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
-						let idsSongs = idsSongsFocused()
+						let ids_songs = ids_songs_focused()
 						let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 							guard let self else { return }
-							ApplicationMusicPlayer._shared?.playNow(idsSongs)
-							endSelecting_animated()
+							ApplicationMusicPlayer._shared?.playNow(ids_songs)
+							end_selecting_animated()
 						}
-						if idsSongs.isEmpty { action.attributes.formUnion(.disabled) }
+						if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
 						use([action])
 					},
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
-						let idsSongs = idsSongsFocused()
+						let ids_songs = ids_songs_focused()
 						let action = UIAction(title: InterfaceText.Randomize, image: UIImage.randomDie()) { [weak self] _ in
 							guard let self else { return }
-							ApplicationMusicPlayer._shared?.playNow(idsSongs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
-							endSelecting_animated()
+							ApplicationMusicPlayer._shared?.playNow(ids_songs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+							end_selecting_animated()
 						}
-						if idsSongs.count <= 1 { action.attributes.formUnion(.disabled) }
+						if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
 						use([action])
 					},
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
-						let idsSongs = idsSongsFocused()
+						let ids_songs = ids_songs_focused()
 						let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 							guard let self else { return }
-							ApplicationMusicPlayer._shared?.playLater(idsSongs)
-							endSelecting_animated()
+							ApplicationMusicPlayer._shared?.playLater(ids_songs)
+							end_selecting_animated()
 						}
-						if idsSongs.isEmpty { action.attributes.formUnion(.disabled) }
+						if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
 						use([action])
 					},
 				]),
 			]
 			return result
 		}()
-		return UIMenu(title: titleFocused(), children: menuSections)
+		return UIMenu(title: title_focused(), children: menu_sections)
 	}
 	
-	private func idsSongsFocused() -> [SongID] {
-		switch listState.selectMode {
-			case .selectAlbums(let idsSelected):
-				return listState.albums(with: idsSelected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
-			case .selectSongs(let idsSelected):
-				return listState.songs(with: idsSelected).map { $0.persistentID }
+	private func ids_songs_focused() -> [SongID] {
+		switch list_state.select_mode {
+			case .select_albums(let ids_selected):
+				return list_state.albums(with: ids_selected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+			case .select_songs(let ids_selected):
+				return list_state.songs(with: ids_selected).map { $0.persistentID }
 			case .view:
-				switch listState.expansion {
+				switch list_state.expansion {
 					case .collapsed:
-						return listState.albums().flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+						return list_state.albums().flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
 					case .expanded:
-						return listState.songs().map { $0.persistentID }
+						return list_state.songs().map { $0.persistentID }
 				}
 		}
 	}
 	
 	// MARK: - Sorting
 	
-	private lazy var menuSectionsSortAlbums: [UIMenu] = {
+	private lazy var menu_sections_album_sort: [UIMenu] = {
 		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased], [.random, .reverse]]
-		return groups.map { albumOrders in
-			UIMenu(options: .displayInline, children: albumOrders.map { order in
-				UIDeferredMenuElement.uncached { [weak self] useElements in
+		return groups.map { album_orders in
+			UIMenu(options: .displayInline, children: album_orders.map { order in
+				UIDeferredMenuElement.uncached { [weak self] use in
 					// Runs each time the button presents the menu
 					guard let self else { return }
-					let action = order.action { [weak self] in self?.sortAlbums(by: order) }
-					if !canSortAlbums(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
-					useElements([action])
+					let action = order.action { [weak self] in self?.sort_albums(by: order) }
+					if !can_sort_albums(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
+					use([action])
 				}
 			})
 		}
 	}()
-	private func canSortAlbums(by albumOrder: AlbumOrder) -> Bool {
-		guard albumsToSort().count >= 2 else { return false }
-		switch listState.selectMode {
-			case .selectSongs, .view: break
-			case .selectAlbums(let idsSelected):
-				let rsSelected = listState.albums().indices {
-					idsSelected.contains($0.albumPersistentID)
+	private func can_sort_albums(by album_order: AlbumOrder) -> Bool {
+		guard albums_to_sort().count >= 2 else { return false }
+		switch list_state.select_mode {
+			case .select_songs, .view: break
+			case .select_albums(let ids_selected):
+				let rs_selected = list_state.albums().indices {
+					ids_selected.contains($0.albumPersistentID)
 				}
-				guard rsSelected.ranges.count <= 1 else { return false }
+				guard rs_selected.ranges.count <= 1 else { return false }
 		}
-		switch albumOrder {
+		switch album_order {
 			case .random, .reverse, .recentlyAdded: return true
-			case .recentlyReleased: return albumsToSort().contains {
+			case .recentlyReleased: return albums_to_sort().contains {
 				nil != Librarian.shared.mkSectionInfo(albumID: $0.albumPersistentID)?._release_date
 			}
 		}
 	}
-	private lazy var menuSectionsSortSongs: [UIMenu] = {
+	private lazy var menu_sections_song_sort: [UIMenu] = {
 		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
-		return groups.map { songOrders in
-			UIMenu(options: .displayInline, children: songOrders.map { order in
-				UIDeferredMenuElement.uncached { [weak self] useElements in
+		return groups.map { song_orders in
+			UIMenu(options: .displayInline, children: song_orders.map { order in
+				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let action = order.action { [weak self] in self?.sortSongs(by: order) }
+					let action = order.action { [weak self] in self?.sort_songs(by: order) }
 					var enabling = true
-					if songsToSort().count <= 1 { enabling = false }
-					switch listState.selectMode {
-						case .selectAlbums, .view: break
-						case .selectSongs(let idsSelected):
-							let rsSelected = listState.songs().indices {
-								idsSelected.contains($0.persistentID)
+					if songs_to_sort().count <= 1 { enabling = false }
+					switch list_state.select_mode {
+						case .select_albums, .view: break
+						case .select_songs(let ids_selected):
+							let rs_selected = list_state.songs().indices {
+								ids_selected.contains($0.persistentID)
 							}
-							if rsSelected.ranges.count >= 2 { enabling = false }
+							if rs_selected.ranges.count >= 2 { enabling = false }
 					}
 					if !enabling { action.attributes.formUnion(.disabled) }
-					useElements([action])
+					use([action])
 				}
 			})
 		}
 	}()
 	
-	private func sortAlbums(by albumOrder: AlbumOrder) {
+	private func sort_albums(by album_order: AlbumOrder) {
 		Task {
-			albumOrder.reindex(albumsToSort())
+			album_order.reindex(albums_to_sort())
 			ZZZDatabase.viewContext.savePlease()
-			listState.refreshItems()
-			let _ = await applyIDsRows(listState.rowIdentifiers())
+			list_state.refresh_items()
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
-	private func sortSongs(by songOrder: SongOrder) {
+	private func sort_songs(by song_order: SongOrder) {
 		Task {
-			songOrder.reindex(songsToSort())
+			song_order.reindex(songs_to_sort())
 			ZZZDatabase.viewContext.savePlease()
-			listState.refreshItems()
-			let _ = await applyIDsRows(listState.rowIdentifiers())
+			list_state.refresh_items()
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
 	
-	private func albumsToSort() -> [ZZZAlbum] {
-		switch listState.selectMode {
-			case .selectSongs: return []
-			case .view: return listState.albums()
-			case .selectAlbums(let idsSelected): return listState.albums(with: idsSelected)
+	private func albums_to_sort() -> [ZZZAlbum] {
+		switch list_state.select_mode {
+			case .select_songs: return []
+			case .view: return list_state.albums()
+			case .select_albums(let ids_selected): return list_state.albums(with: ids_selected)
 		}
 	}
-	private func songsToSort() -> [ZZZSong] {
-		switch listState.selectMode {
-			case .selectAlbums: return []
-			case .view: return listState.songs()
-			case .selectSongs(let idsSelected): return listState.songs(with: idsSelected)
+	private func songs_to_sort() -> [ZZZSong] {
+		switch list_state.select_mode {
+			case .select_albums: return []
+			case .view: return list_state.songs()
+			case .select_songs(let ids_selected): return list_state.songs(with: ids_selected)
 		}
 	}
 	
 	// MARK: - Moving up and down
 	
-	private func promoteAlbums() {
+	private func promote_albums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = listState.selectMode,
+				case let .select_albums(ids_selected) = list_state.select_mode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
-			crate.promoteAlbums(with: idsSelected)
+			crate.promote_albums(with: ids_selected)
 			
-			listState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
+			list_state.refresh_items()
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 				guard
-					let rowTarget = self.listState.listItems.firstIndex(where: { switch $0 {
+					let row_target = self.list_state.list_items.firstIndex(where: { switch $0 {
 						case .song: return false
-						case .album(let album): return idsSelected.contains(album.albumPersistentID)
+						case .album(let album): return ids_selected.contains(album.albumPersistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
-	private func promoteSongs() {
+	private func promote_songs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = listState.selectMode,
-				case let .expanded(idExpanded) = listState.expansion,
-				let album = listState.albums(with: [idExpanded]).first
+				case let .select_songs(ids_selected) = list_state.select_mode,
+				case let .expanded(id_expanded) = list_state.expansion,
+				let album = list_state.albums(with: [id_expanded]).first
 			else { return }
-			album.promoteSongs(with: idsSelected)
+			album.promote_songs(with: ids_selected)
 			
-			listState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState)
-			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
+			list_state.refresh_items()
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 				guard
-					let rowTarget = self.listState.listItems.firstIndex(where: { switch $0 {
+					let row_target = self.list_state.list_items.firstIndex(where: { switch $0 {
 						case .album: return false
-						case .song(let song): return idsSelected.contains(song.persistentID)
+						case .song(let song): return ids_selected.contains(song.persistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
 	
-	private func demoteAlbums() {
+	private func demote_albums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = listState.selectMode,
+				case let .select_albums(ids_selected) = list_state.select_mode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
-			crate.demoteAlbums(with: idsSelected)
+			crate.demoteAlbums(with: ids_selected)
 			
-			listState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState)
-			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
+			list_state.refresh_items()
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 				guard
-					let rowTarget = self.listState.listItems.lastIndex(where: { switch $0 {
+					let row_target = self.list_state.list_items.lastIndex(where: { switch $0 {
 						case .song: return false
-						case .album(let album): return idsSelected.contains(album.albumPersistentID)
+						case .album(let album): return ids_selected.contains(album.albumPersistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
-	private func demoteSongs() {
+	private func demote_songs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = listState.selectMode,
-				case let .expanded(idExpanded) = listState.expansion,
-				let album = listState.albums(with: [idExpanded]).first
+				case let .select_songs(ids_selected) = list_state.select_mode,
+				case let .expanded(id_expanded) = list_state.expansion,
+				let album = list_state.albums(with: [id_expanded]).first
 			else { return }
-			album.demoteSongs(with: idsSelected)
+			album.demote_songs(with: ids_selected)
 			
-			listState.refreshItems()
-			NotificationCenter.default.post(name: AlbumListState.selectionChanged, object: listState)
-			let _ = await applyIDsRows(listState.rowIdentifiers(), runningBeforeContinuation: {
+			list_state.refresh_items()
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 				guard
-					let rowTarget = self.listState.listItems.lastIndex(where: { switch $0 {
+					let row_target = self.list_state.list_items.lastIndex(where: { switch $0 {
 						case .album: return false
-						case .song(let song): return idsSelected.contains(song.persistentID)
+						case .song(let song): return ids_selected.contains(song.persistentID)
 					}})
 				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: rowTarget, section: 0), at: .middle, animated: true)
+				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
 			})
 		}
 	}
 	
 	// MARK: To top and bottom
 	
-	private func floatAlbums() {
+	private func float_albums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = listState.selectMode,
+				case let .select_albums(ids_selected) = list_state.select_mode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
-			crate.floatAlbums(with: idsSelected)
+			crate.float_albums(with: ids_selected)
 			
-			listState.refreshItems()
-			listState.selectMode = .selectAlbums([])
-			let _ = await applyIDsRows(listState.rowIdentifiers())
+			list_state.refresh_items()
+			list_state.select_mode = .select_albums([])
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
-	private func floatSongs() {
+	private func float_songs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = listState.selectMode,
-				case let .expanded(idExpanded) = listState.expansion,
-				let album = listState.albums(with: [idExpanded]).first
+				case let .select_songs(ids_selected) = list_state.select_mode,
+				case let .expanded(id_expanded) = list_state.expansion,
+				let album = list_state.albums(with: [id_expanded]).first
 			else { return }
-			album.floatSongs(with: idsSelected)
+			album.floatSongs(with: ids_selected)
 			
-			listState.refreshItems()
-			listState.selectMode = .selectSongs([])
-			let _ = await applyIDsRows(listState.rowIdentifiers())
+			list_state.refresh_items()
+			list_state.select_mode = .select_songs([])
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
 	
-	private func sinkAlbums() {
+	private func sink_albums() {
 		Task {
 			guard
-				case let .selectAlbums(idsSelected) = listState.selectMode,
+				case let .select_albums(ids_selected) = list_state.select_mode,
 				let crate = ZZZDatabase.viewContext.fetchCollection()
 			else { return }
-			crate.sinkAlbums(with: idsSelected)
+			crate.sink_albums(with: ids_selected)
 			
-			listState.refreshItems()
-			listState.selectMode = .selectAlbums([])
-			let _ = await applyIDsRows(listState.rowIdentifiers())
+			list_state.refresh_items()
+			list_state.select_mode = .select_albums([])
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
-	private func sinkSongs() {
+	private func sink_songs() {
 		Task {
 			guard
-				case let .selectSongs(idsSelected) = listState.selectMode,
-				case let .expanded(idExpanded) = listState.expansion,
-				let album = listState.albums(with: [idExpanded]).first
+				case let .select_songs(ids_selected) = list_state.select_mode,
+				case let .expanded(id_expanded) = list_state.expansion,
+				let album = list_state.albums(with: [id_expanded]).first
 			else { return }
-			album.sinkSongs(with: idsSelected)
+			album.sink_songs(with: ids_selected)
 			
-			listState.refreshItems()
-			listState.selectMode = .selectSongs([])
-			let _ = await applyIDsRows(listState.rowIdentifiers())
+			list_state.refresh_items()
+			list_state.select_mode = .select_songs([])
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
 }

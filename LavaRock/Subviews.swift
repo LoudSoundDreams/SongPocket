@@ -11,9 +11,9 @@ import MediaPlayer
 	let list_state: AlbumListState
 	var body: some View {
 		ZStack(alignment: .bottomLeading) {
-			AlbumArt(id_album: id_album, dim_limit: min(list_state.viewportSize.width, list_state.viewportSize.height))
+			AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
 				.opacity(sel_opacity)
-				.animation(.default, value: list_state.selectMode)
+				.animation(.default, value: list_state.select_mode)
 				.overlay { if exp_labeled {
 					Rectangle().foregroundStyle(Material.thin)
 				}}
@@ -38,15 +38,15 @@ import MediaPlayer
 	}
 	
 	private var sel_opacity: Double {
-		switch list_state.selectMode {
+		switch list_state.select_mode {
 			case .view: return 1
-			case .selectAlbums, .selectSongs: return .oneFourth
+			case .select_albums, .select_songs: return .oneFourth
 		}
 	}
 	@ViewBuilder private var sel_highlight: some View {
-		let highlighting: Bool = { switch list_state.selectMode {
-			case .view, .selectSongs: return false
-			case .selectAlbums(let ids_selected): return ids_selected.contains(id_album)
+		let highlighting: Bool = { switch list_state.select_mode {
+			case .view, .select_songs: return false
+			case .select_albums(let ids_selected): return ids_selected.contains(id_album)
 		}}()
 		if highlighting {
 			Color.accentColor.opacity(.oneHalf)
@@ -55,9 +55,9 @@ import MediaPlayer
 		}
 	}
 	@ViewBuilder private var sel_border: some View {
-		switch list_state.selectMode {
-			case .view, .selectSongs: EmptyView()
-			case .selectAlbums(let ids_selected):
+		switch list_state.select_mode {
+			case .view, .select_songs: EmptyView()
+			case .select_albums(let ids_selected):
 				if ids_selected.contains(id_album) {
 					RectSelected().accessibilityLabel(Text(InterfaceText.Selected))
 				} else {
@@ -67,8 +67,8 @@ import MediaPlayer
 	}
 	
 	private func tapped() {
-		switch list_state.selectMode {
-			case .selectSongs: return
+		switch list_state.select_mode {
+			case .select_songs: return
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
@@ -80,14 +80,14 @@ import MediaPlayer
 							list_state.expansion = .expanded(id_album)
 						}
 				}
-			case .selectAlbums(let ids_selected):
+			case .select_albums(let ids_selected):
 				var selected_new = ids_selected
 				if ids_selected.contains(id_album) {
 					selected_new.remove(id_album)
 				} else {
 					selected_new.insert(id_album)
 				}
-				list_state.selectMode = .selectAlbums(selected_new)
+				list_state.select_mode = .select_albums(selected_new)
 		}
 	}
 }
@@ -150,9 +150,9 @@ import MediaPlayer
 					b_above
 					b_below
 				} label: {
-					switch list_state.selectMode {
-						case .selectSongs, .view: ImageOverflow()
-						case .selectAlbums(let idsSelected):
+					switch list_state.select_mode {
+						case .select_songs, .view: ImageOverflow()
+						case .select_albums(let idsSelected):
 							if idsSelected.contains(id_album) {
 								ImageOverflowSelected()
 							} else {
@@ -205,9 +205,9 @@ import MediaPlayer
 		.accessibilityInputLabels([title_and_input_label])
 	}
 	private var sel_dimmed: Bool {
-		switch list_state.selectMode {
-			case .view, .selectAlbums: return false
-			case .selectSongs: return true
+		switch list_state.select_mode {
+			case .view, .select_albums: return false
+			case .select_songs: return true
 		}
 	}
 	
@@ -228,9 +228,9 @@ import MediaPlayer
 		}.disabled(!list_state.hasAlbumRange(from: id_album, forward: true))
 	}
 	private var is_selected: Bool {
-		switch list_state.selectMode {
-			case .view, .selectSongs: return false
-			case .selectAlbums(let ids_selected): return ids_selected.contains(id_album)
+		switch list_state.select_mode {
+			case .view, .select_songs: return false
+			case .select_albums(let ids_selected): return ids_selected.contains(id_album)
 		}
 	}
 }
@@ -250,9 +250,9 @@ import MediaPlayer
 					b_above
 					b_below
 				} label: {
-					switch list_state.selectMode {
-						case .selectAlbums, .view: ImageOverflow()
-						case .selectSongs(let ids_selected):
+					switch list_state.select_mode {
+						case .select_albums, .view: ImageOverflow()
+						case .select_songs(let ids_selected):
 							if ids_selected.contains(id_song) {
 								ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
 							} else {
@@ -336,25 +336,25 @@ import MediaPlayer
 	private let librarian: Librarian = .shared
 	
 	@ViewBuilder private var sel_highlight: some View {
-		let highlighting: Bool = { switch list_state.selectMode {
-			case .selectAlbums: return false
+		let highlighting: Bool = { switch list_state.select_mode {
+			case .select_albums: return false
 			case .view(let id_activated): return id_activated == id_song
-			case .selectSongs(let ids_selected): return ids_selected.contains(id_song)
+			case .select_songs(let ids_selected): return ids_selected.contains(id_song)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
-				{ switch list_state.selectMode {
-					case .selectAlbums: return nil // Should never run
+				{ switch list_state.select_mode {
+					case .select_albums: return nil // Should never run
 					case .view(let id_activated): return (id_activated == nil) ? .default : nil
-					case .selectSongs: return nil // It’d be nice to animate deselecting after arranging, floating, and sinking, but not manually selecting or deselecting.
+					case .select_songs: return nil // It’d be nice to animate deselecting after arranging, floating, and sinking, but not manually selecting or deselecting.
 				}}(),
-				value: list_state.selectMode)
+				value: list_state.select_mode)
 	}
 	@ViewBuilder private var sel_border: some View {
-		switch list_state.selectMode {
-			case .view, .selectAlbums: EmptyView()
-			case .selectSongs(let ids_selected):
+		switch list_state.select_mode {
+			case .view, .select_albums: EmptyView()
+			case .select_songs(let ids_selected):
 				if ids_selected.contains(id_song) {
 					RectSelected()
 				} else {
@@ -364,17 +364,17 @@ import MediaPlayer
 	}
 	
 	private func tapped() {
-		switch list_state.selectMode {
-			case .selectAlbums: return
+		switch list_state.select_mode {
+			case .select_albums: return
 			case .view: NotificationCenter.default.post(name: Self.confirm_play_id_song, object: id_song)
-			case .selectSongs(let ids_selected):
+			case .select_songs(let ids_selected):
 				var selected_new = ids_selected
 				if ids_selected.contains(id_song) {
 					selected_new.remove(id_song)
 				} else {
 					selected_new.insert(id_song)
 				}
-				list_state.selectMode = .selectSongs(selected_new)
+				list_state.select_mode = .select_songs(selected_new)
 		}
 	}
 	
@@ -395,9 +395,9 @@ import MediaPlayer
 		}.disabled(!list_state.hasSongRange(from: id_song, forward: true))
 	}
 	private var is_selected: Bool {
-		switch list_state.selectMode {
-			case .selectAlbums, .view: return false
-			case .selectSongs(let ids_selected): return ids_selected.contains(id_song)
+		switch list_state.select_mode {
+			case .select_albums, .view: return false
+			case .select_songs(let ids_selected): return ids_selected.contains(id_song)
 		}
 	}
 }

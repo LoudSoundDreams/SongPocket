@@ -58,7 +58,7 @@ extension ZZZCollection {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	final func promoteAlbums(with idsToPromote: Set<AlbumID>) {
+	final func promote_albums(with idsToPromote: Set<AlbumID>) {
 		var myAlbums = albums(sorted: true)
 		let rsToPromote = myAlbums.indices { idsToPromote.contains($0.albumPersistentID) }
 		guard let front: Int = rsToPromote.ranges.first?.first else { return }
@@ -83,7 +83,7 @@ extension ZZZCollection {
 		managedObjectContext!.savePlease()
 	}
 	
-	final func floatAlbums(with idsToFloat: Set<AlbumID>) {
+	final func float_albums(with idsToFloat: Set<AlbumID>) {
 		var myAlbums = albums(sorted: true)
 		let rsToFloat = myAlbums.indices { idsToFloat.contains($0.albumPersistentID) }
 		
@@ -91,7 +91,7 @@ extension ZZZCollection {
 		ZZZDatabase.renumber(myAlbums)
 		managedObjectContext!.savePlease()
 	}
-	final func sinkAlbums(with idsToSink: Set<AlbumID>) {
+	final func sink_albums(with idsToSink: Set<AlbumID>) {
 		var myAlbums = albums(sorted: true)
 		let rsToSink = myAlbums.indices { idsToSink.contains($0.albumPersistentID) }
 		
@@ -131,7 +131,7 @@ extension ZZZAlbum {
 		albumPersistentID = albumID
 	}
 	
-	final func promoteSongs(with idsToPromote: Set<SongID>) {
+	final func promote_songs(with idsToPromote: Set<SongID>) {
 		var mySongs = songs(sorted: true)
 		let rsToPromote = mySongs.indices { idsToPromote.contains($0.persistentID) }
 		guard let front: Int = rsToPromote.ranges.first?.first else { return }
@@ -143,7 +143,7 @@ extension ZZZAlbum {
 		ZZZDatabase.renumber(mySongs)
 		managedObjectContext!.savePlease()
 	}
-	final func demoteSongs(with idsToDemote: Set<SongID>) {
+	final func demote_songs(with idsToDemote: Set<SongID>) {
 		var mySongs = songs(sorted: true)
 		let rsToDemote = mySongs.indices { idsToDemote.contains($0.persistentID) }
 		guard let back: Int = rsToDemote.ranges.last?.last else { return }
@@ -164,7 +164,7 @@ extension ZZZAlbum {
 		ZZZDatabase.renumber(mySongs)
 		managedObjectContext!.savePlease()
 	}
-	final func sinkSongs(with idsToSink: Set<SongID>) {
+	final func sink_songs(with idsToSink: Set<SongID>) {
 		var mySongs = songs(sorted: true)
 		let rsToSink = mySongs.indices { idsToSink.contains($0.persistentID) }
 		

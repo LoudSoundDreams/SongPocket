@@ -168,7 +168,7 @@ extension UITableView {
 		}
 	}
 	
-	final func performUpdatesFromRowIdentifiers<Identifier: Hashable>(
+	final func performBatchUpdates_from_ids<Identifier: Hashable>(
 		old: [Identifier], new: [Identifier],
 		completion: @escaping () -> Void
 	) {
