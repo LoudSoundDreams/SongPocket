@@ -32,7 +32,7 @@ enum WorkingOn {
 	}
 	
 	@MainActor static func integrate_Apple_Music() {
-		Librarian.shared.observeMPLibrary()
+		Librarian.shared.observe_mpLibrary()
 		PlayerState.shared.observeMKPlayer()
 	}
 }
@@ -46,8 +46,8 @@ private final class NCMain: UINavigationController {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
 		)
-		let navbar = result.navigationBar
-		navbar.scrollEdgeAppearance = navbar.standardAppearance
+		let nav_bar = result.navigationBar
+		nav_bar.scrollEdgeAppearance = nav_bar.standardAppearance
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		result.setToolbarHidden(false, animated: false)

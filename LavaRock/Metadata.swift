@@ -29,8 +29,7 @@ struct InfoSong__ {
 
 import MediaPlayer
 
-typealias MPID = MPMediaEntityPersistentID
-typealias MPIDAlbum = Int64
+typealias MPIDAlbum = Int64 // TO DO: Change to `MPMediaEntityPersistentID`?
 typealias MPIDSong = Int64
 
 protocol InfoSong {

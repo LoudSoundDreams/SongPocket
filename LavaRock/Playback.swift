@@ -21,14 +21,14 @@ import MusicKit
 			let toPlay: [MKSong] = await {
 				var result: [MKSong] = []
 				for mpID in idsToPlay {
-					guard let mkSong = await Librarian.shared.mkSong_fetched(mpID: mpID) else { continue }
+					guard let mkSong = await Librarian.shared.mkSong_fetched(mpidSong: mpID) else { continue }
 					result.append(mkSong)
 				}
 				return result
 			}()
 			let start: MKSong? = await {
 				guard let idStart else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-				return await Librarian.shared.mkSong_fetched(mpID: idStart)
+				return await Librarian.shared.mkSong_fetched(mpidSong: idStart)
 			}()
 			
 			queue = Queue(for: toPlay, startingAt: start) // Slow.
@@ -43,7 +43,7 @@ import MusicKit
 			let toAppend: [MKSong] = await {
 				var result: [MKSong] = []
 				for mpID in idsToAppend {
-					guard let mkSong = await Librarian.shared.mkSong_fetched(mpID: mpID) else { continue }
+					guard let mkSong = await Librarian.shared.mkSong_fetched(mpidSong: mpID) else { continue }
 					result.append(mkSong)
 				}
 				return result

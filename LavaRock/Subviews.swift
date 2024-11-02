@@ -131,7 +131,7 @@ import MediaPlayer
 		.accessibilityLabel(InterfaceText.Album_artwork)
 	}
 	private var artwork: MusicKit.Artwork? {
-		return Librarian.shared.mkSection(albumID: id_album)?.artwork
+		return Librarian.shared.mkSection(mpidAlbum: id_album)?.artwork
 	}
 }
 
@@ -171,7 +171,7 @@ import MediaPlayer
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let info_album: InfoAlbum? = Librarian.shared.mkSectionInfo(albumID: id_album)
+		let info_album: InfoAlbum? = Librarian.shared.infoAlbum(mpidAlbum: id_album)
 		let title_and_input_label: String = {
 			guard let title_album = info_album?._title, title_album != ""
 			else { return InterfaceText.Unknown_Album }
@@ -289,7 +289,7 @@ import MediaPlayer
 #endif
 		}()
 		let title: String? = info_song?._title
-		let info_album: InfoAlbum? = librarian.mkSectionInfo(albumID: id_album)
+		let info_album: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
 		HStack(alignment: .firstTextBaseline) {
 			IndicatorNowPlaying(id_song: id_song)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
@@ -329,7 +329,7 @@ import MediaPlayer
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 		.task {
-			mkSong = await librarian.mkSong_fetched(mpID: id_song)
+			mkSong = await librarian.mkSong_fetched(mpidSong: id_song)
 		}
 	}
 	@State private var mkSong: MKSong? = nil
@@ -439,7 +439,7 @@ struct IndicatorNowPlaying: View {
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
 		let _ = PlayerState.shared.signal
-		let _ = Librarian.shared.isMerging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
+		let _ = Librarian.shared.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 		guard
 			let state = ApplicationMusicPlayer._shared?.state,
 			id_song == MPMusicPlayerController.idSongCurrent

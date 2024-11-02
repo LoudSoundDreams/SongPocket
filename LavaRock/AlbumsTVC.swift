@@ -225,9 +225,9 @@ final class AlbumsTVC: LibraryTVC {
 		b_focused.preferredMenuElementOrder = .fixed
 		b_focused.menu = menu_focused()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.willMerge, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.didMerge, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: Librarian.didMerge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.will_merge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.did_merge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: Librarian.did_merge, object: nil)
 		Remote.shared.tvc_albums = WeakRef(self)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: AlbumListState.expansion_changed, object: list_state)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_id_song, object: nil)
@@ -269,7 +269,7 @@ final class AlbumsTVC: LibraryTVC {
 			if list_state.list_items.isEmpty {
 				return UIHostingConfiguration {
 					ContentUnavailableView {} actions: {
-						Button { Librarian.openAppleMusic() } label: { Image(systemName: "plus") }
+						Button { Librarian.open_Apple_Music() } label: { Image(systemName: "plus") }
 					}
 				}.margins(.all, .zero)
 			}
@@ -462,7 +462,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	})
 	@objc private func refresh_b_select() {
-		b_select.isEnabled = !Librarian.shared.isMerging
+		b_select.isEnabled = !Librarian.shared.is_merging
 	}
 	
 	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() })
@@ -602,7 +602,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch album_order {
 			case .random, .reverse, .recentlyAdded: return true
 			case .recentlyReleased: return albums_to_sort().contains {
-				nil != Librarian.shared.mkSectionInfo(albumID: $0.albumPersistentID)?._release_date
+				nil != Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._release_date
 			}
 		}
 	}

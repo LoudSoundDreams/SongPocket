@@ -11,11 +11,11 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 @MainActor @Observable final class Librarian {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
-	private(set) var isMerging = false { didSet {
-		if isMerging {
-			NotificationCenter.default.post(name: Self.willMerge, object: nil)
+	private(set) var is_merging = false { didSet {
+		if is_merging {
+			NotificationCenter.default.post(name: Self.will_merge, object: nil)
 		} else {
-			NotificationCenter.default.post(name: Self.didMerge, object: nil)
+			NotificationCenter.default.post(name: Self.did_merge, object: nil)
 		}
 	}}
 	
@@ -25,17 +25,17 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 }
 extension Librarian {
 	static let shared = Librarian()
-	func observeMPLibrary() {
+	func observe_mpLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mergeChanges), name: .MPMediaLibraryDidChange, object: library)
-		mergeChanges()
+		NotificationCenter.default.addObserver_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
+		merge_changes()
 	}
-	static let willMerge = Notification.Name("LRMusicLibraryWillMerge")
-	static let didMerge = Notification.Name("LRMusicLibraryDidMerge")
-	func mkSectionInfo(albumID: MPIDAlbum) -> InfoAlbum? {
+	static let will_merge = Notification.Name("LRMusicLibraryWillMerge")
+	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
+	func infoAlbum(mpidAlbum: MPIDAlbum) -> InfoAlbum? {
 #if targetEnvironment(simulator)
-		guard let sim_album = Sim_MusicLibrary.shared.sim_albums[albumID]
+		guard let sim_album = Sim_MusicLibrary.shared.sim_albums[mpidAlbum]
 		else { return nil }
 		return InfoAlbum(
 			_title: sim_album.title,
@@ -44,7 +44,7 @@ extension Librarian {
 			_disc_count: 1
 		)
 #else
-		guard let mkAlbum = mkSection(albumID: albumID)
+		guard let mkAlbum = mkSection(mpidAlbum: mpidAlbum)
 		else { return nil }
 		return InfoAlbum(
 			_title: mkAlbum.title,
@@ -57,12 +57,12 @@ extension Librarian {
 		)
 #endif
 	}
-	func mkSection(albumID: MPIDAlbum) -> MKSection? {
-		return mkSections[MusicItemID(String(albumID))]
+	func mkSection(mpidAlbum: MPIDAlbum) -> MKSection? {
+		return mkSections[MusicItemID(String(mpidAlbum))]
 	}
-	func mkSong_fetched(mpID: MPIDSong) async -> MKSong? { // Slow; 11ms in 2024.
+	func mkSong_fetched(mpidSong: MPIDSong) async -> MKSong? { // Slow; 11ms in 2024.
 		var request = MusicLibraryRequest<MKSong>()
-		request.filter(matching: \.id, equalTo: MusicItemID(String(mpID)))
+		request.filter(matching: \.id, equalTo: MusicItemID(String(mpidSong)))
 		guard
 			let response = try? await request.response(),
 			response.items.count == 1,
@@ -71,78 +71,78 @@ extension Librarian {
 		
 		return mkSong
 	}
-	static func openAppleMusic() {
-		guard let musicLibraryURL = URL(string: "music://") else { return }
-		UIApplication.shared.open(musicLibraryURL)
+	static func open_Apple_Music() {
+		guard let url = URL(string: "music://") else { return }
+		UIApplication.shared.open(url)
 	}
 }
 
 // MARK: - Private
 
 extension Librarian {
-	@objc private func mergeChanges() {
+	@objc private func merge_changes() {
 		Task {
 #if targetEnvironment(simulator)
-			await mergeFromAppleMusic(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
+			await merge_from_Apple_Music(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
 #else
-			guard let freshMediaItems = MPMediaQuery.songs().items else { return }
+			guard let mediaItems_fresh = MPMediaQuery.songs().items else { return }
 			
-			let freshSectionsOnly: [MKSection] = await {
+			let array_sections_fresh: [MKSection] = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
 				guard let response = try? await request.response() else { return [] }
 				
 				return response.sections
 			}()
-			let freshSections: [MusicItemID: MKSection] = {
-				let tuples = freshSectionsOnly.map { section in (section.id, section) }
+			let sections_fresh: [MusicItemID: MKSection] = {
+				let tuples = array_sections_fresh.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let sectionsUnion = mkSections.merging(freshSections) { old, new in new }
+			let sections_union = mkSections.merging(sections_fresh) { old, new in new }
 			
 			// 12,000 songs takes 37ms in 2024.
-			let freshSongs: [MusicItemID: MKSong] = {
-				let allSongs = freshSections.values.flatMap { $0.items }
-				let tuples = allSongs.map { ($0.id, $0) }
+			let songs_fresh: [MusicItemID: MKSong] = {
+				let songs_all = sections_fresh.values.flatMap { $0.items }
+				let tuples = songs_all.map { ($0.id, $0) }
 				return Dictionary(tuples) { former, latter in latter } // As of iOS 18 developer beta 7, I’ve seen a library where multiple pairs of MusicKit `Song`s had the same `MusicItemID`; they also had the same title, album title, and song artist.
 			}()
-			let songsUnion = mkSongs.merging(freshSongs) { old, new in new }
+			let songs_union = mkSongs.merging(songs_fresh) { old, new in new }
 			
 			// Show new data immediately…
-			mkSections = sectionsUnion
-			mkSongs = songsUnion
+			mkSections = sections_union
+			mkSongs = songs_union
 			
-			await mergeFromAppleMusic(musicKit: freshSectionsOnly, mediaPlayer: freshMediaItems)
+			await merge_from_Apple_Music(musicKit: array_sections_fresh, mediaPlayer: mediaItems_fresh)
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
-			mkSections = freshSections
-			mkSongs = freshSongs
+			mkSections = sections_fresh
+			mkSongs = songs_fresh
 #endif
 		}
 	}
-	private func mergeFromAppleMusic(musicKit unsortedSections: [MKSection], mediaPlayer unorderedMediaItems: [InfoSong]) async {
-		isMerging = true
-		defer { isMerging = false }
+	private func merge_from_Apple_Music(musicKit sections_unsorted: [MKSection], mediaPlayer mediaItems_unsorted: [InfoSong]) async {
+		is_merging = true
+		defer { is_merging = false }
 		
-//		mergeFromMusicKit(unsortedSections)
-		mergeFromMediaPlayer(unorderedMediaItems)
+//		merge_from_MusicKit(sections_unsorted)
+		merge_from_MediaPlayer(mediaItems_unsorted)
 	}
 	
 	// MARK: - MUSICKIT
 	
-	private func mergeFromMusicKit(_ unsortedSections: [MKSection]) {
+	private func merge_from_MusicKit(_ sections_unsorted: [MKSection]) {
 		/*
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }
 		
 		let _load = signposter.beginInterval("load")
-		theCrate = Disk.loadCrates().first
+//		theCrate = Disk.loadCrates().first
 		signposter.endInterval("load", _load)
 		
 		let newMKSections: [MKSection] = {
 			// Only sort albums themselves; we’ll sort the songs within each album later.
 			let now = Date.now
-			let sectionsAndDatesCreated: [(section: MKSection, date_created: Date)] = unsortedSections.map {(
+			let sectionsAndDatesCreated: [(section: MKSection, date_created: Date)] = sections_unsorted.map {(
 				section: $0,
 				date_created: ZZZAlbum.date_created($0.items) ?? now
 			)}
@@ -162,7 +162,7 @@ extension Librarian {
 			}())
 		}
 		let newCrate = LRCrate(title: InterfaceText._tilde, albums: newAlbums)
-		theCrate = newCrate
+//		theCrate = newCrate
 		
 		let _save = signposter.beginInterval("save")
 		Disk.save([newCrate])
@@ -172,43 +172,43 @@ extension Librarian {
 	
 	// MARK: - MEDIA PLAYER
 	
-	private func mergeFromMediaPlayer(_ unorderedMediaItems: [InfoSong]) {
+	private func merge_from_MediaPlayer(_ mediaItems_unsorted: [InfoSong]) {
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
-		// Meanwhile, isolate the `SongInfo`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
-		let toUpdate: [(existing: ZZZSong, fresh: InfoSong)]
-		let toDelete: [ZZZSong]
-		let toCreate: [InfoSong]
+		// Meanwhile, isolate the `InfoSong`s that we don’t have `Song`s for. We’ll create new `Song`s for them.
+		let to_update: [(existing: ZZZSong, fresh: InfoSong)]
+		let to_delete: [ZZZSong]
+		let to_create: [InfoSong]
 		do {
 			var updates: [(ZZZSong, InfoSong)] = []
 			var deletes: [ZZZSong] = []
 			
-			var freshInfos: [MPIDSong: InfoSong] = {
-				let tuples = unorderedMediaItems.map { info in (info.id_song, info) }
+			var infos_fresh: [MPIDSong: InfoSong] = {
+				let tuples = mediaItems_unsorted.map { info in (info.id_song, info) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let existingSongs: [ZZZSong] = context.fetchPlease(ZZZSong.fetchRequest()) // Not sorted
-			existingSongs.forEach { existingSong in
-				let songID = existingSong.persistentID
-				if let freshInfo = freshInfos[songID] {
-					// We have an existing `Song` for this `SongInfo`. We might need to update the `Song`.
-					updates.append((existingSong, freshInfo)) // We’ll sort these later.
+			let songs_existing: [ZZZSong] = context.fetchPlease(ZZZSong.fetchRequest()) // Not sorted
+			songs_existing.forEach { song_existing in
+				let id_song = song_existing.persistentID
+				if let info_fresh = infos_fresh[id_song] {
+					// We have an existing `Song` for this `InfoSong`. We might need to update the `Song`.
+					updates.append((song_existing, info_fresh)) // We’ll sort these later.
 					
-					freshInfos[songID] = nil
+					infos_fresh[id_song] = nil
 				} else {
-					// This `Song` no longer corresponds with any `SongInfo` in the library. We’ll delete it.
-					deletes.append(existingSong)
+					// This `Song` no longer corresponds with any `InfoSong` in the library. We’ll delete it.
+					deletes.append(song_existing)
 				}
 			}
-			// `freshInfos` now holds the `SongInfo`s that we don’t have `Song`s for.
+			// `infos_fresh` now holds the `InfoSong`s that we don’t have `Song`s for.
 			
-			toUpdate = updates
-			toDelete = deletes
-			toCreate = freshInfos.map { $0.value } // We’ll sort these later.
+			to_update = updates
+			to_delete = deletes
+			to_create = infos_fresh.map { $0.value } // We’ll sort these later.
 		}
 		
-		updateLibraryItems(existingAndFresh: toUpdate)
-		createLibraryItems(newInfos: toCreate)
-		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: unorderedMediaItems)
+		update_library_items(existing_and_fresh: to_update)
+		create_library_items(infos_new: to_create)
+		clean_up_library_items(songs_to_delete: to_delete, infos_all: mediaItems_unsorted)
 		
 		if WorkingOn.plain_database {
 			let lrCrate: LRCrate? = {
@@ -218,12 +218,12 @@ extension Librarian {
 					var lrSongs: [LRSong] = []
 					zzzAlbum.songs(sorted: true).forEach { zzzSong in
 						lrSongs.append(
-							LRSong(mpidSong: MPID(zzzSong.persistentID))
+							LRSong(id_song: MPIDSong(zzzSong.persistentID))
 						)
 					}
 					lrAlbums.append(
 						LRAlbum(
-							mpidAlbum: MPID(zzzAlbum.albumPersistentID),
+							id_album: MPIDAlbum(zzzAlbum.albumPersistentID),
 							songs: lrSongs)
 					)
 				}
@@ -241,40 +241,40 @@ extension Librarian {
 	
 	// MARK: - Update
 	
-	private func updateLibraryItems(existingAndFresh: [(ZZZSong, InfoSong)]) {
+	private func update_library_items(existing_and_fresh: [(ZZZSong, InfoSong)]) {
 		// Merge `Album`s with the same `albumPersistentID`
-		let canonicalAlbums: [MPIDAlbum: ZZZAlbum] = mergeClonedAlbumsAndReturnCanonical(existingAndFresh: existingAndFresh)
+		let albums_canonical: [MPIDAlbum: ZZZAlbum] = merge_cloned_albums_and_return_canonical(existing_and_fresh: existing_and_fresh)
 		
 		// Move `Song`s to updated `Album`s
-		moveSongsToUpdatedAlbums(
-			existingAndFresh: existingAndFresh.map { (song, info) in (song, info.id_album) },
-			canonicalAlbums: canonicalAlbums)
+		move_songs_to_updated_albums(
+			existing_and_fresh: existing_and_fresh.map { (song, info) in (song, info.id_album) },
+			albums_canonical: albums_canonical)
 	}
 	
-	private func mergeClonedAlbumsAndReturnCanonical(
-		existingAndFresh: [(ZZZSong, InfoSong)]
+	private func merge_cloned_albums_and_return_canonical(
+		existing_and_fresh: [(ZZZSong, InfoSong)]
 	) -> [MPIDAlbum: ZZZAlbum] {
 		// To merge `Album`s with the same `albumPersistentID`, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
 		// The one `Album` we’ll keep is the uppermost in the user’s custom order.
-		let topmostUniqueAlbums: [MPIDAlbum: ZZZAlbum] = {
-			let allAlbums = context.fetchPlease(ZZZAlbum.fetchRequest_sorted())
-			let tuples = allAlbums.map { ($0.albumPersistentID, $0) }
-			return Dictionary(tuples, uniquingKeysWith: { leftAlbum, _ in leftAlbum })
+		let topmost_unique: [MPIDAlbum: ZZZAlbum] = {
+			let albums_all = context.fetchPlease(ZZZAlbum.fetchRequest_sorted())
+			let tuples = albums_all.map { ($0.albumPersistentID, $0) }
+			return Dictionary(tuples, uniquingKeysWith: { left, _ in left })
 		}()
 		
 		// Filter to `Song`s in cloned `Album`s
 		// Don’t actually move any `Song`s, because we haven’t sorted them yet.
-		let unsortedToMove: [ZZZSong] = existingAndFresh.compactMap { (song, _) in
+		let unsorted_to_move: [ZZZSong] = existing_and_fresh.compactMap { (song, _) in
 			let album = song.container!
-			let canonical = topmostUniqueAlbums[album.albumPersistentID]!
+			let canonical = topmost_unique[album.albumPersistentID]!
 			guard canonical.objectID != album.objectID else { return nil }
 			return song
 		}
 		
 		// `Song`s will very rarely make it past this point.
-		let toMove = unsortedToMove.sorted { Self.precedesInManualOrder($0, $1) }
-		toMove.forEach { song in
-			let destination = topmostUniqueAlbums[song.container!.albumPersistentID]!
+		let to_move = unsorted_to_move.sorted { Self.precedes_in_manual_order($0, $1) }
+		to_move.forEach { song in
+			let destination = topmost_unique[song.container!.albumPersistentID]!
 			song.index = Int64(destination.contents?.count ?? 0)
 			song.container = destination
 		}
@@ -285,132 +285,132 @@ extension Librarian {
 			}
 		}
 		
-		return topmostUniqueAlbums
+		return topmost_unique
 	}
 	
-	private func moveSongsToUpdatedAlbums(
-		existingAndFresh: [(ZZZSong, MPIDAlbum)],
-		canonicalAlbums: [MPIDAlbum: ZZZAlbum]
+	private func move_songs_to_updated_albums(
+		existing_and_fresh: [(ZZZSong, MPIDAlbum)],
+		albums_canonical: [MPIDAlbum: ZZZAlbum]
 	) {
-		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `SongInfo.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
-		let toUpdate: [(ZZZSong, MPIDAlbum)] = {
+		// If a `Song`’s `Album.albumPersistentID` no longer matches the `Song`’s `InfoSong.albumID`, move that `Song` to an existing or new `Album` with the up-to-date `albumPersistentID`.
+		let to_update: [(ZZZSong, MPIDAlbum)] = {
 			// Filter to `Song`s moved to different `Album`s
-			let unsortedOutdated = existingAndFresh.filter { (song, albumID) in
-				albumID != song.container!.albumPersistentID
+			let unsorted_outdated = existing_and_fresh.filter { (song, id_album) in
+				id_album != song.container!.albumPersistentID
 			}
 			// Sort by the order the user arranged the `Song`s in the app.
-			return unsortedOutdated.sorted { leftTuple, rightTuple in
-				Self.precedesInManualOrder(leftTuple.0, rightTuple.0)
+			return unsorted_outdated.sorted { leftTuple, rightTuple in
+				Self.precedes_in_manual_order(leftTuple.0, rightTuple.0)
 			}
 		}()
-		var existingAlbums = canonicalAlbums
-		toUpdate.reversed().forEach { (song, freshAlbumID) in
+		var albums_existing = albums_canonical
+		to_update.reversed().forEach { (song, id_album_fresh) in
 			// This `Song`’s `albumPersistentID` has changed. Move it to its up-to-date `Album`.
 			// If we already have a matching `Album` to move the `Song` to…
-			if let existingAlbum = existingAlbums[freshAlbumID] {
+			if let album_existing = albums_existing[id_album_fresh] {
 				// …then move the `Song` to that `Album`.
-				existingAlbum.songs(sorted: false).forEach { $0.index += 1 }
+				album_existing.songs(sorted: false).forEach { $0.index += 1 }
 				
 				song.index = 0
-				song.container = existingAlbum
+				song.container = album_existing
 			} else {
 				// Otherwise, create the `Album` to move the `Song` to…
-				let existingCollection = song.container!.container!
-				let newAlbum = ZZZAlbum(atBeginningOf: existingCollection, albumID: freshAlbumID)
+				let collection_existing = song.container!.container!
+				let album_new = ZZZAlbum(atBeginningOf: collection_existing, albumID: id_album_fresh)
 				
 				// …and then move the `Song` to that `Album`.
 				song.index = 0
-				song.container = newAlbum
+				song.container = album_new
 				
 				// Make a note of the new `Album`.
-				existingAlbums[freshAlbumID] = newAlbum
+				albums_existing[id_album_fresh] = album_new
 			}
 		}
 	}
 	
-	private static func precedesInManualOrder(_ left: ZZZSong, _ right: ZZZSong) -> Bool {
+	private static func precedes_in_manual_order(_ left: ZZZSong, _ right: ZZZSong) -> Bool {
 		// Checking song index first and collection index last is slightly faster than vice versa.
 		guard left.index == right.index else {
 			return left.index < right.index
 		}
 		
-		let leftAlbum = left.container!; let rightAlbum = right.container!
-		guard leftAlbum.index == rightAlbum.index else {
-			return leftAlbum.index < rightAlbum.index
+		let album_left = left.container!; let album_right = right.container!
+		guard album_left.index == album_right.index else {
+			return album_left.index < album_right.index
 		}
 		
-		let leftCollection = leftAlbum.container!; let rightCollection = rightAlbum.container!
-		return leftCollection.index < rightCollection.index
+		let collection_left = album_left.container!; let collection_right = album_right.container!
+		return collection_left.index < collection_right.index
 	}
 	
 	// MARK: - Create
 	
-	// Create new managed objects for the new `SongInfo`s, including new `Album`s and `Collection`s to put them in if necessary.
-	private func createLibraryItems(newInfos: [InfoSong]) {
-		// Group the `SongInfo`s into albums, sorted by the order we’ll add them to our database in.
-		let albumsEarliestFirst: [[InfoSong]] = {
-			let songsEarliestFirst = newInfos.sorted { $0.date_added_on_disk < $1.date_added_on_disk }
-			let dictionary: [MPIDAlbum: [InfoSong]] = Dictionary(grouping: songsEarliestFirst) { $0.id_album }
-			let albumsUnsorted: [[InfoSong]] = dictionary.map { $0.value }
-			return albumsUnsorted.sorted { leftGroup, rightGroup in
-				leftGroup.first!.date_added_on_disk < rightGroup.first!.date_added_on_disk
+	// Create new managed objects for the new `InfoSong`s, including new `Album`s and `Collection`s to put them in if necessary.
+	private func create_library_items(infos_new: [InfoSong]) {
+		// Group the `InfoSong`s into albums, sorted by the order we’ll add them to our database in.
+		let albums_earliest_first: [[InfoSong]] = {
+			let songs_earliest_first = infos_new.sorted { $0.date_added_on_disk < $1.date_added_on_disk }
+			let dictionary: [MPIDAlbum: [InfoSong]] = Dictionary(grouping: songs_earliest_first) { $0.id_album }
+			let albums_unsorted: [[InfoSong]] = dictionary.map { $0.value }
+			return albums_unsorted.sorted { left_group, right_group in
+				left_group.first!.date_added_on_disk < right_group.first!.date_added_on_disk
 			}
 			// We’ll sort `Song`s within each `Album` later, because it depends on whether the existing `Song`s in each `Album` are in album order.
 		}()
 		
-		var existingAlbums: [MPIDAlbum: ZZZAlbum] = {
-			let allAlbums = context.fetchPlease(ZZZAlbum.fetchRequest())
-			let tuples = allAlbums.map { ($0.albumPersistentID, $0) }
+		var albums_existing: [MPIDAlbum: ZZZAlbum] = {
+			let albums_all = context.fetchPlease(ZZZAlbum.fetchRequest())
+			let tuples = albums_all.map { ($0.albumPersistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		albumsEarliestFirst.forEach { groupOfInfos in
+		albums_earliest_first.forEach { group_of_infos in
 			// Create one group of `Song`s and containers
-			if let newAlbum = createSongsAndReturnNewAlbum(
-				newInfos: groupOfInfos,
-				existingAlbums: existingAlbums
+			if let album_new = create_songs_and_return_new_album(
+				infos_new: group_of_infos,
+				albums_existing: albums_existing
 			) {
-				existingAlbums[newAlbum.albumPersistentID] = newAlbum
+				albums_existing[album_new.albumPersistentID] = album_new
 			}
 		}
 	}
 	
 	// MARK: Create groups of songs
 	
-	private func createSongsAndReturnNewAlbum(
-		newInfos: [InfoSong],
-		existingAlbums: [MPIDAlbum: ZZZAlbum]
+	private func create_songs_and_return_new_album(
+		infos_new: [InfoSong],
+		albums_existing: [MPIDAlbum: ZZZAlbum]
 	) -> ZZZAlbum? {
-		let firstInfo = newInfos.first!
+		let info_first = infos_new.first!
 		
 		// If we already have a matching `Album` to add the `Song`s to…
-		let albumID = firstInfo.id_album
-		if let existingAlbum = existingAlbums[albumID] {
+		let id_album = info_first.id_album
+		if let album_existing = albums_existing[id_album] {
 			// …then add the `Song`s to that `Album`.
-			let isInDefaultOrder: Bool = {
-				let existingSongInfos: [some InfoSong] = existingAlbum.songs(sorted: true).compactMap { ZZZSong.InfoSong(MPID: $0.persistentID) }
-				return existingSongInfos.allNeighborsSatisfy {
-					SongOrder.__precedesNumerically(strict: true, $0, $1)
+			let is_in_default_order: Bool = {
+				let infos_existing: [some InfoSong] = album_existing.songs(sorted: true).compactMap { ZZZSong.InfoSong(MPID: $0.persistentID) }
+				return infos_existing.allNeighborsSatisfy {
+					SongOrder.__precedes_numerically(strict: true, $0, $1)
 				}
 			}()
-			let songIDs = newInfos.map { $0.id_song }
-			if isInDefaultOrder {
-				songIDs.reversed().forEach {
-					let _ = ZZZSong(atBeginningOf: existingAlbum, songID: $0)
+			let ids_songs = infos_new.map { $0.id_song }
+			if is_in_default_order {
+				ids_songs.reversed().forEach {
+					let _ = ZZZSong(atBeginningOf: album_existing, songID: $0)
 				}
 				
-				let songsInAlbum = existingAlbum.songs(sorted: true)
-				let sorted = SongOrder.sortedNumerically(strict: true, songsInAlbum)
+				let songs_in_album = album_existing.songs(sorted: true)
+				let sorted = SongOrder.sortedNumerically(strict: true, songs_in_album)
 				ZZZDatabase.renumber(sorted)
 			} else {
-				songIDs.reversed().forEach {
-					let _ = ZZZSong(atBeginningOf: existingAlbum, songID: $0)
+				ids_songs.reversed().forEach {
+					let _ = ZZZSong(atBeginningOf: album_existing, songID: $0)
 				}
 			}
 			
 			return nil
 		} else {
 			// Otherwise, create the `Album` to add the `Song`s to…
-			let newAlbum: ZZZAlbum = {
+			let album_new: ZZZAlbum = {
 				let collection: ZZZCollection = {
 					if let existing = context.fetchCollection() {
 						return existing
@@ -420,31 +420,31 @@ extension Librarian {
 					new.title = InterfaceText._tilde
 					return new
 				}()
-				return ZZZAlbum(atBeginningOf: collection, albumID: albumID)!
+				return ZZZAlbum(atBeginningOf: collection, albumID: id_album)!
 			}()
 			
 			// …and then add the `Song`s to that `Album`.
-			let sortedInfos = newInfos.sorted {
-				return SongOrder.__precedesNumerically(strict: true, $0, $1)
+			let infos_sorted = infos_new.sorted {
+				return SongOrder.__precedes_numerically(strict: true, $0, $1)
 			}
-			sortedInfos.indices.forEach { index in
-				let newSong = ZZZSong(context: context)
-				newSong.container = newAlbum
-				newSong.index = Int64(index)
-				newSong.persistentID = sortedInfos[index].id_song
+			infos_sorted.indices.forEach { index in
+				let song_new = ZZZSong(context: context)
+				song_new.container = album_new
+				song_new.index = Int64(index)
+				song_new.persistentID = infos_sorted[index].id_song
 			}
 			
-			return newAlbum
+			return album_new
 		}
 	}
 	
 	// MARK: - Clean Up
 	
-	private func cleanUpLibraryItems(
-		songsToDelete: [ZZZSong],
-		allInfos: [InfoSong]
+	private func clean_up_library_items(
+		songs_to_delete: [ZZZSong],
+		infos_all: [InfoSong]
 	) {
-		songsToDelete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s.
+		songs_to_delete.forEach { context.delete($0) } // WARNING: Leaves gaps in the `Song` indices within each `Album`, and might leave empty `Album`s.
 		
 		// Delete empty containers and reindex everything.
 		

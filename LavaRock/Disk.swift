@@ -14,9 +14,9 @@ enum Disk {
 		crates.forEach {
 			output.append(contentsOf: "\($0.title)\n")
 			$0.albums.forEach { album in
-				output.append(contentsOf: "\(tAlbum)\(album.mpidAlbum)\n")
+				output.append(contentsOf: "\(tAlbum)\(album.id_album)\n")
 				album.songs.forEach { song in
-					output.append(contentsOf: "\(ttSong)\(song.mpidSong)\n")
+					output.append(contentsOf: "\(ttSong)\(song.id_song)\n")
 				}
 			}
 		}
@@ -93,7 +93,7 @@ struct Parser {
 		{
 			let line = lines[iLine]
 			let content = line.dropFirst(Disk.tAlbum.count)
-			let mpidAlbum: MPID? = MPID(String(content))
+			let mpidAlbum: MPIDAlbum? = MPIDAlbum(String(content))
 			
 			guard
 				isAlbum(at: iLine),
@@ -113,7 +113,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRAlbum(mpidAlbum: mpidAlbum, songs: songs)
+				LRAlbum(id_album: mpidAlbum, songs: songs)
 			)
 		}
 		return (iLine, result)
@@ -130,7 +130,7 @@ struct Parser {
 		{
 			let line = lines[iLine]
 			let content = line.dropFirst(Disk.ttSong.count)
-			let mpidSong: MPID? = MPID(String(content))
+			let mpidSong: MPIDSong? = MPIDSong(String(content))
 			
 			guard
 				isSong(at: iLine),
@@ -143,7 +143,7 @@ struct Parser {
 			
 			iLine += 1
 			result.append(
-				LRSong(mpidSong: mpidSong)
+				LRSong(id_song: mpidSong)
 			)
 		}
 		return (iLine, result)

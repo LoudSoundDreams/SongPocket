@@ -40,7 +40,7 @@ enum AlbumOrder {
 				let albumsAndFirstAdded: [(album: ZZZAlbum, firstAdded: Date)] = inOriginalOrder.map { album in (
 					album: album,
 					firstAdded: {
-						let mkSongs = Librarian.shared.mkSection(albumID: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
+						let mkSongs = Librarian.shared.mkSection(mpidAlbum: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
 						return ZZZAlbum.date_created(mkSongs) ?? now
 					}()
@@ -54,7 +54,7 @@ enum AlbumOrder {
 			case .recentlyReleased:
 				let albumsAndReleaseDates: [(album: ZZZAlbum, releaseDate: Date?)] = inOriginalOrder.map {(
 					album: $0,
-					releaseDate: Librarian.shared.mkSection(albumID: $0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
+					releaseDate: Librarian.shared.mkSection(mpidAlbum: $0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
 				)}
 				let sorted = albumsAndReleaseDates.sortedStably {
 					$0.releaseDate == $1.releaseDate
@@ -120,7 +120,7 @@ enum SongOrder {
 		} areInOrder: {
 			guard let right = $1.info else { return true }
 			guard let left = $0.info else { return false }
-			return Self.__precedesNumerically(strict: false, left, right)
+			return Self.__precedes_numerically(strict: false, left, right)
 		}
 		return sorted.map { $0.song }
 	}
@@ -154,7 +154,7 @@ enum SongOrder {
 		
 		return left.id.rawValue < right.id.rawValue
 	}
-	static func __precedesNumerically(
+	static func __precedes_numerically(
 		strict: Bool,
 		_ left: some InfoSong, _ right: some InfoSong
 	) -> Bool {
