@@ -295,11 +295,12 @@ import MediaPlayer
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 				Text(title ?? InterfaceText._em_dash)
 				if
-					let songArtist = infoSong?._artist,
-					songArtist != "",
-					songArtist != infoAlbum?._artist
+					let artist_song = infoSong?._artist,
+					let artist_album = infoAlbum?._artist,
+					artist_song != "", artist_album != "",
+					artist_song != artist_album
 				{
-					Text(songArtist)
+					Text(artist_song)
 						.foregroundStyle(.secondary)
 						.font_footnote()
 				}
