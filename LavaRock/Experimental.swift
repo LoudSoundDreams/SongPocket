@@ -6,7 +6,7 @@ struct AlbumShelf: View {
 	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray() { didSet {
 		FakeAlbum.renumber(albums)
 	}}
-	@State private var iVisible: Int? = 2
+	@State private var i_visible: Int? = 2
 	var body: some View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
@@ -17,7 +17,7 @@ struct AlbumShelf: View {
 				}}.scrollTargetLayout()
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
-			.scrollPosition(id: $iVisible)
+			.scrollPosition(id: $i_visible)
 			.toolbar(.visible, for: .bottomBar)
 			.toolbarBackground(.visible, for: .bottomBar)
 			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
@@ -26,28 +26,28 @@ struct AlbumShelf: View {
 				Spacer()
 				Button {
 					withAnimation {
-						if let pos = iVisible, pos > 0 { iVisible = pos - 1 }
+						if let pos = i_visible, pos > 0 { i_visible = pos - 1 }
 					}
 				} label: { Image(systemName: "arrow.backward") }
-					.disabled({ guard let iVisible else { return false }; return iVisible <= 0 }())
-					.animation(.none, value: iVisible) // Without this, if you enable the button by tapping “next”, the icon fades in.
+					.disabled({ guard let i_visible else { return false }; return i_visible <= 0 }())
+					.animation(.none, value: i_visible) // Without this, if you enable the button by tapping “next”, the icon fades in.
 				Spacer()
 				ZStack {
 					Text(String(albums.count - 1)).hidden()
-					Text({ guard let iVisible else { return "" }; return String(iVisible) }())
+					Text({ guard let i_visible else { return "" }; return String(i_visible) }())
 						.animation(.none)
 				}
 				Spacer()
 				Button {
 					withAnimation {
-						if let pos = iVisible, pos < albums.count - 1 { iVisible = pos + 1 }
+						if let pos = i_visible, pos < albums.count - 1 { i_visible = pos + 1 }
 					}
 				} label: { Image(systemName: "arrow.forward") }
-					.disabled({ guard let iVisible else { return false }; return iVisible >= albums.count - 1 }())
-					.animation(.none, value: iVisible)
+					.disabled({ guard let i_visible else { return false }; return i_visible >= albums.count - 1 }())
+					.animation(.none, value: i_visible)
 				Spacer()
 				Button {
-					albums.append(FakeAlbum(position: albums.count, title: .randomLetter()))
+					albums.append(FakeAlbum(position: albums.count, title: .random_letter()))
 				} label: { Image(systemName: "plus.circle") }
 			}}
 		}
@@ -77,8 +77,8 @@ struct FakeAlbumCover: View {
 	let album: FakeAlbum
 	var body: some View {
 		ZStack {
-			Rectangle().foregroundStyle(album.colorSquare)
-			Circle().foregroundStyle(album.colorCircle)
+			Rectangle().foregroundStyle(album.color_square)
+			Circle().foregroundStyle(album.color_circle)
 			Text(album.title)
 		}.aspectRatio(1, contentMode: .fit)
 	}
@@ -90,7 +90,7 @@ struct FakeAlbumCover: View {
 final class FakeAlbum: Identifiable {
 	static func demoArray() -> [FakeAlbum] {
 		return (0...3).map {
-			FakeAlbum(position: $0, title: .randomLetter())
+			FakeAlbum(position: $0, title: .random_letter())
 		}
 	}
 	static func renumber(_ albums: [FakeAlbum]) {
@@ -99,8 +99,8 @@ final class FakeAlbum: Identifiable {
 	
 	var position: Int
 	let title: String
-	let colorCircle = Color.randomTranslucent()
-	let colorSquare = Color.randomTranslucent()
+	let color_circle = Color.random_translucent()
+	let color_square = Color.random_translucent()
 	
 	init(position: Int, title: String) {
 		self.position = position
@@ -124,7 +124,7 @@ extension FakeAlbum: Hashable {
 // MARK: - Helpers
 
 private extension String {
-	static func randomLetter() -> Self {
+	static func random_letter() -> Self {
 		let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
 		return String(character)
 	}

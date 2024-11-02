@@ -5,15 +5,15 @@ import MusicKit
 
 enum WorkingOn {
 	static let select_range = 10 == 10
-	static let plainDatabase = 10 == 1
+	static let plain_database = 10 == 1
 }
 
 @main struct LavaRock: App {
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
-		defaults.dictionaryRepresentation().forEach { (existingKey, _) in
-			defaults.removeObject(forKey: existingKey)
+		defaults.dictionaryRepresentation().forEach { (key_existing, _) in
+			defaults.removeObject(forKey: key_existing)
 		}
 		
 		ZZZDatabase.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
@@ -26,12 +26,12 @@ enum WorkingOn {
 				.ignoresSafeArea()
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
-					Self.integrateAppleMusic()
+					Self.integrate_Apple_Music()
 				}
 		}
 	}
 	
-	@MainActor static func integrateAppleMusic() {
+	@MainActor static func integrate_Apple_Music() {
 		Librarian.shared.observeMPLibrary()
 		PlayerState.shared.observeMKPlayer()
 	}
@@ -46,8 +46,8 @@ private final class NCMain: UINavigationController {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
 		)
-		let navBar = result.navigationBar
-		navBar.scrollEdgeAppearance = navBar.standardAppearance
+		let navbar = result.navigationBar
+		navbar.scrollEdgeAppearance = navbar.standardAppearance
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		result.setToolbarHidden(false, animated: false)
@@ -55,10 +55,10 @@ private final class NCMain: UINavigationController {
 	}
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
-		if !Self.hasAppeared {
-			Self.hasAppeared = true
+		if !Self.has_appeared {
+			Self.has_appeared = true
 			view.window!.tintColor = .denim
 		}
 	}
-	private static var hasAppeared = false
+	private static var has_appeared = false
 }

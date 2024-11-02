@@ -1,13 +1,13 @@
 // For consistency throughout the app.
 
 extension Double {
-	static var oneEighth: Self { 1/8 }
-	static var oneFourth: Self { 1/4 }
-	static var oneHalf: Self { 1/2 }
+	static var one_eighth: Self { 1/8 }
+	static var one_fourth: Self { 1/4 }
+	static var one_half: Self { 1/2 }
 }
 import CoreGraphics
 extension CGFloat {
-	static var oneHalf: Self { 1/2 }
+	static var one_half: Self { 1/2 }
 	static var eight: Self { 8 }
 }
 

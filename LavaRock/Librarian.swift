@@ -210,7 +210,7 @@ extension Librarian {
 		createLibraryItems(newInfos: toCreate)
 		cleanUpLibraryItems(songsToDelete: toDelete, allInfos: unorderedMediaItems)
 		
-		if WorkingOn.plainDatabase {
+		if WorkingOn.plain_database {
 			let lrCrate: LRCrate? = {
 				guard let zzzCollection = context.fetchCollection() else { return nil }
 				var lrAlbums: [LRAlbum] = []

@@ -219,7 +219,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = UIColor(Color(white: .oneEighth))
+		view.backgroundColor = UIColor(Color(white: .one_eighth))
 		tableView.separatorStyle = .none
 		reflect_selection()
 		b_focused.preferredMenuElementOrder = .fixed
@@ -253,7 +253,7 @@ final class AlbumsTVC: LibraryTVC {
 									case .notDetermined:
 										switch await MusicAuthorization.request() {
 											case .denied, .restricted, .notDetermined: break
-											case .authorized: LavaRock.integrateAppleMusic()
+											case .authorized: LavaRock.integrate_Apple_Music()
 											@unknown default: break
 										}
 									case .denied, .restricted:
@@ -293,7 +293,7 @@ final class AlbumsTVC: LibraryTVC {
 				cell.backgroundColor = .clear
 				cell.selectedBackgroundView = {
 					let result = UIView()
-					result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+					result.backgroundColor = .tintColor.withAlphaComponent(.one_half)
 					return result
 				}()
 				list_state.size_viewport = (
@@ -312,7 +312,7 @@ final class AlbumsTVC: LibraryTVC {
 						cell.backgroundColor = .clear
 						cell.selectedBackgroundView = {
 							let result = UIView()
-							result.backgroundColor = .tintColor.withAlphaComponent(.oneHalf)
+							result.backgroundColor = .tintColor.withAlphaComponent(.one_half)
 							return result
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {

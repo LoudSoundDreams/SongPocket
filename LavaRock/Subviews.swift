@@ -21,7 +21,7 @@ import MediaPlayer
 				AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
 			}}
 		}
-		.animation(.linear(duration: .oneEighth), value: exp_labeled)
+		.animation(.linear(duration: .one_eighth), value: exp_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -40,7 +40,7 @@ import MediaPlayer
 	private var sel_opacity: Double {
 		switch list_state.select_mode {
 			case .view: return 1
-			case .select_albums, .select_songs: return .oneFourth
+			case .select_albums, .select_songs: return .one_fourth
 		}
 	}
 	@ViewBuilder private var sel_highlight: some View {
@@ -49,7 +49,7 @@ import MediaPlayer
 			case .select_albums(let ids_selected): return ids_selected.contains(id_album)
 		}}()
 		if highlighting {
-			Color.accentColor.opacity(.oneHalf)
+			Color.accentColor.opacity(.one_half)
 		} else {
 			EmptyView()
 		}
@@ -118,7 +118,7 @@ import MediaPlayer
 				ArtworkImage(artwork, width: dim_limit)
 			} else {
 				ZStack {
-					Color(white: .oneFourth)
+					Color(white: .one_fourth)
 						.frame(width: dim_limit, height: dim_limit)
 					Image(systemName: "music.note")
 						.foregroundStyle(.secondary)
@@ -342,7 +342,7 @@ import MediaPlayer
 			case .select_songs(let ids_selected): return ids_selected.contains(id_song)
 		}}()
 		Color.accentColor
-			.opacity(highlighting ? .oneHalf : .zero)
+			.opacity(highlighting ? .one_half : .zero)
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
 				{ switch list_state.select_mode {
 					case .select_albums: return nil // Should never run
@@ -456,7 +456,7 @@ struct RectSelected: View {
 	var body: some View {
 		Rectangle()
 			.strokeBorder(lineWidth: .eight)
-			.foregroundStyle(.tint.opacity(.oneHalf))
+			.foregroundStyle(.tint.opacity(.one_half))
 	}
 }
 struct RectUnselected: View {
