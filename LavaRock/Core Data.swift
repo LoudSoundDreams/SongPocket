@@ -58,7 +58,7 @@ extension ZZZCollection {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	final func promote_albums(with idsToPromote: Set<AlbumID>) {
+	final func promote_albums(with idsToPromote: Set<MPIDAlbum>) {
 		var myAlbums = albums(sorted: true)
 		let rsToPromote = myAlbums.indices { idsToPromote.contains($0.albumPersistentID) }
 		guard let front: Int = rsToPromote.ranges.first?.first else { return }
@@ -70,7 +70,7 @@ extension ZZZCollection {
 		ZZZDatabase.renumber(myAlbums)
 		managedObjectContext!.savePlease()
 	}
-	final func demoteAlbums(with idsToDemote: Set<AlbumID>) {
+	final func demoteAlbums(with idsToDemote: Set<MPIDAlbum>) {
 		var myAlbums = albums(sorted: true)
 		let rsToDemote = myAlbums.indices { idsToDemote.contains($0.albumPersistentID) }
 		guard let back: Int = rsToDemote.ranges.last?.last else { return }
@@ -83,7 +83,7 @@ extension ZZZCollection {
 		managedObjectContext!.savePlease()
 	}
 	
-	final func float_albums(with idsToFloat: Set<AlbumID>) {
+	final func float_albums(with idsToFloat: Set<MPIDAlbum>) {
 		var myAlbums = albums(sorted: true)
 		let rsToFloat = myAlbums.indices { idsToFloat.contains($0.albumPersistentID) }
 		
@@ -91,7 +91,7 @@ extension ZZZCollection {
 		ZZZDatabase.renumber(myAlbums)
 		managedObjectContext!.savePlease()
 	}
-	final func sink_albums(with idsToSink: Set<AlbumID>) {
+	final func sink_albums(with idsToSink: Set<MPIDAlbum>) {
 		var myAlbums = albums(sorted: true)
 		let rsToSink = myAlbums.indices { idsToSink.contains($0.albumPersistentID) }
 		
@@ -120,7 +120,7 @@ extension ZZZAlbum {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	convenience init?(atBeginningOf collection: ZZZCollection, albumID: AlbumID) {
+	convenience init?(atBeginningOf collection: ZZZCollection, albumID: MPIDAlbum) {
 		guard let context = collection.managedObjectContext else { return nil }
 		
 		collection.albums(sorted: false).forEach { $0.index += 1 }
@@ -131,7 +131,7 @@ extension ZZZAlbum {
 		albumPersistentID = albumID
 	}
 	
-	final func promote_songs(with idsToPromote: Set<SongID>) {
+	final func promote_songs(with idsToPromote: Set<MPIDSong>) {
 		var mySongs = songs(sorted: true)
 		let rsToPromote = mySongs.indices { idsToPromote.contains($0.persistentID) }
 		guard let front: Int = rsToPromote.ranges.first?.first else { return }
@@ -143,7 +143,7 @@ extension ZZZAlbum {
 		ZZZDatabase.renumber(mySongs)
 		managedObjectContext!.savePlease()
 	}
-	final func demote_songs(with idsToDemote: Set<SongID>) {
+	final func demote_songs(with idsToDemote: Set<MPIDSong>) {
 		var mySongs = songs(sorted: true)
 		let rsToDemote = mySongs.indices { idsToDemote.contains($0.persistentID) }
 		guard let back: Int = rsToDemote.ranges.last?.last else { return }
@@ -156,7 +156,7 @@ extension ZZZAlbum {
 		managedObjectContext!.savePlease()
 	}
 	
-	final func floatSongs(with idsToFloat: Set<SongID>) {
+	final func floatSongs(with idsToFloat: Set<MPIDSong>) {
 		var mySongs = songs(sorted: true)
 		let rsToFloat = mySongs.indices { idsToFloat.contains($0.persistentID) }
 		
@@ -164,7 +164,7 @@ extension ZZZAlbum {
 		ZZZDatabase.renumber(mySongs)
 		managedObjectContext!.savePlease()
 	}
-	final func sink_songs(with idsToSink: Set<SongID>) {
+	final func sink_songs(with idsToSink: Set<MPIDSong>) {
 		var mySongs = songs(sorted: true)
 		let rsToSink = mySongs.indices { idsToSink.contains($0.persistentID) }
 		
@@ -177,7 +177,7 @@ extension ZZZAlbum {
 // MARK: - Song
 
 extension ZZZSong {
-	convenience init?(atBeginningOf album: ZZZAlbum, songID: SongID) {
+	convenience init?(atBeginningOf album: ZZZAlbum, songID: MPIDSong) {
 		guard let context = album.managedObjectContext else { return nil }
 		
 		album.songs(sorted: false).forEach { $0.index += 1 }
@@ -211,12 +211,12 @@ extension NSManagedObjectContext {
 	final func fetchCollection() -> ZZZCollection? {
 		return fetchPlease(ZZZCollection.fetchRequest_sorted()).first
 	}
-	final func fetchAlbum(id albumIDToMatch: AlbumID) -> ZZZAlbum? {
+	final func fetchAlbum(id albumIDToMatch: MPIDAlbum) -> ZZZAlbum? {
 		let request = ZZZAlbum.fetchRequest()
 		request.predicate = NSPredicate(format: "albumPersistentID = %lld", albumIDToMatch)
 		return fetchPlease(request).first
 	}
-	final func fetchSong(mpID: SongID) -> ZZZSong? {
+	final func fetchSong(mpID: MPIDSong) -> ZZZSong? {
 		let request = ZZZSong.fetchRequest()
 		// As of Xcode 16.0 RC, `#Predicate` produces the bogus warning: Type 'ReferenceWritableKeyPath<ZZZSong, Int64>' does not conform to the 'Sendable' protocol
 //		request.predicate = NSPredicate(#Predicate<ZZZSong> {

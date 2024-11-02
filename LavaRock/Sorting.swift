@@ -42,7 +42,7 @@ enum AlbumOrder {
 					firstAdded: {
 						let mkSongs = Librarian.shared.mkSection(albumID: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
-						return ZZZAlbum.dateCreated(mkSongs) ?? now
+						return ZZZAlbum.date_created(mkSongs) ?? now
 					}()
 				)}
 				let sorted = albumsAndFirstAdded.sortedStably { // 10,000 albums takes 41ms in 2024.
@@ -107,15 +107,15 @@ enum SongOrder {
 	}
 	
 	@MainActor static func sortedNumerically(strict: Bool, _ input: [ZZZSong]) -> [ZZZSong] {
-		let songsAndInfos: [(song: ZZZSong, info: (some SongInfo)?)] = input.map {(
+		let songsAndInfos: [(song: ZZZSong, info: (some InfoSong)?)] = input.map {(
 			song: $0,
-			info: ZZZSong.songInfo(mpID: $0.persistentID)
+			info: ZZZSong.InfoSong(MPID: $0.persistentID)
 		)}
 		let sorted = songsAndInfos.sortedStably {
 			let left = $0.info; let right = $1.info
 			return (
-				left?.discNumberOnDisk == right?.discNumberOnDisk &&
-				left?.trackNumberOnDisk == right?.trackNumberOnDisk
+				left?.disc_number_on_disk == right?.disc_number_on_disk &&
+				left?.track_number_on_disk == right?.track_number_on_disk
 			)
 		} areInOrder: {
 			guard let right = $1.info else { return true }
@@ -156,16 +156,16 @@ enum SongOrder {
 	}
 	static func __precedesNumerically(
 		strict: Bool,
-		_ left: some SongInfo, _ right: some SongInfo
+		_ left: some InfoSong, _ right: some InfoSong
 	) -> Bool {
-		let leftDisc = left.discNumberOnDisk
-		let rightDisc = right.discNumberOnDisk
+		let leftDisc = left.disc_number_on_disk
+		let rightDisc = right.disc_number_on_disk
 		guard leftDisc == rightDisc else {
 			return leftDisc < rightDisc
 		}
 		
-		let leftTrack = left.trackNumberOnDisk
-		let rightTrack = right.trackNumberOnDisk
+		let leftTrack = left.track_number_on_disk
+		let rightTrack = right.track_number_on_disk
 		guard leftTrack == rightTrack else {
 			guard rightTrack != 0 else { return true }
 			guard leftTrack != 0 else { return false }
@@ -174,15 +174,15 @@ enum SongOrder {
 		
 		guard strict else { return true }
 		
-		let leftTitle = left.titleOnDisk
-		let rightTitle = right.titleOnDisk
+		let leftTitle = left.title_on_disk
+		let rightTitle = right.title_on_disk
 		guard leftTitle == rightTitle else {
 			guard let rightTitle else { return true }
 			guard let leftTitle else { return false }
 			return leftTitle.precedesInFinder(rightTitle)
 		}
 		
-		return left.songID < right.songID
+		return left.id_song < right.id_song
 	}
 }
 

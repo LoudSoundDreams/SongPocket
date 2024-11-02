@@ -2,7 +2,7 @@
 
 import MusicKit
 
-struct AlbumInfo {
+struct InfoAlbum {
 	let _title: String
 	let _artist: String
 	let _release_date: Date?
@@ -20,7 +20,7 @@ struct Sim_Album {
 }
 #endif
 
-struct SongInfo__ {
+struct InfoSong__ {
 	let _title: String
 	let _artist: String
 	let _disc: Int?
@@ -30,84 +30,84 @@ struct SongInfo__ {
 import MediaPlayer
 
 typealias MPID = MPMediaEntityPersistentID
-typealias AlbumID = Int64
-typealias SongID = Int64
+typealias MPIDAlbum = Int64
+typealias MPIDSong = Int64
 
-protocol SongInfo {
-	var albumID: AlbumID { get }
-	var songID: SongID { get }
+protocol InfoSong {
+	var id_album: MPIDAlbum { get }
+	var id_song: MPIDSong { get }
 	
-	var discNumberOnDisk: Int { get }
-	var trackNumberOnDisk: Int { get }
-	var titleOnDisk: String? { get }
-	var dateAddedOnDisk: Date { get }
+	var disc_number_on_disk: Int { get }
+	var track_number_on_disk: Int { get }
+	var title_on_disk: String? { get }
+	var date_added_on_disk: Date { get }
 }
 
 extension ZZZAlbum {
-	static func dateCreated(_ mkSongs: any Sequence<MKSong>) -> Date? {
-		return mkSongs.reduce(into: nil) { earliestSoFar, mkSong in
-			let dateAdded = mkSong.libraryAddedDate
-			guard let earliest = earliestSoFar else {
-				earliestSoFar = dateAdded
+	static func date_created(_ mkSongs: any Sequence<MKSong>) -> Date? {
+		return mkSongs.reduce(into: nil) { earliest_so_far, mkSong in
+			let date_added = mkSong.libraryAddedDate
+			guard let earliest = earliest_so_far else {
+				earliest_so_far = date_added
 				return
 			}
-			if let dateAdded, dateAdded < earliest {
-				earliestSoFar = dateAdded
+			if let date_added, date_added < earliest {
+				earliest_so_far = date_added
 			}
 		}
 	}
 }
 
 extension ZZZSong {
-	@MainActor static func songInfo(mpID: SongID) -> (some SongInfo)? {
+	@MainActor static func InfoSong(MPID: MPIDSong) -> (some InfoSong)? {
 #if targetEnvironment(simulator)
-		return Sim_MusicLibrary.shared.sim_songs[mpID]
+		return Sim_MusicLibrary.shared.sim_songs[MPID]
 #else
-		return mpMediaItem(id: mpID)
+		return mpMediaItem(id: MPID)
 #endif
 	}
-	private static func mpMediaItem(id: SongID) -> MPMediaItem? {
-		let songsQuery = MPMediaQuery.songs()
-		songsQuery.addFilterPredicate(MPMediaPropertyPredicate(
+	private static func mpMediaItem(id: MPIDSong) -> MPMediaItem? {
+		let query_songs = MPMediaQuery.songs()
+		query_songs.addFilterPredicate(MPMediaPropertyPredicate(
 			value: id,
 			forProperty: MPMediaItemPropertyPersistentID))
-		guard let items = songsQuery.items, items.count == 1 else { return nil }
+		guard let items = query_songs.items, items.count == 1 else { return nil }
 		return items.first
 	}
 }
 
 // MARK: - Apple Music
 
-extension MPMediaItem: SongInfo {
-	final var albumID: AlbumID { AlbumID(bitPattern: albumPersistentID) }
-	final var songID: SongID { SongID(bitPattern: persistentID) }
+extension MPMediaItem: InfoSong {
+	final var id_album: MPIDAlbum { MPIDAlbum(bitPattern: albumPersistentID) }
+	final var id_song: MPIDSong { MPIDSong(bitPattern: persistentID) }
 	
 	// Media Player reports unknown values as…
-	final var discNumberOnDisk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
-	final var trackNumberOnDisk: Int { albumTrackNumber }
-	final var titleOnDisk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
-	final var dateAddedOnDisk: Date { dateAdded }
+	final var disc_number_on_disk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
+	final var track_number_on_disk: Int { albumTrackNumber }
+	final var title_on_disk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
+	final var date_added_on_disk: Date { dateAdded }
 }
 
 // MARK: - Simulator
 
 #if targetEnvironment(simulator)
-struct Sim_Song: SongInfo {
-	let albumID: AlbumID
-	let songID: SongID
+struct Sim_Song: InfoSong {
+	let id_album: MPIDAlbum
+	let id_song: MPIDSong
 	
-	let discNumberOnDisk: Int
-	let trackNumberOnDisk: Int
-	let titleOnDisk: String?
-	let dateAddedOnDisk: Date
+	let disc_number_on_disk: Int
+	let track_number_on_disk: Int
+	let title_on_disk: String?
+	let date_added_on_disk: Date
 }
 
 // Helpers for less typing
 struct DemoAlbum {
 	let title: String
 	let artist: String
-	let releaseDate: Date?
-	let artFileName: String
+	let release_date: Date?
+	let art_file_name: String
 	let tracks: [DemoSong]
 }
 struct DemoSong {
@@ -120,60 +120,60 @@ struct DemoSong {
 }
 private extension Date {
 	// "1984-01-24"
-	static func strategy(iso8601_10Char: String) -> Self {
-		return try! Self("\(iso8601_10Char)T23:59:59Z", strategy: .iso8601)
+	static func strategy(iso8601_10char: String) -> Self {
+		return try! Self("\(iso8601_10char)T23:59:59Z", strategy: .iso8601)
 	}
 }
 
 @MainActor final class Sim_MusicLibrary {
 	static let shared = Sim_MusicLibrary()
-	let sim_albums: [AlbumID: Sim_Album]
-	let sim_songs: [SongID: Sim_Song]
-	let current_sim_song: Sim_Song?
+	let sim_albums: [MPIDAlbum: Sim_Album]
+	let sim_songs: [MPIDSong: Sim_Song]
+	let sim_song_current: Sim_Song?
 	
 	private init() {
-		var albumDict: [AlbumID: Sim_Album] = [:]
-		var songDict: [SongID: Sim_Song] = [:]
-		var albumIDNext: AlbumID = 0
-		var songIDNext: SongID = 0
-		let demoDate = Date.now
-		Self.demoAlbums.forEach { demoAlbum in
-			defer { albumIDNext += 1 }
-			let items: [Sim_Song] = demoAlbum.tracks.indices.map { indexInAlbum in
-				defer { songIDNext += 1 }
-				let demoSong = demoAlbum.tracks[indexInAlbum]
+		var d_albums: [MPIDAlbum: Sim_Album] = [:]
+		var d_songs: [MPIDSong: Sim_Song] = [:]
+		var id_album_next: MPIDAlbum = 0
+		var id_song_next: MPIDSong = 0
+		let date_demo = Date.now
+		Self.demo_albums.forEach { demo_album in
+			defer { id_album_next += 1 }
+			let items: [Sim_Song] = demo_album.tracks.indices.map { i_in_album in
+				defer { id_song_next += 1 }
+				let demo_song = demo_album.tracks[i_in_album]
 				let result = Sim_Song(
-					albumID: albumIDNext,
-					songID: songIDNext,
-					discNumberOnDisk: 1,
-					trackNumberOnDisk: indexInAlbum + 1,
-					titleOnDisk: demoSong.title,
-					dateAddedOnDisk: demoDate)
-				songDict[songIDNext] = result
+					id_album: id_album_next,
+					id_song: id_song_next,
+					disc_number_on_disk: 1,
+					track_number_on_disk: i_in_album + 1,
+					title_on_disk: demo_song.title,
+					date_added_on_disk: date_demo)
+				d_songs[id_song_next] = result
 				return result
 			}
-			albumDict[albumIDNext] = Sim_Album(
-				title: demoAlbum.title,
-				artist: demoAlbum.artist,
-				release_date: demoAlbum.releaseDate,
-				_date_added: demoDate,
-				art_file_name: demoAlbum.artFileName,
+			d_albums[id_album_next] = Sim_Album(
+				title: demo_album.title,
+				artist: demo_album.artist,
+				release_date: demo_album.release_date,
+				_date_added: date_demo,
+				art_file_name: demo_album.art_file_name,
 				_items: items)
 		}
 		
 //		self.sim_albums = [:]
 //		self.sim_songs = [:]
 		
-		self.sim_albums = albumDict
-		self.sim_songs = songDict
-		current_sim_song = sim_songs[SongID(0)]
+		self.sim_albums = d_albums
+		self.sim_songs = d_songs
+		sim_song_current = sim_songs[MPIDSong(0)]
 	}
-	private static let demoAlbums: [DemoAlbum] = [
+	private static let demo_albums: [DemoAlbum] = [
 		DemoAlbum(
 			title: "Hillside",
 			artist: "Wanderer",
-			releaseDate: .strategy(iso8601_10Char: "2024-05-31"),
-			artFileName: "field",
+			release_date: .strategy(iso8601_10char: "2024-05-31"),
+			art_file_name: "field",
 			tracks: [
 				.init("Magic"),
 				.init("Robot"),
@@ -182,16 +182,16 @@ private extension Date {
 		DemoAlbum(
 			title: "Dawn",
 			artist: "Wanderer",
-			releaseDate: .strategy(iso8601_10Char: "2024-03-31"),
-			artFileName: "city",
+			release_date: .strategy(iso8601_10char: "2024-03-31"),
+			art_file_name: "city",
 			tracks: [
 				.init("Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.", artist: "Tony Harnell"),
 			]),
 		DemoAlbum(
 			title: "Skyway",
 			artist: "Wanderer",
-			releaseDate: .strategy(iso8601_10Char: "2024-02-29"),
-			artFileName: "sky",
+			release_date: .strategy(iso8601_10char: "2024-02-29"),
+			art_file_name: "sky",
 			tracks: [
 				.init(""),
 			]),

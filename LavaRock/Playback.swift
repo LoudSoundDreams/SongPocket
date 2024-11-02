@@ -16,7 +16,7 @@ import MusicKit
 #endif
 	}
 	
-	final func playNow(_ idsToPlay: [SongID], startingAt idStart: SongID? = nil) {
+	final func playNow(_ idsToPlay: [MPIDSong], startingAt idStart: MPIDSong? = nil) {
 		Task {
 			let toPlay: [MKSong] = await {
 				var result: [MKSong] = []
@@ -38,7 +38,7 @@ import MusicKit
 		}
 	}
 	
-	final func playLater(_ idsToAppend: [SongID]) {
+	final func playLater(_ idsToAppend: [MPIDSong]) {
 		Task {
 			let toAppend: [MKSong] = await {
 				var result: [MKSong] = []
@@ -64,8 +64,8 @@ import MusicKit
 
 import MediaPlayer
 @MainActor extension MPMusicPlayerController {
-	static var idSongCurrent: SongID? {
+	static var idSongCurrent: MPIDSong? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
-		return applicationQueuePlayer.nowPlayingItem?.songID
+		return applicationQueuePlayer.nowPlayingItem?.id_song
 	}
 }

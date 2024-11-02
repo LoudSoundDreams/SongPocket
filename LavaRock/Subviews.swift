@@ -7,7 +7,7 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	let id_album: AlbumID
+	let id_album: MPIDAlbum
 	let list_state: AlbumListState
 	var body: some View {
 		ZStack(alignment: .bottomLeading) {
@@ -95,7 +95,7 @@ import MediaPlayer
 // MARK: Album art
 
 @MainActor struct AlbumArt: View {
-	let id_album: AlbumID
+	let id_album: MPIDAlbum
 	let dim_limit: CGFloat
 	var body: some View {
 		ZStack {
@@ -138,7 +138,7 @@ import MediaPlayer
 // MARK: Album label
 
 @MainActor struct AlbumLabel: View {
-	let id_album: AlbumID
+	let id_album: MPIDAlbum
 	let list_state: AlbumListState
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
@@ -171,7 +171,7 @@ import MediaPlayer
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let info_album: AlbumInfo? = Librarian.shared.mkSectionInfo(albumID: id_album)
+		let info_album: InfoAlbum? = Librarian.shared.mkSectionInfo(albumID: id_album)
 		let title_and_input_label: String = {
 			guard let title_album = info_album?._title, title_album != ""
 			else { return InterfaceText.Unknown_Album }
@@ -239,8 +239,8 @@ import MediaPlayer
 
 @MainActor struct SongRow: View {
 	static let confirm_play_id_song = Notification.Name("LRSongConfirmPlayWithID")
-	let id_song: SongID
-	let id_album: AlbumID
+	let id_song: MPIDSong
+	let id_album: MPIDAlbum
 	let list_state: AlbumListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
@@ -269,19 +269,19 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private var stack_main: some View {
-		let info_song: SongInfo__? = {
+		let info_song: InfoSong__? = {
 #if targetEnvironment(simulator)
 			guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song]
 			else { return nil }
-			return SongInfo__(
-				_title: sim_song.titleOnDisk ?? "",
+			return InfoSong__(
+				_title: sim_song.title_on_disk ?? "",
 				_artist: "",
 				_disc: 1,
-				_track: sim_song.trackNumberOnDisk)
+				_track: sim_song.track_number_on_disk)
 #else
 			guard let mkSong
 			else { return nil }
-			return SongInfo__(
+			return InfoSong__(
 				_title: mkSong.title,
 				_artist: mkSong.artistName,
 				_disc: mkSong.discNumber,
@@ -289,7 +289,7 @@ import MediaPlayer
 #endif
 		}()
 		let title: String? = info_song?._title
-		let info_album: AlbumInfo? = librarian.mkSectionInfo(albumID: id_album)
+		let info_album: InfoAlbum? = librarian.mkSectionInfo(albumID: id_album)
 		HStack(alignment: .firstTextBaseline) {
 			IndicatorNowPlaying(id_song: id_song)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
@@ -405,7 +405,7 @@ import MediaPlayer
 // MARK: Now-playing indicator
 
 struct IndicatorNowPlaying: View {
-	let id_song: SongID
+	let id_song: MPIDSong
 	var body: some View {
 		ZStack {
 			ImageNowPlaying().hidden()
@@ -433,7 +433,7 @@ struct IndicatorNowPlaying: View {
 	}
 	@MainActor private var status: Status {
 #if targetEnvironment(simulator)
-		guard id_song == Sim_MusicLibrary.shared.current_sim_song?.songID
+		guard id_song == Sim_MusicLibrary.shared.sim_song_current?.id_song
 		else { return .not_playing }
 		return .playing
 #else

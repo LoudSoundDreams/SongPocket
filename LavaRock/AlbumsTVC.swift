@@ -48,7 +48,7 @@ extension AlbumListState {
 					select_mode = .view(nil)
 				}
 			case .select_albums(let ids_selected):
-				let selectable: Set<AlbumID> = Set(
+				let selectable: Set<MPIDAlbum> = Set(
 					albums(with: ids_selected).map { $0.albumPersistentID }
 				)
 				if ids_selected != selectable {
@@ -59,7 +59,7 @@ extension AlbumListState {
 					select_mode = .view(nil)
 					break
 				}
-				let selectable: Set<SongID> = Set(
+				let selectable: Set<MPIDSong> = Set(
 					songs(with: ids_selected).map { $0.persistentID }
 				)
 				if ids_selected != selectable{
@@ -77,7 +77,7 @@ extension AlbumListState {
 			case .song(let song): return song.objectID
 		}}
 	}
-	fileprivate func albums(with ids_chosen: Set<AlbumID>? = nil) -> [ZZZAlbum] {
+	fileprivate func albums(with ids_chosen: Set<MPIDAlbum>? = nil) -> [ZZZAlbum] {
 		return list_items.compactMap { switch $0 {
 			case .song: return nil
 			case .album(let album):
@@ -86,7 +86,7 @@ extension AlbumListState {
 				return album
 		}}
 	}
-	fileprivate func songs(with ids_chosen: Set<SongID>? = nil) -> [ZZZSong] {
+	fileprivate func songs(with ids_chosen: Set<MPIDSong>? = nil) -> [ZZZSong] {
 		return list_items.compactMap { switch $0 {
 			case .album: return nil
 			case .song(let song):
@@ -96,7 +96,7 @@ extension AlbumListState {
 		}}
 	}
 	
-	func hasAlbumRange(from id_anchor: AlbumID, forward: Bool) -> Bool {
+	func hasAlbumRange(from id_anchor: MPIDAlbum, forward: Bool) -> Bool {
 		guard let i_anchor = albums().firstIndex(where: { id_anchor == $0.albumPersistentID }) else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
 		guard albums().indices.contains(i_neighbor) else { return false }
@@ -108,7 +108,7 @@ extension AlbumListState {
 				return sel_anchor == sel_neighbor
 		}
 	}
-	func hasSongRange(from id_anchor: SongID, forward: Bool) -> Bool {
+	func hasSongRange(from id_anchor: MPIDSong, forward: Bool) -> Bool {
 		guard let i_anchor = songs().firstIndex(where: { id_anchor == $0.persistentID }) else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
 		guard songs().indices.contains(i_neighbor) else { return false }
@@ -122,16 +122,16 @@ extension AlbumListState {
 		}
 	}
 	
-	func change_album_range(from id_anchor: AlbumID, forward: Bool) {
+	func change_album_range(from id_anchor: MPIDAlbum, forward: Bool) {
 		guard let i_anchor = albums().firstIndex(where: { id_anchor == $0.albumPersistentID }) else { return }
-		let old_selected: Set<AlbumID> = {
+		let old_selected: Set<MPIDAlbum> = {
 			switch select_mode {
 				case .select_songs, .view: return []
 				case .select_albums(let ids_selected): return ids_selected
 			}
 		}()
 		let inserting: Bool = !old_selected.contains(id_anchor)
-		let new_selected: Set<AlbumID> = {
+		let new_selected: Set<MPIDAlbum> = {
 			var result = old_selected
 			var i_in_range = i_anchor
 			while true {
@@ -159,16 +159,16 @@ extension AlbumListState {
 				select_mode = .select_albums(new_selected)
 		}
 	}
-	func change_song_range(from id_anchor: SongID, forward: Bool) {
+	func change_song_range(from id_anchor: MPIDSong, forward: Bool) {
 		guard let i_anchor = songs().firstIndex(where: { id_anchor == $0.persistentID }) else { return }
-		let old_selected: Set<SongID> = {
+		let old_selected: Set<MPIDSong> = {
 			switch select_mode {
 				case .select_albums, .view: return []
 				case .select_songs(let ids_selected): return ids_selected
 			}
 		}()
 		let inserting: Bool = !old_selected.contains(id_anchor)
-		let new_selected: Set<SongID> = {
+		let new_selected: Set<MPIDSong> = {
 			var result = old_selected
 			var i_in_range = i_anchor
 			while true {
@@ -199,14 +199,14 @@ extension AlbumListState {
 	
 	enum Expansion: Equatable {
 		case collapsed
-		case expanded(AlbumID)
+		case expanded(MPIDAlbum)
 	}
 	static let expansion_changed = Notification.Name("LRAlbumExpandingOrCollapsing")
 	
 	enum SelectMode: Equatable {
-		case view(SongID?)
-		case select_albums(Set<AlbumID>)
-		case select_songs(Set<SongID>) // Should always be within the same album.
+		case view(MPIDSong?)
+		case select_albums(Set<MPIDAlbum>)
+		case select_songs(Set<MPIDSong>) // Should always be within the same album.
 	}
 	static let selection_changed = Notification.Name("LRSelectModeOrSelectionChanged")
 }
@@ -407,7 +407,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	@objc private func confirm_play(notification: Notification) {
 		guard
-			let id_activated = notification.object as? SongID,
+			let id_activated = notification.object as? MPIDSong,
 			let anchor_popover: UIView = { () -> UIView? in
 				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
 					case .album: return false
@@ -557,7 +557,7 @@ final class AlbumsTVC: LibraryTVC {
 		return UIMenu(title: title_focused(), children: menu_sections)
 	}
 	
-	private func ids_songs_focused() -> [SongID] {
+	private func ids_songs_focused() -> [MPIDSong] {
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
 				return list_state.albums(with: ids_selected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
