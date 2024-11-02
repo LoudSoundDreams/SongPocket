@@ -40,8 +40,8 @@ extension Librarian {
 		return AlbumInfo(
 			_title: sim_album.title,
 			_artist: sim_album.artist,
-			_releaseDate: sim_album.releaseDate,
-			_discCount: 1
+			_release_date: sim_album.release_date,
+			_disc_count: 1
 		)
 #else
 		guard let mkAlbum = mkSection(albumID: albumID)
@@ -49,8 +49,8 @@ extension Librarian {
 		return AlbumInfo(
 			_title: mkAlbum.title,
 			_artist: mkAlbum.artistName,
-			_releaseDate: mkAlbum.releaseDate,
-			_discCount: mkAlbum.items.reduce(into: 1) { // Bad time complexity
+			_release_date: mkAlbum.releaseDate,
+			_disc_count: mkAlbum.items.reduce(into: 1) { // Bad time complexity
 				highest, mkSong in
 				if let disc = mkSong.discNumber, disc > highest { highest = disc }
 			}

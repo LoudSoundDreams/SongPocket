@@ -5,17 +5,17 @@ import MusicKit
 struct AlbumInfo {
 	let _title: String
 	let _artist: String
-	let _releaseDate: Date?
-	let _discCount: Int
+	let _release_date: Date?
+	let _disc_count: Int
 }
 #if targetEnvironment(simulator)
 struct Sim_Album {
 	let title: String
 	let artist: String
-	let releaseDate: Date?
+	let release_date: Date?
 	
-	let _dateAdded: Date?
-	let artFileName: String
+	let _date_added: Date?
+	let art_file_name: String
 	let _items: [Sim_Song]
 }
 #endif
@@ -155,9 +155,9 @@ private extension Date {
 			albumDict[albumIDNext] = Sim_Album(
 				title: demoAlbum.title,
 				artist: demoAlbum.artist,
-				releaseDate: demoAlbum.releaseDate,
-				_dateAdded: demoDate,
-				artFileName: demoAlbum.artFileName,
+				release_date: demoAlbum.releaseDate,
+				_date_added: demoDate,
+				art_file_name: demoAlbum.artFileName,
 				_items: items)
 		}
 		

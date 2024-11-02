@@ -122,7 +122,7 @@ extension AlbumListState {
 		}
 	}
 	
-	func changeAlbumRange(from idAnchor: AlbumID, forward: Bool) {
+	func change_album_range(from idAnchor: AlbumID, forward: Bool) {
 		guard let iAnchor = albums().firstIndex(where: { idAnchor == $0.albumPersistentID }) else { return }
 		let oldSelected: Set<AlbumID> = {
 			switch selectMode {
@@ -159,7 +159,7 @@ extension AlbumListState {
 				selectMode = .selectAlbums(newSelected)
 		}
 	}
-	func changeSongRange(from idAnchor: SongID, forward: Bool) {
+	func change_song_range(from idAnchor: SongID, forward: Bool) {
 		guard let iAnchor = songs().firstIndex(where: { idAnchor == $0.persistentID }) else { return }
 		let oldSelected: Set<SongID> = {
 			switch selectMode {
@@ -230,7 +230,7 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserver(self, selector: #selector(refreshLibraryItems), name: Librarian.didMerge, object: nil)
 		Remote.shared.albumsTVC = WeakRef(self)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflectExpansion), name: AlbumListState.expansionChanged, object: listState)
-		NotificationCenter.default.addObserver(self, selector: #selector(confirmPlay), name: SongRow.confirmPlaySongID, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(confirmPlay), name: SongRow.confirm_play_id_song, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflectSelection), name: AlbumListState.selectionChanged, object: listState)
 	}
 	
@@ -300,7 +300,7 @@ final class AlbumsTVC: LibraryTVC {
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumRow(idAlbum: rowAlbum.albumPersistentID, listState: listState)
+					AlbumRow(id_album: rowAlbum.albumPersistentID, list_state: listState)
 				}.margins(.all, .zero)
 				return cell
 			case .song(let rowSong):
@@ -316,7 +316,7 @@ final class AlbumsTVC: LibraryTVC {
 							return result
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {
-							SongRow(idSong: rowSong.persistentID, idAlbum: idExpanded, listState: listState)
+							SongRow(id_song: rowSong.persistentID, id_album: idExpanded, list_state: listState)
 						}.margins(.all, .zero)
 						return cell
 				}
@@ -602,7 +602,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch albumOrder {
 			case .random, .reverse, .recentlyAdded: return true
 			case .recentlyReleased: return albumsToSort().contains {
-				nil != Librarian.shared.mkSectionInfo(albumID: $0.albumPersistentID)?._releaseDate
+				nil != Librarian.shared.mkSectionInfo(albumID: $0.albumPersistentID)?._release_date
 			}
 		}
 	}

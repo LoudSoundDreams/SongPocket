@@ -7,46 +7,46 @@ import MediaPlayer
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	let idAlbum: AlbumID
-	let listState: AlbumListState
+	let id_album: AlbumID
+	let list_state: AlbumListState
 	var body: some View {
 		ZStack(alignment: .bottomLeading) {
-			AlbumArt(idAlbum: idAlbum, dimLimit: min(listState.viewportSize.width, listState.viewportSize.height))
-				.opacity(select_opacity)
-				.animation(.default, value: listState.selectMode)
-				.overlay { if expansion_labeled {
+			AlbumArt(id_album: id_album, dim_limit: min(list_state.viewportSize.width, list_state.viewportSize.height))
+				.opacity(sel_opacity)
+				.animation(.default, value: list_state.selectMode)
+				.overlay { if exp_labeled {
 					Rectangle().foregroundStyle(Material.thin)
 				}}
-			ZStack { if expansion_labeled {
-				AlbumLabel(idAlbum: idAlbum, listState: listState).accessibilitySortPriority(10)
+			ZStack { if exp_labeled {
+				AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
 			}}
 		}
-		.animation(.linear(duration: .oneEighth), value: expansion_labeled)
+		.animation(.linear(duration: .oneEighth), value: exp_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
-		.background { select_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay { select_border.accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay { sel_border.accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 	}
-	private var expansion_labeled: Bool {
-		switch listState.expansion {
+	private var exp_labeled: Bool {
+		switch list_state.expansion {
 			case .collapsed: return true
-			case .expanded(let idExpanded): return idAlbum != idExpanded
+			case .expanded(let id_expanded): return id_album != id_expanded
 		}
 	}
 	
-	private var select_opacity: Double {
-		switch listState.selectMode {
+	private var sel_opacity: Double {
+		switch list_state.selectMode {
 			case .view: return 1
 			case .selectAlbums, .selectSongs: return .oneFourth
 		}
 	}
-	@ViewBuilder private var select_highlight: some View {
-		let highlighting: Bool = { switch listState.selectMode {
+	@ViewBuilder private var sel_highlight: some View {
+		let highlighting: Bool = { switch list_state.selectMode {
 			case .view, .selectSongs: return false
-			case .selectAlbums(let idsSelected): return idsSelected.contains(idAlbum)
+			case .selectAlbums(let ids_selected): return ids_selected.contains(id_album)
 		}}()
 		if highlighting {
 			Color.accentColor.opacity(.oneHalf)
@@ -54,11 +54,11 @@ import MediaPlayer
 			EmptyView()
 		}
 	}
-	@ViewBuilder private var select_border: some View {
-		switch listState.selectMode {
+	@ViewBuilder private var sel_border: some View {
+		switch list_state.selectMode {
 			case .view, .selectSongs: EmptyView()
-			case .selectAlbums(let idsSelected):
-				if idsSelected.contains(idAlbum) {
+			case .selectAlbums(let ids_selected):
+				if ids_selected.contains(id_album) {
 					RectSelected().accessibilityLabel(Text(InterfaceText.Selected))
 				} else {
 					RectUnselected()
@@ -67,27 +67,27 @@ import MediaPlayer
 	}
 	
 	private func tapped() {
-		switch listState.selectMode {
+		switch list_state.selectMode {
 			case .selectSongs: return
 			case .view:
-				switch listState.expansion {
+				switch list_state.expansion {
 					case .collapsed:
-						listState.expansion = .expanded(idAlbum)
-					case .expanded(let idExpanded):
-						if idAlbum == idExpanded {
-							listState.expansion = .collapsed
+						list_state.expansion = .expanded(id_album)
+					case .expanded(let id_expanded):
+						if id_album == id_expanded {
+							list_state.expansion = .collapsed
 						} else {
-							listState.expansion = .expanded(idAlbum)
+							list_state.expansion = .expanded(id_album)
 						}
 				}
-			case .selectAlbums(let idsSelected):
-				var newSelected = idsSelected
-				if idsSelected.contains(idAlbum) {
-					newSelected.remove(idAlbum)
+			case .selectAlbums(let ids_selected):
+				var selected_new = ids_selected
+				if ids_selected.contains(id_album) {
+					selected_new.remove(id_album)
 				} else {
-					newSelected.insert(idAlbum)
+					selected_new.insert(id_album)
 				}
-				listState.selectMode = .selectAlbums(newSelected)
+				list_state.selectMode = .selectAlbums(selected_new)
 		}
 	}
 }
@@ -95,16 +95,16 @@ import MediaPlayer
 // MARK: Album art
 
 @MainActor struct AlbumArt: View {
-	let idAlbum: AlbumID
-	let dimLimit: CGFloat
+	let id_album: AlbumID
+	let dim_limit: CGFloat
 	var body: some View {
 		ZStack {
 #if targetEnvironment(simulator)
-			if let sim_album = Sim_MusicLibrary.shared.sim_albums[idAlbum] {
-				Image(sim_album.artFileName)
+			if let sim_album = Sim_MusicLibrary.shared.sim_albums[id_album] {
+				Image(sim_album.art_file_name)
 					.resizable()
 					.scaledToFit()
-					.frame(width: dimLimit, height: dimLimit)
+					.frame(width: dim_limit, height: dim_limit)
 			}
 #else
 			if let artwork {
@@ -115,11 +115,11 @@ import MediaPlayer
 				 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
 				 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
 				 */
-				ArtworkImage(artwork, width: dimLimit)
+				ArtworkImage(artwork, width: dim_limit)
 			} else {
 				ZStack {
 					Color(white: .oneFourth)
-						.frame(width: dimLimit, height: dimLimit)
+						.frame(width: dim_limit, height: dim_limit)
 					Image(systemName: "music.note")
 						.foregroundStyle(.secondary)
 						.font(.title)
@@ -127,33 +127,33 @@ import MediaPlayer
 			}
 #endif
 		}
-		.animation(nil, value: idAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
+		.animation(nil, value: id_album) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
 		.accessibilityLabel(InterfaceText.Album_artwork)
 	}
 	private var artwork: MusicKit.Artwork? {
-		return Librarian.shared.mkSection(albumID: idAlbum)?.artwork
+		return Librarian.shared.mkSection(albumID: id_album)?.artwork
 	}
 }
 
 // MARK: Album label
 
 @MainActor struct AlbumLabel: View {
-	let idAlbum: AlbumID
-	let listState: AlbumListState
+	let id_album: AlbumID
+	let list_state: AlbumListState
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
 			ImageNowPlaying().hidden()
-			textStack // Align with `SongRow`.
-			if WorkingOn.selectRange {
+			stack_text // Align with `SongRow`.
+			if WorkingOn.select_range {
 				Spacer()
 				Menu {
-					aboveButton
-					belowButton
+					b_above
+					b_below
 				} label: {
-					switch listState.selectMode {
+					switch list_state.selectMode {
 						case .selectSongs, .view: ImageOverflow()
 						case .selectAlbums(let idsSelected):
-							if idsSelected.contains(idAlbum) {
+							if idsSelected.contains(id_album) {
 								ImageOverflowSelected()
 							} else {
 								ImageOverflow()
@@ -161,76 +161,76 @@ import MediaPlayer
 					}
 				}
 				.disabled({
-					switch listState.expansion {
+					switch list_state.expansion {
 						case .expanded: return true
 						case .collapsed: return false
 					}}())
-				.animation(.default, value: listState.expansion)
+				.animation(.default, value: list_state.expansion)
 			}
 		}.padding()
 	}
 	
-	@ViewBuilder private var textStack: some View {
-		let infoAlbum: AlbumInfo? = Librarian.shared.mkSectionInfo(albumID: idAlbum)
-		let titleAndInputLabel: String = {
-			guard let albumTitle = infoAlbum?._title, albumTitle != ""
+	@ViewBuilder private var stack_text: some View {
+		let info_album: AlbumInfo? = Librarian.shared.mkSectionInfo(albumID: id_album)
+		let title_and_input_label: String = {
+			guard let title_album = info_album?._title, title_album != ""
 			else { return InterfaceText.Unknown_Album }
-			return albumTitle
+			return title_album
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
-				guard let date = infoAlbum?._releaseDate
+				guard let date = info_album?._release_date
 				else { return InterfaceText._em_dash }
 				return date.formatted(date: .numeric, time: .omitted)
 			}())
-			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
+			.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
 			.font(.caption2)
 			.monospacedDigit()
 			.accessibilitySortPriority(10)
 			Text({
-				guard let albumArtist = infoAlbum?._artist, albumArtist != ""
+				guard let artist_album = info_album?._artist, artist_album != ""
 				else { return InterfaceText.Unknown_Artist }
-				return albumArtist
+				return artist_album
 			}())
-			.foregroundStyle(select_dimmed ? .tertiary : .secondary)
+			.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
 			.font_caption2Bold()
 			.accessibilitySortPriority(20)
-			Text(titleAndInputLabel)
+			Text(title_and_input_label)
 				.font_title2Bold()
-				.foregroundStyle(select_dimmed ? .secondary : .primary)
+				.foregroundStyle(sel_dimmed ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Higher means sooner.
 		}
-		.animation(.default, value: select_dimmed)
+		.animation(.default, value: sel_dimmed)
 		.accessibilityElement(children: .combine)
-		.accessibilityInputLabels([titleAndInputLabel])
+		.accessibilityInputLabels([title_and_input_label])
 	}
-	private var select_dimmed: Bool {
-		switch listState.selectMode {
+	private var sel_dimmed: Bool {
+		switch list_state.selectMode {
 			case .view, .selectAlbums: return false
 			case .selectSongs: return true
 		}
 	}
 	
-	@ViewBuilder private var aboveButton: some View {
+	@ViewBuilder private var b_above: some View {
 		Button(
-			isSelected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
+			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
 			systemImage: "chevron.up.circle"
 		) {
-			listState.changeAlbumRange(from: idAlbum, forward: false)
-		}.disabled(!listState.hasAlbumRange(from: idAlbum, forward: false))
+			list_state.change_album_range(from: id_album, forward: false)
+		}.disabled(!list_state.hasAlbumRange(from: id_album, forward: false))
 	}
-	@ViewBuilder private var belowButton: some View {
+	@ViewBuilder private var b_below: some View {
 		Button(
-			isSelected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
+			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
 			systemImage: "chevron.down.circle"
 		) {
-			listState.changeAlbumRange(from: idAlbum, forward: true)
-		}.disabled(!listState.hasAlbumRange(from: idAlbum, forward: true))
+			list_state.change_album_range(from: id_album, forward: true)
+		}.disabled(!list_state.hasAlbumRange(from: id_album, forward: true))
 	}
-	private var isSelected: Bool {
-		switch listState.selectMode {
+	private var is_selected: Bool {
+		switch list_state.selectMode {
 			case .view, .selectSongs: return false
-			case .selectAlbums(let idsSelected): return idsSelected.contains(idAlbum)
+			case .selectAlbums(let ids_selected): return ids_selected.contains(id_album)
 		}
 	}
 }
@@ -238,22 +238,22 @@ import MediaPlayer
 // MARK: - Song row
 
 @MainActor struct SongRow: View {
-	static let confirmPlaySongID = Notification.Name("LRSongConfirmPlayWithID")
-	let idSong: SongID
-	let idAlbum: AlbumID
-	let listState: AlbumListState
+	static let confirm_play_id_song = Notification.Name("LRSongConfirmPlayWithID")
+	let id_song: SongID
+	let id_album: AlbumID
+	let list_state: AlbumListState
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			mainStack
-			if WorkingOn.selectRange {
+			stack_main
+			if WorkingOn.select_range {
 				Menu {
-					aboveButton
-					belowButton
+					b_above
+					b_below
 				} label: {
-					switch listState.selectMode {
+					switch list_state.selectMode {
 						case .selectAlbums, .view: ImageOverflow()
-						case .selectSongs(let idsSelected):
-							if idsSelected.contains(idSong) {
+						case .selectSongs(let ids_selected):
+							if ids_selected.contains(id_song) {
 								ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
 							} else {
 								ImageOverflow()
@@ -262,16 +262,16 @@ import MediaPlayer
 				}
 			}
 		}
-		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * (WorkingOn.selectRange ? 7/4 : 2))
-		.background { select_highlight }
-		.overlay { select_border }
+		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * (WorkingOn.select_range ? 7/4 : 2))
+		.background { sel_highlight }
+		.overlay { sel_border }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	@ViewBuilder private var mainStack: some View {
-		let infoSong: SongInfo__? = {
+	@ViewBuilder private var stack_main: some View {
+		let info_song: SongInfo__? = {
 #if targetEnvironment(simulator)
-			guard let sim_song = Sim_MusicLibrary.shared.sim_songs[idSong]
+			guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song]
 			else { return nil }
 			return SongInfo__(
 				_title: sim_song.titleOnDisk ?? "",
@@ -288,15 +288,15 @@ import MediaPlayer
 				_track: mkSong.trackNumber)
 #endif
 		}()
-		let title: String? = infoSong?._title
-		let infoAlbum: AlbumInfo? = librarian.mkSectionInfo(albumID: idAlbum)
+		let title: String? = info_song?._title
+		let info_album: AlbumInfo? = librarian.mkSectionInfo(albumID: id_album)
 		HStack(alignment: .firstTextBaseline) {
-			IndicatorNowPlaying(idSong: idSong)
+			IndicatorNowPlaying(id_song: id_song)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 				Text(title ?? InterfaceText._em_dash)
 				if
-					let artist_song = infoSong?._artist,
-					let artist_album = infoAlbum?._artist,
+					let artist_song = info_song?._artist,
+					let artist_album = info_album?._artist,
 					artist_song != "", artist_album != "",
 					artist_song != artist_album
 				{
@@ -307,19 +307,19 @@ import MediaPlayer
 			}
 			Spacer()
 			Text({
-				guard let infoSong, let infoAlbum else { return InterfaceText._octothorpe }
-				let trackFormatted: String = {
-					guard let track = infoSong._track else { return InterfaceText._octothorpe }
+				guard let info_song, let info_album else { return InterfaceText._octothorpe }
+				let f_track: String = {
+					guard let track = info_song._track else { return InterfaceText._octothorpe }
 					return String(track)
 				}()
-				if infoAlbum._discCount >= 2 {
-					let discFormatted: String = {
-						guard let disc = infoSong._disc else { return InterfaceText._octothorpe }
+				if info_album._disc_count >= 2 {
+					let f_disc: String = {
+						guard let disc = info_song._disc else { return InterfaceText._octothorpe }
 						return String(disc)
 					}()
-					return "\(discFormatted)\(InterfaceText._interpunct)\(trackFormatted)"
+					return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
 				} else {
-					return trackFormatted
+					return f_track
 				}
 			}())
 			.foregroundStyle(.secondary)
@@ -329,33 +329,33 @@ import MediaPlayer
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 		.task {
-			mkSong = await librarian.mkSong_fetched(mpID: idSong)
+			mkSong = await librarian.mkSong_fetched(mpID: id_song)
 		}
 	}
 	@State private var mkSong: MKSong? = nil
 	private let librarian: Librarian = .shared
 	
-	@ViewBuilder private var select_highlight: some View {
-		let highlighting: Bool = { switch listState.selectMode {
+	@ViewBuilder private var sel_highlight: some View {
+		let highlighting: Bool = { switch list_state.selectMode {
 			case .selectAlbums: return false
-			case .view(let idActivated): return idActivated == idSong
-			case .selectSongs(let idsSelected): return idsSelected.contains(idSong)
+			case .view(let id_activated): return id_activated == id_song
+			case .selectSongs(let ids_selected): return ids_selected.contains(id_song)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .oneHalf : .zero)
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
-				{ switch listState.selectMode {
+				{ switch list_state.selectMode {
 					case .selectAlbums: return nil // Should never run
-					case .view(let idActivated): return (idActivated == nil) ? .default : nil
+					case .view(let id_activated): return (id_activated == nil) ? .default : nil
 					case .selectSongs: return nil // It’d be nice to animate deselecting after arranging, floating, and sinking, but not manually selecting or deselecting.
 				}}(),
-				value: listState.selectMode)
+				value: list_state.selectMode)
 	}
-	@ViewBuilder private var select_border: some View {
-		switch listState.selectMode {
+	@ViewBuilder private var sel_border: some View {
+		switch list_state.selectMode {
 			case .view, .selectAlbums: EmptyView()
-			case .selectSongs(let idsSelected):
-				if idsSelected.contains(idSong) {
+			case .selectSongs(let ids_selected):
+				if ids_selected.contains(id_song) {
 					RectSelected()
 				} else {
 					RectUnselected()
@@ -364,40 +364,40 @@ import MediaPlayer
 	}
 	
 	private func tapped() {
-		switch listState.selectMode {
+		switch list_state.selectMode {
 			case .selectAlbums: return
-			case .view: NotificationCenter.default.post(name: Self.confirmPlaySongID, object: idSong)
-			case .selectSongs(let idsSelected):
-				var newSelected = idsSelected
-				if idsSelected.contains(idSong) {
-					newSelected.remove(idSong)
+			case .view: NotificationCenter.default.post(name: Self.confirm_play_id_song, object: id_song)
+			case .selectSongs(let ids_selected):
+				var selected_new = ids_selected
+				if ids_selected.contains(id_song) {
+					selected_new.remove(id_song)
 				} else {
-					newSelected.insert(idSong)
+					selected_new.insert(id_song)
 				}
-				listState.selectMode = .selectSongs(newSelected)
+				list_state.selectMode = .selectSongs(selected_new)
 		}
 	}
 	
-	@ViewBuilder private var aboveButton: some View {
+	@ViewBuilder private var b_above: some View {
 		Button(
-			isSelected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
+			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
 			systemImage: "chevron.up.circle"
 		) {
-			listState.changeSongRange(from: idSong, forward: false)
-		}.disabled(!listState.hasSongRange(from: idSong, forward: false))
+			list_state.change_song_range(from: id_song, forward: false)
+		}.disabled(!list_state.hasSongRange(from: id_song, forward: false))
 	}
-	@ViewBuilder private var belowButton: some View {
+	@ViewBuilder private var b_below: some View {
 		Button(
-			isSelected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
+			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
 			systemImage: "chevron.down.circle"
 		) {
-			listState.changeSongRange(from: idSong, forward: true)
-		}.disabled(!listState.hasSongRange(from: idSong, forward: true))
+			list_state.change_song_range(from: id_song, forward: true)
+		}.disabled(!list_state.hasSongRange(from: id_song, forward: true))
 	}
-	private var isSelected: Bool {
-		switch listState.selectMode {
+	private var is_selected: Bool {
+		switch list_state.selectMode {
 			case .selectAlbums, .view: return false
-			case .selectSongs(let idsSelected): return idsSelected.contains(idSong)
+			case .selectSongs(let ids_selected): return ids_selected.contains(id_song)
 		}
 	}
 }
@@ -405,12 +405,12 @@ import MediaPlayer
 // MARK: Now-playing indicator
 
 struct IndicatorNowPlaying: View {
-	let idSong: SongID
+	let id_song: SongID
 	var body: some View {
 		ZStack {
 			ImageNowPlaying().hidden()
 			switch status {
-				case .notPlaying: EmptyView()
+				case .not_playing: EmptyView()
 				case .paused:
 					ImageNowPlaying()
 						.foregroundStyle(.tint)
@@ -422,19 +422,19 @@ struct IndicatorNowPlaying: View {
 		}
 		.accessibilityElement()
 		.accessibilityLabel({ switch status {
-			case .notPlaying: return ""
+			case .not_playing: return ""
 			case .paused: return InterfaceText.Paused
 			case .playing: return InterfaceText.Now_Playing
 		}}())
 		.accessibilityHidden({ switch status {
 			case .paused, .playing: return false
-			case .notPlaying: return true
+			case .not_playing: return true
 		}}())
 	}
 	@MainActor private var status: Status {
 #if targetEnvironment(simulator)
-		guard idSong == Sim_MusicLibrary.shared.current_sim_song?.songID
-		else { return .notPlaying }
+		guard id_song == Sim_MusicLibrary.shared.current_sim_song?.songID
+		else { return .not_playing }
 		return .playing
 #else
 		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
@@ -442,12 +442,12 @@ struct IndicatorNowPlaying: View {
 		let _ = Librarian.shared.isMerging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 		guard
 			let state = ApplicationMusicPlayer._shared?.state,
-			idSong == MPMusicPlayerController.idSongCurrent
-		else { return .notPlaying }
+			id_song == MPMusicPlayerController.idSongCurrent
+		else { return .not_playing }
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
 	}
-	private enum Status { case notPlaying, paused, playing }
+	private enum Status { case not_playing, paused, playing }
 }
 
 // MARK: - Multipurpose
