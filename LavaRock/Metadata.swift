@@ -29,7 +29,7 @@ struct InfoSong__ {
 
 import MediaPlayer
 
-typealias MPIDAlbum = Int64 // TO DO: Change to `MPMediaEntityPersistentID`?
+typealias MPIDAlbum = Int64
 typealias MPIDSong = Int64
 
 protocol InfoSong {
@@ -78,8 +78,8 @@ extension ZZZSong {
 // MARK: - Apple Music
 
 extension MPMediaItem: InfoSong {
-	final var id_album: MPIDAlbum { MPIDAlbum(bitPattern: albumPersistentID) }
-	final var id_song: MPIDSong { MPIDSong(bitPattern: persistentID) }
+	final var id_album: MPIDAlbum { MPIDAlbum(albumPersistentID) }
+	final var id_song: MPIDSong { MPIDSong(persistentID) }
 	
 	// Media Player reports unknown values as…
 	final var disc_number_on_disk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
