@@ -54,7 +54,7 @@ enum InterfaceText {
 	
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
-	static let Randomize = "Randomize"
+	static let Randomize = "Randomize" // TO DO: Use “Randomise” appropriately.
 	static let Add_to_Queue = "Add to Queue"
 	
 	static let Pause = "Pause"
