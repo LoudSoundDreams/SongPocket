@@ -24,10 +24,9 @@ import MediaPlayer
 		.animation(.linear(duration: .one_eighth), value: exp_labeled)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay { sel_border.accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.overlay { sel_border.accessibilityHidden(true) }// .accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
-		.accessibilityElement(children: .combine)
 		.accessibilityAddTraits(.isButton)
 	}
 	private var exp_labeled: Bool {
@@ -59,7 +58,7 @@ import MediaPlayer
 			case .view, .select_songs: EmptyView()
 			case .select_albums(let ids_selected):
 				if ids_selected.contains(id_album) {
-					RectSelected().accessibilityLabel(Text(InterfaceText.Selected))
+					RectSelected()
 				} else {
 					RectUnselected()
 				}
@@ -128,7 +127,6 @@ import MediaPlayer
 #endif
 		}
 		.animation(nil, value: id_album) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
-		.accessibilityLabel(InterfaceText.Album_artwork)
 	}
 	private var artwork: MusicKit.Artwork? {
 		return Librarian.shared.mkSection(mpidAlbum: id_album)?.artwork
@@ -154,7 +152,7 @@ import MediaPlayer
 						case .select_songs, .view: ImageOverflow()
 						case .select_albums(let idsSelected):
 							if idsSelected.contains(id_album) {
-								ImageOverflowSelected()
+								ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
 							} else {
 								ImageOverflow()
 							}

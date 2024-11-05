@@ -15,7 +15,6 @@ enum InterfaceText {
 	
 	static let Unknown_Artist = "Unknown Artist"
 	static let Unknown_Album = "Unknown Album"
-	static let Album_artwork = "Album artwork"
 	static let Now_Playing = "Now Playing"
 	static let Paused = "Paused"
 	static let Apple_Music = "Apple Music"
