@@ -24,7 +24,7 @@ class LibraryTVC: UITableViewController {
 		animations_in_progress += 1
 		let old_ids = ids_rows_onscreen
 		ids_rows_onscreen = new_ids
-		tableView.performBatchUpdates_from_ids(old: old_ids, new: new_ids) {
+		tableView.perform_batch_updates_from_ids(old: old_ids, new: new_ids) {
 			// Completion handler
 			self.animations_in_progress -= 1
 			if self.animations_in_progress == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).

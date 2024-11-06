@@ -16,7 +16,7 @@ enum WorkingOn {
 			defaults.removeObject(forKey: key_existing)
 		}
 		
-		ZZZDatabase.viewContext.migrateFromMulticollection() // Run this before any UI code, so our UI can assume an already-migrated database.
+		ZZZDatabase.viewContext.migrate_from_multicollection() // Run this before any UI code, so our UI can assume an already-migrated database.
 	}
 	var body: some Scene {
 		WindowGroup {
@@ -33,7 +33,7 @@ enum WorkingOn {
 	
 	@MainActor static func integrate_Apple_Music() {
 		Librarian.shared.observe_mpLibrary()
-		PlayerState.shared.observeMKPlayer()
+		PlayerState.shared.observe_mkPlayer()
 	}
 }
 private struct VCRMain: UIViewControllerRepresentable {

@@ -18,7 +18,7 @@ extension Sequence {
 		return compactMap { $0 }
 	}
 	
-	func formattedAsNarrowList() -> String
+	func formatted_as_narrow_list() -> String
 	where Element == String
 	{
 		return formatted(.list(type: .and, width: .narrow))
@@ -26,7 +26,7 @@ extension Sequence {
 }
 
 extension Array {
-	func inAnyOtherOrder() -> Self
+	func in_any_other_order() -> Self
 	where Element: Equatable
 	{
 		guard count >= 2 else { return self }
@@ -37,41 +37,41 @@ extension Array {
 		return result
 	}
 	
-	func differenceInferringMoves(
-		toMatch newArray: [Element],
-		by areEquivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
+	func difference_inferring_moves(
+		to_match array_target: [Element],
+		by are_equivalent: (_ oldItem: Element, _ newItem: Element) -> Bool
 	) -> CollectionDifference<Element>
 	where Element: Hashable
 	{
-		return newArray.difference(from: self) { oldItem, newItem in
-			areEquivalent(oldItem, newItem)
+		return array_target.difference(from: self) { oldItem, newItem in
+			are_equivalent(oldItem, newItem)
 		}.inferringMoves()
 	}
 	
-	func sortedStably(
-		shouldMaintainOrder: (Element, Element) -> Bool,
-		areInOrder: (Element, Element) -> Bool
+	func sorted_stably(
+		should_maintain_order: (Element, Element) -> Bool,
+		are_in_order: (Element, Element) -> Bool
 	) -> Self {
-		let sortedTuples = enumerated().sorted {
-			if shouldMaintainOrder($0.element, $1.element) {
+		let tuples_sorted = enumerated().sorted {
+			if should_maintain_order($0.element, $1.element) {
 				return $0.offset < $1.offset
 			} else {
-				return areInOrder($0.element, $1.element)
+				return are_in_order($0.element, $1.element)
 			}
 		}
-		return sortedTuples.map { $0.element }
+		return tuples_sorted.map { $0.element }
 	}
 	
-	func allNeighborsSatisfy(
-		_ predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
+	func all_neighbors_satisfy(
+		_ predicate: (_ each_element: Element, _ next_element: Element) -> Bool
 	) -> Bool {
 		let rest = dropFirst() // Empty subsequence if self is empty
-		return allNeighborsSatisfy(first: first, rest: rest, predicate: predicate)
+		return all_neighbors_satisfy(first: first, rest: rest, predicate: predicate)
 		
-		func allNeighborsSatisfy(
+		func all_neighbors_satisfy(
 			first: Element?,
 			rest: ArraySlice<Element>,
-			predicate: (_ eachElement: Element, _ nextElement: Element) -> Bool
+			predicate: (_ each_element: Element, _ next_element: Element) -> Bool
 		) -> Bool {
 			guard let first = first, let second = rest.first else {
 				// We’ve reached the end.
@@ -81,8 +81,8 @@ extension Array {
 				// Test case.
 				return false // Short-circuit.
 			}
-			let newRest = rest.dropFirst()
-			return allNeighborsSatisfy(first: second, rest: newRest, predicate: predicate)
+			let new_rest = rest.dropFirst()
+			return all_neighbors_satisfy(first: second, rest: new_rest, predicate: predicate)
 		}
 	}
 }
@@ -91,7 +91,7 @@ extension Array {
 
 extension NotificationCenter {
 	// Helps callers observe each kind of `Notification` exactly once.
-	final func addObserver_once(_ observer: Any, selector: Selector, name: Notification.Name, object: Any?) {
+	final func add_observer_once(_ observer: Any, selector: Selector, name: Notification.Name, object: Any?) {
 		removeObserver(observer, name: name, object: object)
 		addObserver(observer, selector: selector, name: name, object: object)
 	}
@@ -110,7 +110,7 @@ extension Color {
 
 extension View {
 	// As of iOS 16.6, Apple Music uses this for “Recently Added”.
-	func font_title2Bold() -> some View { font(.title2).bold() }
+	func font_title2_bold() -> some View { font(.title2).bold() }
 	
 	// As of iOS 16.6, Apple Music uses this for the current song title on the “now playing” screen.
 	func font_headline_() -> some View { font(.headline) }
@@ -120,12 +120,12 @@ extension View {
 	 • Genre, release year, and “Lossless” on album details views
 	 • Radio show titles
 	 */
-	func font_caption2Bold() -> some View { font(.caption2).bold() }
+	func font_caption2_bold() -> some View { font(.caption2).bold() }
 	
 	// As of iOS 16.6, Apple Music uses this for artist names on song rows.
 	func font_footnote() -> some View { font(.footnote) }
 	
-	func font_body_dynamicTypeSizeUpToXxxLarge() -> some View {
+	func font_body_dynamicType_up_to_xxxLarge() -> some View {
 		return self
 			.font(.body)
 			.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -137,7 +137,7 @@ extension View {
 import UIKit
 
 extension UIImage {
-	static func randomDie() -> Self {
+	static func random_die() -> Self {
 		return Self(systemName: {
 			switch Int.random(in: 1...6) {
 				case 1: return "die.face.1"
@@ -152,33 +152,33 @@ extension UIImage {
 }
 
 extension UITableView {
-	final func allIndexPaths() -> [IndexPath] {
+	final func indexPaths_all() -> [IndexPath] {
 		return Array(0 ..< numberOfSections).flatMap { section in
-			indexPathsForRows(section: section, firstRow: 0)
+			indexPaths_for_rows(section: section, row_first: 0)
 		}
 	}
-	private func indexPathsForRows(section: Int, firstRow: Int) -> [IndexPath] {
-		let lastRow = numberOfRows(inSection: section) - 1
-		guard lastRow >= 0 else {
+	private func indexPaths_for_rows(section: Int, row_first: Int) -> [IndexPath] {
+		let row_last = numberOfRows(inSection: section) - 1
+		guard row_last >= 0 else {
 			// The section has 0 rows.
 			return []
 		}
-		return (firstRow...lastRow).map { row in
+		return (row_first...row_last).map { row in
 			IndexPath(row: row, section: section)
 		}
 	}
 	
-	final func performBatchUpdates_from_ids<Identifier: Hashable>(
+	final func perform_batch_updates_from_ids<Identifier: Hashable>(
 		old: [Identifier], new: [Identifier],
 		completion: @escaping () -> Void
 	) {
 		let updates = BatchUpdates(old: old, new: new)
 		let section = 0
-		let deletes = updates.oldToDelete.map { IndexPath(row: $0, section: section) }
-		let inserts = updates.newToInsert.map { IndexPath(row: $0, section: section) }
-		let moves = updates.toMove.map { (oldRow, newRow) in
-			(IndexPath(row: oldRow, section: section),
-			 IndexPath(row: newRow, section: section))
+		let deletes = updates.old_to_delete.map { IndexPath(row: $0, section: section) }
+		let inserts = updates.new_to_insert.map { IndexPath(row: $0, section: section) }
+		let moves = updates.to_move.map { (old_row, new_row) in
+			(IndexPath(row: old_row, section: section),
+			 IndexPath(row: new_row, section: section))
 		}
 		performBatchUpdates {
 			// If necessary, call `reloadRows` first.
@@ -189,11 +189,11 @@ extension UITableView {
 		} completion: { _ in completion() }
 	}
 	private struct BatchUpdates {
-		let oldToDelete: [Int]
-		let newToInsert: [Int]
-		let toMove: [(old: Int, new: Int)]
+		let old_to_delete: [Int]
+		let new_to_insert: [Int]
+		let to_move: [(old: Int, new: Int)]
 		init<Identifier: Hashable>(old: [Identifier], new: [Identifier]) {
-			let difference = old.differenceInferringMoves(toMatch: new, by: ==)
+			let difference = old.difference_inferring_moves(to_match: new, by: ==)
 			var deletes: [Int] = []
 			var inserts: [Int] = []
 			var moves: [(Int, Int)] = []
@@ -209,9 +209,9 @@ extension UITableView {
 					guard associated == nil else { return }
 					inserts.append(offset)
 			}}
-			oldToDelete = deletes
-			newToInsert = inserts
-			toMove = moves
+			old_to_delete = deletes
+			new_to_insert = inserts
+			to_move = moves
 		}
 	}
 }

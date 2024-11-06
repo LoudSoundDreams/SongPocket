@@ -6,7 +6,7 @@ import os
 enum Disk {
 	static func save(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let filer = FileManager.default
-		try! filer.createDirectory(at: pFolder, withIntermediateDirectories: true)
+		try! filer.createDirectory(at: path_folder, withIntermediateDirectories: true)
 		
 		let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 		let _serialize = signposter.beginInterval("serialize")
@@ -14,19 +14,19 @@ enum Disk {
 		crates.forEach {
 			output.append(contentsOf: "\($0.title)\n")
 			$0.albums.forEach { album in
-				output.append(contentsOf: "\(tAlbum)\(album.id_album)\n")
+				output.append(contentsOf: "\(t_album)\(album.id_album)\n")
 				album.songs.forEach { song in
-					output.append(contentsOf: "\(ttSong)\(song.id_song)\n")
+					output.append(contentsOf: "\(tt_song)\(song.id_song)\n")
 				}
 			}
 		}
 		signposter.endInterval("serialize", _serialize)
 		let data = Data(output.utf8)
-		try! data.write(to: pFolder.appending(path: cCrates), options: [.atomic, .completeFileProtection])
+		try! data.write(to: path_folder.appending(path: comp_crates), options: [.atomic, .completeFileProtection])
 	}
 	
-	static func loadCrates() -> [LRCrate] {
-		guard let data = try? Data(contentsOf: pFolder.appending(path: cCrates)) else {
+	static func load_crates() -> [LRCrate] {
+		guard let data = try? Data(contentsOf: path_folder.appending(path: comp_crates)) else {
 			// Maybe the file doesn’t exist.
 			return []
 		}
@@ -37,11 +37,11 @@ enum Disk {
 		return Parser(input).crates()
 	}
 	
-	fileprivate static let tAlbum = "\t"
-	fileprivate static let ttSong = "\t\t"
+	fileprivate static let t_album = "\t"
+	fileprivate static let tt_song = "\t\t"
 	
-	private static let pFolder = URL.applicationSupportDirectory.appending(path: "v1/")
-	private static let cCrates = "crates"
+	private static let path_folder = URL.applicationSupportDirectory.appending(path: "v1/")
+	private static let comp_crates = "crates"
 }
 
 struct Parser {
@@ -57,20 +57,20 @@ struct Parser {
 		defer { signposter.endInterval("crates", _crates) }
 		
 		var result: [LRCrate] = []
-		var iLine = 0
-		while iLine < lines.count {
-			let content = lines[iLine]
+		var i_line = 0
+		while i_line < lines.count {
+			let content = lines[i_line]
 			
-			guard isCrate(at: iLine) else {
+			guard is_crate(at: i_line) else {
 				// Not a crate line. Skip it.
-				iLine += 1
+				i_line += 1
 				continue
 			}
 			
-			iLine += 1
-			let (nextILine, albums) = albumsUntilOutdent(from: iLine)
+			i_line += 1
+			let (next_i_line, albums) = albums_until_outdent(from: i_line)
 			
-			iLine = nextILine
+			i_line = next_i_line
 			guard !albums.isEmpty else {
 				// No valid albums for this crate. Skip this crate line.
 				continue
@@ -81,33 +81,33 @@ struct Parser {
 		}
 		return result
 	}
-	private func albumsUntilOutdent(from start: Int) -> (nextILine: Int, [LRAlbum]) {
+	private func albums_until_outdent(from start: Int) -> (next_i_line: Int, [LRAlbum]) {
 		let _albums = signposter.beginInterval("albums")
 		defer { signposter.endInterval("albums", _albums) }
 		
 		var result: [LRAlbum] = []
-		var iLine = start
+		var i_line = start
 		while
-			iLine < lines.count,
-			!isCrate(at: iLine) // Parse albums until outdent.
+			i_line < lines.count,
+			!is_crate(at: i_line) // Parse albums until outdent.
 		{
-			let line = lines[iLine]
-			let content = line.dropFirst(Disk.tAlbum.count)
+			let line = lines[i_line]
+			let content = line.dropFirst(Disk.t_album.count)
 			let mpidAlbum: MPIDAlbum? = MPIDAlbum(String(content))
 			
 			guard
-				isAlbum(at: iLine),
+				is_album(at: i_line),
 				let mpidAlbum
 			else {
 				// Not an album line. Skip it.
-				iLine += 1
+				i_line += 1
 				continue
 			}
 			
-			iLine += 1
-			let (nextILine, songs) = songsUntilOutdent(from: iLine)
+			i_line += 1
+			let (next_i_line, songs) = songs_until_outdent(from: i_line)
 			
-			iLine = nextILine
+			i_line = next_i_line
 			guard !songs.isEmpty else {
 				// No valid songs for this album. Skip this album line.
 				continue
@@ -116,52 +116,52 @@ struct Parser {
 				LRAlbum(id_album: mpidAlbum, songs: songs)
 			)
 		}
-		return (iLine, result)
+		return (i_line, result)
 	}
-	private func songsUntilOutdent(from start: Int) -> (nextILine: Int, [LRSong]) {
+	private func songs_until_outdent(from start: Int) -> (next_i_line: Int, [LRSong]) {
 		let _songs = signposter.beginInterval("songs")
 		defer { signposter.endInterval("songs", _songs) }
 		
 		var result: [LRSong] = []
-		var iLine = start
+		var i_line = start
 		while
-			iLine < lines.count,
-			!isCrate(at: iLine), !isAlbum(at: iLine) // Parse songs until outdent.
+			i_line < lines.count,
+			!is_crate(at: i_line), !is_album(at: i_line) // Parse songs until outdent.
 		{
-			let line = lines[iLine]
-			let content = line.dropFirst(Disk.ttSong.count)
+			let line = lines[i_line]
+			let content = line.dropFirst(Disk.tt_song.count)
 			let mpidSong: MPIDSong? = MPIDSong(String(content))
 			
 			guard
-				isSong(at: iLine),
+				is_song(at: i_line),
 				let mpidSong
 			else {
 				// Not a valid song line. Skip it.
-				iLine += 1
+				i_line += 1
 				continue
 			}
 			
-			iLine += 1
+			i_line += 1
 			result.append(
 				LRSong(id_song: mpidSong)
 			)
 		}
-		return (iLine, result)
+		return (i_line, result)
 	}
 	
-	private func isCrate(at iLine: Int) -> Bool {
+	private func is_crate(at iLine: Int) -> Bool {
 		let line = lines[iLine]
-		return !line.hasPrefix(Disk.tAlbum)
+		return !line.hasPrefix(Disk.t_album)
 	}
-	private func isAlbum(at iLine: Int) -> Bool {
+	private func is_album(at iLine: Int) -> Bool {
 		let line = lines[iLine]
-		return line.count > Disk.tAlbum.count &&
-		line.hasPrefix(Disk.tAlbum) &&
-		!line.hasPrefix(Disk.ttSong)
+		return line.count > Disk.t_album.count &&
+		line.hasPrefix(Disk.t_album) &&
+		!line.hasPrefix(Disk.tt_song)
 	}
-	private func isSong(at iLine: Int) -> Bool {
+	private func is_song(at iLine: Int) -> Bool {
 		let line = lines[iLine]
-		return line.count > Disk.ttSong.count &&
-		line.hasPrefix(Disk.ttSong)
+		return line.count > Disk.tt_song.count &&
+		line.hasPrefix(Disk.tt_song)
 	}
 }

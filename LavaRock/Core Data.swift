@@ -6,8 +6,8 @@ enum ZZZDatabase {
 	@MainActor static let viewContext = container.viewContext
 	
 	static func renumber(_ items: [NSManagedObject]) {
-		items.enumerated().forEach { (currentIndex, item) in
-			item.setValue(Int64(currentIndex), forKey: "index")
+		items.enumerated().forEach { (index, item) in
+			item.setValue(Int64(index), forKey: "index")
 		}
 	}
 	
@@ -42,7 +42,7 @@ enum ZZZDatabase {
 // MARK: - Collection
 
 extension ZZZCollection {
-	fileprivate static func fetchRequest_sorted() -> NSFetchRequest<ZZZCollection> {
+	fileprivate static func fetch_request_sorted() -> NSFetchRequest<ZZZCollection> {
 		let result = fetchRequest()
 		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return result
@@ -58,53 +58,53 @@ extension ZZZCollection {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	final func promote_albums(with idsToPromote: Set<MPIDAlbum>) {
-		var myAlbums = albums(sorted: true)
-		let rsToPromote = myAlbums.indices { idsToPromote.contains($0.albumPersistentID) }
-		guard let front: Int = rsToPromote.ranges.first?.first else { return }
-		let target: Int = (rsToPromote.ranges.count == 1)
+	final func promote_albums(with ids_to_promote: Set<MPIDAlbum>) {
+		var my_albums = albums(sorted: true)
+		let rs_to_promote = my_albums.indices { ids_to_promote.contains($0.albumPersistentID) }
+		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
+		let target: Int = (rs_to_promote.ranges.count == 1)
 		? max(front-1, 0)
 		: front
 		
-		myAlbums.moveSubranges(rsToPromote, to: target)
-		ZZZDatabase.renumber(myAlbums)
-		managedObjectContext!.savePlease()
+		my_albums.moveSubranges(rs_to_promote, to: target)
+		ZZZDatabase.renumber(my_albums)
+		managedObjectContext!.save_please()
 	}
-	final func demoteAlbums(with idsToDemote: Set<MPIDAlbum>) {
-		var myAlbums = albums(sorted: true)
-		let rsToDemote = myAlbums.indices { idsToDemote.contains($0.albumPersistentID) }
-		guard let back: Int = rsToDemote.ranges.last?.last else { return }
-		let target: Int = (rsToDemote.ranges.count == 1)
-		? min(back+1, myAlbums.count-1)
+	final func demote_albums(with ids_to_demote: Set<MPIDAlbum>) {
+		var my_albums = albums(sorted: true)
+		let rs_to_demote = my_albums.indices { ids_to_demote.contains($0.albumPersistentID) }
+		guard let back: Int = rs_to_demote.ranges.last?.last else { return }
+		let target: Int = (rs_to_demote.ranges.count == 1)
+		? min(back+1, my_albums.count-1)
 		: back
 		
-		myAlbums.moveSubranges(rsToDemote, to: target+1) // This method puts the last in-range element before the `to:` index.
-		ZZZDatabase.renumber(myAlbums)
-		managedObjectContext!.savePlease()
+		my_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
+		ZZZDatabase.renumber(my_albums)
+		managedObjectContext!.save_please()
 	}
 	
-	final func float_albums(with idsToFloat: Set<MPIDAlbum>) {
-		var myAlbums = albums(sorted: true)
-		let rsToFloat = myAlbums.indices { idsToFloat.contains($0.albumPersistentID) }
+	final func float_albums(with ids_to_float: Set<MPIDAlbum>) {
+		var my_albums = albums(sorted: true)
+		let rs_to_float = my_albums.indices { ids_to_float.contains($0.albumPersistentID) }
 		
-		myAlbums.moveSubranges(rsToFloat, to: 0)
-		ZZZDatabase.renumber(myAlbums)
-		managedObjectContext!.savePlease()
+		my_albums.moveSubranges(rs_to_float, to: 0)
+		ZZZDatabase.renumber(my_albums)
+		managedObjectContext!.save_please()
 	}
-	final func sink_albums(with idsToSink: Set<MPIDAlbum>) {
-		var myAlbums = albums(sorted: true)
-		let rsToSink = myAlbums.indices { idsToSink.contains($0.albumPersistentID) }
+	final func sink_albums(with ids_to_sink: Set<MPIDAlbum>) {
+		var my_albums = albums(sorted: true)
+		let rs_to_sink = my_albums.indices { ids_to_sink.contains($0.albumPersistentID) }
 		
-		myAlbums.moveSubranges(rsToSink, to: myAlbums.count)
-		ZZZDatabase.renumber(myAlbums)
-		managedObjectContext!.savePlease()
+		my_albums.moveSubranges(rs_to_sink, to: my_albums.count)
+		ZZZDatabase.renumber(my_albums)
+		managedObjectContext!.save_please()
 	}
 }
 
 // MARK: - Album
 
 extension ZZZAlbum {
-	static func fetchRequest_sorted() -> NSFetchRequest<ZZZAlbum> {
+	static func fetch_request_sorted() -> NSFetchRequest<ZZZAlbum> {
 		let result = fetchRequest()
 		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 		return result
@@ -120,7 +120,7 @@ extension ZZZAlbum {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	convenience init?(atBeginningOf collection: ZZZCollection, albumID: MPIDAlbum) {
+	convenience init?(at_beginning_of collection: ZZZCollection, mpidAlbum: MPIDAlbum) {
 		guard let context = collection.managedObjectContext else { return nil }
 		
 		collection.albums(sorted: false).forEach { $0.index += 1 }
@@ -128,56 +128,56 @@ extension ZZZAlbum {
 		self.init(context: context)
 		index = 0
 		container = collection
-		albumPersistentID = albumID
+		albumPersistentID = mpidAlbum
 	}
 	
-	final func promote_songs(with idsToPromote: Set<MPIDSong>) {
-		var mySongs = songs(sorted: true)
-		let rsToPromote = mySongs.indices { idsToPromote.contains($0.persistentID) }
-		guard let front: Int = rsToPromote.ranges.first?.first else { return }
-		let target: Int = (rsToPromote.ranges.count == 1)
+	final func promote_songs(with ids_to_promote: Set<MPIDSong>) {
+		var my_songs = songs(sorted: true)
+		let rs_to_promote = my_songs.indices { ids_to_promote.contains($0.persistentID) }
+		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
+		let target: Int = (rs_to_promote.ranges.count == 1)
 		? max(front-1, 0)
 		: front
 		
-		mySongs.moveSubranges(rsToPromote, to: target)
-		ZZZDatabase.renumber(mySongs)
-		managedObjectContext!.savePlease()
+		my_songs.moveSubranges(rs_to_promote, to: target)
+		ZZZDatabase.renumber(my_songs)
+		managedObjectContext!.save_please()
 	}
-	final func demote_songs(with idsToDemote: Set<MPIDSong>) {
-		var mySongs = songs(sorted: true)
-		let rsToDemote = mySongs.indices { idsToDemote.contains($0.persistentID) }
-		guard let back: Int = rsToDemote.ranges.last?.last else { return }
-		let target: Int = (rsToDemote.ranges.count == 1)
-		? min(back+1, mySongs.count-1)
+	final func demote_songs(with ids_to_demote: Set<MPIDSong>) {
+		var my_songs = songs(sorted: true)
+		let rs_to_demote = my_songs.indices { ids_to_demote.contains($0.persistentID) }
+		guard let back: Int = rs_to_demote.ranges.last?.last else { return }
+		let target: Int = (rs_to_demote.ranges.count == 1)
+		? min(back+1, my_songs.count-1)
 		: back
 		
-		mySongs.moveSubranges(rsToDemote, to: target+1)
-		ZZZDatabase.renumber(mySongs)
-		managedObjectContext!.savePlease()
+		my_songs.moveSubranges(rs_to_demote, to: target+1)
+		ZZZDatabase.renumber(my_songs)
+		managedObjectContext!.save_please()
 	}
 	
-	final func floatSongs(with idsToFloat: Set<MPIDSong>) {
-		var mySongs = songs(sorted: true)
-		let rsToFloat = mySongs.indices { idsToFloat.contains($0.persistentID) }
+	final func floatSongs(with ids_to_float: Set<MPIDSong>) {
+		var my_songs = songs(sorted: true)
+		let rs_to_float = my_songs.indices { ids_to_float.contains($0.persistentID) }
 		
-		mySongs.moveSubranges(rsToFloat, to: 0)
-		ZZZDatabase.renumber(mySongs)
-		managedObjectContext!.savePlease()
+		my_songs.moveSubranges(rs_to_float, to: 0)
+		ZZZDatabase.renumber(my_songs)
+		managedObjectContext!.save_please()
 	}
-	final func sink_songs(with idsToSink: Set<MPIDSong>) {
-		var mySongs = songs(sorted: true)
-		let rsToSink = mySongs.indices { idsToSink.contains($0.persistentID) }
+	final func sink_songs(with ids_to_sink: Set<MPIDSong>) {
+		var my_songs = songs(sorted: true)
+		let rs_to_sink = my_songs.indices { ids_to_sink.contains($0.persistentID) }
 		
-		mySongs.moveSubranges(rsToSink, to: mySongs.count)
-		ZZZDatabase.renumber(mySongs)
-		managedObjectContext!.savePlease()
+		my_songs.moveSubranges(rs_to_sink, to: my_songs.count)
+		ZZZDatabase.renumber(my_songs)
+		managedObjectContext!.save_please()
 	}
 }
 
 // MARK: - Song
 
 extension ZZZSong {
-	convenience init?(atBeginningOf album: ZZZAlbum, songID: MPIDSong) {
+	convenience init?(at_beginning_of album: ZZZAlbum, mpidSong: MPIDSong) {
 		guard let context = album.managedObjectContext else { return nil }
 		
 		album.songs(sorted: false).forEach { $0.index += 1 }
@@ -185,7 +185,7 @@ extension ZZZSong {
 		self.init(context: context)
 		index = 0
 		container = album
-		persistentID = songID
+		persistentID = mpidSong
 	}
 }
 
@@ -193,8 +193,8 @@ extension ZZZSong {
 
 import MusicKit
 extension NSManagedObjectContext {
-	final func printLibrary(referencing: [MusicItemID: MKSection]) {
-		fetchPlease(ZZZCollection.fetchRequest_sorted()).forEach { collection in
+	final func print_library(referencing: [MusicItemID: MKSection]) {
+		fetch_please(ZZZCollection.fetch_request_sorted()).forEach { collection in
 			print(collection.index, collection.title ?? "")
 			
 			collection.albums(sorted: true).forEach { album in
@@ -208,24 +208,19 @@ extension NSManagedObjectContext {
 		}
 	}
 	
-	final func fetchCollection() -> ZZZCollection? {
-		return fetchPlease(ZZZCollection.fetchRequest_sorted()).first
+	final func fetch_collection() -> ZZZCollection? {
+		return fetch_please(ZZZCollection.fetch_request_sorted()).first
 	}
-	final func fetchAlbum(id albumIDToMatch: MPIDAlbum) -> ZZZAlbum? {
-		let request = ZZZAlbum.fetchRequest()
-		request.predicate = NSPredicate(format: "albumPersistentID = %lld", albumIDToMatch)
-		return fetchPlease(request).first
-	}
-	final func fetchSong(mpID: MPIDSong) -> ZZZSong? {
+	final func fetch_song(mpidSong: MPIDSong) -> ZZZSong? {
 		let request = ZZZSong.fetchRequest()
 		// As of Xcode 16.0 RC, `#Predicate` produces the bogus warning: Type 'ReferenceWritableKeyPath<ZZZSong, Int64>' does not conform to the 'Sendable' protocol
 //		request.predicate = NSPredicate(#Predicate<ZZZSong> {
 //			mpID == $0.persistentID
 //		})
-		request.predicate = NSPredicate(format: "persistentID = %lld", mpID)
-		return fetchPlease(request).first
+		request.predicate = NSPredicate(format: "persistentID = %lld", mpidSong)
+		return fetch_please(request).first
 	}
-	final func fetchPlease<T>(_ request: NSFetchRequest<T>) -> [T] {
+	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		do {
 			result = try fetch(request)
@@ -235,7 +230,7 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
-	final func savePlease() {
+	final func save_please() {
 		guard !WorkingOn.plain_database else { return }
 		guard hasChanges else { return }
 		do {
@@ -247,22 +242,22 @@ extension NSManagedObjectContext {
 	
 	// MARK: - Migration
 	
-	final func migrateFromMulticollection() {
+	final func migrate_from_multicollection() {
 		// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
 #if DEBUG
-		//		mockMulticollection()
+		//		mock_multicollection()
 #endif
 		// Move all `Album`s into the first `Collection`, and give it the default title.
 		
-		let all = fetchPlease(ZZZCollection.fetchRequest_sorted())
+		let all = fetch_please(ZZZCollection.fetch_request_sorted())
 		guard let top = all.first else { return }
 		
 		let rest = all.dropFirst()
-		let defaultTitle = InterfaceText._tilde
-		let needsChanges = !rest.isEmpty || (top.title != defaultTitle)
-		guard needsChanges else { return }
+		let title_default = InterfaceText._tilde
+		let needs_changes = !rest.isEmpty || (top.title != title_default)
+		guard needs_changes else { return }
 		
-		top.title = defaultTitle
+		top.title = title_default
 		rest.forEach { collection in
 			collection.albums(sorted: true).forEach { album in
 				album.index = Int64(top.contents?.count ?? 0)
@@ -270,12 +265,12 @@ extension NSManagedObjectContext {
 			}
 			delete(collection)
 		}
-		savePlease()
+		save_please()
 	}
-	private func mockMulticollection() {
-		fetchPlease(ZZZSong.fetchRequest()).forEach { delete($0) }
-		fetchPlease(ZZZAlbum.fetchRequest()).forEach { delete($0) }
-		fetchPlease(ZZZCollection.fetchRequest()).forEach { delete($0) }
+	private func mock_multicollection() {
+		fetch_please(ZZZSong.fetchRequest()).forEach { delete($0) }
+		fetch_please(ZZZAlbum.fetchRequest()).forEach { delete($0) }
+		fetch_please(ZZZCollection.fetchRequest()).forEach { delete($0) }
 		
 		let one = ZZZCollection(context: self)
 		one.index = Int64(0)

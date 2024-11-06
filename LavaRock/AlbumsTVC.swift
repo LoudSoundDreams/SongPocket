@@ -69,7 +69,7 @@ extension AlbumListState {
 	}
 	private static func fresh_albums() -> [ZZZAlbum] {
 		guard MusicAuthorization.currentStatus == .authorized else { return [] }
-		return ZZZDatabase.viewContext.fetchPlease(ZZZAlbum.fetchRequest_sorted())
+		return ZZZDatabase.viewContext.fetch_please(ZZZAlbum.fetch_request_sorted())
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
@@ -345,8 +345,8 @@ final class AlbumsTVC: LibraryTVC {
 	
 	func show_current() {
 		guard
-			let id_song = MPMusicPlayerController.idSongCurrent,
-			let song = ZZZDatabase.viewContext.fetchSong(mpID: id_song),
+			let id_song = MPMusicPlayerController.mpidSong_current,
+			let song = ZZZDatabase.viewContext.fetch_song(mpidSong: id_song),
 			let id_album = song.container?.albumPersistentID
 		else { return }
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
@@ -431,9 +431,9 @@ final class AlbumsTVC: LibraryTVC {
 						let album_activated = song_activated.container
 					else { return }
 					
-					ApplicationMusicPlayer._shared?.playNow(
+					ApplicationMusicPlayer._shared?.play_now(
 						album_activated.songs(sorted: true).map { $0.persistentID },
-						startingAt: song_activated.persistentID)
+						starting_at: song_activated.persistentID)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -522,7 +522,7 @@ final class AlbumsTVC: LibraryTVC {
 						let ids_songs = ids_songs_focused()
 						let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 							guard let self else { return }
-							ApplicationMusicPlayer._shared?.playNow(ids_songs)
+							ApplicationMusicPlayer._shared?.play_now(ids_songs)
 							end_selecting_animated()
 						}
 						if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
@@ -531,9 +531,9 @@ final class AlbumsTVC: LibraryTVC {
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
 						let ids_songs = ids_songs_focused()
-						let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.randomDie()) { [weak self] _ in
+						let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
 							guard let self else { return }
-							ApplicationMusicPlayer._shared?.playNow(ids_songs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+							ApplicationMusicPlayer._shared?.play_now(ids_songs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 							end_selecting_animated()
 						}
 						if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
@@ -544,7 +544,7 @@ final class AlbumsTVC: LibraryTVC {
 						let ids_songs = ids_songs_focused()
 						let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 							guard let self else { return }
-							ApplicationMusicPlayer._shared?.playLater(ids_songs)
+							ApplicationMusicPlayer._shared?.play_later(ids_songs)
 							end_selecting_animated()
 						}
 						if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
@@ -576,7 +576,7 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Sorting
 	
 	private lazy var menu_sections_album_sort: [UIMenu] = {
-		let groups: [[AlbumOrder]] = [[.recentlyAdded, .recentlyReleased], [.random, .reverse]]
+		let groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.random, .reverse]]
 		return groups.map { album_orders in
 			UIMenu(options: .displayInline, children: album_orders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] use in
@@ -600,8 +600,8 @@ final class AlbumsTVC: LibraryTVC {
 				guard rs_selected.ranges.count <= 1 else { return false }
 		}
 		switch album_order {
-			case .random, .reverse, .recentlyAdded: return true
-			case .recentlyReleased: return albums_to_sort().contains {
+			case .random, .reverse, .recently_added: return true
+			case .recently_released: return albums_to_sort().contains {
 				nil != Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._date_released
 			}
 		}
@@ -633,7 +633,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func sort_albums(by album_order: AlbumOrder) {
 		Task {
 			album_order.reindex(albums_to_sort())
-			ZZZDatabase.viewContext.savePlease()
+			ZZZDatabase.viewContext.save_please()
 			list_state.refresh_items()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -641,7 +641,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func sort_songs(by song_order: SongOrder) {
 		Task {
 			song_order.reindex(songs_to_sort())
-			ZZZDatabase.viewContext.savePlease()
+			ZZZDatabase.viewContext.save_please()
 			list_state.refresh_items()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -668,7 +668,7 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			guard
 				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetchCollection()
+				let crate = ZZZDatabase.viewContext.fetch_collection()
 			else { return }
 			crate.promote_albums(with: ids_selected)
 			
@@ -712,9 +712,9 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			guard
 				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetchCollection()
+				let crate = ZZZDatabase.viewContext.fetch_collection()
 			else { return }
-			crate.demoteAlbums(with: ids_selected)
+			crate.demote_albums(with: ids_selected)
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
@@ -758,7 +758,7 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			guard
 				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetchCollection()
+				let crate = ZZZDatabase.viewContext.fetch_collection()
 			else { return }
 			crate.float_albums(with: ids_selected)
 			
@@ -786,7 +786,7 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			guard
 				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetchCollection()
+				let crate = ZZZDatabase.viewContext.fetch_collection()
 			else { return }
 			crate.sink_albums(with: ids_selected)
 			

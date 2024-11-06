@@ -191,10 +191,10 @@ import MediaPlayer
 				return artist_album
 			}())
 			.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
-			.font_caption2Bold()
+			.font_caption2_bold()
 			.accessibilitySortPriority(20)
 			Text(title_and_input_label)
-				.font_title2Bold()
+				.font_title2_bold()
 				.foregroundStyle(sel_dimmed ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Higher means sooner.
 		}
@@ -440,7 +440,7 @@ struct IndicatorNowPlaying: View {
 		let _ = Librarian.shared.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 		guard
 			let state = ApplicationMusicPlayer._shared?.state,
-			id_song == MPMusicPlayerController.idSongCurrent
+			id_song == MPMusicPlayerController.mpidSong_current
 		else { return .not_playing }
 		return (state.playbackStatus == .playing) ? .playing : .paused
 #endif
@@ -468,13 +468,13 @@ struct RectUnselected: View {
 struct ImageOverflowSelected: View {
 	var body: some View {
 		Image(systemName: "ellipsis.circle.fill")
-			.font_body_dynamicTypeSizeUpToXxxLarge()
+			.font_body_dynamicType_up_to_xxxLarge()
 	}
 }
 struct ImageOverflow: View {
 	var body: some View {
 		Image(systemName: "ellipsis.circle.fill")
-			.font_body_dynamicTypeSizeUpToXxxLarge()
+			.font_body_dynamicType_up_to_xxxLarge()
 			.symbolRenderingMode(.hierarchical)
 	}
 }
@@ -482,7 +482,7 @@ struct ImageOverflow: View {
 struct ImageNowPlaying: View {
 	var body: some View {
 		Image(systemName: "waveform")
-			.font_body_dynamicTypeSizeUpToXxxLarge()
+			.font_body_dynamicType_up_to_xxxLarge()
 			.imageScale(.small)
 	}
 }

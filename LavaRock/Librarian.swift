@@ -28,7 +28,7 @@ extension Librarian {
 	func observe_mpLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
-		NotificationCenter.default.addObserver_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
+		NotificationCenter.default.add_observer_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
 		merge_changes()
 	}
 	static let will_merge = Notification.Name("LRMusicLibraryWillMerge")
@@ -136,7 +136,7 @@ extension Librarian {
 		defer { signposter.endInterval("merge", _merge) }
 		
 		let _load = signposter.beginInterval("load")
-//		theCrate = Disk.loadCrates().first
+//		theCrate = Disk.load_crates().first
 		signposter.endInterval("load", _load)
 		
 		let newMKSections: [MKSection] = {
@@ -156,7 +156,7 @@ extension Librarian {
 		let newAlbums: [LRAlbum] = newMKSections.map { mkSection in
 			LRAlbum(rawID: mkSection.id.rawValue, songs: {
 				let mkSongs = mkSection.items.sorted {
-					SongOrder.precedesNumerically(strict: true, $0, $1)
+					SongOrder.precedes_numerically(strict: true, $0, $1)
 				}
 				return mkSongs.map { LRSong(rawID: $0.id.rawValue) }
 			}())
@@ -186,7 +186,7 @@ extension Librarian {
 				let tuples = mediaItems_unsorted.map { info in (info.id_song, info) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let songs_existing: [ZZZSong] = context.fetchPlease(ZZZSong.fetchRequest()) // Not sorted
+			let songs_existing: [ZZZSong] = context.fetch_please(ZZZSong.fetchRequest()) // Not sorted
 			songs_existing.forEach { song_existing in
 				let id_song = song_existing.persistentID
 				if let info_fresh = infos_fresh[id_song] {
@@ -212,7 +212,7 @@ extension Librarian {
 		
 		if WorkingOn.plain_database {
 			let lrCrate: LRCrate? = {
-				guard let zzzCollection = context.fetchCollection() else { return nil }
+				guard let zzzCollection = context.fetch_collection() else { return nil }
 				var lrAlbums: [LRAlbum] = []
 				zzzCollection.albums(sorted: true).forEach { zzzAlbum in
 					var lrSongs: [LRSong] = []
@@ -235,7 +235,7 @@ extension Librarian {
 			
 			Library.shared.lrCrate = lrCrate
 		} else {
-			context.savePlease()
+			context.save_please()
 		}
 	}
 	
@@ -257,7 +257,7 @@ extension Librarian {
 		// To merge `Album`s with the same `albumPersistentID`, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
 		// The one `Album` we’ll keep is the uppermost in the user’s custom order.
 		let topmost_unique: [MPIDAlbum: ZZZAlbum] = {
-			let albums_all = context.fetchPlease(ZZZAlbum.fetchRequest_sorted())
+			let albums_all = context.fetch_please(ZZZAlbum.fetch_request_sorted())
 			let tuples = albums_all.map { ($0.albumPersistentID, $0) }
 			return Dictionary(tuples, uniquingKeysWith: { left, _ in left })
 		}()
@@ -279,7 +279,7 @@ extension Librarian {
 			song.container = destination
 		}
 		
-		context.fetchPlease(ZZZAlbum.fetchRequest()).forEach { album in
+		context.fetch_please(ZZZAlbum.fetchRequest()).forEach { album in
 			if album.contents?.count == 0 {
 				context.delete(album) // WARNING: Leaves gaps in the `Album` indices within each `Collection`, and doesn’t delete empty `Collection`s. Fix those later.
 			}
@@ -316,7 +316,7 @@ extension Librarian {
 			} else {
 				// Otherwise, create the `Album` to move the `Song` to…
 				let collection_existing = song.container!.container!
-				let album_new = ZZZAlbum(atBeginningOf: collection_existing, albumID: id_album_fresh)
+				let album_new = ZZZAlbum(at_beginning_of: collection_existing, mpidAlbum: id_album_fresh)
 				
 				// …and then move the `Song` to that `Album`.
 				song.index = 0
@@ -359,7 +359,7 @@ extension Librarian {
 		}()
 		
 		var albums_existing: [MPIDAlbum: ZZZAlbum] = {
-			let albums_all = context.fetchPlease(ZZZAlbum.fetchRequest())
+			let albums_all = context.fetch_please(ZZZAlbum.fetchRequest())
 			let tuples = albums_all.map { ($0.albumPersistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
@@ -388,22 +388,22 @@ extension Librarian {
 			// …then add the `Song`s to that `Album`.
 			let is_in_default_order: Bool = {
 				let infos_existing: [some InfoSong] = album_existing.songs(sorted: true).compactMap { ZZZSong.InfoSong(MPID: $0.persistentID) }
-				return infos_existing.allNeighborsSatisfy {
+				return infos_existing.all_neighbors_satisfy {
 					SongOrder.__precedes_numerically(strict: true, $0, $1)
 				}
 			}()
 			let ids_songs = infos_new.map { $0.id_song }
 			if is_in_default_order {
 				ids_songs.reversed().forEach {
-					let _ = ZZZSong(atBeginningOf: album_existing, songID: $0)
+					let _ = ZZZSong(at_beginning_of: album_existing, mpidSong: $0)
 				}
 				
 				let songs_in_album = album_existing.songs(sorted: true)
-				let sorted = SongOrder.sortedNumerically(strict: true, songs_in_album)
+				let sorted = SongOrder.sorted_numerically(strict: true, songs_in_album)
 				ZZZDatabase.renumber(sorted)
 			} else {
 				ids_songs.reversed().forEach {
-					let _ = ZZZSong(atBeginningOf: album_existing, songID: $0)
+					let _ = ZZZSong(at_beginning_of: album_existing, mpidSong: $0)
 				}
 			}
 			
@@ -412,7 +412,7 @@ extension Librarian {
 			// Otherwise, create the `Album` to add the `Song`s to…
 			let album_new: ZZZAlbum = {
 				let collection: ZZZCollection = {
-					if let existing = context.fetchCollection() {
+					if let existing = context.fetch_collection() {
 						return existing
 					}
 					let new = ZZZCollection(context: context)
@@ -420,7 +420,7 @@ extension Librarian {
 					new.title = InterfaceText._tilde
 					return new
 				}()
-				return ZZZAlbum(atBeginningOf: collection, albumID: id_album)!
+				return ZZZAlbum(at_beginning_of: collection, mpidAlbum: id_album)!
 			}()
 			
 			// …and then add the `Song`s to that `Album`.
@@ -448,7 +448,7 @@ extension Librarian {
 		
 		// Delete empty containers and reindex everything.
 		
-		guard let collection = context.fetchCollection() else { return }
+		guard let collection = context.fetch_collection() else { return }
 		
 		var albums = collection.albums(sorted: true)
 		albums.indices.reversed().forEach { iAlbum in

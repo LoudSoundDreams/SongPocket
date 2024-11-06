@@ -11,10 +11,10 @@ class SortingTests: XCTestCase {
 			"a", "A", "z", "Z",
 			nil, nil,
 		]
-		XCTAssertTrue(expected.allNeighborsSatisfy { left, right in
+		XCTAssertTrue(expected.all_neighbors_satisfy { left, right in
 			guard let right else { return true }
 			guard let left else { return false }
-			return left.precedesInFinder(right)
+			return left.precedes_in_Finder(right)
 		})
 	}
 	
@@ -47,16 +47,16 @@ class SortingTests: XCTestCase {
 		let before = input.enumerated().map { (offset, name) in
 			Numbered(name: name, id: offset)
 		}
-		let after1 = before.sortedStably {
+		let after1 = before.sorted_stably {
 			$0.name == $1.name
-		} areInOrder: {
+		} are_in_order: {
 			guard let right = $1.name else { return true }
 			guard let left = $0.name else { return false }
 			return left < right //
 		}
-		let after2 = before.sortedStably {
+		let after2 = before.sorted_stably {
 			$0.name == $1.name
-		} areInOrder: {
+		} are_in_order: {
 			guard let right = $1.name else { return true }
 			guard let left = $0.name else { return false }
 			return left <= right //
@@ -64,7 +64,7 @@ class SortingTests: XCTestCase {
 		
 		XCTAssertEqual(expected, after1.map { $0.name })
 		XCTAssertEqual(expected, after2.map { $0.name })
-		XCTAssertTrue(after1.allNeighborsSatisfy { left, right in
+		XCTAssertTrue(after1.all_neighbors_satisfy { left, right in
 			if left.name == right.name {
 				return left.id < right.id
 			} else {
@@ -75,7 +75,7 @@ class SortingTests: XCTestCase {
 				return left.name! < right.name!
 			}
 		})
-		XCTAssertTrue(after2.allNeighborsSatisfy { left, right in
+		XCTAssertTrue(after2.all_neighbors_satisfy { left, right in
 			if left.name == right.name {
 				return left.id < right.id
 			} else {
