@@ -40,7 +40,7 @@ extension Librarian {
 		return InfoAlbum(
 			_title: sim_album.title,
 			_artist: sim_album.artist,
-			_release_date: sim_album.release_date,
+			_date_released: sim_album.date_released,
 			_disc_count: 1
 		)
 #else
@@ -50,7 +50,7 @@ extension Librarian {
 		return InfoAlbum(
 			_title: mkAlbum.title,
 			_artist: mkAlbum.artistName,
-			_release_date: mkAlbum.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
+			_date_released: mkAlbum.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
 			_disc_count: mkSongs.reduce(into: 1) { highest, mkSong in // Bad time complexity
 				if let disc = mkSong.discNumber, disc > highest { highest = disc }
 			}

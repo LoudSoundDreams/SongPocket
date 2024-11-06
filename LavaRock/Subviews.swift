@@ -177,7 +177,7 @@ import MediaPlayer
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text({
-				guard let date = info_album?._release_date
+				guard let date = info_album?._date_released
 				else { return InterfaceText._em_dash }
 				return date.formatted(date: .numeric, time: .omitted)
 			}())

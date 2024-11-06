@@ -602,7 +602,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch album_order {
 			case .random, .reverse, .recentlyAdded: return true
 			case .recentlyReleased: return albums_to_sort().contains {
-				nil != Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._release_date
+				nil != Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._date_released
 			}
 		}
 	}

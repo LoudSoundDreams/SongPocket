@@ -54,7 +54,7 @@ enum AlbumOrder {
 			case .recentlyReleased:
 				let albums_and_dates_released: [(album: ZZZAlbum, date_released: Date?)] = inOriginalOrder.map {(
 					album: $0,
-					date_released: Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._release_date
+					date_released: Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._date_released
 				)}
 				let sorted = albums_and_dates_released.sortedStably {
 					$0.date_released == $1.date_released
