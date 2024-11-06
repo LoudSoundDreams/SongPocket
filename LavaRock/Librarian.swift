@@ -46,12 +46,12 @@ extension Librarian {
 #else
 		guard let mkAlbum = mkSection(mpidAlbum: mpidAlbum)
 		else { return nil }
+		let mkSongs = mkAlbum.items
 		return InfoAlbum(
 			_title: mkAlbum.title,
 			_artist: mkAlbum.artistName,
-			_release_date: mkAlbum.releaseDate,
-			_disc_count: mkAlbum.items.reduce(into: 1) { // Bad time complexity
-				highest, mkSong in
+			_release_date: mkAlbum.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
+			_disc_count: mkSongs.reduce(into: 1) { highest, mkSong in // Bad time complexity
 				if let disc = mkSong.discNumber, disc > highest { highest = disc }
 			}
 		)

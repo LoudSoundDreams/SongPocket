@@ -52,17 +52,17 @@ enum AlbumOrder {
 				}
 				return sorted.map { $0.album }
 			case .recentlyReleased:
-				let albumsAndReleaseDates: [(album: ZZZAlbum, releaseDate: Date?)] = inOriginalOrder.map {(
+				let albums_and_dates_released: [(album: ZZZAlbum, date_released: Date?)] = inOriginalOrder.map {(
 					album: $0,
-					releaseDate: Librarian.shared.mkSection(mpidAlbum: $0.albumPersistentID)?.releaseDate // As of iOS 17.6 developer beta 2, `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest, and `MusicKit.Song.releaseDate` always returns `nil`. At least this matches the date we show in the UI.
+					date_released: Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._release_date
 				)}
-				let sorted = albumsAndReleaseDates.sortedStably {
-					$0.releaseDate == $1.releaseDate
+				let sorted = albums_and_dates_released.sortedStably {
+					$0.date_released == $1.date_released
 				} areInOrder: {
 					// Move unknown release date to the end
-					guard let rightDate = $1.releaseDate else { return true }
-					guard let leftDate = $0.releaseDate else { return false }
-					return leftDate > rightDate
+					guard let date_right = $1.date_released else { return true }
+					guard let date_left = $0.date_released else { return false }
+					return date_left > date_right
 				}
 				return sorted.map { $0.album }
 		}}()

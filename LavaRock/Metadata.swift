@@ -44,15 +44,10 @@ protocol InfoSong {
 
 extension ZZZAlbum {
 	static func date_created(_ mkSongs: any Sequence<MKSong>) -> Date? {
-		return mkSongs.reduce(into: nil) { earliest_so_far, mkSong in
-			let date_added = mkSong.libraryAddedDate
-			guard let earliest = earliest_so_far else {
-				earliest_so_far = date_added
-				return
-			}
-			if let date_added, date_added < earliest {
-				earliest_so_far = date_added
-			}
+		return mkSongs.reduce(into: nil) { result, mkSong in
+			guard let date_added = mkSong.libraryAddedDate else { return }
+			guard let earliest_so_far = result else { result = date_added; return }
+			if date_added < earliest_so_far { result = date_added }
 		}
 	}
 }
