@@ -150,8 +150,8 @@ import MediaPlayer
 				} label: {
 					switch list_state.select_mode {
 						case .select_songs, .view: ImageOverflow()
-						case .select_albums(let idsSelected):
-							if idsSelected.contains(id_album) {
+						case .select_albums(let ids_selected):
+							if ids_selected.contains(id_album) {
 								ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
 							} else {
 								ImageOverflow()
