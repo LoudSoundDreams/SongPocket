@@ -142,29 +142,27 @@ import MediaPlayer
 		HStack(alignment: .lastTextBaseline) {
 			ImageNowPlaying().hidden()
 			stack_text // Align with `SongRow`.
-			if WorkingOn.select_range {
-				Spacer()
-				Menu {
-					b_above
-					b_below
-				} label: {
-					switch list_state.select_mode {
-						case .select_songs, .view: ImageOverflow()
-						case .select_albums(let ids_selected):
-							if ids_selected.contains(id_album) {
-								ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
-							} else {
-								ImageOverflow()
-							}
-					}
+			Spacer()
+			Menu {
+				b_above
+				b_below
+			} label: {
+				switch list_state.select_mode {
+					case .select_songs, .view: ImageOverflow()
+					case .select_albums(let ids_selected):
+						if ids_selected.contains(id_album) {
+							ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
+						} else {
+							ImageOverflow()
+						}
 				}
-				.disabled({
-					switch list_state.expansion {
-						case .expanded: return true
-						case .collapsed: return false
-					}}())
-				.animation(.default, value: list_state.expansion)
 			}
+			.disabled({
+				switch list_state.expansion {
+					case .expanded: return true
+					case .collapsed: return false
+				}}())
+			.animation(.default, value: list_state.expansion)
 		}.padding()
 	}
 	
@@ -243,24 +241,22 @@ import MediaPlayer
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			stack_main
-			if WorkingOn.select_range {
-				Menu {
-					b_above
-					b_below
-				} label: {
-					switch list_state.select_mode {
-						case .select_albums, .view: ImageOverflow()
-						case .select_songs(let ids_selected):
-							if ids_selected.contains(id_song) {
-								ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
-							} else {
-								ImageOverflow()
-							}
-					}
+			Menu {
+				b_above
+				b_below
+			} label: {
+				switch list_state.select_mode {
+					case .select_albums, .view: ImageOverflow()
+					case .select_songs(let ids_selected):
+						if ids_selected.contains(id_song) {
+							ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
+						} else {
+							ImageOverflow()
+						}
 				}
 			}
 		}
-		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * (WorkingOn.select_range ? 7/4 : 2))
+		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 		.background { sel_highlight }
 		.overlay { sel_border }
 		.contentShape(Rectangle())

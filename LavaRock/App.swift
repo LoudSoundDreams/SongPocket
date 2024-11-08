@@ -4,7 +4,6 @@ import SwiftUI
 import MusicKit
 
 enum WorkingOn {
-	static let select_range = 10 == 10
 	static let plain_database = 10 == 1
 }
 
