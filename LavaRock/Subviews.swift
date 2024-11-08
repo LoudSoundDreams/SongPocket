@@ -213,7 +213,10 @@ import MediaPlayer
 			systemImage: "chevron.up.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: false)
-		}.disabled(!list_state.hasAlbumRange(from: id_album, forward: false))
+		}.disabled({
+			return (list_state.signal_sorted_albums && false) || // Always false; including this to make SwiftUI run this code when we need to.
+			!list_state.hasAlbumRange(from: id_album, forward: false)
+		}())
 	}
 	@ViewBuilder private var b_below: some View {
 		Button(
@@ -221,7 +224,10 @@ import MediaPlayer
 			systemImage: "chevron.down.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: true)
-		}.disabled(!list_state.hasAlbumRange(from: id_album, forward: true))
+		}.disabled({
+			return (list_state.signal_sorted_albums && false) ||
+			!list_state.hasAlbumRange(from: id_album, forward: true)
+		}())
 	}
 	private var is_selected: Bool {
 		switch list_state.select_mode {
@@ -378,7 +384,10 @@ import MediaPlayer
 			systemImage: "chevron.up.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: false)
-		}.disabled(!list_state.hasSongRange(from: id_song, forward: false))
+		}.disabled({
+			return (list_state.signal_sorted_songs && false) ||
+			!list_state.hasSongRange(from: id_song, forward: false)
+		}())
 	}
 	@ViewBuilder private var b_below: some View {
 		Button(
@@ -386,7 +395,10 @@ import MediaPlayer
 			systemImage: "chevron.down.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: true)
-		}.disabled(!list_state.hasSongRange(from: id_song, forward: true))
+		}.disabled({
+			return (list_state.signal_sorted_songs && false) ||
+			!list_state.hasSongRange(from: id_song, forward: true)
+		}())
 	}
 	private var is_selected: Bool {
 		switch list_state.select_mode {

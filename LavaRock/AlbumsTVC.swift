@@ -13,6 +13,8 @@ import MediaPlayer
 	var select_mode: SelectMode = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
+	var signal_sorted_albums = false // Value doesn’t actually matter.
+	var signal_sorted_songs = false
 	var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
 extension AlbumListState {
@@ -635,6 +637,7 @@ final class AlbumsTVC: LibraryTVC {
 			album_order.reindex(albums_to_sort())
 			ZZZDatabase.viewContext.save_please()
 			list_state.refresh_items()
+			list_state.signal_sorted_albums.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
@@ -643,6 +646,7 @@ final class AlbumsTVC: LibraryTVC {
 			song_order.reindex(songs_to_sort())
 			ZZZDatabase.viewContext.save_please()
 			list_state.refresh_items()
+			list_state.signal_sorted_songs.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
