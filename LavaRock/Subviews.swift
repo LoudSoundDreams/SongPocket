@@ -144,6 +144,16 @@ import MediaPlayer
 			stack_text // Align with `SongRow`.
 			Spacer()
 			Menu {
+				switch list_state.select_mode {
+					case .select_songs, .select_albums: EmptyView()
+					case .view:
+						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
+							withAnimation {
+								list_state.select_mode = .select_albums([id_album])
+							}
+						}.disabled(Librarian.shared.is_merging)
+						Divider()
+				}
 				b_above
 				b_below
 			} label: {
@@ -250,6 +260,16 @@ import MediaPlayer
 		HStack(alignment: .firstTextBaseline) {
 			stack_main
 			Menu {
+				switch list_state.select_mode {
+					case .select_albums, .select_songs: EmptyView()
+					case .view:
+						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
+							withAnimation {
+								list_state.select_mode = .select_songs([id_song])
+							}
+						}.disabled(Librarian.shared.is_merging)
+						Divider()
+				}
 				b_above
 				b_below
 			} label: {
@@ -479,13 +499,13 @@ struct RectUnselected: View {
 
 struct ImageOverflowSelected: View {
 	var body: some View {
-		Image(systemName: "ellipsis.circle.fill")
+		Image(systemName: "checkmark.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
 	}
 }
 struct ImageOverflow: View {
 	var body: some View {
-		Image(systemName: "ellipsis.circle.fill")
+		Image(systemName: "checkmark.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
 			.symbolRenderingMode(.hierarchical)
 	}
