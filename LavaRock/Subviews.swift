@@ -215,6 +215,7 @@ import MediaPlayer
 			list_state.change_album_range(from: id_album, forward: false)
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) || // Always false; including this to make SwiftUI run this code when we need to.
+			Librarian.shared.is_merging || // TO DO: Change icon to spinner.
 			!list_state.hasAlbumRange(from: id_album, forward: false)
 		}())
 	}
@@ -226,6 +227,7 @@ import MediaPlayer
 			list_state.change_album_range(from: id_album, forward: true)
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) ||
+			Librarian.shared.is_merging ||
 			!list_state.hasAlbumRange(from: id_album, forward: true)
 		}())
 	}
@@ -386,6 +388,7 @@ import MediaPlayer
 			list_state.change_song_range(from: id_song, forward: false)
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
+			Librarian.shared.is_merging ||
 			!list_state.hasSongRange(from: id_song, forward: false)
 		}())
 	}
@@ -397,6 +400,7 @@ import MediaPlayer
 			list_state.change_song_range(from: id_song, forward: true)
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
+			Librarian.shared.is_merging ||
 			!list_state.hasSongRange(from: id_song, forward: true)
 		}())
 	}
