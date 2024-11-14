@@ -225,7 +225,7 @@ final class AlbumsTVC: LibraryTVC {
 		tableView.separatorStyle = .none
 		reflect_selection()
 		b_sort.preferredMenuElementOrder = .fixed
-		b_sort.menu = nil // TO DO
+		b_sort.menu = menu_sort()
 		b_focused.preferredMenuElementOrder = .fixed
 		b_focused.menu = menu_focused()
 		
@@ -338,7 +338,9 @@ final class AlbumsTVC: LibraryTVC {
 		Task {
 			list_state.refresh_items()
 			switch list_state.expansion {
-				case .collapsed: b_focused.menu = menu_focused()
+				case .collapsed:
+					b_sort.menu = menu_sort()
+					b_focused.menu = menu_focused()
 				case .expanded: break // Should never run
 			}
 			guard await apply_ids_rows(list_state.row_identifiers()) else { return }
@@ -367,6 +369,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .collapsed:
 				Task {
 					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+					b_sort.menu = menu_sort()
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers())
 				}
@@ -374,6 +377,7 @@ final class AlbumsTVC: LibraryTVC {
 				Task {
 					guard list_state.albums().contains(where: { id_to_expand == $0.albumPersistentID }) else { return }
 					list_state.refresh_items()
+					b_sort.menu = menu_sort()
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
@@ -391,6 +395,7 @@ final class AlbumsTVC: LibraryTVC {
 			case .view(let id_activated):
 				navigationItem.setRightBarButtonItems([], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
+				b_sort.menu = menu_sort()
 				b_focused.menu = menu_focused()
 				if id_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
@@ -400,12 +405,14 @@ final class AlbumsTVC: LibraryTVC {
 				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
 				b_album_promote.isEnabled = !ids_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
-				b_focused.menu = menu_focused() // In case it’s open.
+				b_sort.menu = menu_sort() // In case it’s open.
+				b_focused.menu = menu_focused()
 			case .select_songs(let ids_selected):
 				navigationItem.setRightBarButtonItems([b_done], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
 				b_song_promote.isEnabled = !ids_selected.isEmpty
 				b_song_demote.isEnabled = b_song_promote.isEnabled
+				b_sort.menu = menu_sort()
 				b_focused.menu = menu_focused()
 		}
 	}
@@ -481,69 +488,83 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Focused
 	
-	private func title_focused() -> String {
+	private func title_focused(always_songs: Bool) -> String {
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
-				return InterfaceText.NUMBER_albums_selected(list_state.albums(with: ids_selected).count)
+				if always_songs {
+					let num_songs_selected: Int = list_state.albums(with: ids_selected).reduce(into: 0) { songs_so_far, selected_album in
+						songs_so_far += selected_album.songs(sorted: false).count
+					}
+					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
+				} else {
+					return InterfaceText.NUMBER_albums_selected(list_state.albums(with: ids_selected).count)
+				}
 			case .select_songs(let ids_selected):
 				return InterfaceText.NUMBER_songs_selected(list_state.songs(with: ids_selected).count)
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
-						return InterfaceText.NUMBER_albums(list_state.albums().count)
+						if always_songs {
+							let num_all_songs: Int = list_state.albums().reduce(into: 0) { songs_so_far, album in
+								songs_so_far += album.songs(sorted: false).count
+							}
+							return InterfaceText.NUMBER_songs(num_all_songs)
+						} else {
+							return InterfaceText.NUMBER_albums(list_state.albums().count)
+						}
 					case .expanded:
 						return InterfaceText.NUMBER_songs(list_state.songs().count)
 				}
 		}
 	}
 	
-	private func menu_focused() -> UIMenu {
-		let menu_sections: [UIMenu] = {
-			var result: [UIMenu] = []
+	private func menu_sort() -> UIMenu? {
+		return UIMenu(title: title_focused(always_songs: false), children: {
 			switch list_state.expansion {
-				case .collapsed: result += menu_sections_album_sort
-				case .expanded: result += menu_sections_song_sort
+				case .collapsed: return menu_sections_album_sort
+				case .expanded: return menu_sections_song_sort
 			}
-			result += [
-				UIMenu(options: .displayInline, children: [
-					UIDeferredMenuElement.uncached { [weak self] use in
+		}())
+	}
+	private func menu_focused() -> UIMenu {
+		let menu_sections: [UIMenu] = [
+			UIMenu(options: .displayInline, children: [
+				UIDeferredMenuElement.uncached { [weak self] use in
+					guard let self else { return }
+					let ids_songs = ids_songs_focused()
+					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 						guard let self else { return }
-						let ids_songs = ids_songs_focused()
-						let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
-							guard let self else { return }
-							ApplicationMusicPlayer._shared?.play_now(ids_songs)
-							end_selecting_animated()
-						}
-						if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
-						use([action])
-					},
-					UIDeferredMenuElement.uncached { [weak self] use in
+						ApplicationMusicPlayer._shared?.play_now(ids_songs)
+						end_selecting_animated()
+					}
+					if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
+					use([action])
+				},
+				UIDeferredMenuElement.uncached { [weak self] use in
+					guard let self else { return }
+					let ids_songs = ids_songs_focused()
+					let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
 						guard let self else { return }
-						let ids_songs = ids_songs_focused()
-						let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
-							guard let self else { return }
-							ApplicationMusicPlayer._shared?.play_now(ids_songs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
-							end_selecting_animated()
-						}
-						if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
-						use([action])
-					},
-					UIDeferredMenuElement.uncached { [weak self] use in
+						ApplicationMusicPlayer._shared?.play_now(ids_songs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+						end_selecting_animated()
+					}
+					if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
+					use([action])
+				},
+				UIDeferredMenuElement.uncached { [weak self] use in
+					guard let self else { return }
+					let ids_songs = ids_songs_focused()
+					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 						guard let self else { return }
-						let ids_songs = ids_songs_focused()
-						let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
-							guard let self else { return }
-							ApplicationMusicPlayer._shared?.play_later(ids_songs)
-							end_selecting_animated()
-						}
-						if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
-						use([action])
-					},
-				]),
-			]
-			return result
-		}()
-		return UIMenu(title: title_focused(), children: menu_sections)
+						ApplicationMusicPlayer._shared?.play_later(ids_songs)
+						end_selecting_animated()
+					}
+					if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
+					use([action])
+				},
+			]),
+		]
+		return UIMenu(title: title_focused(always_songs: true), children: menu_sections)
 	}
 	
 	private func ids_songs_focused() -> [MPIDSong] {
