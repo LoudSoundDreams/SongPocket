@@ -224,11 +224,11 @@ final class AlbumsTVC: LibraryTVC {
 		view.backgroundColor = UIColor(Color(white: .one_eighth))
 		tableView.separatorStyle = .none
 		reflect_selection()
+		b_sort.preferredMenuElementOrder = .fixed
+		b_sort.menu = nil // TO DO
 		b_focused.preferredMenuElementOrder = .fixed
 		b_focused.menu = menu_focused()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.will_merge, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_b_select), name: Librarian.did_merge, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: Librarian.did_merge, object: nil)
 		Remote.shared.tvc_albums = WeakRef(self)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: AlbumListState.expansion_changed, object: list_state)
@@ -389,18 +389,21 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func reflect_selection() {
 		switch list_state.select_mode {
 			case .view(let id_activated):
-				setToolbarItems([b_select, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
+				navigationItem.setRightBarButtonItems([], animated: true)
+				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
 				b_focused.menu = menu_focused()
 				if id_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .select_albums(let ids_selected):
-				setToolbarItems([b_done, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
+				navigationItem.setRightBarButtonItems([b_done], animated: true)
+				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
 				b_album_promote.isEnabled = !ids_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
 				b_focused.menu = menu_focused() // In case it’s open.
 			case .select_songs(let ids_selected):
-				setToolbarItems([b_done, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
+				navigationItem.setRightBarButtonItems([b_done], animated: true)
+				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
 				b_song_promote.isEnabled = !ids_selected.isEmpty
 				b_song_demote.isEnabled = b_song_promote.isEnabled
 				b_focused.menu = menu_focused()
@@ -450,24 +453,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	private lazy var b_select = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Select, image: UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(hierarchicalColor: .tintColor))) { [weak self] _ in
-		guard let self else { return }
-		switch list_state.expansion {
-			case .collapsed:
-				withAnimation {
-					self.list_state.select_mode = .select_albums([])
-				}
-			case .expanded:
-				withAnimation {
-					self.list_state.select_mode = .select_songs([])
-				}
-		}
-	})
-	@objc private func refresh_b_select() {
-		b_select.isEnabled = !Librarian.shared.is_merging
-	}
-	
-	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() })
+	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.square.fill")) { [weak self] _ in self?.end_selecting_animated() })
 	private func end_selecting_animated() {
 		withAnimation {
 			self.list_state.select_mode = .view(nil)

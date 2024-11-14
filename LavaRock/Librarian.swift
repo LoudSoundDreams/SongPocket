@@ -12,9 +12,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
 	private(set) var is_merging = false { didSet {
-		if is_merging {
-			NotificationCenter.default.post(name: Self.will_merge, object: nil)
-		} else {
+		if !is_merging {
 			NotificationCenter.default.post(name: Self.did_merge, object: nil)
 		}
 	}}
@@ -31,7 +29,6 @@ extension Librarian {
 		NotificationCenter.default.add_observer_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
 		merge_changes()
 	}
-	static let will_merge = Notification.Name("LRMusicLibraryWillMerge")
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
 	func infoAlbum(mpidAlbum: MPIDAlbum) -> InfoAlbum? {
 #if targetEnvironment(simulator)
