@@ -158,12 +158,12 @@ import MediaPlayer
 				b_below
 			} label: {
 				switch list_state.select_mode {
-					case .select_songs, .view: ImageOverflow()
+					case .select_songs, .view: IconUnselected()
 					case .select_albums(let ids_selected):
 						if ids_selected.contains(id_album) {
-							ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
+							IconSelected().accessibilityLabel(InterfaceText.Selected)
 						} else {
-							ImageOverflow()
+							IconUnselected()
 						}
 				}
 			}
@@ -274,12 +274,12 @@ import MediaPlayer
 				b_below
 			} label: {
 				switch list_state.select_mode {
-					case .select_albums, .view: ImageOverflow()
+					case .select_albums, .view: IconUnselected()
 					case .select_songs(let ids_selected):
 						if ids_selected.contains(id_song) {
-							ImageOverflowSelected().accessibilityLabel(InterfaceText.Selected)
+							IconSelected().accessibilityLabel(InterfaceText.Selected)
 						} else {
-							ImageOverflow()
+							IconUnselected()
 						}
 				}
 			}
@@ -497,13 +497,13 @@ struct RectUnselected: View {
 	}
 }
 
-struct ImageOverflowSelected: View {
+struct IconSelected: View {
 	var body: some View {
 		Image(systemName: "checkmark.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
 	}
 }
-struct ImageOverflow: View {
+struct IconUnselected: View {
 	var body: some View {
 		Image(systemName: "checkmark.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
