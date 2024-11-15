@@ -140,8 +140,7 @@ import MediaPlayer
 	let list_state: AlbumListState
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
-			ImageNowPlaying().hidden()
-			stack_text // Align with `SongRow`.
+			stack_text
 			Spacer()
 			Menu {
 				switch list_state.select_mode {
@@ -169,7 +168,9 @@ import MediaPlayer
 					case .collapsed: return false
 				}}())
 			.animation(.default, value: list_state.expansion)
-		}.padding()
+		}
+		.padding()
+		.padding(.leading, .eight * 1/2) // Align with `SongRow`.
 	}
 	
 	@ViewBuilder private var stack_text: some View {
@@ -277,6 +278,7 @@ import MediaPlayer
 			}
 		}
 		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
+		.padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 		.background { sel_highlight }
 		.overlay { sel_border }
 		.contentShape(Rectangle())
@@ -305,9 +307,15 @@ import MediaPlayer
 		let title: String? = info_song?._title
 		let info_album: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
 		HStack(alignment: .firstTextBaseline) {
-			IndicatorNowPlaying(id_song: id_song)
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 				Text(title ?? InterfaceText._em_dash)
+					.foregroundStyle({
+						switch Self.status_now_playing(id_song) {
+							case .not_playing: Color.primary
+							case .playing: Color.accentColor
+							case .paused: Color.accentColor.opacity(.one_half)
+						}
+					}())
 				if
 					let artist_song = info_song?._artist,
 					let artist_album = info_album?._artist,
@@ -346,6 +354,25 @@ import MediaPlayer
 			mkSong = await librarian.mkSong_fetched(mpidSong: id_song)
 		}
 	}
+	
+	@MainActor private static func status_now_playing(_ id: MPIDSong) -> StatusNowPlaying {
+#if targetEnvironment(simulator)
+		guard id == Sim_MusicLibrary.shared.sim_song_current?.id_song
+		else { return .not_playing }
+		return .playing
+#else
+		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
+		let _ = PlayerState.shared.signal
+		let _ = Librarian.shared.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
+		guard
+			let state = ApplicationMusicPlayer._shared?.state,
+			id == MPMusicPlayerController.mpidSong_current
+		else { return .not_playing }
+		return (state.playbackStatus == .playing) ? .playing : .paused
+#endif
+	}
+	private enum StatusNowPlaying { case not_playing, paused, playing }
+	
 	@State private var mkSong: MKSong? = nil
 	private let librarian: Librarian = .shared
 	
@@ -424,54 +451,6 @@ import MediaPlayer
 	}
 }
 
-// MARK: Now-playing indicator
-
-struct IndicatorNowPlaying: View {
-	let id_song: MPIDSong
-	var body: some View {
-		ZStack {
-			ImageNowPlaying().hidden()
-			switch status {
-				case .not_playing: EmptyView()
-				case .paused:
-					ImageNowPlaying()
-						.foregroundStyle(.tint)
-						.disabled(true)
-				case .playing:
-					ImageNowPlaying()
-						.foregroundStyle(.tint)
-			}
-		}
-		.accessibilityElement()
-		.accessibilityLabel({ switch status {
-			case .not_playing: return ""
-			case .paused: return InterfaceText.Paused
-			case .playing: return InterfaceText.Now_Playing
-		}}())
-		.accessibilityHidden({ switch status {
-			case .paused, .playing: return false
-			case .not_playing: return true
-		}}())
-	}
-	@MainActor private var status: Status {
-#if targetEnvironment(simulator)
-		guard id_song == Sim_MusicLibrary.shared.sim_song_current?.id_song
-		else { return .not_playing }
-		return .playing
-#else
-		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
-		let _ = PlayerState.shared.signal
-		let _ = Librarian.shared.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
-		guard
-			let state = ApplicationMusicPlayer._shared?.state,
-			id_song == MPMusicPlayerController.mpidSong_current
-		else { return .not_playing }
-		return (state.playbackStatus == .playing) ? .playing : .paused
-#endif
-	}
-	private enum Status { case not_playing, paused, playing }
-}
-
 // MARK: - Multipurpose
 
 struct RectSelected: View {
@@ -503,13 +482,5 @@ struct IconUnselected: View {
 			.symbolRenderingMode(.hierarchical)
 			.accessibilityLabel(InterfaceText.Select)
 			.accessibilityRemoveTraits(.isSelected)
-	}
-}
-
-struct ImageNowPlaying: View {
-	var body: some View {
-		Image(systemName: "waveform")
-			.font_body_dynamicType_up_to_xxxLarge()
-			.imageScale(.small)
 	}
 }
