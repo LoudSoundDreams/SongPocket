@@ -157,14 +157,10 @@ import MediaPlayer
 				b_above
 				b_below
 			} label: {
-				switch list_state.select_mode {
-					case .select_songs, .view: IconUnselected()
-					case .select_albums(let ids_selected):
-						if ids_selected.contains(id_album) {
-							IconSelected().accessibilityLabel(InterfaceText.Selected)
-						} else {
-							IconUnselected()
-						}
+				if is_selected {
+					IconSelected().accessibilityLabel(InterfaceText.Selected)
+				} else {
+					IconUnselected()
 				}
 			}
 			.disabled({
@@ -273,14 +269,10 @@ import MediaPlayer
 				b_above
 				b_below
 			} label: {
-				switch list_state.select_mode {
-					case .select_albums, .view: IconUnselected()
-					case .select_songs(let ids_selected):
-						if ids_selected.contains(id_song) {
-							IconSelected().accessibilityLabel(InterfaceText.Selected)
-						} else {
-							IconUnselected()
-						}
+				if is_selected {
+					IconSelected().accessibilityLabel(InterfaceText.Selected)
+				} else {
+					IconUnselected()
 				}
 			}
 		}

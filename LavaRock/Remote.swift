@@ -75,7 +75,7 @@ extension PlayerState {
 			return ""
 		}
 		guard nil != ZZZDatabase.viewContext.fetch_collection() else {
-			return InterfaceText._message_empty
+			return InterfaceText._empty_library_message
 		}
 		return ""
 	}
