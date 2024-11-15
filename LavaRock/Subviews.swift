@@ -158,7 +158,7 @@ import MediaPlayer
 				b_below
 			} label: {
 				if is_selected {
-					IconSelected().accessibilityLabel(InterfaceText.Selected)
+					IconSelected()
 				} else {
 					IconUnselected()
 				}
@@ -270,7 +270,7 @@ import MediaPlayer
 				b_below
 			} label: {
 				if is_selected {
-					IconSelected().accessibilityLabel(InterfaceText.Selected)
+					IconSelected()
 				} else {
 					IconUnselected()
 				}
@@ -493,6 +493,7 @@ struct IconSelected: View {
 	var body: some View {
 		Image(systemName: "checkmark.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
+			.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.2 developer beta 3, VoiceOver automatically adds “Selected” because of the SF Symbol.
 	}
 }
 struct IconUnselected: View {
@@ -500,6 +501,8 @@ struct IconUnselected: View {
 		Image(systemName: "checkmark.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
 			.symbolRenderingMode(.hierarchical)
+			.accessibilityLabel(InterfaceText.Select)
+			.accessibilityRemoveTraits(.isSelected)
 	}
 }
 
