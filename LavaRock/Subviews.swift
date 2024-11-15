@@ -217,7 +217,7 @@ import MediaPlayer
 	@ViewBuilder private var b_above: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
-			systemImage: "chevron.up.circle"
+			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: false)
 		}.disabled({
@@ -229,7 +229,7 @@ import MediaPlayer
 	@ViewBuilder private var b_below: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
-			systemImage: "chevron.down.circle"
+			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: true)
 		}.disabled({
@@ -422,7 +422,7 @@ import MediaPlayer
 	@ViewBuilder private var b_above: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
-			systemImage: "chevron.up.circle"
+			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: false)
 		}.disabled({
@@ -434,7 +434,7 @@ import MediaPlayer
 	@ViewBuilder private var b_below: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
-			systemImage: "chevron.down.circle"
+			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: true)
 		}.disabled({
