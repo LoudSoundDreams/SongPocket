@@ -246,7 +246,10 @@ final class AlbumsTVC: LibraryTVC {
 		contentUnavailableConfiguration = {
 			guard MusicAuthorization.currentStatus == .authorized else {
 				return UIHostingConfiguration {
-					ContentUnavailableView {} description: { Text(InterfaceText._message_welcome)
+					ContentUnavailableView {
+						Text(InterfaceText._welcome_title).font_title2_bold()
+					} description: {
+						Text(InterfaceText._welcome_subtitle)
 					} actions: {
 						Button(InterfaceText.Continue) {
 							Task {

@@ -20,7 +20,8 @@ enum InterfaceText {
 	static let Paused = "Paused"
 	static let Apple_Music = "Apple Music"
 	
-	static let _message_welcome = "SongPocket shows and plays your Apple Music library."
+	static let _welcome_title = "Hi!"
+	static let _welcome_subtitle = "SongPocket shows and plays your Apple Music library."
 	static let _empty_library_message = "Add music to your Apple Music library."
 	static func NUMBER_albums_selected(_ num: Int) -> String {
 		let fNum = num.formatted()
