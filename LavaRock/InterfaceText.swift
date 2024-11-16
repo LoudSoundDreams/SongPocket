@@ -90,8 +90,8 @@ enum InterfaceText {
 	static let Deselect_Range_Below = "Deselect Range Below"
 	
 	static let Sort = "Sort"
-	static let Recently_Added = "Recently Added"
-	static let Recently_Released = "Recently Released"
+	static let Recently_Added = "Date Added"
+	static let Recently_Released = "Date Released"
 	static let Track_Number = "Track Number"
 	static let Shuffle = "Shuffle"
 	static let Reverse = "Reverse"
