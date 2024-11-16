@@ -277,8 +277,8 @@ import MediaPlayer
 				}
 			}
 		}
-		.padding(.horizontal).padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
-		.padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
+		.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
+		.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 		.background { sel_highlight }
 		.overlay { sel_border }
 		.contentShape(Rectangle())
