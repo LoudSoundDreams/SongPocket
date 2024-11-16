@@ -280,10 +280,17 @@ import MediaPlayer
 		.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 		.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 		.background { sel_highlight }
+		.background(alignment: .bottom) {
+			Rectangle()
+				.foregroundStyle(Color(white: .one_fourth))
+				.frame(maxWidth: .infinity, maxHeight: 1 * points_per_pixel)
+				.padding(.horizontal).padding(.leading, .eight * 1/2)
+		}
 		.overlay { sel_border }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
+	@Environment(\.pixelLength) private var points_per_pixel
 	@ViewBuilder private var stack_main: some View {
 		let info_song: InfoSong__? = {
 #if targetEnvironment(simulator)
