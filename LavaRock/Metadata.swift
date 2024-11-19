@@ -164,21 +164,20 @@ private extension Date {
 	}
 	private static let demo_albums: [DemoAlbum] = [
 		DemoAlbum(
-			title: "Dawn",
+			title: "Hillside",
 			artist: "Wanderer",
 			release_date: .strategy(iso8601_10char: "2024-05-31"),
-			art_file_name: "city",
-			
+			art_file_name: "field",
 			tracks: [
 				.init("Magic"),
 				.init("Robot"),
 				.init("Last"),
 			]),
 		DemoAlbum(
-			title: "Hillside",
+			title: "Dawn",
 			artist: "Wanderer",
 			release_date: .strategy(iso8601_10char: "2024-03-31"),
-			art_file_name: "field",
+			art_file_name: "city",
 			tracks: [
 				.init("Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.", artist: "Tony Harnell"),
 			]),
