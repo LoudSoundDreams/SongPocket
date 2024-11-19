@@ -57,16 +57,26 @@ extension Librarian {
 	func mkSection(mpidAlbum: MPIDAlbum) -> MKSection? {
 		return mkSections[MusicItemID(String(mpidAlbum))]
 	}
-	func mkSong_fetched(mpidSong: MPIDSong) async -> MKSong? { // Slow; 11ms in 2024.
+	func mkSong(mpidSong: MPIDSong) async -> MKSong? {
+		let mkID = MusicItemID(String(mpidSong))
+		if let cached = mkSongs[mkID] { return cached }
+		
+		await cache_mkSong(mpidSong: mpidSong)
+		
+		return mkSongs[mkID]
+	}
+	func cache_mkSong(mpidSong: MPIDSong) async { // Slow; 11ms in 2024.
+		let mkID = MusicItemID(String(mpidSong))
+		
 		var request = MusicLibraryRequest<MKSong>()
-		request.filter(matching: \.id, equalTo: MusicItemID(String(mpidSong)))
+		request.filter(matching: \.id, equalTo: mkID)
 		guard
 			let response = try? await request.response(),
 			response.items.count == 1,
 			let mkSong = response.items.first
-		else { return nil }
+		else { return }
 		
-		return mkSong
+		mkSongs[mkID] = mkSong
 	}
 	static func open_Apple_Music() {
 		guard let url = URL(string: "music://") else { return }

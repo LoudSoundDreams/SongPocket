@@ -294,16 +294,21 @@ import MediaPlayer
 	@ViewBuilder private var stack_main: some View {
 		let info_song: InfoSong__? = {
 #if targetEnvironment(simulator)
-			guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song]
-			else { return nil }
+			guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
+				Task { await librarian.cache_mkSong(mpidSong: id_song) }
+				return nil
+			}
 			return InfoSong__(
 				_title: sim_song.title_on_disk ?? "",
 				_artist: "",
 				_disc: 1,
 				_track: sim_song.track_number_on_disk)
 #else
-			guard let mkSong
-			else { return nil }
+			guard let mkSong = librarian.mkSongs[MusicItemID(String(id_song))] else {
+				Task { await librarian.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
+				// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
+				return nil
+			}
 			return InfoSong__(
 				_title: mkSong.title,
 				_artist: mkSong.artistName,
@@ -357,9 +362,6 @@ import MediaPlayer
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
-		.task {
-			mkSong = await librarian.mkSong_fetched(mpidSong: id_song)
-		}
 	}
 	
 	@MainActor private static func status_now_playing(_ id: MPIDSong) -> StatusNowPlaying {
@@ -380,7 +382,6 @@ import MediaPlayer
 	}
 	private enum StatusNowPlaying { case not_playing, paused, playing }
 	
-	@State private var mkSong: MKSong? = nil
 	private let librarian: Librarian = .shared
 	
 	@ViewBuilder private var sel_highlight: some View {
