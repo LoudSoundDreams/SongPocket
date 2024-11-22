@@ -138,6 +138,7 @@ import MediaPlayer
 @MainActor struct AlbumLabel: View {
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
+	private let librarian: Librarian = .shared
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
 			stack_text
@@ -150,7 +151,7 @@ import MediaPlayer
 							withAnimation {
 								list_state.select_mode = .select_albums([id_album])
 							}
-						}.disabled(Librarian.shared.is_merging)
+						}.disabled(librarian.is_merging)
 						Divider()
 				}
 				b_above
@@ -174,7 +175,7 @@ import MediaPlayer
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let info_album: InfoAlbum? = Librarian.shared.infoAlbum(mpidAlbum: id_album)
+		let info_album: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
 		let title_and_input_label: String = {
 			guard let title_album = info_album?._title, title_album != ""
 			else { return InterfaceText.Unknown_Album }
@@ -219,7 +220,7 @@ import MediaPlayer
 			list_state.change_album_range(from: id_album, forward: false)
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) || // Always false; including this to make SwiftUI run this code when we need to.
-			Librarian.shared.is_merging || // TO DO: Change icon to spinner.
+			librarian.is_merging || // TO DO: Change icon to spinner.
 			!list_state.hasAlbumRange(from: id_album, forward: false)
 		}())
 	}
@@ -231,7 +232,7 @@ import MediaPlayer
 			list_state.change_album_range(from: id_album, forward: true)
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) ||
-			Librarian.shared.is_merging ||
+			librarian.is_merging ||
 			!list_state.hasAlbumRange(from: id_album, forward: true)
 		}())
 	}
@@ -250,6 +251,7 @@ import MediaPlayer
 	let id_song: MPIDSong
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
+	private let librarian: Librarian = .shared
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			stack_main
@@ -261,7 +263,7 @@ import MediaPlayer
 							withAnimation {
 								list_state.select_mode = .select_songs([id_song])
 							}
-						}.disabled(Librarian.shared.is_merging)
+						}.disabled(librarian.is_merging)
 						Divider()
 				}
 				b_above
@@ -379,8 +381,6 @@ import MediaPlayer
 	}
 	private enum StatusNowPlaying { case not_playing, paused, playing }
 	
-	private let librarian: Librarian = .shared
-	
 	@ViewBuilder private var sel_highlight: some View {
 		let highlighting: Bool = { switch list_state.select_mode {
 			case .select_albums: return false
@@ -432,7 +432,7 @@ import MediaPlayer
 			list_state.change_song_range(from: id_song, forward: false)
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
-			Librarian.shared.is_merging ||
+			librarian.is_merging ||
 			!list_state.hasSongRange(from: id_song, forward: false)
 		}())
 	}
@@ -444,7 +444,7 @@ import MediaPlayer
 			list_state.change_song_range(from: id_song, forward: true)
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
-			Librarian.shared.is_merging ||
+			librarian.is_merging ||
 			!list_state.hasSongRange(from: id_song, forward: true)
 		}())
 	}
