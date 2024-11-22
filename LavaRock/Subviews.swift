@@ -183,9 +183,8 @@ import MediaPlayer
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			if let date = info_album?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
+					.font(.caption2).monospacedDigit()
 					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
-					.font(.caption2)
-					.monospacedDigit()
 					.accessibilitySortPriority(10)
 			}
 			Text({
@@ -193,8 +192,8 @@ import MediaPlayer
 				else { return InterfaceText.Unknown_Artist }
 				return artist_album
 			}())
-			.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
 			.font_caption2_bold()
+			.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
 			.accessibilitySortPriority(20)
 			Text(title_and_input_label)
 				.font_title2_bold()
@@ -454,39 +453,5 @@ import MediaPlayer
 			case .select_albums, .view: return false
 			case .select_songs(let ids_selected): return ids_selected.contains(id_song)
 		}
-	}
-}
-
-// MARK: - Multipurpose
-
-struct RectSelected: View {
-	var body: some View {
-		Rectangle()
-			.strokeBorder(lineWidth: .eight)
-			.foregroundStyle(.tint.opacity(.one_half))
-	}
-}
-struct RectUnselected: View {
-	var body: some View {
-		Rectangle()
-			.strokeBorder(lineWidth: .eight)
-			.foregroundStyle(Material.ultraThin)
-	}
-}
-
-struct IconSelected: View {
-	var body: some View {
-		Image(systemName: "checkmark.circle.fill")
-			.font_body_dynamicType_up_to_xxxLarge()
-			.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.2 developer beta 3, VoiceOver automatically adds “Selected” because of the SF Symbol.
-	}
-}
-struct IconUnselected: View {
-	var body: some View {
-		Image(systemName: "checkmark.circle.fill")
-			.font_body_dynamicType_up_to_xxxLarge()
-			.symbolRenderingMode(.hierarchical)
-			.accessibilityLabel(InterfaceText.Select)
-			.accessibilityRemoveTraits(.isSelected)
 	}
 }
