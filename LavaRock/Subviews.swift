@@ -181,15 +181,13 @@ import MediaPlayer
 			return title_album
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
-			Text({
-				guard let date = info_album?._date_released
-				else { return InterfaceText._em_dash }
-				return date.formatted(date: .numeric, time: .omitted)
-			}())
-			.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
-			.font(.caption2)
-			.monospacedDigit()
-			.accessibilitySortPriority(10)
+			if let date = info_album?._date_released {
+				Text(date.formatted(date: .numeric, time: .omitted))
+					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
+					.font(.caption2)
+					.monospacedDigit()
+					.accessibilitySortPriority(10)
+			}
 			Text({
 				guard let artist_album = info_album?._artist, artist_album != ""
 				else { return InterfaceText.Unknown_Artist }
