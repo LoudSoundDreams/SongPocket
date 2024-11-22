@@ -198,6 +198,10 @@ import MediaPlayer
 			.accessibilitySortPriority(20)
 			Text(title_and_input_label)
 				.font_title2_bold()
+				.foregroundStyle({
+					if sel_dimmed { return Color.secondary }
+					return ApplicationMusicPlayer.StatusNowPlaying(mpidAlbum: id_album).foreground_color
+				}())
 				.foregroundStyle(sel_dimmed ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Higher means sooner.
 		}
@@ -321,11 +325,9 @@ import MediaPlayer
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 				Text(title ?? InterfaceText._em_dash)
 					.foregroundStyle({
-						switch Self.status_now_playing(id_song) {
-							case .not_playing: Color.primary
-							case .playing: Color.accentColor
-							case .paused: Color.accentColor.opacity(.one_half)
-						}
+						let _ = PlayerState.shared.signal
+						let _ = librarian.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
+						return ApplicationMusicPlayer.StatusNowPlaying(mpidSong: id_song).foreground_color
 					}())
 				if
 					let artist_song = info_song?._artist,
@@ -362,24 +364,6 @@ import MediaPlayer
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
 	}
-	
-	@MainActor private static func status_now_playing(_ id: MPIDSong) -> StatusNowPlaying {
-#if targetEnvironment(simulator)
-		guard id == Sim_MusicLibrary.shared.sim_song_current?.id_song
-		else { return .not_playing }
-		return .playing
-#else
-		// I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request this instance’s MusicKit `Song`, but that requires `await`ing.
-		let _ = PlayerState.shared.signal
-		let _ = Librarian.shared.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
-		guard
-			let state = ApplicationMusicPlayer._shared?.state,
-			id == MPMusicPlayerController.mpidSong_current
-		else { return .not_playing }
-		return (state.playbackStatus == .playing) ? .playing : .paused
-#endif
-	}
-	private enum StatusNowPlaying { case not_playing, paused, playing }
 	
 	@ViewBuilder private var sel_highlight: some View {
 		let highlighting: Bool = { switch list_state.select_mode {

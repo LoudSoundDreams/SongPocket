@@ -1,6 +1,7 @@
 // 2022-03-19
 
 import MusicKit
+import SwiftUI
 
 @MainActor extension ApplicationMusicPlayer {
 	static var _shared: ApplicationMusicPlayer? {
@@ -58,6 +59,44 @@ import MusicKit
 			
 			let rumbler = UINotificationFeedbackGenerator()
 			rumbler.notificationOccurred(.success)
+		}
+	}
+	
+	@MainActor enum StatusNowPlaying {
+		case not_playing, paused, playing
+		init(mpidSong: MPIDSong) {
+#if targetEnvironment(simulator)
+			guard mpidSong == Sim_MusicLibrary.shared.sim_song_current?.id_song
+			else { self = .not_playing; return }
+			self = .playing
+#else
+			guard
+				mpidSong == MPMusicPlayerController.mpidSong_current, // I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request the MusicKit `Song` with this `MPIDSong`, but that requires `await`ing.
+				let state = _shared?.state
+			else { self = .not_playing; return }
+			switch state.playbackStatus {
+				case .playing:
+					self = .playing
+				case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward:
+					self = .paused
+				@unknown default:
+					self = .paused
+			}
+#endif
+		}
+		init(mpidAlbum: MPIDAlbum) {
+#if targetEnvironment(simulator)
+			self = .not_playing
+#else
+			self = .not_playing
+#endif
+		}
+		var foreground_color: Color {
+			switch self {
+				case .not_playing: return Color.primary
+				case .playing: return Color.accentColor
+				case .paused: return Color.accentColor.opacity(.one_half)
+			}
 		}
 	}
 }
