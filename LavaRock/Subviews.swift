@@ -188,14 +188,12 @@ import MediaPlayer
 					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
 					.accessibilitySortPriority(10)
 			}
-			Text({
-				guard let artist_album = info_album?._artist, artist_album != ""
-				else { return InterfaceText.Unknown_Artist }
-				return artist_album
-			}())
-			.font_caption2_bold()
-			.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
-			.accessibilitySortPriority(20)
+			if let artist_album = info_album?._artist, artist_album != "" {
+				Text(artist_album)
+					.font_caption2_bold()
+					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
+					.accessibilitySortPriority(20)
+			}
 			Text(title_and_input_label)
 				.font_title2_bold()
 				.foregroundStyle({

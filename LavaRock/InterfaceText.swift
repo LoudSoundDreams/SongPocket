@@ -14,7 +14,6 @@ enum InterfaceText {
 	static let _em_dash = "—"
 	static let _tilde = "~"
 	
-	static let Unknown_Artist = "Unknown Artist"
 	static let Unknown_Album = "Unknown Album"
 	static let Now_Playing = "Now Playing"
 	static let Paused = "Paused"
