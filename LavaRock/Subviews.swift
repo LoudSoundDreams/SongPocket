@@ -341,7 +341,7 @@ import MediaPlayer
 				}
 			}
 			Spacer()
-			Text({
+			Text({ () -> String in
 				guard let info_song, let info_album else { return InterfaceText._octothorpe }
 				let f_track: String = {
 					guard let track = info_song._track else { return InterfaceText._octothorpe }
