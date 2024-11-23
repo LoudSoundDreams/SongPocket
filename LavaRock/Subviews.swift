@@ -178,7 +178,7 @@ import MediaPlayer
 		let info_album: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
 		let title_and_input_label: String = {
 			guard let title_album = info_album?._title, title_album != ""
-			else { return InterfaceText.Unknown_Album }
+			else { return InterfaceText._tilde }
 			return title_album
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
@@ -321,7 +321,7 @@ import MediaPlayer
 		let info_album: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
 		HStack(alignment: .firstTextBaseline) {
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
-				Text(title ?? InterfaceText._em_dash)
+				Text(title ?? InterfaceText._tilde)
 					.foregroundStyle({
 						let _ = PlayerState.shared.signal
 						let _ = librarian.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.

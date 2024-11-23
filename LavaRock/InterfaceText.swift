@@ -11,10 +11,8 @@ enum InterfaceText {
 	
 	static let _interpunct = "·"
 	static let _octothorpe = "#"
-	static let _em_dash = "—"
 	static let _tilde = "~"
 	
-	static let Unknown_Album = "Unknown Album"
 	static let Now_Playing = "Now Playing"
 	static let Paused = "Paused"
 	static let Apple_Music = "Apple Music"
