@@ -122,6 +122,7 @@ import MediaPlayer
 					Image(systemName: "music.note")
 						.foregroundStyle(.secondary)
 						.font(.title)
+						.accessibilityLabel(InterfaceText.no_artwork)
 				}
 			}
 #endif

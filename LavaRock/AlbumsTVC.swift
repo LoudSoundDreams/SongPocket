@@ -276,6 +276,8 @@ final class AlbumsTVC: LibraryTVC {
 					Image(systemName: "music.note")
 						.foregroundStyle(Color.white_one_half)
 						.font(.title)
+						.accessibilityLabel(InterfaceText.no_music)
+						.accessibilityRemoveTraits(.isImage)
 				}.margins(.all, .zero)
 			}
 			return nil
