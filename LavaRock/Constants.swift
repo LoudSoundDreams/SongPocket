@@ -15,6 +15,27 @@ extension Color {
 	static var white_one_eighth: Color { Color(white: .one_eighth) }
 	static var white_one_fourth: Color { Color(white: .one_fourth) }
 }
+extension View {
+	// As of iOS 16.6, Apple Music uses this for “Recently Added”.
+	func font_title2_bold() -> some View { font(.title2).bold() }
+	
+	// As of iOS 16.6, Apple Music uses this for the current song title on the “now playing” screen.
+	func font_headline() -> some View { font(.headline) }
+	
+	/*
+	 As of iOS 16.6, Apple Music uses this for…
+	 • Genre, release year, and “Lossless” on album details views
+	 • Radio show titles
+	 */
+	func font_caption2_bold() -> some View { font(.caption2).bold() }
+	
+	// As of iOS 16.6, Apple Music uses this for artist names on song rows.
+	func font_footnote() -> some View { font(.footnote) }
+	
+	func font_body_dynamicType_up_to_xxxLarge() -> some View {
+		font(.body).dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+	}
+}
 
 /*
  extension UserDefaults {
