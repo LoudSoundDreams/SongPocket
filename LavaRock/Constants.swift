@@ -5,10 +5,15 @@ extension Double {
 	static var one_fourth: Self { 1/4 }
 	static var one_half: Self { 1/2 }
 }
-import CoreGraphics
 extension CGFloat {
 	static var one_half: Self { 1/2 }
 	static var eight: Self { 8 }
+}
+
+import SwiftUI
+extension Color {
+	static var white_one_eighth: Color { Color(white: .one_eighth) }
+	static var white_one_fourth: Color { Color(white: .one_fourth) }
 }
 
 /*

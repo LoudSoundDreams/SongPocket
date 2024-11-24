@@ -113,7 +113,7 @@ extension View {
 	func font_title2_bold() -> some View { font(.title2).bold() }
 	
 	// As of iOS 16.6, Apple Music uses this for the current song title on the “now playing” screen.
-	func font_headline_() -> some View { font(.headline) }
+	func font_headline() -> some View { font(.headline) }
 	
 	/*
 	 As of iOS 16.6, Apple Music uses this for…
@@ -126,9 +126,7 @@ extension View {
 	func font_footnote() -> some View { font(.footnote) }
 	
 	func font_body_dynamicType_up_to_xxxLarge() -> some View {
-		return self
-			.font(.body)
-			.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+		font(.body).dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 	}
 }
 

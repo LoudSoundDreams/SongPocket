@@ -117,7 +117,7 @@ import MediaPlayer
 				ArtworkImage(artwork, width: dim_limit)
 			} else {
 				ZStack {
-					Color(white: .one_fourth)
+					Color.white_one_fourth
 						.frame(width: dim_limit, height: dim_limit)
 					Image(systemName: "music.note")
 						.foregroundStyle(.secondary)

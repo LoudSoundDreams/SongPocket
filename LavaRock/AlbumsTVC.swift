@@ -221,7 +221,7 @@ final class AlbumsTVC: LibraryTVC {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = UIColor(Color(white: .one_eighth))
+		view.backgroundColor = UIColor(Color.white_one_eighth)
 		tableView.separatorStyle = .none
 		reflect_selection()
 		b_sort.preferredMenuElementOrder = .fixed
