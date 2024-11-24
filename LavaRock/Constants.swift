@@ -14,6 +14,7 @@ import SwiftUI
 extension Color {
 	static var white_one_eighth: Color { Color(white: .one_eighth) }
 	static var white_one_fourth: Color { Color(white: .one_fourth) }
+	static var white_one_half: Color { Color(white: .one_half) }
 }
 extension View {
 	// As of iOS 16.6, Apple Music uses this for “Recently Added”.

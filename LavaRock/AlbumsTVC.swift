@@ -273,9 +273,9 @@ final class AlbumsTVC: LibraryTVC {
 			}
 			if list_state.list_items.isEmpty {
 				return UIHostingConfiguration {
-					ContentUnavailableView {} actions: {
-						Button { Librarian.open_Apple_Music() } label: { Image(systemName: "plus") }
-					}
+					Image(systemName: "music.note")
+						.foregroundStyle(Color.white_one_half)
+						.font(.title)
 				}.margins(.all, .zero)
 			}
 			return nil
