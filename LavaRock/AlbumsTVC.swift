@@ -691,15 +691,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
-				guard
-					let row_target = self.list_state.list_items.firstIndex(where: { switch $0 {
-						case .song: return false
-						case .album(let album): return ids_selected.contains(album.albumPersistentID)
-					}})
-				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
-			})
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
 	private func promote_songs() {
@@ -713,15 +705,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
-				guard
-					let row_target = self.list_state.list_items.firstIndex(where: { switch $0 {
-						case .album: return false
-						case .song(let song): return ids_selected.contains(song.persistentID)
-					}})
-				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
-			})
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
 	
@@ -735,15 +719,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
-				guard
-					let row_target = self.list_state.list_items.lastIndex(where: { switch $0 {
-						case .song: return false
-						case .album(let album): return ids_selected.contains(album.albumPersistentID)
-					}})
-				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
-			})
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
 	private func demote_songs() {
@@ -757,15 +733,7 @@ final class AlbumsTVC: LibraryTVC {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
-				guard
-					let row_target = self.list_state.list_items.lastIndex(where: { switch $0 {
-						case .album: return false
-						case .song(let song): return ids_selected.contains(song.persistentID)
-					}})
-				else { return }
-				self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .middle, animated: true)
-			})
+			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
 	
