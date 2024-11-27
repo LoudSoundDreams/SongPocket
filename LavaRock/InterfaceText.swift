@@ -57,17 +57,20 @@ enum InterfaceText {
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
 	static func Randomize(for ids_lang: [String]) -> String {
-		let en_US = "Randomize"
-		for id_lang in ids_lang {
-			let lang = Locale.Language(identifier: id_lang)
-			guard let code_lang = lang.languageCode, code_lang == .english else { continue }
-			switch lang.region { // Don’t use `Locale.region`; that matches the Settings app → Language & Region → Region.
-				case .unitedKingdom, .southAfrica, .australia, .singapore, .ireland, .newZealand: return "Randomise" // As of iOS 18.2 developer beta 2, Photos says “Customise” for these variants of English.
-				case .india, .unitedStates, .canada: return en_US // As of iOS 18.2 developer beta 2, Photos says “Customize” for these variants of English.
-				default: return en_US
-			}
-		}
-		return en_US
+		return "Jumble"
+		/*
+		 let en_US = "Randomize"
+		 for id_lang in ids_lang {
+		 let lang = Locale.Language(identifier: id_lang)
+		 guard let code_lang = lang.languageCode, code_lang == .english else { continue }
+		 switch lang.region { // Don’t use `Locale.region`; that matches the Settings app → Language & Region → Region.
+		 case .unitedKingdom, .southAfrica, .australia, .singapore, .ireland, .newZealand: return "Randomise" // As of iOS 18.2 developer beta 2, Photos says “Customise” for these variants of English.
+		 case .india, .unitedStates, .canada: return en_US // As of iOS 18.2 developer beta 2, Photos says “Customize” for these variants of English.
+		 default: return en_US
+		 }
+		 }
+		 return en_US
+		 */
 	}
 	static let Add_to_Queue = "Add to Queue"
 	
