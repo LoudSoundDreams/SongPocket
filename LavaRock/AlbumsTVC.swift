@@ -550,7 +550,7 @@ final class AlbumsTVC: LibraryTVC {
 					let ids_songs = ids_songs_focused()
 					let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
 						guard let self else { return }
-						ApplicationMusicPlayer._shared?.play_now(ids_songs.shuffled()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+						ApplicationMusicPlayer._shared?.play_now(ids_songs.in_any_other_order()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 						end_selecting_animated()
 					}
 					if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
@@ -572,7 +572,7 @@ final class AlbumsTVC: LibraryTVC {
 		return UIMenu(title: title_focused(always_songs: true), children: menu_sections)
 	}
 	
-	private func ids_songs_focused() -> [MPIDSong] {
+	private func ids_songs_focused() -> [MPIDSong] { // In display order.
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
 				return list_state.albums(with: ids_selected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
