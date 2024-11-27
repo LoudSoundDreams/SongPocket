@@ -19,7 +19,7 @@ enum AlbumOrder {
 			}}(),
 			image: { switch self {
 				case .random: return UIImage(systemName: "shuffle")
-				case .reverse: return UIImage(systemName: "arrow.turn.right.up")
+				case .reverse: return UIImage(systemName: "arrow.up.and.down")
 				case .recently_added: return UIImage(systemName: "plus.circle")
 				case .recently_released: return UIImage(systemName: "calendar")
 			}}(),
