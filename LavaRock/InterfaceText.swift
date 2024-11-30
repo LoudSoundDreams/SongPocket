@@ -21,6 +21,8 @@ enum InterfaceText {
 	static let _welcome_subtitle = "SongPocket shows and plays your Apple Music library."
 	static let no_music = "No music"
 	static let _empty_library_message = "Add music to your Apple Music library."
+	static let No_artwork = "No artwork"
+	
 	static func NUMBER_albums_selected(_ num: Int) -> String {
 		let fNum = num.formatted()
 		if num == 1 {
@@ -28,8 +30,6 @@ enum InterfaceText {
 		}
 		return "\(fNum) albums selected"
 	}
-	static let no_artwork = "No artwork"
-	
 	static func NUMBER_albums(_ num: Int) -> String {
 		let fNum = num.formatted()
 		if num == 1 {

@@ -122,7 +122,7 @@ import MediaPlayer
 					Image(systemName: "music.note")
 						.foregroundStyle(.secondary)
 						.font(.title)
-						.accessibilityLabel(InterfaceText.no_artwork)
+						.accessibilityLabel(InterfaceText.No_artwork)
 				}
 			}
 #endif
@@ -144,32 +144,7 @@ import MediaPlayer
 		HStack(alignment: .lastTextBaseline) {
 			stack_text
 			Spacer()
-			Menu {
-				switch list_state.select_mode {
-					case .select_songs, .select_albums: EmptyView()
-					case .view:
-						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
-							withAnimation {
-								list_state.select_mode = .select_albums([id_album])
-							}
-						}.disabled(librarian.is_merging)
-						Divider()
-				}
-				b_above
-				b_below
-			} label: {
-				if is_selected {
-					IconSelected()
-				} else {
-					IconUnselected()
-				}
-			}
-			.disabled({
-				switch list_state.expansion {
-					case .expanded: return true
-					case .collapsed: return false
-				}}())
-			.animation(.default, value: list_state.expansion)
+			menu_select
 		}
 		.padding()
 		.padding(.leading, .eight * 1/2) // Align with `SongRow`.
@@ -215,7 +190,35 @@ import MediaPlayer
 		}
 	}
 	
-	@ViewBuilder private var b_above: some View {
+	private var menu_select: some View {
+		Menu {
+			switch list_state.select_mode {
+				case .select_songs, .select_albums: EmptyView()
+				case .view:
+					Button(InterfaceText.Select, systemImage: "checkmark.circle") {
+						withAnimation {
+							list_state.select_mode = .select_albums([id_album])
+						}
+					}.disabled(librarian.is_merging)
+					Divider()
+			}
+			b_above
+			b_below
+		} label: {
+			if is_selected {
+				IconSelected()
+			} else {
+				IconUnselected()
+			}
+		}
+		.disabled({
+			switch list_state.expansion {
+				case .expanded: return true
+				case .collapsed: return false
+			}}())
+		.animation(.default, value: list_state.expansion)
+	}
+	private var b_above: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
@@ -227,7 +230,7 @@ import MediaPlayer
 			!list_state.hasAlbumRange(from: id_album, forward: false)
 		}())
 	}
-	@ViewBuilder private var b_below: some View {
+	private var b_below: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
@@ -258,26 +261,7 @@ import MediaPlayer
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
 			stack_main
-			Menu {
-				switch list_state.select_mode {
-					case .select_albums, .select_songs: EmptyView()
-					case .view:
-						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
-							withAnimation {
-								list_state.select_mode = .select_songs([id_song])
-							}
-						}.disabled(librarian.is_merging)
-						Divider()
-				}
-				b_above
-				b_below
-			} label: {
-				if is_selected {
-					IconSelected()
-				} else {
-					IconUnselected()
-				}
-			}
+			menu_select
 		}
 		.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 		.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
@@ -407,7 +391,29 @@ import MediaPlayer
 		}
 	}
 	
-	@ViewBuilder private var b_above: some View {
+	private var menu_select: some View {
+		Menu {
+			switch list_state.select_mode {
+				case .select_albums, .select_songs: EmptyView()
+				case .view:
+					Button(InterfaceText.Select, systemImage: "checkmark.circle") {
+						withAnimation {
+							list_state.select_mode = .select_songs([id_song])
+						}
+					}.disabled(librarian.is_merging)
+					Divider()
+			}
+			b_above
+			b_below
+		} label: {
+			if is_selected {
+				IconSelected()
+			} else {
+				IconUnselected()
+			}
+		}
+	}
+	private var b_above: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
@@ -419,7 +425,7 @@ import MediaPlayer
 			!list_state.hasSongRange(from: id_song, forward: false)
 		}())
 	}
-	@ViewBuilder private var b_below: some View {
+	private var b_below: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
