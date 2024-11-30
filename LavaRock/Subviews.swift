@@ -309,24 +309,24 @@ import MediaPlayer
 		_ infoAlbum: InfoAlbum?
 	) -> some View {
 		let title: String? = infoSong?._title
-			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
-				Text(title ?? InterfaceText._tilde)
-					.foregroundStyle({
-						let _ = PlayerState.shared.signal
-						let _ = librarian.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
-						return ApplicationMusicPlayer.StatusNowPlaying(mpidSong: id_song).foreground_color
-					}())
-				if
-					let artist_song = infoSong?._artist,
-					let artist_album = infoAlbum?._artist,
-					artist_song != "", artist_album != "",
-					artist_song != artist_album
-				{
-					Text(artist_song)
-						.foregroundStyle(.secondary)
-						.font_footnote()
-				}
+		VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
+			Text(title ?? InterfaceText._tilde)
+				.foregroundStyle({
+					let _ = PlayerState.shared.signal
+					let _ = librarian.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
+					return ApplicationMusicPlayer.StatusNowPlaying(mpidSong: id_song).foreground_color
+				}())
+			if
+				let artist_song = infoSong?._artist,
+				let artist_album = infoAlbum?._artist,
+				artist_song != "", artist_album != "",
+				artist_song != artist_album
+			{
+				Text(artist_song)
+					.foregroundStyle(.secondary)
+					.font_footnote()
 			}
+		}
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
