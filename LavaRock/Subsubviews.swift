@@ -19,14 +19,14 @@ struct RectUnselected: View {
 
 struct IconSelected: View {
 	var body: some View {
-		Image(systemName: "checkmark.circle.fill")
+		Image(systemName: "ellipsis.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
 			.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.2 developer beta 3, VoiceOver automatically adds “Selected” because of the SF Symbol.
 	}
 }
 struct IconUnselected: View {
 	var body: some View {
-		Image(systemName: "checkmark.circle.fill")
+		Image(systemName: "ellipsis.circle.fill")
 			.font_body_dynamicType_up_to_xxxLarge()
 			.symbolRenderingMode(.hierarchical)
 			.accessibilityLabel(InterfaceText.Select)
