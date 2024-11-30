@@ -260,8 +260,35 @@ import MediaPlayer
 	private let librarian: Librarian = .shared
 	var body: some View {
 		HStack(alignment: .firstTextBaseline) {
-			stack_main
-			menu_select
+			let infoSong: InfoSong__? = {
+#if targetEnvironment(simulator)
+				guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
+					Task { await librarian.cache_mkSong(mpidSong: id_song) }
+					return nil
+				}
+				return InfoSong__(
+					_title: sim_song.title_on_disk ?? "",
+					_artist: "",
+					_disc: 1,
+					_track: sim_song.track_number_on_disk)
+#else
+				guard let mkSong = librarian.mkSongs[MusicItemID(String(id_song))] else {
+					Task { await librarian.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
+					// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
+					return nil
+				}
+				return InfoSong__(
+					_title: mkSong.title,
+					_artist: mkSong.artistName,
+					_disc: mkSong.discNumber,
+					_track: mkSong.trackNumber)
+#endif
+			}()
+			let infoAlbum: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
+			
+			stack_main(infoSong, infoAlbum)
+			Spacer()
+			menu_select(infoSong, infoAlbum)
 		}
 		.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 		.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
@@ -277,34 +304,11 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 	}
 	@Environment(\.pixelLength) private var points_per_pixel
-	@ViewBuilder private var stack_main: some View {
-		let info_song: InfoSong__? = {
-#if targetEnvironment(simulator)
-			guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
-				Task { await librarian.cache_mkSong(mpidSong: id_song) }
-				return nil
-			}
-			return InfoSong__(
-				_title: sim_song.title_on_disk ?? "",
-				_artist: "",
-				_disc: 1,
-				_track: sim_song.track_number_on_disk)
-#else
-			guard let mkSong = librarian.mkSongs[MusicItemID(String(id_song))] else {
-				Task { await librarian.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
-				// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
-				return nil
-			}
-			return InfoSong__(
-				_title: mkSong.title,
-				_artist: mkSong.artistName,
-				_disc: mkSong.discNumber,
-				_track: mkSong.trackNumber)
-#endif
-		}()
-		let title: String? = info_song?._title
-		let info_album: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
-		HStack(alignment: .firstTextBaseline) {
+	@ViewBuilder private func stack_main(
+		_ infoSong: InfoSong__?,
+		_ infoAlbum: InfoAlbum?
+	) -> some View {
+		let title: String? = infoSong?._title
 			VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 				Text(title ?? InterfaceText._tilde)
 					.foregroundStyle({
@@ -313,8 +317,8 @@ import MediaPlayer
 						return ApplicationMusicPlayer.StatusNowPlaying(mpidSong: id_song).foreground_color
 					}())
 				if
-					let artist_song = info_song?._artist,
-					let artist_album = info_album?._artist,
+					let artist_song = infoSong?._artist,
+					let artist_album = infoAlbum?._artist,
 					artist_song != "", artist_album != "",
 					artist_song != artist_album
 				{
@@ -323,26 +327,6 @@ import MediaPlayer
 						.font_footnote()
 				}
 			}
-			Spacer()
-			Text({ () -> String in
-				guard let info_song, let info_album else { return InterfaceText._octothorpe }
-				let f_track: String = {
-					guard let track = info_song._track else { return InterfaceText._octothorpe }
-					return String(track)
-				}()
-				if info_album._disc_count >= 2 {
-					let f_disc: String = {
-						guard let disc = info_song._disc else { return InterfaceText._octothorpe }
-						return String(disc)
-					}()
-					return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
-				} else {
-					return f_track
-				}
-			}())
-			.foregroundStyle(.secondary)
-			.monospacedDigit()
-		}
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title].compacted())
 		.accessibilityAddTraits(.isButton)
@@ -391,20 +375,45 @@ import MediaPlayer
 		}
 	}
 	
-	private var menu_select: some View {
+	private func menu_select(
+		_ infoSong: InfoSong__?,
+		_ infoAlbum: InfoAlbum?
+	) -> some View {
 		Menu {
-			switch list_state.select_mode {
-				case .select_albums, .select_songs: EmptyView()
-				case .view:
-					Button(InterfaceText.Select, systemImage: "checkmark.circle") {
-						withAnimation {
-							list_state.select_mode = .select_songs([id_song])
-						}
-					}.disabled(librarian.is_merging)
-					Divider()
+			Section({ () -> String in
+				// TO DO: “Disc 2, track 3”
+				// TO DO: Remove if no data.
+				let numbers: String = {
+					guard let infoSong, let infoAlbum else { return InterfaceText._octothorpe }
+					let f_track: String = {
+						guard let track = infoSong._track else { return InterfaceText._octothorpe }
+						return String(track)
+					}()
+					if infoAlbum._disc_count >= 2 {
+						let f_disc: String = {
+							guard let disc = infoSong._disc else { return InterfaceText._octothorpe }
+							return String(disc)
+						}()
+						return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
+					} else {
+						return f_track
+					}
+				}()
+				return InterfaceText.Track_VALUE(numbers)
+			}()) {
+				switch list_state.select_mode {
+					case .select_albums, .select_songs: EmptyView()
+					case .view:
+						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
+							withAnimation {
+								list_state.select_mode = .select_songs([id_song])
+							}
+						}.disabled(librarian.is_merging)
+						Divider()
+				}
+				b_above
+				b_below
 			}
-			b_above
-			b_below
 		} label: {
 			if is_selected {
 				IconSelected()
