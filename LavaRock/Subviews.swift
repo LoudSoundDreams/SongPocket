@@ -381,8 +381,8 @@ import MediaPlayer
 	) -> some View {
 		Menu {
 			Section({ () -> String in
-				// TO DO: “Disc 2, track 3”
 				// TO DO: Remove if no data.
+				// TO DO: “Disc 2, track 3”. Include “Disc 1” if appropriate.
 				let numbers: String = {
 					guard let infoSong, let infoAlbum else { return InterfaceText._octothorpe }
 					let f_track: String = {
