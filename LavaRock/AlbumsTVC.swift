@@ -465,7 +465,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: - Editing
 	
-	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.square.fill")) { [weak self] _ in self?.end_selecting_animated() })
+	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() })
 	private func end_selecting_animated() {
 		withAnimation {
 			self.list_state.select_mode = .view(nil)
