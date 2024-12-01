@@ -87,7 +87,7 @@ enum SongOrder {
 			}}(),
 			image: { switch self {
 				case .random: return UIImage(systemName: "shuffle")
-				case .reverse: return UIImage(systemName: "arrow.turn.right.up")
+				case .reverse: return UIImage(systemName: "arrow.up.and.down")
 				case .track: return UIImage(systemName: "number")
 			}}(),
 			handler: { _ in handler() })

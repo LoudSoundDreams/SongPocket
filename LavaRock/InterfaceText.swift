@@ -88,10 +88,10 @@ enum InterfaceText {
 	
 	static let Select = "Select"
 	static let Selected = "Selected"
-	static let Select_Range_Above = "Select Range Above"
-	static let Select_Range_Below = "Select Range Below"
-	static let Deselect_Range_Above = "Deselect Range Above"
-	static let Deselect_Range_Below = "Deselect Range Below"
+	static let Select_Up = "Select Up"
+	static let Select_Down = "Select Down"
+	static let Deselect_Up = "Deselect Up"
+	static let Deselect_Down = "Deselect Down"
 	
 	static let Sort = "Sort"
 	static let Recently_Added = "Date Added"

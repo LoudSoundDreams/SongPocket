@@ -220,7 +220,7 @@ import MediaPlayer
 	}
 	private var b_above: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
+			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: false)
@@ -232,7 +232,7 @@ import MediaPlayer
 	}
 	private var b_below: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
+			is_selected ? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: true)
@@ -421,7 +421,7 @@ import MediaPlayer
 	}
 	private var b_above: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Range_Above : InterfaceText.Select_Range_Above,
+			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: false)
@@ -433,7 +433,7 @@ import MediaPlayer
 	}
 	private var b_below: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Range_Below : InterfaceText.Select_Range_Below,
+			is_selected ? InterfaceText.Deselect_Down: InterfaceText.Select_Down,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: true)
