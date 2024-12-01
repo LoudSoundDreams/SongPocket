@@ -381,23 +381,20 @@ import MediaPlayer
 	) -> some View {
 		Menu {
 			Section({ () -> String in
-				// TO DO: Remove if no data.
+				guard let infoSong, let infoAlbum else { return "" }
 				// TO DO: “Disc 2, track 3”. Include “Disc 1” if appropriate.
 				let numbers: String = {
-					guard let infoSong, let infoAlbum else { return InterfaceText._octothorpe }
 					let f_track: String = {
 						guard let track = infoSong._track else { return InterfaceText._octothorpe }
 						return String(track)
 					}()
-					if infoAlbum._disc_count >= 2 {
-						let f_disc: String = {
-							guard let disc = infoSong._disc else { return InterfaceText._octothorpe }
-							return String(disc)
-						}()
-						return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
-					} else {
-						return f_track
-					}
+					guard infoAlbum._disc_count >= 2 else { return f_track }
+					
+					let f_disc: String = {
+						guard let disc = infoSong._disc else { return InterfaceText._octothorpe }
+						return String(disc)
+					}()
+					return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
 				}()
 				return InterfaceText.Track_VALUE(numbers)
 			}()) {
