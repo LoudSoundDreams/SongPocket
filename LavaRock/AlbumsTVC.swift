@@ -247,7 +247,7 @@ final class AlbumsTVC: LibraryTVC {
 			guard MusicAuthorization.currentStatus == .authorized else {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
-						Text(InterfaceText._welcome_title).font_title2_bold()
+						Text(InterfaceText._welcome_title).bold() // As of iOS 18.2 developer beta 4, the Settings app uses this for “No Fonts Installed”.
 					} description: {
 						Text(InterfaceText._welcome_subtitle)
 					} actions: {
