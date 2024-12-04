@@ -14,14 +14,14 @@ import MediaPlayer
 			AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
 				.opacity(sel_opacity)
 				.animation(.default, value: list_state.select_mode)
-				.overlay { if exp_labeled {
+				.overlay { if !is_expanded {
 					Rectangle().foregroundStyle(Material.thin)
 				}}
-			ZStack { if exp_labeled {
+			ZStack { if !is_expanded {
 				AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
 			}}
 		}
-		.animation(.linear(duration: .one_eighth), value: exp_labeled)
+		.animation(.linear(duration: .one_eighth), value: is_expanded)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilityHidden(true) }// .accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -29,10 +29,10 @@ import MediaPlayer
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 	}
-	private var exp_labeled: Bool {
+	private var is_expanded: Bool {
 		switch list_state.expansion {
-			case .collapsed: return true
-			case .expanded(let id_expanded): return id_album != id_expanded
+			case .collapsed: return false
+			case .expanded(let id_expanded): return id_expanded == id_album
 		}
 	}
 	
@@ -73,7 +73,7 @@ import MediaPlayer
 					case .collapsed:
 						list_state.expansion = .expanded(id_album)
 					case .expanded(let id_expanded):
-						if id_album == id_expanded {
+						if id_expanded == id_album {
 							list_state.expansion = .collapsed
 						} else {
 							list_state.expansion = .expanded(id_album)
