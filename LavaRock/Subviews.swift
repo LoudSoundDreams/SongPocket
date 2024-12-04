@@ -14,14 +14,18 @@ import MediaPlayer
 			AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
 				.opacity(sel_opacity)
 				.animation(.default, value: list_state.select_mode)
-				.overlay { if !is_expanded {
-					Rectangle().foregroundStyle(Material.thin)
-				}}
-			ZStack { if !is_expanded {
-				AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
-			}}
+				.overlay {
+					ZStack {
+						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
+					}.animation(.linear(duration: .one_eighth), value: is_expanded)
+				}
+			ZStack {
+				switch list_state.expansion {
+					case .expanded: EmptyView()
+					case .collapsed: AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
+				}
+			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
 		}
-		.animation(.linear(duration: .one_eighth), value: is_expanded)
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilityHidden(true) }// .accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
