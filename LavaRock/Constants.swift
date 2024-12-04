@@ -17,8 +17,11 @@ extension Color {
 	static var white_one_half: Color { Color(white: .one_half) }
 }
 extension View {
-	// As of iOS 16.6, Apple Music uses this for “Recently Added”.
-	func font_title2_bold() -> some View { font(.title2).bold() }
+	// As of iOS 18.2 developer beta 4, Apple Music uses this for “Recently Added”.
+	func font_title2_semibold() -> some View { font(.title2).fontWeight(.semibold) }
+	
+	// As of iOS 18.2 developer beta 4, Apple Music uses this for album titles.
+	func font_title3_bold() -> some View { font(.title3).bold() }
 	
 	// As of iOS 16.6, Apple Music uses this for the current song title on the “now playing” screen.
 	func font_headline() -> some View { font(.headline) }

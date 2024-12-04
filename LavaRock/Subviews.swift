@@ -171,7 +171,7 @@ import MediaPlayer
 					.accessibilitySortPriority(20)
 			}
 			Text(title_and_input_label)
-				.font_title2_bold()
+				.font_title3_bold()
 				.foregroundStyle({
 					if sel_dimmed { return Color.secondary }
 					return ApplicationMusicPlayer.StatusNowPlaying(mpidAlbum: id_album).foreground_color
