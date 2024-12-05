@@ -10,6 +10,8 @@ import MediaPlayer
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
 	var body: some View {
+		VStack(spacing: .zero) {
+			Separator() // Above rather than below gets the artwork out from underneath the 1-pixel line below the navigation bar.
 		ZStack(alignment: .bottomLeading) {
 			AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
 				.opacity(sel_opacity)
@@ -28,6 +30,7 @@ import MediaPlayer
 		}
 		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		}
 		.overlay { sel_border.accessibilityHidden(true) }// .accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
@@ -263,6 +266,7 @@ import MediaPlayer
 	let list_state: AlbumListState
 	private let librarian: Librarian = .shared
 	var body: some View {
+		VStack(spacing: .zero) {
 		HStack(alignment: .firstTextBaseline) {
 			let infoSong: InfoSong__? = {
 #if targetEnvironment(simulator)
@@ -297,17 +301,12 @@ import MediaPlayer
 		.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 		.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 		.background { sel_highlight }
-		.background(alignment: .bottom) {
-			Rectangle()
-				.foregroundStyle(Color(white: .one_fourth))
-				.frame(maxWidth: .infinity, maxHeight: 1 * points_per_pixel)
-				.padding(.horizontal).padding(.leading, .eight * 1/2)
+		Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
 		}
 		.overlay { sel_border }
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	@Environment(\.pixelLength) private var points_per_pixel
 	@ViewBuilder private func stack_main(
 		_ infoSong: InfoSong__?,
 		_ infoAlbum: InfoAlbum?

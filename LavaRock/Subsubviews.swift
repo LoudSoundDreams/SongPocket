@@ -2,6 +2,15 @@
 
 import SwiftUI
 
+struct Separator: View {
+	var body: some View {
+		Rectangle()
+			.foregroundStyle(Color(white: .one_fourth))
+			.frame(maxWidth: .infinity, maxHeight: 1 * points_per_pixel)
+	}
+	@Environment(\.pixelLength) private var points_per_pixel
+}
+
 struct RectSelected: View {
 	var body: some View {
 		Rectangle()
