@@ -12,24 +12,24 @@ import MediaPlayer
 	var body: some View {
 		VStack(spacing: .zero) {
 			Separator() // Above rather than below gets the artwork out from underneath the 1-pixel line below the navigation bar.
-		ZStack(alignment: .bottomLeading) {
-			AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
-				.opacity(sel_opacity)
-				.animation(.default, value: list_state.select_mode)
-				.overlay {
-					ZStack {
-						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-					}.animation(.linear(duration: .one_eighth), value: is_expanded)
-				}
-			ZStack {
-				switch list_state.expansion {
-					case .expanded: EmptyView()
-					case .collapsed: AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
-				}
-			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
-		}
-		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
-		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+			ZStack(alignment: .bottomLeading) {
+				AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
+					.opacity(sel_opacity)
+					.animation(.default, value: list_state.select_mode)
+					.overlay {
+						ZStack {
+							if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
+						}.animation(.linear(duration: .one_eighth), value: is_expanded)
+					}
+				ZStack {
+					switch list_state.expansion {
+						case .expanded: EmptyView()
+						case .collapsed: AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
+					}
+				}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+			}
+			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
+			.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		}
 		.overlay { sel_border.accessibilityHidden(true) }// .accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
@@ -267,41 +267,41 @@ import MediaPlayer
 	private let librarian: Librarian = .shared
 	var body: some View {
 		VStack(spacing: .zero) {
-		HStack(alignment: .firstTextBaseline) {
-			let infoSong: InfoSong__? = {
+			HStack(alignment: .firstTextBaseline) {
+				let infoSong: InfoSong__? = {
 #if targetEnvironment(simulator)
-				guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
-					Task { await librarian.cache_mkSong(mpidSong: id_song) }
-					return nil
-				}
-				return InfoSong__(
-					_title: sim_song.title_on_disk ?? "",
-					_artist: "",
-					_disc: 1,
-					_track: sim_song.track_number_on_disk)
+					guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
+						Task { await librarian.cache_mkSong(mpidSong: id_song) }
+						return nil
+					}
+					return InfoSong__(
+						_title: sim_song.title_on_disk ?? "",
+						_artist: "",
+						_disc: 1,
+						_track: sim_song.track_number_on_disk)
 #else
-				guard let mkSong = librarian.mkSongs[MusicItemID(String(id_song))] else {
-					Task { await librarian.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
-					// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
-					return nil
-				}
-				return InfoSong__(
-					_title: mkSong.title,
-					_artist: mkSong.artistName,
-					_disc: mkSong.discNumber,
-					_track: mkSong.trackNumber)
+					guard let mkSong = librarian.mkSongs[MusicItemID(String(id_song))] else {
+						Task { await librarian.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
+						// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
+						return nil
+					}
+					return InfoSong__(
+						_title: mkSong.title,
+						_artist: mkSong.artistName,
+						_disc: mkSong.discNumber,
+						_track: mkSong.trackNumber)
 #endif
-			}()
-			let infoAlbum: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
-			
-			stack_main(infoSong, infoAlbum)
-			Spacer()
-			menu_select(infoSong, infoAlbum)
-		}
-		.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
-		.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
-		.background { sel_highlight }
-		Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
+				}()
+				let infoAlbum: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
+				
+				stack_main(infoSong, infoAlbum)
+				Spacer()
+				menu_select(infoSong, infoAlbum)
+			}
+			.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
+			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
+			.background { sel_highlight }
+			Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
 		}
 		.overlay { sel_border }
 		.contentShape(Rectangle())
