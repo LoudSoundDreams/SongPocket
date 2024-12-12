@@ -11,7 +11,6 @@ import MediaPlayer
 	let list_state: AlbumListState
 	var body: some View {
 		VStack(spacing: .zero) {
-			Separator() // Above rather than below gets the artwork out from underneath the 1-pixel line below the navigation bar.
 			ZStack(alignment: .bottomLeading) {
 				AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
 					.opacity(sel_opacity)
@@ -30,6 +29,7 @@ import MediaPlayer
 			}
 			.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
 			.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+			Separator().hidden()
 		}
 		.overlay { sel_border.accessibilityHidden(true) }// .accessibilitySortPriority(20) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.contentShape(Rectangle())
