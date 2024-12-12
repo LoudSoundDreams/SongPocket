@@ -99,7 +99,7 @@ extension PlayerState {
 					UIAction(
 						title: InterfaceText.Repeat_One,
 						image: UIImage(systemName: "repeat.1"),
-						attributes: ApplicationMusicPlayer.is_empty ? .disabled : [],
+						attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented,
 						state: {
 							guard
 								!ApplicationMusicPlayer.is_empty,
@@ -169,10 +169,10 @@ extension PlayerState {
 #endif
 	}
 	private static let a_play: UIAction = {
-		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play"), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
 		result.accessibilityTraits.formUnion(.startsMediaSession)
 		return result
 	}()
-	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause")) { _ in ApplicationMusicPlayer._shared?.pause() }
+	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
 	private static let a_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in Librarian.open_Apple_Music() }
 }
