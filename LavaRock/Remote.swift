@@ -87,14 +87,14 @@ extension PlayerState {
 				Self.action_go_Apple_Music,
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				Self.dme_track_previous,
+				Self.dme_jump_backward,
 				Self.dme_rewind,
-				Self.dme_track_next,
+				Self.dme_jump_forward,
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				Self.dme_jump_backward,
+				Self.dme_track_previous,
 				Self.dme_toggle_playing,
-				Self.dme_jump_forward,
+				Self.dme_track_next,
 			]),
 		])
 	}
@@ -175,10 +175,10 @@ extension PlayerState {
 	
 	private static let dme_track_previous = UIDeferredMenuElement.uncached { use in use([
 		// Ideally, disable this when there are no previous tracks to skip to.
-		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: "backward.end"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
+		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: "backward.end.fill"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
 	])}
 	private static let dme_track_next = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Next, image: UIImage(systemName: "forward.end"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
+		UIAction(title: InterfaceText.Next, image: UIImage(systemName: "forward.end.fill"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
 	])}
 	
 	private static let dme_jump_backward = UIDeferredMenuElement.uncached { use in use([
