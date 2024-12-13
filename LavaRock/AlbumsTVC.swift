@@ -591,7 +591,7 @@ final class AlbumsTVC: LibraryTVC {
 	// MARK: - Sorting
 	
 	private lazy var menu_sections_album_sort: [UIMenu] = {
-		let groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.random, .reverse]]
+		let groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
 		return groups.map { album_orders in
 			UIMenu(options: .displayInline, children: album_orders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] use in
@@ -622,7 +622,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	private lazy var menu_sections_song_sort: [UIMenu] = {
-		let groups: [[SongOrder]] = [[.track], [.random, .reverse]]
+		let groups: [[SongOrder]] = [[.track], [.reverse, .random]]
 		return groups.map { song_orders in
 			UIMenu(options: .displayInline, children: song_orders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] use in
