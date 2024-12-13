@@ -100,7 +100,7 @@ extension PlayerState {
 	}
 	
 	private lazy var dme_go_now_playing = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Now_Playing, image: UIImage(systemName: "waveform"), attributes: {
+		UIAction(title: InterfaceText.Go_to_Album, image: UIImage(systemName: "square.stack"), attributes: {
 #if targetEnvironment(simulator)
 			return []
 #else

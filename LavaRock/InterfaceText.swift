@@ -55,6 +55,8 @@ enum InterfaceText {
 	
 	// MARK: - Playback
 	
+	static let Go_to_Album = "Go to Album"
+	
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
 	static func Randomize(for ids_lang: [String]) -> String {
