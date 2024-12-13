@@ -164,7 +164,7 @@ extension PlayerState {
 	])}
 	
 	private static let dme_rewind = UIDeferredMenuElement.uncached { use in
-		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: "arrow.counterclockwise")) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
+		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
 		if ApplicationMusicPlayer.is_empty { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
 			action.attributes.formUnion(.disabled)
 		} else {
