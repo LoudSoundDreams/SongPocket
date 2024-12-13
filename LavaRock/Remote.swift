@@ -132,11 +132,11 @@ extension PlayerState {
 #endif
 	}
 	private static let a_play: UIAction = {
-		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play"), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play.fill"), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
 		result.accessibilityTraits.formUnion(.startsMediaSession)
 		return result
 	}()
-	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
+	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause.fill"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
 	
 	private static let dme_toggle_repeat = UIDeferredMenuElement.uncached { use in use([
 		UIAction(
