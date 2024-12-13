@@ -75,7 +75,7 @@ enum InterfaceText {
 		 return en_US
 		 */
 	}
-	static let Add_to_Queue = "Add to Queue"
+	static let Play_Later = "Play Later"
 	
 	static let Pause = "Pause"
 	static let Skip_back_15_seconds = "Skip back 15 seconds" // As of iOS 16.5 RC 1, picture-in-picture videos use “Skip back 10 seconds” and “Skip forward 10 seconds”.
