@@ -5,7 +5,7 @@ enum InterfaceText {
 	// MARK: - General
 	
 	static let Cancel = "Cancel"
-	static let Continue = "Continue"
+	static let Start = "Start"
 	static let Done = "Done"
 	static let More = "More"
 	

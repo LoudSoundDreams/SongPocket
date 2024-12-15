@@ -251,7 +251,7 @@ final class AlbumsTVC: LibraryTVC {
 					} description: {
 						Text(InterfaceText._welcome_subtitle)
 					} actions: {
-						Button(InterfaceText.Continue) {
+						Button(InterfaceText.Start) {
 							Task {
 								switch MusicAuthorization.currentStatus {
 									case .authorized: break // Should never run
