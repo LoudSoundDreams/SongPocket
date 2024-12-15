@@ -5,28 +5,30 @@ import os
 
 enum Disk {
 	static func save(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
+		let _save = signposter.beginInterval("save")
+		signposter.endInterval("save", _save)
+		
 		let filer = FileManager.default
 		try! filer.createDirectory(at: path_folder, withIntermediateDirectories: true)
 		
-		let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 		let _serialize = signposter.beginInterval("serialize")
 		var output: String = ""
 		crates.forEach {
 			output.append(contentsOf: "\($0.title)\n")
 			$0.albums.forEach { album in
-				output.append(contentsOf: "\(t_album)\(album.id_album)\n")
+				output.append(contentsOf: "\(tab)\(album.id_album)\n")
 				album.songs.forEach { song in
-					output.append(contentsOf: "\(tt_song)\(song.id_song)\n")
+					output.append(contentsOf: "\(tab_tab)\(song.id_song)\n")
 				}
 			}
 		}
 		signposter.endInterval("serialize", _serialize)
 		let data = Data(output.utf8)
-		try! data.write(to: path_folder.appending(path: comp_crates), options: [.atomic, .completeFileProtection])
+		try! data.write(to: path_folder.appending(path: step_crates), options: [.atomic, .completeFileProtection])
 	}
 	
 	static func load_crates() -> [LRCrate] {
-		guard let data = try? Data(contentsOf: path_folder.appending(path: comp_crates)) else {
+		guard let data = try? Data(contentsOf: path_folder.appending(path: step_crates)) else {
 			// Maybe the file doesn’t exist.
 			return []
 		}
@@ -37,16 +39,15 @@ enum Disk {
 		return Parser(input).crates()
 	}
 	
-	fileprivate static let t_album = "\t"
-	fileprivate static let tt_song = "\t\t"
+	fileprivate static let tab = "\t"
+	fileprivate static let tab_tab = "\t\t"
 	
 	private static let path_folder = URL.applicationSupportDirectory.appending(path: "v1/")
-	private static let comp_crates = "crates"
+	private static let step_crates = "crates"
+	static let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 }
 
 struct Parser {
-	private let signposter = OSSignposter(subsystem: "persistence", category: "parser")
-	
 	init(_ string: String) {
 		self.lines = string.split(separator: "\n", omittingEmptySubsequences: false)
 	}
@@ -92,7 +93,7 @@ struct Parser {
 			!is_crate(at: i_line) // Parse albums until outdent.
 		{
 			let line = lines[i_line]
-			let content = line.dropFirst(Disk.t_album.count)
+			let content = line.dropFirst(Disk.tab.count)
 			let mpidAlbum: MPIDAlbum? = MPIDAlbum(String(content))
 			
 			guard
@@ -129,7 +130,7 @@ struct Parser {
 			!is_crate(at: i_line), !is_album(at: i_line) // Parse songs until outdent.
 		{
 			let line = lines[i_line]
-			let content = line.dropFirst(Disk.tt_song.count)
+			let content = line.dropFirst(Disk.tab_tab.count)
 			let mpidSong: MPIDSong? = MPIDSong(String(content))
 			
 			guard
@@ -151,17 +152,19 @@ struct Parser {
 	
 	private func is_crate(at iLine: Int) -> Bool {
 		let line = lines[iLine]
-		return !line.hasPrefix(Disk.t_album)
+		return !line.hasPrefix(Disk.tab)
 	}
 	private func is_album(at iLine: Int) -> Bool {
 		let line = lines[iLine]
-		return line.count > Disk.t_album.count &&
-		line.hasPrefix(Disk.t_album) &&
-		!line.hasPrefix(Disk.tt_song)
+		return line.count > Disk.tab.count &&
+		line.hasPrefix(Disk.tab) &&
+		!line.hasPrefix(Disk.tab_tab)
 	}
 	private func is_song(at iLine: Int) -> Bool {
 		let line = lines[iLine]
-		return line.count > Disk.tt_song.count &&
-		line.hasPrefix(Disk.tt_song)
+		return line.count > Disk.tab_tab.count &&
+		line.hasPrefix(Disk.tab_tab)
 	}
+	
+	private let signposter = OSSignposter(subsystem: "persistence", category: "parser")
 }

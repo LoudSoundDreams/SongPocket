@@ -54,25 +54,6 @@ struct AlbumShelf: View {
 	}
 }
 
-struct AlbumList: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray() { didSet {
-		FakeAlbum.renumber(albums)
-	}}
-	@State private var selected: Set<FakeAlbum> = []
-	var body: some View {
-		List(selection: $selected) {
-			ForEach($albums, editActions: .move) { $album in
-				FakeAlbumCover(album: album)
-					.listRowInsets(EdgeInsets(top: .zero, leading: .zero, bottom: .zero, trailing: .zero))
-			}.onMove { from, to in
-				albums.move(fromOffsets: from, toOffset: to)
-			}
-		}.listStyle(.plain)
-	}
-}
-
-// MARK: Subviews
-
 struct FakeAlbumCover: View {
 	let album: FakeAlbum
 	var body: some View {

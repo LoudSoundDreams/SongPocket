@@ -2,7 +2,6 @@
 
 import SwiftUI
 import MusicKit
-import MediaPlayer
 
 // MARK: - Album row
 

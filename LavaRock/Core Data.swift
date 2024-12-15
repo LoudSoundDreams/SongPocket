@@ -231,7 +231,6 @@ extension NSManagedObjectContext {
 	}
 	
 	final func save_please() {
-		guard !WorkingOn.plain_database else { return }
 		guard hasChanges else { return }
 		do {
 			try save()

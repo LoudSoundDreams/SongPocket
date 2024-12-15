@@ -3,10 +3,6 @@
 import SwiftUI
 import MusicKit
 
-enum WorkingOn {
-	static let plain_database = 10 == 1
-}
-
 @main struct LavaRock: App {
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
@@ -20,7 +16,7 @@ enum WorkingOn {
 	var body: some Scene {
 		WindowGroup {
 //			AlbumShelf()
-//			AlbumList()
+			
 			VCRMain()
 				.ignoresSafeArea()
 				.task {

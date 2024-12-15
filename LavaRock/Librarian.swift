@@ -138,43 +138,44 @@ extension Librarian {
 	// MARK: - MUSICKIT
 	
 	private func merge_from_MusicKit(_ sections_unsorted: [MKSection]) {
-		/*
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }
 		
-		let _load = signposter.beginInterval("load")
-//		theCrate = Disk.load_crates().first
-		signposter.endInterval("load", _load)
-		
-		let newMKSections: [MKSection] = {
+		let new_mkSections: [MKSection] = {
 			// Only sort albums themselves; we’ll sort the songs within each album later.
 			let now = Date.now
 			let sectionsAndDatesCreated: [(section: MKSection, date_created: Date)] = sections_unsorted.map {(
 				section: $0,
 				date_created: ZZZAlbum.date_created($0.items) ?? now
 			)}
-			let sorted = sectionsAndDatesCreated.sortedStably {
+			let sorted = sectionsAndDatesCreated.sorted_stably {
 				$0.date_created == $1.date_created
-			} areInOrder: {
+			} are_in_order: {
 				$0.date_created > $1.date_created
 			}
 			return sorted.map { $0.section }
 		}()
-		let newAlbums: [LRAlbum] = newMKSections.map { mkSection in
-			LRAlbum(rawID: mkSection.id.rawValue, songs: {
+		var fake_id_album_next: MPIDAlbum = 0
+		var fake_id_song_next: MPIDSong = 0
+		let new_albums: [LRAlbum] = new_mkSections.map { mkSection in
+			let id_album = fake_id_album_next
+			fake_id_album_next += 1
+			
+			return LRAlbum(id_album: id_album, songs: {
 				let mkSongs = mkSection.items.sorted {
 					SongOrder.precedes_numerically(strict: true, $0, $1)
 				}
-				return mkSongs.map { LRSong(rawID: $0.id.rawValue) }
+				return mkSongs.map { _ in
+					let id_song = fake_id_song_next
+					fake_id_song_next += 1
+					
+					return LRSong(id_song: id_song)
+				}
 			}())
 		}
-		let newCrate = LRCrate(title: InterfaceText._tilde, albums: newAlbums)
-//		theCrate = newCrate
+		let newCrate = LRCrate(title: InterfaceText._tilde, albums: new_albums)
 		
-		let _save = signposter.beginInterval("save")
 		Disk.save([newCrate])
-		signposter.endInterval("save", _save)
-		 */
 	}
 	
 	// MARK: - MEDIA PLAYER
@@ -217,33 +218,7 @@ extension Librarian {
 		create_library_items(infos_new: to_create)
 		clean_up_library_items(songs_to_delete: to_delete, infos_all: mediaItems_unsorted)
 		
-		if WorkingOn.plain_database {
-			let lrCrate: LRCrate? = {
-				guard let zzzCollection = context.fetch_collection() else { return nil }
-				var lrAlbums: [LRAlbum] = []
-				zzzCollection.albums(sorted: true).forEach { zzzAlbum in
-					var lrSongs: [LRSong] = []
-					zzzAlbum.songs(sorted: true).forEach { zzzSong in
-						lrSongs.append(
-							LRSong(id_song: MPIDSong(zzzSong.persistentID))
-						)
-					}
-					lrAlbums.append(
-						LRAlbum(
-							id_album: MPIDAlbum(zzzAlbum.albumPersistentID),
-							songs: lrSongs)
-					)
-				}
-				return LRCrate(title: zzzCollection.title ?? "", albums: lrAlbums)
-			}()
-			
-//			Disk.save([lrCrate].compacted())
-//			ZZZDatabase.destroy()
-			
-			Library.shared.lrCrate = lrCrate
-		} else {
-			context.save_please()
-		}
+		context.save_please()
 	}
 	
 	// MARK: - Update
