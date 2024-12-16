@@ -1,21 +1,18 @@
 // 2024-09-04
 
-@MainActor final class LRLibrary {
-	static let shared = LRLibrary()
-	var lrCrate: LRCrate? = nil
+@MainActor struct LRLibrary {
+	static var lrCrate: LRCrate? = nil
 	
-	private init() {}
-	
-	func debug_print() {
+	static func debug_print() {
 		guard let lrCrate else {
 			print("nil crate")
 			return
 		}
 		print(lrCrate.title)
-		lrCrate.albums.forEach { lrAlbum in
-			print("  \(lrAlbum.id_album)")
-			lrAlbum.songs.forEach { lrSong in
-				print("    \(lrSong.id_song)")
+		lrCrate.lrAlbums.forEach { lrAlbum in
+			print("  \(lrAlbum.mpidAlbum)")
+			lrAlbum.lrSongs.forEach { lrSong in
+				print("    \(lrSong.mpidSong)")
 			}
 		}
 	}
@@ -23,12 +20,12 @@
 
 struct LRCrate: Equatable {
 	let title: String
-	var albums: [LRAlbum]
+	var lrAlbums: [LRAlbum]
 }
 struct LRAlbum: Equatable {
-	let id_album: MPIDAlbum
-	var songs: [LRSong]
+	let mpidAlbum: MPIDAlbum
+	var lrSongs: [LRSong]
 }
 struct LRSong: Equatable {
-	let id_song: MPIDSong
+	let mpidSong: MPIDSong
 }

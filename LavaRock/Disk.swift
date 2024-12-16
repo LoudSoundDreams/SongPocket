@@ -4,7 +4,7 @@ import Foundation
 import os
 
 enum Disk {
-	static func save(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
+	static func save_crates(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let _save = signposter.beginInterval("save")
 		signposter.endInterval("save", _save)
 		
@@ -15,10 +15,10 @@ enum Disk {
 		var output: String = ""
 		crates.forEach {
 			output.append(contentsOf: "\($0.title)\n")
-			$0.albums.forEach { album in
-				output.append(contentsOf: "\(tab)\(album.id_album)\n")
-				album.songs.forEach { song in
-					output.append(contentsOf: "\(tab_tab)\(song.id_song)\n")
+			$0.lrAlbums.forEach { album in
+				output.append(contentsOf: "\(tab)\(album.mpidAlbum)\n")
+				album.lrSongs.forEach { song in
+					output.append(contentsOf: "\(tab_tab)\(song.mpidSong)\n")
 				}
 			}
 		}
@@ -36,7 +36,7 @@ enum Disk {
 			print("Couldn’t decode crates file.")
 			return []
 		}
-		return Parser(input).crates()
+		return Parser(input).parse_crates()
 	}
 	
 	fileprivate static let tab = "\t"
@@ -53,7 +53,7 @@ struct Parser {
 	}
 	private let lines: [Substring]
 	
-	func crates() -> [LRCrate] {
+	func parse_crates() -> [LRCrate] {
 		let _crates = signposter.beginInterval("crates")
 		defer { signposter.endInterval("crates", _crates) }
 		
@@ -77,7 +77,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRCrate(title: String(content), albums: albums)
+				LRCrate(title: String(content), lrAlbums: albums)
 			)
 		}
 		return result
@@ -114,7 +114,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRAlbum(id_album: mpidAlbum, songs: songs)
+				LRAlbum(mpidAlbum: mpidAlbum, lrSongs: songs)
 			)
 		}
 		return (i_line, result)
@@ -144,7 +144,7 @@ struct Parser {
 			
 			i_line += 1
 			result.append(
-				LRSong(id_song: mpidSong)
+				LRSong(mpidSong: mpidSong)
 			)
 		}
 		return (i_line, result)

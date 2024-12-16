@@ -37,7 +37,7 @@ extension AppleLibrary {
 			let id_album = fake_id_album_next
 			fake_id_album_next += 1
 			
-			return LRAlbum(id_album: id_album, songs: {
+			return LRAlbum(mpidAlbum: id_album, lrSongs: {
 				let mkSongs = mkSection.items.sorted {
 					SongOrder.precedes_numerically(strict: true, $0, $1)
 				}
@@ -45,13 +45,13 @@ extension AppleLibrary {
 					let id_song = fake_id_song_next
 					fake_id_song_next += 1
 					
-					return LRSong(id_song: id_song)
+					return LRSong(mpidSong: id_song)
 				}
 			}())
 		}
-		let newCrate = LRCrate(title: InterfaceText._tilde, albums: new_albums)
+		let newCrate = LRCrate(title: InterfaceText._tilde, lrAlbums: new_albums)
 		
-		Disk.save([newCrate])
-		LRLibrary.shared.lrCrate = newCrate
+		Disk.save_crates([newCrate])
+		LRLibrary.lrCrate = newCrate
 	}
 }

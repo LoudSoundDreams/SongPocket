@@ -193,7 +193,7 @@ extension ZZZSong {
 
 import MusicKit
 extension NSManagedObjectContext {
-	final func print_library(referencing: [MusicItemID: MKSection]) {
+	final func debug_print(referencing: [MusicItemID: MKSection]) {
 		fetch_please(ZZZCollection.fetch_request_sorted()).forEach { collection in
 			print(collection.index, collection.title ?? "")
 			
