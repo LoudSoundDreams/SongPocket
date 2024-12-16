@@ -20,7 +20,7 @@ import MediaPlayer
 extension AlbumListState {
 	fileprivate enum AlbumListItem {
 		case album_mpid(MPIDAlbum)
-		case mpSong(MPIDSong)
+		case song_mpid(MPIDSong)
 	}
 	fileprivate func refresh_items() {
 		list_items = {
@@ -38,7 +38,7 @@ extension AlbumListState {
 					// TO DO: Get the song IDs within the expanded album.
 //					let album_mpid_expanded = album_mpids[i_expanded]
 					let _ = i_expanded
-//					let mpSong_items: [AlbumListItem] = album_expanded.songs(sorted: true).map { .mpSong($0.persistentID) }
+//					let mpSong_items: [AlbumListItem] = album_expanded.songs(sorted: true).map { .song_mpid($0.persistentID) }
 //					var
 					let result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
 //					result.insert(contentsOf: [mpSong_items], at: i_expanded + 1)
@@ -79,12 +79,12 @@ extension AlbumListState {
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
 			case .album_mpid(let mpidAlbum): return mpidAlbum
-			case .mpSong(let mpidSong): return mpidSong
+			case .song_mpid(let mpidSong): return mpidSong
 		}}
 	}
 	fileprivate func album_mpids(with ids_chosen: Set<MPIDAlbum>? = nil) -> [MPIDAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
-			case .mpSong: return nil
+			case .song_mpid: return nil
 			case .album_mpid(let mpidAlbum):
 				guard let ids_chosen else { return mpidAlbum }
 				guard ids_chosen.contains(mpidAlbum) else { return nil }
@@ -94,7 +94,7 @@ extension AlbumListState {
 	fileprivate func mpSongs(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
 		return list_items.compactMap { switch $0 {
 			case .album_mpid: return nil
-			case .mpSong(let mpidSong):
+			case .song_mpid(let mpidSong):
 				guard let ids_chosen else { return mpidSong }
 				guard ids_chosen.contains(mpidSong) else { return nil }
 				return mpidSong
@@ -315,7 +315,7 @@ final class AlbumsTVC: LibraryTVC {
 						list_state: list_state)
 				}.margins(.all, .zero)
 				return cell
-			case .mpSong(let mpidSong):
+			case .song_mpid(let mpidSong):
 				switch list_state.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
 					case .expanded(let id_expanded):
@@ -364,7 +364,7 @@ final class AlbumsTVC: LibraryTVC {
 			let mpidAlbum_target
 		else { return }
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
-			case .mpSong: return false
+			case .song_mpid: return false
 			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
 		}}) else { return }
 		tableView.performBatchUpdates {
@@ -391,7 +391,7 @@ final class AlbumsTVC: LibraryTVC {
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
-							case .mpSong: return false
+							case .song_mpid: return false
 							case .album_mpid(let mpidAlbum): return mpidAlbum == id_to_expand
 						}})!
 						self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
@@ -433,7 +433,7 @@ final class AlbumsTVC: LibraryTVC {
 			let view_popover_anchor: UIView = { () -> UITableViewCell? in
 				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
 					case .album_mpid: return false
-					case .mpSong(let mpidSong): return id_activated == mpidSong
+					case .song_mpid(let mpidSong): return id_activated == mpidSong
 				}}) else { return nil }
 				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
 			}()
