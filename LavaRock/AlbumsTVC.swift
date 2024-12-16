@@ -35,13 +35,12 @@ extension AlbumListState {
 						return album_mpids.map { .album_mpid($0) }
 					}
 					
+					let album_mpid_expanded = album_mpids[i_expanded]
 					// TO DO: Get the song IDs within the expanded album.
-//					let album_mpid_expanded = album_mpids[i_expanded]
-					let _ = i_expanded
-//					let mpSong_items: [AlbumListItem] = album_expanded.songs(sorted: true).map { .song_mpid($0.persistentID) }
-//					var
-					let result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
-//					result.insert(contentsOf: [mpSong_items], at: i_expanded + 1)
+					let _ = album_mpid_expanded
+					let song_mpids_inline: [AlbumListItem] = []
+					var result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
+					result.insert(contentsOf: song_mpids_inline, at: i_expanded + 1)
 					return result
 			}
 		}()
@@ -359,10 +358,11 @@ final class AlbumsTVC: LibraryTVC {
 	func show_current() {
 		let mpidAlbum_target: MPIDAlbum? = nil
 		guard
+			let id_song_current = MPMusicPlayerController.mpidSong_current,
 			// TO DO: Find the ID of the album that contains the current song.
-//			let id_song_current = MPMusicPlayerController.mpidSong_current,
 			let mpidAlbum_target
 		else { return }
+		let _ = id_song_current
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
 			case .song_mpid: return false
 			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
