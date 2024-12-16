@@ -48,7 +48,7 @@ extension AlbumListState {
 		// In case we removed items the user was doing something with.
 		switch select_mode {
 			case .view(let id_activated):
-				if let id_activated, mpSongs(with: [id_activated]).isEmpty {
+				if let id_activated, song_mpids(with: [id_activated]).isEmpty {
 					select_mode = .view(nil)
 				}
 			case .select_albums(let ids_selected):
@@ -59,12 +59,12 @@ extension AlbumListState {
 					select_mode = .select_albums(selectable)
 				}
 			case .select_songs(let ids_selected):
-				guard !mpSongs().isEmpty else {
+				guard !song_mpids().isEmpty else {
 					select_mode = .view(nil)
 					break
 				}
 				let selectable: Set<MPIDSong> = Set(
-					mpSongs(with: ids_selected)
+					song_mpids(with: ids_selected)
 				)
 				if ids_selected != selectable{
 					select_mode = .select_songs(selectable)
@@ -90,7 +90,7 @@ extension AlbumListState {
 				return mpidAlbum
 		}}
 	}
-	fileprivate func mpSongs(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
+	fileprivate func song_mpids(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
 		return list_items.compactMap { switch $0 {
 			case .album_mpid: return nil
 			case .song_mpid(let mpidSong):
@@ -113,15 +113,15 @@ extension AlbumListState {
 		}
 	}
 	func has_song_range(from id_anchor: MPIDSong, forward: Bool) -> Bool {
-		guard let i_anchor = mpSongs().firstIndex(where: { $0 == id_anchor }) else { return false }
+		guard let i_anchor = song_mpids().firstIndex(where: { $0 == id_anchor }) else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
-		guard mpSongs().indices.contains(i_neighbor) else { return false }
+		guard song_mpids().indices.contains(i_neighbor) else { return false }
 		switch select_mode {
 			case .select_albums: return false
 			case .view: return true
 			case .select_songs(let ids_selected):
 				let anchor_is_selected = ids_selected.contains(id_anchor)
-				let neighbor_is_selected = ids_selected.contains(mpSongs()[i_neighbor])
+				let neighbor_is_selected = ids_selected.contains(song_mpids()[i_neighbor])
 				return anchor_is_selected == neighbor_is_selected
 		}
 	}
@@ -164,7 +164,7 @@ extension AlbumListState {
 		}
 	}
 	func change_song_range(from id_anchor: MPIDSong, forward: Bool) {
-		guard let i_anchor = mpSongs().firstIndex(where: { $0 == id_anchor }) else { return }
+		guard let i_anchor = song_mpids().firstIndex(where: { $0 == id_anchor }) else { return }
 		let old_selected: Set<MPIDSong> = {
 			switch select_mode {
 				case .select_albums, .view: return []
@@ -176,8 +176,8 @@ extension AlbumListState {
 			var result = old_selected
 			var i_in_range = i_anchor
 			while true {
-				guard mpSongs().indices.contains(i_in_range) else { break }
-				let id_in_range = mpSongs()[i_in_range]
+				guard song_mpids().indices.contains(i_in_range) else { break }
+				let id_in_range = song_mpids()[i_in_range]
 				
 				if inserting {
 					guard !result.contains(id_in_range) else { break }
@@ -449,7 +449,7 @@ final class AlbumsTVC: LibraryTVC {
 					self.list_state.select_mode = .view(nil)
 					
 					guard
-						let song_mpid_activated = self.list_state.mpSongs(with: [id_activated]).first
+						let song_mpid_activated = self.list_state.song_mpids(with: [id_activated]).first
 					else { return }
 					// TO DO: Get the other song IDs in the album.
 //					guard let album_activated = song_activated.container else { return }
@@ -513,7 +513,7 @@ final class AlbumsTVC: LibraryTVC {
 					return InterfaceText.NUMBER_albums_selected(list_state.album_mpids(with: ids_selected).count)
 				}
 			case .select_songs(let ids_selected):
-				return InterfaceText.NUMBER_songs_selected(list_state.mpSongs(with: ids_selected).count)
+				return InterfaceText.NUMBER_songs_selected(list_state.song_mpids(with: ids_selected).count)
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
@@ -527,7 +527,7 @@ final class AlbumsTVC: LibraryTVC {
 							return InterfaceText.NUMBER_albums(list_state.album_mpids().count)
 						}
 					case .expanded:
-						return InterfaceText.NUMBER_songs(list_state.mpSongs().count)
+						return InterfaceText.NUMBER_songs(list_state.song_mpids().count)
 				}
 		}
 	}
@@ -589,7 +589,7 @@ final class AlbumsTVC: LibraryTVC {
 				return []
 //				flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
 			case .select_songs(let ids_selected):
-				return list_state.mpSongs(with: ids_selected)
+				return list_state.song_mpids(with: ids_selected)
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
@@ -597,7 +597,7 @@ final class AlbumsTVC: LibraryTVC {
 //						return list_state.album_mpids().flatMap {
 						return []
 					case .expanded:
-						return list_state.mpSongs()
+						return list_state.song_mpids()
 				}
 		}
 	}
@@ -647,7 +647,7 @@ final class AlbumsTVC: LibraryTVC {
 					switch list_state.select_mode {
 						case .select_albums, .view: break
 						case .select_songs(let ids_selected):
-							let rs_selected = list_state.mpSongs().indices(where: {
+							let rs_selected = list_state.song_mpids().indices(where: {
 								ids_selected.contains($0)
 							})
 							if rs_selected.ranges.count >= 2 { enabling = false }
@@ -689,8 +689,8 @@ final class AlbumsTVC: LibraryTVC {
 	private func ids_songs_to_sort() -> [MPIDSong] {
 		switch list_state.select_mode {
 			case .select_albums: return []
-			case .view: return list_state.mpSongs()
-			case .select_songs(let ids_selected): return list_state.mpSongs(with: ids_selected)
+			case .view: return list_state.song_mpids()
+			case .select_songs(let ids_selected): return list_state.song_mpids(with: ids_selected)
 		}
 	}
 	
