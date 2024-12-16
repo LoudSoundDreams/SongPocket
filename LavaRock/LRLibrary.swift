@@ -1,7 +1,7 @@
 // 2024-09-04
 
-@MainActor final class Library {
-	static let shared = Library()
+@MainActor final class LRLibrary {
+	static let shared = LRLibrary()
 	var lrCrate: LRCrate? = nil
 	
 	private init() {}
@@ -13,9 +13,9 @@
 		}
 		print(lrCrate.title)
 		lrCrate.albums.forEach { lrAlbum in
-			print(" ", lrAlbum.id_album)
+			print("  \(lrAlbum.id_album)")
 			lrAlbum.songs.forEach { lrSong in
-				print("   ", lrSong.id_song)
+				print("    \(lrSong.id_song)")
 			}
 		}
 	}
