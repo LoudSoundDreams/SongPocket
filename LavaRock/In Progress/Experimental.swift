@@ -47,7 +47,7 @@ struct AlbumShelf: View {
 					.animation(.none, value: i_visible)
 				Spacer()
 				Button {
-					albums.append(FakeAlbum(position: albums.count, title: .random_letter()))
+					albums.append(FakeAlbum(position: albums.count, title: .debug_random()))
 				} label: { Image(systemName: "plus.circle") }
 			}}
 		}
@@ -71,7 +71,7 @@ struct FakeAlbumCover: View {
 final class FakeAlbum: Identifiable {
 	static func demoArray() -> [FakeAlbum] {
 		return (0...3).map {
-			FakeAlbum(position: $0, title: .random_letter())
+			FakeAlbum(position: $0, title: .debug_random())
 		}
 	}
 	static func renumber(_ albums: [FakeAlbum]) {
@@ -80,8 +80,8 @@ final class FakeAlbum: Identifiable {
 	
 	var position: Int
 	let title: String
-	let color_circle = Color.random_translucent()
-	let color_square = Color.random_translucent()
+	let color_circle = Color.debug_random()
+	let color_square = Color.debug_random()
 	
 	init(position: Int, title: String) {
 		self.position = position
@@ -105,7 +105,7 @@ extension FakeAlbum: Hashable {
 // MARK: - Helpers
 
 private extension String {
-	static func random_letter() -> Self {
+	static func debug_random() -> Self {
 		let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
 		return String(character)
 	}

@@ -5,6 +5,20 @@
 	var lrCrate: LRCrate? = nil
 	
 	private init() {}
+	
+	func debug_print() {
+		guard let lrCrate else {
+			print("nil crate")
+			return
+		}
+		print(lrCrate.title)
+		lrCrate.albums.forEach { lrAlbum in
+			print(" ", lrAlbum.id_album)
+			lrAlbum.songs.forEach { lrSong in
+				print("   ", lrSong.id_song)
+			}
+		}
+	}
 }
 
 struct LRCrate: Equatable {
