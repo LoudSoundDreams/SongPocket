@@ -27,7 +27,7 @@ import MusicKit
 	}
 	
 	@MainActor static func integrate_Apple_Music() {
-		Librarian.shared.observe_mpLibrary()
+		AppleLibrary.shared.observe_mpLibrary()
 		PlayerState.shared.observe_mkPlayer()
 	}
 }

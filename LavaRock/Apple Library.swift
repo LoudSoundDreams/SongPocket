@@ -8,7 +8,7 @@ import os
 typealias MKSong = MusicKit.Song
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
-@MainActor @Observable final class Librarian {
+@MainActor @Observable final class AppleLibrary {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
 	private(set) var is_merging = false { didSet {
@@ -19,15 +19,15 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 	
 	private init() {}
 	@ObservationIgnored let context = ZZZDatabase.viewContext
-	@ObservationIgnored let signposter = OSSignposter(subsystem: "persistence", category: "librarian")
+	@ObservationIgnored let signposter = OSSignposter(subsystem: "persistence", category: "Apple library")
 }
-extension Librarian {
-	static let shared = Librarian()
+extension AppleLibrary {
+	static let shared = AppleLibrary()
 	func observe_mpLibrary() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
-		NotificationCenter.default.add_observer_once(self, selector: #selector(media_library_changed), name: .MPMediaLibraryDidChange, object: library)
-		media_library_changed()
+		NotificationCenter.default.add_observer_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
+		merge_changes()
 	}
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
 	func infoAlbum(mpidAlbum: MPIDAlbum) -> InfoAlbum? {
@@ -83,7 +83,7 @@ extension Librarian {
 		UIApplication.shared.open(url)
 	}
 	
-	@objc private func media_library_changed() {
+	@objc private func merge_changes() {
 		Task {
 #if targetEnvironment(simulator)
 			await merge_from_Apple_Music(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))

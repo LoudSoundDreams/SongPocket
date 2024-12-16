@@ -1,6 +1,6 @@
 // 2024-12-15
 
-extension Librarian {
+extension AppleLibrary {
 	func merge_from_MediaPlayer(_ mediaItems_unsorted: [InfoSong]) {
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
 		// Meanwhile, isolate the `InfoSong`s that we don’t have `Song`s for. We’ll create new `Song`s for them.

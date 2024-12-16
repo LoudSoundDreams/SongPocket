@@ -36,7 +36,7 @@ extension PlayerState {
 	private init() {
 		refresh()
 		NotificationCenter.default.add_observer_once(self, selector: #selector(refresh), name: PlayerState.musicKit, object: nil)
-		NotificationCenter.default.add_observer_once(self, selector: #selector(refresh), name: Librarian.did_merge, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
+		NotificationCenter.default.add_observer_once(self, selector: #selector(refresh), name: AppleLibrary.did_merge, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
 	}
 	@objc private func refresh() {
 		// Refresh menu title
@@ -112,7 +112,7 @@ extension PlayerState {
 #endif
 		}()) { [weak self] _ in self?.tvc_albums?.referencee?.show_current() }
 	])}
-	private static let action_go_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in Librarian.open_Apple_Music() }
+	private static let action_go_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
 	
 	private static let dme_toggle_playing = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)

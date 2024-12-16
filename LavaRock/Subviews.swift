@@ -133,7 +133,7 @@ import MusicKit
 		.animation(nil, value: id_album) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
 	}
 	private var artwork: MusicKit.Artwork? {
-		return Librarian.shared.mkSection(mpidAlbum: id_album)?.artwork
+		return AppleLibrary.shared.mkSection(mpidAlbum: id_album)?.artwork
 	}
 }
 
@@ -142,7 +142,7 @@ import MusicKit
 @MainActor struct AlbumLabel: View {
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
-	private let librarian: Librarian = .shared
+	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
 			stack_text
@@ -154,7 +154,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let info_album: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
+		let info_album: InfoAlbum? = apple_lib.infoAlbum(mpidAlbum: id_album)
 		let title_and_input_label: String = {
 			guard let title_album = info_album?._title, title_album != ""
 			else { return InterfaceText._tilde }
@@ -202,7 +202,7 @@ import MusicKit
 						withAnimation {
 							list_state.select_mode = .select_albums([id_album])
 						}
-					}.disabled(librarian.is_merging)
+					}.disabled(apple_lib.is_merging)
 					Divider()
 			}
 			b_above
@@ -229,7 +229,7 @@ import MusicKit
 			list_state.change_album_range(from: id_album, forward: false)
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) || // Always false; including this to make SwiftUI run this code when we need to.
-			librarian.is_merging || // TO DO: Change icon to spinner.
+			apple_lib.is_merging || // TO DO: Change icon to spinner.
 			!list_state.hasAlbumRange(from: id_album, forward: false)
 		}())
 	}
@@ -241,7 +241,7 @@ import MusicKit
 			list_state.change_album_range(from: id_album, forward: true)
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) ||
-			librarian.is_merging ||
+			apple_lib.is_merging ||
 			!list_state.hasAlbumRange(from: id_album, forward: true)
 		}())
 	}
@@ -260,14 +260,14 @@ import MusicKit
 	let id_song: MPIDSong
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
-	private let librarian: Librarian = .shared
+	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let infoSong: InfoSong__? = {
 #if targetEnvironment(simulator)
 					guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
-						Task { await librarian.cache_mkSong(mpidSong: id_song) }
+						Task { await apple_lib.cache_mkSong(mpidSong: id_song) }
 						return nil
 					}
 					return InfoSong__(
@@ -276,8 +276,8 @@ import MusicKit
 						_disc: 1,
 						_track: sim_song.track_number_on_disk)
 #else
-					guard let mkSong = librarian.mkSongs[MusicItemID(String(id_song))] else {
-						Task { await librarian.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
+					guard let mkSong = apple_lib.mkSongs[MusicItemID(String(id_song))] else {
+						Task { await apple_lib.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
 						// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
 						return nil
 					}
@@ -288,7 +288,7 @@ import MusicKit
 						_track: mkSong.trackNumber)
 #endif
 				}()
-				let infoAlbum: InfoAlbum? = librarian.infoAlbum(mpidAlbum: id_album)
+				let infoAlbum: InfoAlbum? = apple_lib.infoAlbum(mpidAlbum: id_album)
 				
 				stack_main(infoSong, infoAlbum)
 				Spacer()
@@ -312,7 +312,7 @@ import MusicKit
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
 					let _ = PlayerState.shared.signal
-					let _ = librarian.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
+					let _ = apple_lib.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 					return ApplicationMusicPlayer.StatusNowPlaying(mpidSong: id_song).foreground_color
 				}())
 			if
@@ -404,7 +404,7 @@ import MusicKit
 							withAnimation {
 								list_state.select_mode = .select_songs([id_song])
 							}
-						}.disabled(librarian.is_merging)
+						}.disabled(apple_lib.is_merging)
 						Divider()
 				}
 				b_above
@@ -426,7 +426,7 @@ import MusicKit
 			list_state.change_song_range(from: id_song, forward: false)
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
-			librarian.is_merging ||
+			apple_lib.is_merging ||
 			!list_state.hasSongRange(from: id_song, forward: false)
 		}())
 	}
@@ -438,7 +438,7 @@ import MusicKit
 			list_state.change_song_range(from: id_song, forward: true)
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
-			librarian.is_merging ||
+			apple_lib.is_merging ||
 			!list_state.hasSongRange(from: id_song, forward: true)
 		}())
 	}

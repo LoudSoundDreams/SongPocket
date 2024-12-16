@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension Librarian {
+extension AppleLibrary {
 	func merge_from_MusicKit(_ sections_unsorted: [MKSection]) {
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }

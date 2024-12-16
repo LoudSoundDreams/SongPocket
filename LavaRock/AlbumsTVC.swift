@@ -229,7 +229,7 @@ final class AlbumsTVC: LibraryTVC {
 		b_focused.preferredMenuElementOrder = .fixed
 		b_focused.menu = menu_focused()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: Librarian.did_merge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
 		Remote.shared.tvc_albums = WeakRef(self)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: AlbumListState.expansion_changed, object: list_state)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_id_song, object: nil)
@@ -617,7 +617,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch album_order {
 			case .random, .reverse, .recently_added: return true
 			case .recently_released: return albums_to_sort().contains {
-				nil != Librarian.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._date_released
+				nil != AppleLibrary.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._date_released
 			}
 		}
 	}
