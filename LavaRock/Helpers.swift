@@ -91,8 +91,14 @@ extension Color {
 }
 
 extension UIImage {
+	static var reverse: Self { sf("arrow.uturn.up") }
+	static var shuffle: Self { sf("shuffle") }
+	static var move_up: Self { sf("arrow.up.circle.fill") }
+	static var move_down: Self { sf("arrow.down.circle.fill") }
+	static var to_top: Self { sf("arrow.up.to.line") }
+	static var to_bottom: Self { sf("arrow.down.to.line") }
 	static func random_die() -> Self {
-		return Self(systemName: {
+		return sf({
 			switch Int.random(in: 1...6) {
 				case 1: return "die.face.1"
 				case 2: return "die.face.2"
@@ -101,11 +107,15 @@ extension UIImage {
 				case 5: return "die.face.5"
 				default: return "die.face.6"
 			}
-		}())!
+		}())
 	}
 	
 	func applying_hierarchical_tint() -> UIImage? {
 		return applyingSymbolConfiguration(Self.SymbolConfiguration(hierarchicalColor: .tintColor))
+	}
+	
+	private static func sf(_ symbol_name: String) -> Self {
+		return Self(systemName: symbol_name)!
 	}
 }
 

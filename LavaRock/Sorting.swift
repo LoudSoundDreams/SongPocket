@@ -3,8 +3,8 @@
 import UIKit
 
 enum AlbumOrder {
-	case random
 	case reverse
+	case random
 	
 	case recently_added
 	case recently_released
@@ -18,8 +18,8 @@ enum AlbumOrder {
 				case .recently_released: return InterfaceText.Recently_Released
 			}}(),
 			image: { switch self {
-				case .random: return UIImage(systemName: "shuffle")
-				case .reverse: return UIImage(systemName: "arrow.uturn.up")
+				case .reverse: return UIImage.reverse
+				case .random: return UIImage.shuffle
 				case .recently_added: return UIImage(systemName: "plus.circle")
 				case .recently_released: return UIImage(systemName: "calendar")
 			}}(),
@@ -73,8 +73,8 @@ enum AlbumOrder {
 }
 
 enum SongOrder {
-	case random
 	case reverse
+	case random
 	
 	case track
 	
@@ -86,8 +86,8 @@ enum SongOrder {
 				case .track: return InterfaceText.Track_Number
 			}}(),
 			image: { switch self {
-				case .random: return UIImage(systemName: "shuffle")
-				case .reverse: return UIImage(systemName: "arrow.uturn.up")
+				case .reverse: return UIImage.reverse
+				case .random: return UIImage.shuffle
 				case .track: return UIImage(systemName: "number")
 			}}(),
 			handler: { _ in handler() })
