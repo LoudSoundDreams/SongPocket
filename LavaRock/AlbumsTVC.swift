@@ -29,16 +29,17 @@ extension AlbumListState {
 				case .collapsed: return album_mpids.map { .album_mpid($0) }
 				case .expanded(let id_expanded):
 					// If we removed the expanded album, go to collapsed mode.
-					guard let i_expanded = album_mpids.firstIndex(where: { $0 == id_expanded })
+					guard
+						let i_expanded = album_mpids.firstIndex(where: { $0 == id_expanded }),
+						let album_expanded = Librarian.find_lrAlbum(mpid: id_expanded)
 					else {
 						expansion = .collapsed
 						return album_mpids.map { .album_mpid($0) }
 					}
 					
-					let album_mpid_expanded = album_mpids[i_expanded]
-					// TO DO: Get the song IDs within the expanded album.
-					let _ = album_mpid_expanded
-					let song_mpids_inline: [AlbumListItem] = []
+					let song_mpids_inline: [AlbumListItem] = album_expanded.lrSongs.map {
+						.song_mpid($0.mpid)
+					}
 					var result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
 					result.insert(contentsOf: song_mpids_inline, at: i_expanded + 1)
 					return result
@@ -73,7 +74,7 @@ extension AlbumListState {
 	}
 	private static func album_mpids_fresh() -> [MPIDAlbum] {
 		guard let lrCrate = Librarian.lrCrate else { return [] }
-		return lrCrate.lrAlbums.map { $0.mpidAlbum }
+		return lrCrate.lrAlbums.map { $0.mpid }
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
@@ -356,13 +357,11 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	func show_current() {
-		let mpidAlbum_target: MPIDAlbum? = nil
 		guard
-			let id_song_current = MPMusicPlayerController.mpidSong_current,
-			// TO DO: Find the ID of the album that contains the current song.
-			let mpidAlbum_target
+			let id_current = MPMusicPlayerController.mpidSong_current,
+			let song_current = Librarian.find_lrSong(mpid: id_current)
 		else { return }
-		let _ = id_song_current
+		let mpidAlbum_target = song_current.lrAlbum.mpid
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
 			case .song_mpid: return false
 			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
@@ -433,7 +432,7 @@ final class AlbumsTVC: LibraryTVC {
 			let view_popover_anchor: UIView = { () -> UITableViewCell? in
 				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
 					case .album_mpid: return false
-					case .song_mpid(let mpidSong): return id_activated == mpidSong
+					case .song_mpid(let mpidSong): return mpidSong == id_activated
 				}}) else { return nil }
 				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
 			}()
@@ -448,16 +447,11 @@ final class AlbumsTVC: LibraryTVC {
 				Task {
 					self.list_state.select_mode = .view(nil)
 					
-					guard
-						let song_mpid_activated = self.list_state.song_mpids(with: [id_activated]).first
-					else { return }
-					// TO DO: Get the other song IDs in the album.
-//					guard let album_activated = song_activated.container else { return }
-
-					 ApplicationMusicPlayer._shared?.play_now(
-						[song_mpid_activated],
-//						album_activated.songs(sorted: true).map { $0.persistentID },
-						starting_at: song_mpid_activated)
+					guard let song_activated = Librarian.find_lrSong(mpid: id_activated) else { return }
+					
+					ApplicationMusicPlayer._shared?.play_now(
+						song_activated.lrAlbum.lrSongs.map { $0.mpid },
+						starting_at: id_activated)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -505,8 +499,8 @@ final class AlbumsTVC: LibraryTVC {
 			case .select_albums(let ids_selected):
 				if always_songs {
 					let num_songs_selected: Int = list_state.album_mpids(with: ids_selected).reduce(into: 0) { songs_so_far, mpidAlbum_selected in
-						// TO DO: Add the number of songs in the selected album.
-						songs_so_far += 0//selected_album.songs(sorted: false).count
+						guard let album = Librarian.find_lrAlbum(mpid: mpidAlbum_selected) else { return }
+						songs_so_far += album.lrSongs.count
 					}
 					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
 				} else {
@@ -519,8 +513,8 @@ final class AlbumsTVC: LibraryTVC {
 					case .collapsed:
 						if always_songs {
 							let num_all_songs: Int = list_state.album_mpids().reduce(into: 0) { songs_so_far, mpidAlbum in
-								// TO DO: Add the number of songs in the album.
-								songs_so_far += 0//album.songs(sorted: false).count
+								guard let album = Librarian.find_lrAlbum(mpid: mpidAlbum) else { return }
+								songs_so_far += album.lrSongs.count
 							}
 							return InterfaceText.NUMBER_songs(num_all_songs)
 						} else {
@@ -583,19 +577,24 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func ids_songs_focused() -> [MPIDSong] { // In display order.
 		switch list_state.select_mode {
-			case .select_albums://(let ids_selected):
-				// TO DO: Get the song IDs within each selected album.
-//				return list_state.album_mpids(with: ids_selected).flatMap {
-				return []
-//				flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+			case .select_albums(let ids_selected):
+				var result: [MPIDSong] = []
+				ids_selected.forEach {
+					guard let album_selected = Librarian.find_lrAlbum(mpid: $0) else { return }
+					result.append(contentsOf: album_selected.lrSongs.map { $0.mpid })
+				}
+				return result
 			case .select_songs(let ids_selected):
 				return list_state.song_mpids(with: ids_selected)
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
-						// TO DO: Get the song IDs within each album.
-//						return list_state.album_mpids().flatMap {
-						return []
+						var result: [MPIDSong] = []
+						list_state.album_mpids().forEach {
+							guard let album = Librarian.find_lrAlbum(mpid: $0) else { return }
+							result.append(contentsOf: album.lrSongs.map { $0.mpid })
+						}
+						return result
 					case .expanded:
 						return list_state.song_mpids()
 				}

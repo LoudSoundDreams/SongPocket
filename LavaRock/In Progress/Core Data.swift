@@ -311,4 +311,8 @@ extension NSManagedObjectContext {
 		cuatro.container = delta; cuatro.index = Int64(0)
 		cuatro.persistentID = Int64(-10000)
 	}
+	
+	final func migrate_to_disk() {
+		guard let _ = fetch_collection() else { return }
+	}
 }

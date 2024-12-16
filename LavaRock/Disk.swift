@@ -16,9 +16,9 @@ enum Disk {
 		crates.forEach {
 			output.append(contentsOf: "\($0.title)\n")
 			$0.lrAlbums.forEach { album in
-				output.append(contentsOf: "\(tab)\(album.mpidAlbum)\n")
+				output.append(contentsOf: "\(tab)\(album.mpid)\n")
 				album.lrSongs.forEach { song in
-					output.append(contentsOf: "\(tab_tab)\(song.mpidSong)\n")
+					output.append(contentsOf: "\(tab_tab)\(song.mpid)\n")
 				}
 			}
 		}
@@ -114,7 +114,7 @@ struct Parser {
 				continue
 			}
 			result.append(
-				LRAlbum(mpidAlbum: mpidAlbum, lrSongs: songs)
+				LRAlbum(mpid: mpidAlbum, lrSongs: songs)
 			)
 		}
 		return (i_line, result)
@@ -143,9 +143,12 @@ struct Parser {
 			}
 			
 			i_line += 1
-			result.append(
-				LRSong(mpidSong: mpidSong)
-			)
+			// TO DO
+//			result.append(
+//				LRSong(mpid: mpidSong)
+//			)
+			let _ = mpidSong
+			result.append(contentsOf: [])
 		}
 		return (i_line, result)
 	}

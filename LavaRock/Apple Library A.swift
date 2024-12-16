@@ -32,21 +32,23 @@ extension AppleLibrary {
 			return sorted.map { $0.section }
 		}()
 		var fake_id_album_next: MPIDAlbum = 0
-		var fake_id_song_next: MPIDSong = 0
+//		var fake_id_song_next: MPIDSong = 0
 		let new_albums: [LRAlbum] = new_mkSections.map { mkSection in
 			let id_album = fake_id_album_next
 			fake_id_album_next += 1
 			
-			return LRAlbum(mpidAlbum: id_album, lrSongs: {
+			return LRAlbum(mpid: id_album, lrSongs: {
 				let mkSongs = mkSection.items.sorted {
 					SongOrder.precedes_numerically(strict: true, $0, $1)
 				}
-				return mkSongs.map { _ in
-					let id_song = fake_id_song_next
-					fake_id_song_next += 1
-					
-					return LRSong(mpidSong: id_song)
-				}
+//				return mkSongs.map { _ in
+//					let id_song = fake_id_song_next
+//					fake_id_song_next += 1
+//					
+//					return LRSong(mpid: id_song)
+//				}
+				let _ = mkSongs
+				return []
 			}())
 		}
 		let newCrate = LRCrate(title: InterfaceText._tilde, lrAlbums: new_albums)

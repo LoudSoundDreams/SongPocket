@@ -105,8 +105,8 @@ extension PlayerState {
 			return []
 #else
 			guard
-				let id_song = MPMusicPlayerController.mpidSong_current
-					// TO DO: Return `.disabled` if `Librarian` doesn’t know about `id_song`.
+				let id_current = MPMusicPlayerController.mpidSong_current,
+				nil != Librarian.find_lrSong(mpid: id_current)
 			else { return .disabled }
 			return []
 #endif

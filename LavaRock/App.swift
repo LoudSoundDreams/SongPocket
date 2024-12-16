@@ -20,6 +20,10 @@ import MusicKit
 			VCRMain()
 				.ignoresSafeArea()
 				.task {
+					ZZZDatabase.viewContext.migrate_to_disk()
+					
+					Librarian.lrCrate = Disk.load_crates().first
+					
 					guard MusicAuthorization.currentStatus == .authorized else { return }
 					Self.integrate_Apple_Music()
 				}

@@ -10,11 +10,20 @@
 		}
 		print(lrCrate.title)
 		lrCrate.lrAlbums.forEach { lrAlbum in
-			print("  \(lrAlbum.mpidAlbum)")
+			print("  \(lrAlbum.mpid)")
 			lrAlbum.lrSongs.forEach { lrSong in
-				print("    \(lrSong.mpidSong)")
+				print("    \(lrSong.mpid)")
 			}
 		}
+	}
+	
+	static func find_lrAlbum(mpid: MPIDAlbum) -> LRAlbum? {
+		// TO DO
+		return nil
+	}
+	static func find_lrSong(mpid: MPIDSong) -> LRSong? {
+		// TO DO
+		return nil
 	}
 }
 
@@ -23,9 +32,10 @@ struct LRCrate: Equatable {
 	var lrAlbums: [LRAlbum]
 }
 struct LRAlbum: Equatable {
-	let mpidAlbum: MPIDAlbum
+	let mpid: MPIDAlbum
 	var lrSongs: [LRSong]
 }
 struct LRSong: Equatable {
-	let mpidSong: MPIDSong
+	let mpid: MPIDSong
+	let lrAlbum: LRAlbum
 }
