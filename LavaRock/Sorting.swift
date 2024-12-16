@@ -93,18 +93,20 @@ enum SongOrder {
 			handler: { _ in handler() })
 	}
 	
-	@MainActor func reindex(_ in_original_order: [ZZZSong]) {
-		let replace_at: [Int64] = in_original_order.map { $0.index }
-		let arranged: [ZZZSong] = { switch self {
-			case .random: return in_original_order.in_any_other_order()
-			case .reverse: return in_original_order.reversed()
-				
-			case .track: return Self.sorted_numerically(strict: false, in_original_order)
-		}}()
-		arranged.indices.forEach { counter in
-			arranged[counter].index = replace_at[counter]
-		}
-	}
+	/*
+	 @MainActor func reindex(_ in_original_order: [ZZZSong]) {
+	 let replace_at: [Int64] = in_original_order.map { $0.index }
+	 let arranged: [ZZZSong] = { switch self {
+	 case .random: return in_original_order.in_any_other_order()
+	 case .reverse: return in_original_order.reversed()
+	 
+	 case .track: return Self.sorted_numerically(strict: false, in_original_order)
+	 }}()
+	 arranged.indices.forEach { counter in
+	 arranged[counter].index = replace_at[counter]
+	 }
+	 }
+	*/
 	
 	@MainActor static func sorted_numerically(strict: Bool, _ input: [ZZZSong]) -> [ZZZSong] {
 		let songs_and_infos: [(song: ZZZSong, info: (some InfoSong)?)] = input.map {(
