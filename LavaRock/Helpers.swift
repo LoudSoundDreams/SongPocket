@@ -103,6 +103,10 @@ extension UIImage {
 			}
 		}())!
 	}
+	
+	func applying_hierarchical_tint() -> UIImage? {
+		return applyingSymbolConfiguration(Self.SymbolConfiguration(hierarchicalColor: .tintColor))
+	}
 }
 
 extension UITableView {
