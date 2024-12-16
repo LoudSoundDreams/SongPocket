@@ -105,8 +105,8 @@ extension PlayerState {
 			return []
 #else
 			guard
-				let id_song = MPMusicPlayerController.mpidSong_current,
-				nil != ZZZDatabase.viewContext.fetch_song(mpidSong: id_song)
+				let id_song = MPMusicPlayerController.mpidSong_current
+					// TO DO: Return `.disabled` if `Librarian` doesn’t know about `id_song`.
 			else { return .disabled }
 			return []
 #endif

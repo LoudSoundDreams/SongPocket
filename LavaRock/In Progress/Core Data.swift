@@ -215,15 +215,6 @@ extension NSManagedObjectContext {
 	final func fetch_collection() -> ZZZCollection? {
 		return fetch_please(ZZZCollection.fetch_request_sorted()).first
 	}
-	final func fetch_song(mpidSong: MPIDSong) -> ZZZSong? {
-		let request = ZZZSong.fetchRequest()
-		// As of Xcode 16.0 RC, `#Predicate` produces the bogus warning: Type 'ReferenceWritableKeyPath<ZZZSong, Int64>' does not conform to the 'Sendable' protocol
-//		request.predicate = NSPredicate(#Predicate<ZZZSong> {
-//			mpID == $0.persistentID
-//		})
-		request.predicate = NSPredicate(format: "persistentID = %lld", mpidSong)
-		return fetch_please(request).first
-	}
 	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		do {
