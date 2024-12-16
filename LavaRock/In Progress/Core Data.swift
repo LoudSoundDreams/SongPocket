@@ -313,6 +313,31 @@ extension NSManagedObjectContext {
 	}
 	
 	final func migrate_to_disk() {
-		guard let _ = fetch_collection() else { return }
+		// Return early if there’s nothing to migrate.
+		guard let zzzCollection = fetch_collection() else { return }
+		
+		// Write data to persistent storage as if the app never used Core Data previously.
+		
+		let lrCrate = LRCrate(
+			title: zzzCollection.title ?? InterfaceText._tilde,
+			lrAlbums: {
+				let zzzAlbums = zzzCollection.albums(sorted: true)
+				return zzzAlbums.map { zzzAlbum in
+					// Return one `LRAlbum`.
+					let mpidAlbum = zzzAlbum.albumPersistentID
+					return LRAlbum(
+						mpid: mpidAlbum,
+						lrSongs: {
+							let zzzSongs = zzzAlbum.songs(sorted: true)
+							return zzzSongs.map { zzzSong in
+								// Return one `LRSong`.
+								return LRSong(
+									mpid: zzzSong.persistentID,
+									album_mpid: mpidAlbum)
+							}
+						}())
+				}
+			}())
+		Disk.save_crates([lrCrate])
 	}
 }

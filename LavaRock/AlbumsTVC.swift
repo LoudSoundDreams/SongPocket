@@ -361,7 +361,7 @@ final class AlbumsTVC: LibraryTVC {
 			let id_current = MPMusicPlayerController.mpidSong_current,
 			let song_current = Librarian.find_lrSong(mpid: id_current)
 		else { return }
-		let mpidAlbum_target = song_current.lrAlbum.mpid
+		let mpidAlbum_target = song_current.album_mpid
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
 			case .song_mpid: return false
 			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
@@ -447,10 +447,13 @@ final class AlbumsTVC: LibraryTVC {
 				Task {
 					self.list_state.select_mode = .view(nil)
 					
-					guard let song_activated = Librarian.find_lrSong(mpid: id_activated) else { return }
+					guard
+						let song_activated = Librarian.find_lrSong(mpid: id_activated),
+						let album_chosen = Librarian.find_lrAlbum(mpid: song_activated.album_mpid)
+					else { return }
 					
 					ApplicationMusicPlayer._shared?.play_now(
-						song_activated.lrAlbum.lrSongs.map { $0.mpid },
+						album_chosen.lrSongs.map { $0.mpid },
 						starting_at: id_activated)
 				}
 			}

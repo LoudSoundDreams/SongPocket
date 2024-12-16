@@ -37,5 +37,5 @@ struct LRAlbum: Equatable {
 }
 struct LRSong: Equatable {
 	let mpid: MPIDSong
-	let lrAlbum: LRAlbum
+	let album_mpid: MPIDAlbum
 }
