@@ -698,11 +698,9 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func promote_albums() {
 		Task {
-			guard
-				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetch_collection()
-			else { return }
-			crate.promote_albums(with: ids_selected)
+			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
+			// TO DO: Tell `Librarian` to promote the selected albums, and save the changes.
+			let _ = ids_selected
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle() // Refresh “select range” commands.
@@ -712,7 +710,9 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func promote_songs() {
 		Task {
-			// TO DO: Get the selected song IDs. Tell `Librarian` to promote them within their album, and save the changes.
+			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
+			// TO DO: Tell `Librarian` to promote the selected songs within their album, and save the changes.
+			let _ = ids_selected
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -723,11 +723,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func demote_albums() {
 		Task {
-			guard
-				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetch_collection()
-			else { return }
-			crate.demote_albums(with: ids_selected)
+			// TO DO
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -750,11 +746,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func float_albums() {
 		Task {
-			guard
-				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetch_collection()
-			else { return }
-			crate.float_albums(with: ids_selected)
+			// TO DO
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -775,11 +767,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func sink_albums() {
 		Task {
-			guard
-				case let .select_albums(ids_selected) = list_state.select_mode,
-				let crate = ZZZDatabase.viewContext.fetch_collection()
-			else { return }
-			crate.sink_albums(with: ids_selected)
+			// TO DO
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()

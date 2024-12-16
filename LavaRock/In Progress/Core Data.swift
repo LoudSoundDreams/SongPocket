@@ -58,47 +58,49 @@ extension ZZZCollection {
 		return unsorted.sorted { $0.index < $1.index }
 	}
 	
-	final func promote_albums(with ids_to_promote: Set<MPIDAlbum>) {
-		var my_albums = albums(sorted: true)
-		let rs_to_promote = my_albums.indices { ids_to_promote.contains($0.albumPersistentID) }
-		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
-		let target: Int = (rs_to_promote.ranges.count == 1)
-		? max(front-1, 0)
-		: front
-		
-		my_albums.moveSubranges(rs_to_promote, to: target)
-		ZZZDatabase.renumber(my_albums)
-		managedObjectContext!.save_please()
-	}
-	final func demote_albums(with ids_to_demote: Set<MPIDAlbum>) {
-		var my_albums = albums(sorted: true)
-		let rs_to_demote = my_albums.indices { ids_to_demote.contains($0.albumPersistentID) }
-		guard let back: Int = rs_to_demote.ranges.last?.last else { return }
-		let target: Int = (rs_to_demote.ranges.count == 1)
-		? min(back+1, my_albums.count-1)
-		: back
-		
-		my_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
-		ZZZDatabase.renumber(my_albums)
-		managedObjectContext!.save_please()
-	}
-	
-	final func float_albums(with ids_to_float: Set<MPIDAlbum>) {
-		var my_albums = albums(sorted: true)
-		let rs_to_float = my_albums.indices { ids_to_float.contains($0.albumPersistentID) }
-		
-		my_albums.moveSubranges(rs_to_float, to: 0)
-		ZZZDatabase.renumber(my_albums)
-		managedObjectContext!.save_please()
-	}
-	final func sink_albums(with ids_to_sink: Set<MPIDAlbum>) {
-		var my_albums = albums(sorted: true)
-		let rs_to_sink = my_albums.indices { ids_to_sink.contains($0.albumPersistentID) }
-		
-		my_albums.moveSubranges(rs_to_sink, to: my_albums.count)
-		ZZZDatabase.renumber(my_albums)
-		managedObjectContext!.save_please()
-	}
+	/*
+	 final func promote_albums(with ids_to_promote: Set<MPIDAlbum>) {
+	 var my_albums = albums(sorted: true)
+	 let rs_to_promote = my_albums.indices { ids_to_promote.contains($0.albumPersistentID) }
+	 guard let front: Int = rs_to_promote.ranges.first?.first else { return }
+	 let target: Int = (rs_to_promote.ranges.count == 1)
+	 ? max(front-1, 0)
+	 : front
+	 
+	 my_albums.moveSubranges(rs_to_promote, to: target)
+	 ZZZDatabase.renumber(my_albums)
+	 managedObjectContext!.save_please()
+	 }
+	 final func demote_albums(with ids_to_demote: Set<MPIDAlbum>) {
+	 var my_albums = albums(sorted: true)
+	 let rs_to_demote = my_albums.indices { ids_to_demote.contains($0.albumPersistentID) }
+	 guard let back: Int = rs_to_demote.ranges.last?.last else { return }
+	 let target: Int = (rs_to_demote.ranges.count == 1)
+	 ? min(back+1, my_albums.count-1)
+	 : back
+	 
+	 my_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
+	 ZZZDatabase.renumber(my_albums)
+	 managedObjectContext!.save_please()
+	 }
+	 
+	 final func float_albums(with ids_to_float: Set<MPIDAlbum>) {
+	 var my_albums = albums(sorted: true)
+	 let rs_to_float = my_albums.indices { ids_to_float.contains($0.albumPersistentID) }
+	 
+	 my_albums.moveSubranges(rs_to_float, to: 0)
+	 ZZZDatabase.renumber(my_albums)
+	 managedObjectContext!.save_please()
+	 }
+	 final func sink_albums(with ids_to_sink: Set<MPIDAlbum>) {
+	 var my_albums = albums(sorted: true)
+	 let rs_to_sink = my_albums.indices { ids_to_sink.contains($0.albumPersistentID) }
+	 
+	 my_albums.moveSubranges(rs_to_sink, to: my_albums.count)
+	 ZZZDatabase.renumber(my_albums)
+	 managedObjectContext!.save_please()
+	 }
+	 */
 }
 
 // MARK: - Album
