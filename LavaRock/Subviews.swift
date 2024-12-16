@@ -327,7 +327,7 @@ import MusicKit
 			}
 		}
 		.accessibilityElement(children: .combine)
-		.accessibilityInputLabels([title].compacted())
+		.accessibilityInputLabels([title].compactMap { $0 })
 		.accessibilityAddTraits(.isButton)
 	}
 	

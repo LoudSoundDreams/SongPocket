@@ -230,7 +230,7 @@ final class AlbumsTVC: LibraryTVC {
 		b_focused.menu = menu_focused()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
-		Remote.shared.tvc_albums = WeakRef(self)
+		Remote.shared.weak_tvc_albums = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: AlbumListState.expansion_changed, object: list_state)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_id_song, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)

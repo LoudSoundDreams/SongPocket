@@ -31,7 +31,7 @@ extension PlayerState {
 @MainActor final class Remote {
 	static let shared = Remote()
 	let b_remote = UIBarButtonItem()
-	var tvc_albums: WeakRef<AlbumsTVC>? = nil
+	weak var weak_tvc_albums: AlbumsTVC? = nil
 	
 	private init() {
 		refresh()
@@ -110,7 +110,7 @@ extension PlayerState {
 			else { return .disabled }
 			return []
 #endif
-		}()) { [weak self] _ in self?.tvc_albums?.referencee?.show_current() }
+		}()) { [weak self] _ in self?.weak_tvc_albums?.show_current() }
 	])}
 	private static let action_go_Apple_Music = UIAction(title: InterfaceText.Open_Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
 	

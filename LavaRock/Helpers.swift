@@ -1,31 +1,6 @@
 import SwiftUI
 import UIKit
 
-final class LifetimePrinter {
-	init() { print(Date.now, "+", id) }
-	deinit { print(Date.now, id, "-") }
-	private let id = Int.random(in: 0...999)
-}
-
-final class WeakRef<Referencee: AnyObject> {
-	weak var referencee: Referencee? = nil
-	init(_ referencee: Referencee) { self.referencee = referencee }
-}
-
-extension Sequence {
-	func compacted<WrappedType>() -> [WrappedType]
-	where Element == Optional<WrappedType>
-	{
-		return compactMap { $0 }
-	}
-	
-	func formatted_as_narrow_list() -> String
-	where Element == String
-	{
-		return formatted(.list(type: .and, width: .narrow))
-	}
-}
-
 extension Array {
 	func in_any_other_order() -> Self
 	where Element: Equatable
