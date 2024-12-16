@@ -1,6 +1,6 @@
 // 2024-09-04
 
-@MainActor struct LRLibrary {
+@MainActor struct Librarian {
 	static var lrCrate: LRCrate? = nil
 	
 	static func debug_print() {

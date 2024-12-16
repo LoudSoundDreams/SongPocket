@@ -52,6 +52,6 @@ extension AppleLibrary {
 		let newCrate = LRCrate(title: InterfaceText._tilde, lrAlbums: new_albums)
 		
 		Disk.save_crates([newCrate])
-		LRLibrary.lrCrate = newCrate
+		Librarian.lrCrate = newCrate
 	}
 }
