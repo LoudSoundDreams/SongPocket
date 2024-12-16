@@ -8,20 +8,27 @@ import MusicKit
 @MainActor struct AlbumRow: View {
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
+	
 	var body: some View {
 		ZStack(alignment: .bottomLeading) {
-			AlbumArt(id_album: id_album, dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height))
-				.opacity(sel_opacity)
-				.animation(.default, value: list_state.select_mode)
-				.overlay {
-					ZStack {
-						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-					}.animation(.linear(duration: .one_eighth), value: is_expanded)
-				}
+			AlbumArt(
+				id_album: id_album,
+				dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
+			)
+			.opacity(sel_opacity)
+			.animation(.default, value: list_state.select_mode)
+			.overlay {
+				ZStack {
+					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
+				}.animation(.linear(duration: .one_eighth), value: is_expanded)
+			}
 			ZStack {
 				switch list_state.expansion {
 					case .expanded: EmptyView()
-					case .collapsed: AlbumLabel(id_album: id_album, list_state: list_state).accessibilitySortPriority(10)
+					case .collapsed: AlbumLabel(
+						id_album: id_album,
+						list_state: list_state
+					).accessibilitySortPriority(10)
 				}
 			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
 		}
@@ -52,9 +59,7 @@ import MusicKit
 		}}()
 		if highlighting {
 			Color.accentColor.opacity(.one_half)
-		} else {
-			EmptyView()
-		}
+		} else { EmptyView() }
 	}
 	@ViewBuilder private var sel_border: some View {
 		switch list_state.select_mode {
@@ -62,9 +67,7 @@ import MusicKit
 			case .select_albums(let ids_selected):
 				if ids_selected.contains(id_album) {
 					RectSelected()
-				} else {
-					RectUnselected()
-				}
+				} else { RectUnselected() }
 		}
 	}
 	
@@ -78,17 +81,13 @@ import MusicKit
 					case .expanded(let id_expanded):
 						if id_expanded == id_album {
 							list_state.expansion = .collapsed
-						} else {
-							list_state.expansion = .expanded(id_album)
-						}
+						} else { list_state.expansion = .expanded(id_album) }
 				}
 			case .select_albums(let ids_selected):
 				var selected_new = ids_selected
 				if ids_selected.contains(id_album) {
 					selected_new.remove(id_album)
-				} else {
-					selected_new.insert(id_album)
-				}
+				} else { selected_new.insert(id_album) }
 				list_state.select_mode = .select_albums(selected_new)
 		}
 	}
@@ -96,9 +95,13 @@ import MusicKit
 
 // MARK: Album art
 
-@MainActor struct AlbumArt: View {
+@MainActor private struct AlbumArt: View {
 	let id_album: MPIDAlbum
 	let dim_limit: CGFloat
+	
+	private var artwork: MusicKit.Artwork? {
+		return AppleLibrary.shared.mkSection(mpidAlbum: id_album)?.artwork
+	}
 	var body: some View {
 		ZStack {
 #if targetEnvironment(simulator)
@@ -132,16 +135,14 @@ import MusicKit
 		}
 		.animation(nil, value: id_album) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
 	}
-	private var artwork: MusicKit.Artwork? {
-		return AppleLibrary.shared.mkSection(mpidAlbum: id_album)?.artwork
-	}
 }
 
 // MARK: Album label
 
-@MainActor struct AlbumLabel: View {
+@MainActor private struct AlbumLabel: View {
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
+	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
@@ -208,11 +209,7 @@ import MusicKit
 			b_above
 			b_below
 		} label: {
-			if is_selected {
-				IconSelected()
-			} else {
-				IconUnselected()
-			}
+			if is_selected { IconSelected() } else { IconUnselected() }
 		}
 		.disabled({
 			switch list_state.expansion {
@@ -260,6 +257,7 @@ import MusicKit
 	let id_song: MPIDSong
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState
+	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
 		VStack(spacing: .zero) {
@@ -353,9 +351,7 @@ import MusicKit
 			case .select_songs(let ids_selected):
 				if ids_selected.contains(id_song) {
 					RectSelected()
-				} else {
-					RectUnselected()
-				}
+				} else { RectUnselected() }
 		}
 	}
 	
@@ -367,9 +363,7 @@ import MusicKit
 				var selected_new = ids_selected
 				if ids_selected.contains(id_song) {
 					selected_new.remove(id_song)
-				} else {
-					selected_new.insert(id_song)
-				}
+				} else { selected_new.insert(id_song) }
 				list_state.select_mode = .select_songs(selected_new)
 		}
 	}
@@ -411,11 +405,7 @@ import MusicKit
 				b_below
 			}
 		} label: {
-			if is_selected {
-				IconSelected()
-			} else {
-				IconUnselected()
-			}
+			if is_selected { IconSelected() } else { IconUnselected() }
 		}
 	}
 	private var b_above: some View {

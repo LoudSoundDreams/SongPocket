@@ -307,7 +307,9 @@ final class AlbumsTVC: LibraryTVC {
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumRow(id_album: album.albumPersistentID, list_state: list_state)
+					AlbumRow(
+						id_album: album.albumPersistentID,
+						list_state: list_state)
 				}.margins(.all, .zero)
 				return cell
 			case .song(let song):
@@ -323,7 +325,10 @@ final class AlbumsTVC: LibraryTVC {
 							return result
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {
-							SongRow(id_song: song.persistentID, id_album: id_expanded, list_state: list_state)
+							SongRow(
+								id_song: song.persistentID,
+								id_album: id_expanded,
+								list_state: list_state)
 						}.margins(.all, .zero)
 						return cell
 				}
