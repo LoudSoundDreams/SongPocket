@@ -53,7 +53,7 @@ extension AlbumListState {
 				}
 			case .select_albums(let ids_selected):
 				let selectable: Set<MPIDAlbum> = Set(
-					zzzAlbums(with: ids_selected).map { $0.albumPersistentID }
+					album_mpids(with: ids_selected)
 				)
 				if ids_selected != selectable {
 					select_mode = .select_albums(selectable)
@@ -82,13 +82,13 @@ extension AlbumListState {
 			case .mpSong(let mpidSong): return mpidSong
 		}}
 	}
-	fileprivate func zzzAlbums(with ids_chosen: Set<MPIDAlbum>? = nil) -> [ZZZAlbum] {
+	fileprivate func album_mpids(with ids_chosen: Set<MPIDAlbum>? = nil) -> [MPIDAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
-			case .mpSong, .album_mpid: return nil
-			case .yyyAlbum(let album):
-				guard let ids_chosen else { return album }
-				guard ids_chosen.contains(album.albumPersistentID) else { return nil }
-				return album
+			case .mpSong, .yyyAlbum: return nil
+			case .album_mpid(let mpidAlbum):
+				guard let ids_chosen else { return mpidAlbum }
+				guard ids_chosen.contains(mpidAlbum) else { return nil }
+				return mpidAlbum
 		}}
 	}
 	fileprivate func mpSongs(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
@@ -102,15 +102,15 @@ extension AlbumListState {
 	}
 	
 	func has_album_range(from id_anchor: MPIDAlbum, forward: Bool) -> Bool {
-		guard let i_anchor = zzzAlbums().firstIndex(where: { id_anchor == $0.albumPersistentID }) else { return false }
+		guard let i_anchor = album_mpids().firstIndex(where: { $0 == id_anchor }) else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
-		guard zzzAlbums().indices.contains(i_neighbor) else { return false }
+		guard album_mpids().indices.contains(i_neighbor) else { return false }
 		switch select_mode {
 			case .select_songs, .view: return true
 			case .select_albums(let ids_selected):
-				let sel_anchor = ids_selected.contains(id_anchor)
-				let sel_neighbor = ids_selected.contains(zzzAlbums()[i_neighbor].albumPersistentID)
-				return sel_anchor == sel_neighbor
+				let anchor_is_selected = ids_selected.contains(id_anchor)
+				let neighbor_is_selected = ids_selected.contains(album_mpids()[i_neighbor])
+				return anchor_is_selected == neighbor_is_selected
 		}
 	}
 	func has_song_range(from id_anchor: MPIDSong, forward: Bool) -> Bool {
@@ -128,7 +128,7 @@ extension AlbumListState {
 	}
 	
 	func change_album_range(from id_anchor: MPIDAlbum, forward: Bool) {
-		guard let i_anchor = zzzAlbums().firstIndex(where: { id_anchor == $0.albumPersistentID }) else { return }
+		guard let i_anchor = album_mpids().firstIndex(where: { $0 == id_anchor }) else { return }
 		let old_selected: Set<MPIDAlbum> = {
 			switch select_mode {
 				case .select_songs, .view: return []
@@ -140,8 +140,8 @@ extension AlbumListState {
 			var result = old_selected
 			var i_in_range = i_anchor
 			while true {
-				guard zzzAlbums().indices.contains(i_in_range) else { break }
-				let id_in_range = zzzAlbums()[i_in_range].albumPersistentID
+				guard album_mpids().indices.contains(i_in_range) else { break }
+				let id_in_range = album_mpids()[i_in_range]
 				
 				if inserting {
 					guard !result.contains(id_in_range) else { break }
@@ -385,7 +385,7 @@ final class AlbumsTVC: LibraryTVC {
 				}
 			case .expanded(let id_to_expand):
 				Task {
-					guard list_state.zzzAlbums().contains(where: { id_to_expand == $0.albumPersistentID }) else { return }
+					guard list_state.album_mpids().contains(where: { $0 == id_to_expand }) else { return }
 					list_state.refresh_items()
 					b_sort.menu = menu_sort()
 					b_focused.menu = menu_focused()
@@ -505,12 +505,13 @@ final class AlbumsTVC: LibraryTVC {
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
 				if always_songs {
-					let num_songs_selected: Int = list_state.zzzAlbums(with: ids_selected).reduce(into: 0) { songs_so_far, selected_album in
-						songs_so_far += selected_album.songs(sorted: false).count
+					let num_songs_selected: Int = list_state.album_mpids(with: ids_selected).reduce(into: 0) { songs_so_far, mpidAlbum_selected in
+						// TO DO: Add the number of songs in the selected album.
+						songs_so_far += 0//selected_album.songs(sorted: false).count
 					}
 					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
 				} else {
-					return InterfaceText.NUMBER_albums_selected(list_state.zzzAlbums(with: ids_selected).count)
+					return InterfaceText.NUMBER_albums_selected(list_state.album_mpids(with: ids_selected).count)
 				}
 			case .select_songs(let ids_selected):
 				return InterfaceText.NUMBER_songs_selected(list_state.mpSongs(with: ids_selected).count)
@@ -518,12 +519,13 @@ final class AlbumsTVC: LibraryTVC {
 				switch list_state.expansion {
 					case .collapsed:
 						if always_songs {
-							let num_all_songs: Int = list_state.zzzAlbums().reduce(into: 0) { songs_so_far, album in
-								songs_so_far += album.songs(sorted: false).count
+							let num_all_songs: Int = list_state.album_mpids().reduce(into: 0) { songs_so_far, mpidAlbum in
+								// TO DO: Add the number of songs in the album.
+								songs_so_far += 0//album.songs(sorted: false).count
 							}
 							return InterfaceText.NUMBER_songs(num_all_songs)
 						} else {
-							return InterfaceText.NUMBER_albums(list_state.zzzAlbums().count)
+							return InterfaceText.NUMBER_albums(list_state.album_mpids().count)
 						}
 					case .expanded:
 						return InterfaceText.NUMBER_songs(list_state.mpSongs().count)
@@ -582,14 +584,19 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func ids_songs_focused() -> [MPIDSong] { // In display order.
 		switch list_state.select_mode {
-			case .select_albums(let ids_selected):
-				return list_state.zzzAlbums(with: ids_selected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+			case .select_albums://(let ids_selected):
+				// TO DO: Get the song IDs within each selected album.
+//				return list_state.album_mpids(with: ids_selected).flatMap {
+				return []
+//				return list_state.zzzAlbums(with: ids_selected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
 			case .select_songs(let ids_selected):
 				return list_state.mpSongs(with: ids_selected)
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
-						return list_state.zzzAlbums().flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+						// TO DO: Get the song IDs within each album.
+//						return list_state.album_mpids().flatMap {
+						return []
 					case .expanded:
 						return list_state.mpSongs()
 				}
@@ -613,19 +620,19 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}()
 	private func can_sort_albums(by album_order: AlbumOrder) -> Bool {
-		guard albums_to_sort().count >= 2 else { return false }
+		guard ids_albums_to_sort().count >= 2 else { return false }
 		switch list_state.select_mode {
 			case .select_songs, .view: break
 			case .select_albums(let ids_selected):
-				let rs_selected = list_state.zzzAlbums().indices {
-					ids_selected.contains($0.albumPersistentID)
-				}
+				let rs_selected = list_state.album_mpids().indices(where: {
+					ids_selected.contains($0)
+				})
 				guard rs_selected.ranges.count <= 1 else { return false }
 		}
 		switch album_order {
 			case .random, .reverse, .recently_added: return true
-			case .recently_released: return albums_to_sort().contains {
-				nil != AppleLibrary.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._date_released
+			case .recently_released: return ids_albums_to_sort().contains {
+				nil != AppleLibrary.shared.infoAlbum(mpidAlbum: $0)?._date_released
 			}
 		}
 	}
@@ -641,9 +648,9 @@ final class AlbumsTVC: LibraryTVC {
 					switch list_state.select_mode {
 						case .select_albums, .view: break
 						case .select_songs(let ids_selected):
-							let rs_selected = list_state.mpSongs().indices {
+							let rs_selected = list_state.mpSongs().indices(where: {
 								ids_selected.contains($0)
-							}
+							})
 							if rs_selected.ranges.count >= 2 { enabling = false }
 					}
 					if !enabling { action.attributes.formUnion(.disabled) }
@@ -655,8 +662,12 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func sort_albums(by album_order: AlbumOrder) {
 		Task {
+			// TO DO: Tell `Librarian` to sort the albums, and save the changes.
+			/*
 			album_order.reindex(albums_to_sort())
 			ZZZDatabase.viewContext.save_please()
+			*/
+			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
@@ -664,7 +675,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func sort_songs(by song_order: SongOrder) {
 		Task {
-			// TO DO: Tell `Librarian` to apply and save the changes.
+			// TO DO: Tell `Librarian` to sort the songs, and save the changes.
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -672,11 +683,11 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	private func albums_to_sort() -> [ZZZAlbum] {
+	private func ids_albums_to_sort() -> [MPIDAlbum] {
 		switch list_state.select_mode {
 			case .select_songs: return []
-			case .view: return list_state.zzzAlbums()
-			case .select_albums(let ids_selected): return list_state.zzzAlbums(with: ids_selected)
+			case .view: return list_state.album_mpids()
+			case .select_albums(let ids_selected): return list_state.album_mpids(with: ids_selected)
 		}
 	}
 	private func ids_songs_to_sort() -> [MPIDSong] {
@@ -705,12 +716,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func promote_songs() {
 		Task {
-			guard
-				case let .select_songs(ids_selected) = list_state.select_mode,
-				case let .expanded(id_expanded) = list_state.expansion,
-				let album = list_state.zzzAlbums(with: [id_expanded]).first
-			else { return }
-			album.promote_songs(with: ids_selected)
+			// TO DO: Get the selected song IDs. Tell `Librarian` to promote them within their album, and save the changes.
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -735,12 +741,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func demote_songs() {
 		Task {
-			guard
-				case let .select_songs(ids_selected) = list_state.select_mode,
-				case let .expanded(id_expanded) = list_state.expansion,
-				let album = list_state.zzzAlbums(with: [id_expanded]).first
-			else { return }
-			album.demote_songs(with: ids_selected)
+			// TO DO
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -767,12 +768,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func float_songs() {
 		Task {
-			guard
-				case let .select_songs(ids_selected) = list_state.select_mode,
-				case let .expanded(id_expanded) = list_state.expansion,
-				let album = list_state.zzzAlbums(with: [id_expanded]).first
-			else { return }
-			album.floatSongs(with: ids_selected)
+			// TO DO
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -797,12 +793,7 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func sink_songs() {
 		Task {
-			guard
-				case let .select_songs(ids_selected) = list_state.select_mode,
-				case let .expanded(id_expanded) = list_state.expansion,
-				let album = list_state.zzzAlbums(with: [id_expanded]).first
-			else { return }
-			album.sink_songs(with: ids_selected)
+			// TO DO
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
