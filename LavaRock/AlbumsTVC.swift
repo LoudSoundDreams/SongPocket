@@ -20,6 +20,7 @@ import MediaPlayer
 extension AlbumListState {
 	fileprivate enum AlbumListItem {
 		case album(ZZZAlbum)
+		case mpSong(MPIDSong)
 		case yyySong(ZZZSong)
 	}
 	fileprivate func refresh_items() {
@@ -36,9 +37,10 @@ extension AlbumListState {
 						return albums.map { .album($0) }
 					}
 					
-					let songs: [AlbumListItem] = albums[i_expanded].songs(sorted: true).map { .yyySong($0) }
+					let album_expanded = albums[i_expanded]
+					let mpSong_items: [AlbumListItem] = album_expanded.songs(sorted: true).map { .mpSong($0.persistentID) }
 					var result: [AlbumListItem] = albums.map { .album($0) }
-					result.insert(contentsOf: songs, at: i_expanded + 1)
+					result.insert(contentsOf: mpSong_items, at: i_expanded + 1)
 					return result
 			}
 		}()
@@ -76,12 +78,13 @@ extension AlbumListState {
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
 			case .album(let album): return album.objectID
+			case .mpSong(let mpidSong): return mpidSong
 			case .yyySong(let song): return song.objectID
 		}}
 	}
 	fileprivate func albums(with ids_chosen: Set<MPIDAlbum>? = nil) -> [ZZZAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
-			case .yyySong: return nil
+			case .mpSong, .yyySong: return nil
 			case .album(let album):
 				guard let ids_chosen else { return album }
 				guard ids_chosen.contains(album.albumPersistentID) else { return nil }
@@ -90,7 +93,7 @@ extension AlbumListState {
 	}
 	fileprivate func zzzSongs(with ids_chosen: Set<MPIDSong>? = nil) -> [ZZZSong] {
 		return list_items.compactMap { switch $0 {
-			case .album: return nil
+			case .album, .mpSong: return nil
 			case .yyySong(let song):
 				guard let ids_chosen else { return song }
 				guard ids_chosen.contains(song.persistentID) else { return nil }
@@ -312,7 +315,8 @@ final class AlbumsTVC: LibraryTVC {
 						list_state: list_state)
 				}.margins(.all, .zero)
 				return cell
-			case .yyySong(let song):
+			case .yyySong: return UITableViewCell()
+			case .mpSong(let mpidSong):
 				switch list_state.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
 					case .expanded(let id_expanded):
@@ -326,7 +330,7 @@ final class AlbumsTVC: LibraryTVC {
 						}()
 						cell.contentConfiguration = UIHostingConfiguration {
 							SongRow(
-								id_song: song.persistentID,
+								id_song: mpidSong,
 								id_album: id_expanded,
 								list_state: list_state)
 						}.margins(.all, .zero)
@@ -360,7 +364,7 @@ final class AlbumsTVC: LibraryTVC {
 			let id_album = song.container?.albumPersistentID
 		else { return }
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
-			case .yyySong: return false
+			case .mpSong, .yyySong: return false
 			case .album(let album): return id_album == album.albumPersistentID
 		}}) else { return }
 		tableView.performBatchUpdates {
@@ -387,7 +391,7 @@ final class AlbumsTVC: LibraryTVC {
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
-							case .yyySong: return false
+							case .mpSong, .yyySong: return false
 							case .album(let album): return id_to_expand == album.albumPersistentID
 						}})!
 						self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
@@ -426,10 +430,10 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func confirm_play(notification: Notification) {
 		guard
 			let id_activated = notification.object as? MPIDSong,
-			let anchor_popover: UIView = { () -> UIView? in
+			let view_popover_anchor: UIView = { () -> UITableViewCell? in
 				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
-					case .album: return false
-					case .yyySong(let yyySong): return id_activated == yyySong.persistentID
+					case .album, .yyySong: return false
+					case .mpSong(let mpidSong): return id_activated == mpidSong
 				}}) else { return nil }
 				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
 			}()
@@ -438,7 +442,7 @@ final class AlbumsTVC: LibraryTVC {
 		list_state.select_mode = .view(id_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
 		let action_sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		action_sheet.popoverPresentationController?.sourceView = anchor_popover
+		action_sheet.popoverPresentationController?.sourceView = view_popover_anchor
 		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				Task {
