@@ -19,6 +19,7 @@ import MediaPlayer
 }
 extension AlbumListState {
 	fileprivate enum AlbumListItem {
+		case album_mpid(MPIDAlbum)
 		case yyyAlbum(ZZZAlbum)
 		case mpSong(MPIDSong)
 	}
@@ -76,13 +77,14 @@ extension AlbumListState {
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
+			case .album_mpid(let mpidAlbum): return mpidAlbum
 			case .yyyAlbum(let album): return album.objectID
 			case .mpSong(let mpidSong): return mpidSong
 		}}
 	}
 	fileprivate func albums(with ids_chosen: Set<MPIDAlbum>? = nil) -> [ZZZAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
-			case .mpSong: return nil
+			case .mpSong, .album_mpid: return nil
 			case .yyyAlbum(let album):
 				guard let ids_chosen else { return album }
 				guard ids_chosen.contains(album.albumPersistentID) else { return nil }
@@ -91,7 +93,7 @@ extension AlbumListState {
 	}
 	fileprivate func mpSongs(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
 		return list_items.compactMap { switch $0 {
-			case .yyyAlbum: return nil
+			case .album_mpid, .yyyAlbum: return nil
 			case .mpSong(let mpidSong):
 				guard let ids_chosen else { return mpidSong }
 				guard ids_chosen.contains(mpidSong) else { return nil }
@@ -295,7 +297,8 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch list_state.list_items[indexPath.row] {
-			case .yyyAlbum(let album):
+			case .yyyAlbum: return UITableViewCell()
+			case .album_mpid(let mpidAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 				cell.backgroundColor = .clear
@@ -309,7 +312,7 @@ final class AlbumsTVC: LibraryTVC {
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
 					AlbumRow(
-						id_album: album.albumPersistentID,
+						id_album: mpidAlbum,
 						list_state: list_state)
 				}.margins(.all, .zero)
 				return cell
@@ -358,16 +361,16 @@ final class AlbumsTVC: LibraryTVC {
 		guard
 			let id_song = MPMusicPlayerController.mpidSong_current,
 			let song = ZZZDatabase.viewContext.fetch_song(mpidSong: id_song),
-			let id_album = song.container?.albumPersistentID
+			let mpidAlbum_target = song.container?.albumPersistentID
 		else { return }
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
-			case .mpSong: return false
-			case .yyyAlbum(let album): return id_album == album.albumPersistentID
+			case .mpSong, .yyyAlbum: return false
+			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
 		}}) else { return }
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.list_state.expansion = .expanded(id_album)
+			self.list_state.expansion = .expanded(mpidAlbum_target)
 		}
 	}
 	
@@ -388,8 +391,8 @@ final class AlbumsTVC: LibraryTVC {
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
-							case .mpSong: return false
-							case .yyyAlbum(let album): return id_to_expand == album.albumPersistentID
+							case .mpSong, .yyyAlbum: return false
+							case .album_mpid(let mpidAlbum): return mpidAlbum == id_to_expand
 						}})!
 						self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 					})
@@ -429,7 +432,7 @@ final class AlbumsTVC: LibraryTVC {
 			let id_activated = notification.object as? MPIDSong,
 			let view_popover_anchor: UIView = { () -> UITableViewCell? in
 				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
-					case .yyyAlbum: return false
+					case .album_mpid, .yyyAlbum: return false
 					case .mpSong(let mpidSong): return id_activated == mpidSong
 				}}) else { return nil }
 				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
