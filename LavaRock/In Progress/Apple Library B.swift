@@ -42,7 +42,7 @@ extension AppleLibrary {
 		context.save_please()
 	}
 	
-	// MARK: - Update
+	// MARK: Update
 	
 	private func update_library_items(existing_and_fresh: [(ZZZSong, InfoSong)]) {
 		// Merge `Album`s with the same `albumPersistentID`
@@ -146,7 +146,7 @@ extension AppleLibrary {
 		return collection_left.index < collection_right.index
 	}
 	
-	// MARK: - Create
+	// MARK: Create
 	
 	// Create new managed objects for the new `InfoSong`s, including new `Album`s and `Collection`s to put them in if necessary.
 	private func create_library_items(infos_new: [InfoSong]) {
@@ -176,9 +176,6 @@ extension AppleLibrary {
 			}
 		}
 	}
-	
-	// MARK: Create groups of songs
-	
 	private func create_songs_and_return_new_album(
 		infos_new: [InfoSong],
 		albums_existing: [MPIDAlbum: ZZZAlbum]
@@ -241,7 +238,7 @@ extension AppleLibrary {
 		}
 	}
 	
-	// MARK: - Clean Up
+	// MARK: Clean Up
 	
 	private func clean_up_library_items(
 		songs_to_delete: [ZZZSong],

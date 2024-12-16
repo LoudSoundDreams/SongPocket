@@ -65,7 +65,7 @@ struct FakeAlbumCover: View {
 	}
 }
 
-// MARK: - Model
+// MARK: Model
 
 // If this were a struct, `[FakeAlbum].didSet` would loop infinitely when you set one of `FakeAlbum`’s properties.
 final class FakeAlbum: Identifiable {
@@ -102,7 +102,7 @@ extension FakeAlbum: Hashable {
 	}
 }
 
-// MARK: - Helpers
+// MARK: Helpers
 
 private extension String {
 	static func debug_random() -> Self {

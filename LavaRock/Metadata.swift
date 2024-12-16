@@ -70,7 +70,7 @@ extension ZZZSong {
 	}
 }
 
-// MARK: - Apple Music
+// MARK: Apple Music
 
 extension MPMediaItem: InfoSong {
 	final var id_album: MPIDAlbum { MPIDAlbum(albumPersistentID) }
@@ -83,7 +83,7 @@ extension MPMediaItem: InfoSong {
 	final var date_added_on_disk: Date { dateAdded }
 }
 
-// MARK: - Simulator
+// MARK: Simulator
 
 #if targetEnvironment(simulator)
 struct Sim_Song: InfoSong {

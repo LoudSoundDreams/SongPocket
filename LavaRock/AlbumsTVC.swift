@@ -236,7 +236,7 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
 	}
 	
-	// MARK: - Table view
+	// MARK: Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		refresh_placeholder()
@@ -276,7 +276,7 @@ final class AlbumsTVC: LibraryTVC {
 					Image(systemName: "music.note")
 						.foregroundStyle(Color.white_one_half)
 						.font(.title)
-						.accessibilityLabel(InterfaceText.no_music)
+						.accessibilityLabel(InterfaceText.No_music)
 						.accessibilityRemoveTraits(.isImage)
 				}.margins(.all, .zero)
 			}
@@ -332,7 +332,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
 	
-	// MARK: - Events
+	// MARK: Events
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
@@ -463,7 +463,7 @@ final class AlbumsTVC: LibraryTVC {
 		present(action_sheet, animated: true)
 	}
 	
-	// MARK: - Editing
+	// MARK: Editing
 	
 	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() })
 	private func end_selecting_animated() {
@@ -491,7 +491,7 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var a_song_float = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: "arrow.up.to.line")) { [weak self] _ in self?.float_songs() }
 	private lazy var a_song_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: "arrow.down.to.line")) { [weak self] _ in self?.sink_songs() }
 	
-	// MARK: - Focused
+	// MARK: Focused
 	
 	private func title_focused(always_songs: Bool) -> String {
 		switch list_state.select_mode {
@@ -588,7 +588,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	// MARK: - Sorting
+	// MARK: Sorting
 	
 	private lazy var menu_sections_album_sort: [UIMenu] = {
 		let groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
@@ -679,7 +679,7 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
-	// MARK: - Moving up and down
+	// MARK: Moving up and down
 	
 	private func promote_albums() {
 		Task {

@@ -1,4 +1,5 @@
-// MARK: - Standard library
+import SwiftUI
+import UIKit
 
 final class LifetimePrinter {
 	init() { print(Date.now, "+", id) }
@@ -87,7 +88,17 @@ extension Array {
 	}
 }
 
-// MARK: - Foundation
+extension String {
+	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
+	func precedes_in_Finder(_ other: Self) -> Bool {
+		let comparison = localizedStandardCompare(other) // The comparison method that the Finder uses
+		switch comparison {
+			case .orderedAscending: return true
+			case .orderedSame: return true
+			case .orderedDescending: return false
+		}
+	}
+}
 
 extension NotificationCenter {
 	// Helps callers observe each kind of `Notification` exactly once.
@@ -97,20 +108,12 @@ extension NotificationCenter {
 	}
 }
 
-// MARK: - SwiftUI
-
-import SwiftUI
-
 extension Color {
 	static func debug_random() -> Self {
 		return Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
 			.opacity(.one_half)
 	}
 }
-
-// MARK: - UIKit
-
-import UIKit
 
 extension UIImage {
 	static func random_die() -> Self {

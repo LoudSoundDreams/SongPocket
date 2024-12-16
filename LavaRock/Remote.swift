@@ -112,7 +112,7 @@ extension PlayerState {
 #endif
 		}()) { [weak self] _ in self?.tvc_albums?.referencee?.show_current() }
 	])}
-	private static let action_go_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
+	private static let action_go_Apple_Music = UIAction(title: InterfaceText.Open_Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
 	
 	private static let dme_toggle_playing = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)
