@@ -18,13 +18,3 @@ struct LRAlbum: Equatable {
 struct LRSong: Equatable {
 	let id_song: MPIDSong
 }
-
-extension LRCrate: CustomStringConvertible {
-	var description: String { "\(title) • albums: \(albums.count)" }
-}
-extension LRAlbum: CustomStringConvertible {
-	var description: String { "\(id_album) • songs: \(songs.count)" }
-}
-extension LRSong: CustomStringConvertible {
-	var description: String { "\(id_song)" }
-}

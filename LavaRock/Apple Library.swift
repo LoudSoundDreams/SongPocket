@@ -11,7 +11,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 @MainActor @Observable final class AppleLibrary {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
-	private(set) var is_merging = false { didSet {
+	var is_merging = false { didSet {
 		if !is_merging {
 			NotificationCenter.default.post(name: Self.did_merge, object: nil)
 		}
@@ -23,7 +23,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 }
 extension AppleLibrary {
 	static let shared = AppleLibrary()
-	func observe_mpLibrary() {
+	func watch() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.add_observer_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
@@ -86,7 +86,9 @@ extension AppleLibrary {
 	@objc private func merge_changes() {
 		Task {
 #if targetEnvironment(simulator)
-			await merge_from_Apple_Music(musicKit: [], mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
+			await merge_from_Apple_Music(
+				musicKit: [],
+				mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
 #else
 			guard let mediaItems_fresh = MPMediaQuery.songs().items else { return }
 			
@@ -114,7 +116,9 @@ extension AppleLibrary {
 			mkSections = sections_union
 			mkSongs = songs_union
 			
-			await merge_from_Apple_Music(musicKit: array_sections_fresh, mediaPlayer: mediaItems_fresh)
+			await merge_from_Apple_Music(
+				musicKit: array_sections_fresh,
+				mediaPlayer: mediaItems_fresh)
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
@@ -122,15 +126,5 @@ extension AppleLibrary {
 			mkSongs = songs_fresh
 #endif
 		}
-	}
-	private func merge_from_Apple_Music(
-		musicKit sections_unsorted: [MKSection],
-		mediaPlayer mediaItems_unsorted: [InfoSong]
-	) async {
-		is_merging = true
-		defer { is_merging = false }
-		
-//		merge_from_MusicKit(sections_unsorted)
-		merge_from_MediaPlayer(mediaItems_unsorted)
 	}
 }

@@ -27,8 +27,8 @@ import MusicKit
 	}
 	
 	@MainActor static func integrate_Apple_Music() {
-		AppleLibrary.shared.observe_mpLibrary()
-		PlayerState.shared.observe_mkPlayer()
+		AppleLibrary.shared.watch()
+		PlayerState.shared.watch()
 	}
 }
 private struct VCRMain: UIViewControllerRepresentable {

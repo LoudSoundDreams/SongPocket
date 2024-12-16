@@ -16,7 +16,7 @@ import Combine
 	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
 }
 extension PlayerState {
-	func observe_mkPlayer() {
+	func watch() {
 		ApplicationMusicPlayer._shared?.state.objectWillChange
 			.sink { [weak self] in self?.signal.toggle() }
 			.store(in: &cancellables)
