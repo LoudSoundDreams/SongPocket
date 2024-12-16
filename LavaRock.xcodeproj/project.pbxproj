@@ -142,7 +142,6 @@
 				07E0BBDA276567760010117E /* Constants.swift */,
 				075218A1257C498D0077AE9B /* InterfaceText.swift */,
 				071A0B9D277E76510017F76D /* App.swift */,
-				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
 				07934CF927CDBEB0002B2444 /* AlbumsTVC.storyboard */,
 				076830BE24B42E3E0033E3CC /* AlbumsTVC.swift */,
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
@@ -152,10 +151,8 @@
 				071B30932C88CD3400239BF3 /* Library.swift */,
 				079B2C9424E227BF00A949FA /* Librarian.swift */,
 				1500211E2D0FAFC40089B5E2 /* Merger A.swift */,
-				150021202D0FAFCA0089B5E2 /* Merger B.swift */,
 				070056902C8275C0006F1069 /* Disk.swift */,
-				07E0BBFA276567F70010117E /* Core Data.swift */,
-				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
+				150021222D0FB1D20089B5E2 /* In Progress */,
 				076F1C0127E66DAA00220C2B /* Playback.swift */,
 				07DF76E32828D8AB00B03103 /* Remote.swift */,
 				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
@@ -185,6 +182,17 @@
 				076830AF24B42DEF0033E3CC /* Info.plist */,
 			);
 			path = LavaRockUITests;
+			sourceTree = "<group>";
+		};
+		150021222D0FB1D20089B5E2 /* In Progress */ = {
+			isa = PBXGroup;
+			children = (
+				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
+				150021202D0FAFCA0089B5E2 /* Merger B.swift */,
+				07E0BBFA276567F70010117E /* Core Data.swift */,
+				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
+			);
+			path = "In Progress";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
