@@ -227,7 +227,7 @@ import MusicKit
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) || // Always false; including this to make SwiftUI run this code when we need to.
 			apple_lib.is_merging || // TO DO: Change icon to spinner.
-			!list_state.hasAlbumRange(from: id_album, forward: false)
+			!list_state.has_album_range(from: id_album, forward: false)
 		}())
 	}
 	private var b_below: some View {
@@ -239,7 +239,7 @@ import MusicKit
 		}.disabled({
 			return (list_state.signal_sorted_albums && false) ||
 			apple_lib.is_merging ||
-			!list_state.hasAlbumRange(from: id_album, forward: true)
+			!list_state.has_album_range(from: id_album, forward: true)
 		}())
 	}
 	private var is_selected: Bool {
@@ -417,7 +417,7 @@ import MusicKit
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
 			apple_lib.is_merging ||
-			!list_state.hasSongRange(from: id_song, forward: false)
+			!list_state.has_song_range(from: id_song, forward: false)
 		}())
 	}
 	private var b_below: some View {
@@ -429,7 +429,7 @@ import MusicKit
 		}.disabled({
 			return (list_state.signal_sorted_songs && false) ||
 			apple_lib.is_merging ||
-			!list_state.hasSongRange(from: id_song, forward: true)
+			!list_state.has_song_range(from: id_song, forward: true)
 		}())
 	}
 	private var is_selected: Bool {
