@@ -17,7 +17,10 @@ import SwiftUI
 #endif
 	}
 	
-	final func play_now(_ ids_to_play: [MPIDSong], starting_at id_start: MPIDSong? = nil) {
+	final func play_now(
+		_ ids_to_play: [MPIDSong],
+		starting_at id_start: MPIDSong? = nil
+	) {
 		Task {
 			let to_play: [MKSong] = await {
 				var result: [MKSong] = []
@@ -39,7 +42,9 @@ import SwiftUI
 		}
 	}
 	
-	final func play_later(_ ids_to_append: [MPIDSong]) {
+	final func play_later(
+		_ ids_to_append: [MPIDSong]
+	) {
 		Task {
 			let to_append: [MKSong] = await {
 				var result: [MKSong] = []

@@ -11,7 +11,7 @@ import MusicKit
 			defaults.removeObject(forKey: key_existing)
 		}
 		
-		ZZZDatabase.viewContext.migrate_from_multicollection() // Run this before any UI code, so our UI can assume an already-migrated database.
+		ZZZDatabase.viewContext.migrate_to_single_collection() // Run this before any UI code, so our UI can assume an already-migrated database.
 	}
 	var body: some Scene {
 		WindowGroup {

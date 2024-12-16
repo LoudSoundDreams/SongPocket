@@ -241,7 +241,7 @@ extension NSManagedObjectContext {
 	
 	// MARK: Migration
 	
-	final func migrate_from_multicollection() {
+	final func migrate_to_single_collection() {
 		// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
 #if DEBUG
 		//		mock_multicollection()
