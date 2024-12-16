@@ -6,7 +6,7 @@ import MusicKit
 import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var list_items: [AlbumListItem] = AlbumListState.fresh_albums().map { .yyyAlbum($0) }
+	@ObservationIgnored fileprivate var list_items: [AlbumListItem] = AlbumListState.album_mpids_fresh().map { .album_mpid($0) }
 	var expansion: Expansion = .collapsed { didSet {
 		NotificationCenter.default.post(name: Self.expansion_changed, object: self)
 	}}
@@ -25,22 +25,24 @@ extension AlbumListState {
 	}
 	fileprivate func refresh_items() {
 		list_items = {
-			let albums = Self.fresh_albums()
+			let album_mpids = Self.album_mpids_fresh()
 			switch expansion {
-				case .collapsed: return albums.map { .yyyAlbum($0) }
+				case .collapsed: return album_mpids.map { .album_mpid($0) }
 				case .expanded(let id_expanded):
 					// If we removed the expanded album, go to collapsed mode.
-					guard let i_expanded = albums.firstIndex(where: { album in
-						id_expanded == album.albumPersistentID
-					}) else {
+					guard let i_expanded = album_mpids.firstIndex(where: { $0 == id_expanded })
+					else {
 						expansion = .collapsed
-						return albums.map { .yyyAlbum($0) }
+						return album_mpids.map { .album_mpid($0) }
 					}
 					
-					let album_expanded = albums[i_expanded]
-					let mpSong_items: [AlbumListItem] = album_expanded.songs(sorted: true).map { .mpSong($0.persistentID) }
-					var result: [AlbumListItem] = albums.map { .yyyAlbum($0) }
-					result.insert(contentsOf: mpSong_items, at: i_expanded + 1)
+					// TO DO: Get the song IDs within the expanded album.
+//					let album_mpid_expanded = album_mpids[i_expanded]
+					let _ = i_expanded
+//					let mpSong_items: [AlbumListItem] = album_expanded.songs(sorted: true).map { .mpSong($0.persistentID) }
+//					var
+					let result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
+//					result.insert(contentsOf: [mpSong_items], at: i_expanded + 1)
 					return result
 			}
 		}()
@@ -71,9 +73,9 @@ extension AlbumListState {
 				}
 		}
 	}
-	private static func fresh_albums() -> [ZZZAlbum] {
-		guard MusicAuthorization.currentStatus == .authorized else { return [] }
-		return ZZZDatabase.viewContext.fetch_please(ZZZAlbum.fetch_request_sorted())
+	private static func album_mpids_fresh() -> [MPIDAlbum] {
+		guard let lrCrate = Librarian.lrCrate else { return [] }
+		return lrCrate.lrAlbums.map { $0.mpidAlbum }
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
