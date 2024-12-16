@@ -20,7 +20,6 @@ import MediaPlayer
 extension AlbumListState {
 	fileprivate enum AlbumListItem {
 		case album_mpid(MPIDAlbum)
-		case yyyAlbum(ZZZAlbum)
 		case mpSong(MPIDSong)
 	}
 	fileprivate func refresh_items() {
@@ -80,13 +79,12 @@ extension AlbumListState {
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
 			case .album_mpid(let mpidAlbum): return mpidAlbum
-			case .yyyAlbum(let album): return album.objectID
 			case .mpSong(let mpidSong): return mpidSong
 		}}
 	}
 	fileprivate func album_mpids(with ids_chosen: Set<MPIDAlbum>? = nil) -> [MPIDAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
-			case .mpSong, .yyyAlbum: return nil
+			case .mpSong: return nil
 			case .album_mpid(let mpidAlbum):
 				guard let ids_chosen else { return mpidAlbum }
 				guard ids_chosen.contains(mpidAlbum) else { return nil }
@@ -95,7 +93,7 @@ extension AlbumListState {
 	}
 	fileprivate func mpSongs(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
 		return list_items.compactMap { switch $0 {
-			case .album_mpid, .yyyAlbum: return nil
+			case .album_mpid: return nil
 			case .mpSong(let mpidSong):
 				guard let ids_chosen else { return mpidSong }
 				guard ids_chosen.contains(mpidSong) else { return nil }
@@ -299,7 +297,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch list_state.list_items[indexPath.row] {
-			case .yyyAlbum: return UITableViewCell()
 			case .album_mpid(let mpidAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
@@ -360,13 +357,14 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	func show_current() {
+		let mpidAlbum_target: MPIDAlbum? = nil
 		guard
-			let id_song = MPMusicPlayerController.mpidSong_current,
-			let song = ZZZDatabase.viewContext.fetch_song(mpidSong: id_song),
-			let mpidAlbum_target = song.container?.albumPersistentID
+			// TO DO: Find the ID of the album that contains the current song.
+//			let id_song_current = MPMusicPlayerController.mpidSong_current,
+			let mpidAlbum_target
 		else { return }
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
-			case .mpSong, .yyyAlbum: return false
+			case .mpSong: return false
 			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
 		}}) else { return }
 		tableView.performBatchUpdates {
@@ -393,7 +391,7 @@ final class AlbumsTVC: LibraryTVC {
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
-							case .mpSong, .yyyAlbum: return false
+							case .mpSong: return false
 							case .album_mpid(let mpidAlbum): return mpidAlbum == id_to_expand
 						}})!
 						self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
@@ -434,7 +432,7 @@ final class AlbumsTVC: LibraryTVC {
 			let id_activated = notification.object as? MPIDSong,
 			let view_popover_anchor: UIView = { () -> UITableViewCell? in
 				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
-					case .album_mpid, .yyyAlbum: return false
+					case .album_mpid: return false
 					case .mpSong(let mpidSong): return id_activated == mpidSong
 				}}) else { return nil }
 				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
@@ -450,17 +448,16 @@ final class AlbumsTVC: LibraryTVC {
 				Task {
 					self.list_state.select_mode = .view(nil)
 					
-					// TO DO: Get the other song IDs in the album, and play them.
-					/*
-					 guard
-					 let song_activated = self.list_state.zzzSongs(with: [id_activated]).first,
-					 let album_activated = song_activated.container
-					 else { return }
-					 
+					guard
+						let song_mpid_activated = self.list_state.mpSongs(with: [id_activated]).first
+					else { return }
+					// TO DO: Get the other song IDs in the album.
+//					guard let album_activated = song_activated.container else { return }
+
 					 ApplicationMusicPlayer._shared?.play_now(
-					 album_activated.songs(sorted: true).map { $0.persistentID },
-					 starting_at: song_activated.persistentID)
-					 */
+						[song_mpid_activated],
+//						album_activated.songs(sorted: true).map { $0.persistentID },
+						starting_at: song_mpid_activated)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -590,7 +587,7 @@ final class AlbumsTVC: LibraryTVC {
 				// TO DO: Get the song IDs within each selected album.
 //				return list_state.album_mpids(with: ids_selected).flatMap {
 				return []
-//				return list_state.zzzAlbums(with: ids_selected).flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
+//				flatMap { $0.songs(sorted: true) }.map { $0.persistentID }
 			case .select_songs(let ids_selected):
 				return list_state.mpSongs(with: ids_selected)
 			case .view:
@@ -665,10 +662,7 @@ final class AlbumsTVC: LibraryTVC {
 	private func sort_albums(by album_order: AlbumOrder) {
 		Task {
 			// TO DO: Tell `Librarian` to sort the albums, and save the changes.
-			/*
-			album_order.reindex(albums_to_sort())
-			ZZZDatabase.viewContext.save_please()
-			*/
+//			album_order.reindex(albums_to_sort())
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
