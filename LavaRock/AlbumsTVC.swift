@@ -31,13 +31,13 @@ extension AlbumListState {
 					// If we removed the expanded album, go to collapsed mode.
 					guard
 						let i_expanded = album_mpids.firstIndex(where: { $0 == id_expanded }),
-						let album_expanded = Librarian.find_lrAlbum(mpid: id_expanded)
+						let lrAlbum = Librarian.find_lrAlbum(mpid: id_expanded)
 					else {
 						expansion = .collapsed
 						return album_mpids.map { .album_mpid($0) }
 					}
 					
-					let song_mpids_inline: [AlbumListItem] = album_expanded.lrSongs.map {
+					let song_mpids_inline: [AlbumListItem] = lrAlbum.lrSongs.map {
 						.song_mpid($0.mpid)
 					}
 					var result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
@@ -502,8 +502,8 @@ final class AlbumsTVC: LibraryTVC {
 			case .select_albums(let ids_selected):
 				if always_songs {
 					let num_songs_selected: Int = list_state.album_mpids(with: ids_selected).reduce(into: 0) { songs_so_far, mpidAlbum_selected in
-						guard let album = Librarian.find_lrAlbum(mpid: mpidAlbum_selected) else { return }
-						songs_so_far += album.lrSongs.count
+						guard let lrAlbum_selected = Librarian.find_lrAlbum(mpid: mpidAlbum_selected) else { return }
+						songs_so_far += lrAlbum_selected.lrSongs.count
 					}
 					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
 				} else {
@@ -516,8 +516,8 @@ final class AlbumsTVC: LibraryTVC {
 					case .collapsed:
 						if always_songs {
 							let num_all_songs: Int = list_state.album_mpids().reduce(into: 0) { songs_so_far, mpidAlbum in
-								guard let album = Librarian.find_lrAlbum(mpid: mpidAlbum) else { return }
-								songs_so_far += album.lrSongs.count
+								guard let lrAlbum = Librarian.find_lrAlbum(mpid: mpidAlbum) else { return }
+								songs_so_far += lrAlbum.lrSongs.count
 							}
 							return InterfaceText.NUMBER_songs(num_all_songs)
 						} else {
@@ -583,8 +583,8 @@ final class AlbumsTVC: LibraryTVC {
 			case .select_albums(let ids_selected):
 				var result: [MPIDSong] = []
 				ids_selected.forEach {
-					guard let album_selected = Librarian.find_lrAlbum(mpid: $0) else { return }
-					result.append(contentsOf: album_selected.lrSongs.map { $0.mpid })
+					guard let lrAlbum_selected = Librarian.find_lrAlbum(mpid: $0) else { return }
+					result.append(contentsOf: lrAlbum_selected.lrSongs.map { $0.mpid })
 				}
 				return result
 			case .select_songs(let ids_selected):
@@ -594,8 +594,8 @@ final class AlbumsTVC: LibraryTVC {
 					case .collapsed:
 						var result: [MPIDSong] = []
 						list_state.album_mpids().forEach {
-							guard let album = Librarian.find_lrAlbum(mpid: $0) else { return }
-							result.append(contentsOf: album.lrSongs.map { $0.mpid })
+							guard let lrAlbum = Librarian.find_lrAlbum(mpid: $0) else { return }
+							result.append(contentsOf: lrAlbum.lrSongs.map { $0.mpid })
 						}
 						return result
 					case .expanded:

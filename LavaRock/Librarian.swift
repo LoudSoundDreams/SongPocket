@@ -1,7 +1,33 @@
 // 2024-09-04
 
+struct LRCrate: Equatable {
+	let title: String
+	var lrAlbums: [LRAlbum]
+}
+struct LRAlbum: Equatable {
+	let mpid: MPIDAlbum
+	var lrSongs: [LRSong]
+}
+struct LRSong: Equatable {
+	let mpid: MPIDSong
+	let album_mpid: MPIDAlbum
+}
+
 @MainActor struct Librarian {
-	static var lrCrate: LRCrate? = nil
+	private(set) static var lrCrate: LRCrate? = nil
+	
+	static func load() {
+		// TO DO
+	}
+	
+	static func find_lrAlbum(mpid: MPIDAlbum) -> LRAlbum? {
+		// TO DO
+		return nil
+	}
+	static func find_lrSong(mpid: MPIDSong) -> LRSong? {
+		// TO DO
+		return nil
+	}
 	
 	static func debug_print() {
 		guard let lrCrate else {
@@ -16,26 +42,4 @@
 			}
 		}
 	}
-	
-	static func find_lrAlbum(mpid: MPIDAlbum) -> LRAlbum? {
-		// TO DO
-		return nil
-	}
-	static func find_lrSong(mpid: MPIDSong) -> LRSong? {
-		// TO DO
-		return nil
-	}
-}
-
-struct LRCrate: Equatable {
-	let title: String
-	var lrAlbums: [LRAlbum]
-}
-struct LRAlbum: Equatable {
-	let mpid: MPIDAlbum
-	var lrSongs: [LRSong]
-}
-struct LRSong: Equatable {
-	let mpid: MPIDSong
-	let album_mpid: MPIDAlbum
 }

@@ -21,8 +21,7 @@ import MusicKit
 				.ignoresSafeArea()
 				.task {
 					ZZZDatabase.viewContext.migrate_to_disk() // TO DO: Indicate progress.
-					
-					Librarian.lrCrate = Disk.load_crates().first
+					Librarian.load()
 					
 					guard MusicAuthorization.currentStatus == .authorized else { return }
 					Self.integrate_Apple_Music()

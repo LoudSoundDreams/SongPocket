@@ -42,7 +42,7 @@ extension AppleLibrary {
 		context.save_please()
 		
 		context.migrate_to_disk()
-		Librarian.lrCrate = Disk.load_crates().first
+		Librarian.load()
 	}
 	
 	// MARK: Update

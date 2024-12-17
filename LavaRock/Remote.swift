@@ -31,7 +31,7 @@ extension PlayerState {
 @MainActor final class Remote {
 	static let shared = Remote()
 	let b_remote = UIBarButtonItem()
-	weak var weak_tvc_albums: AlbumsTVC? = nil
+	weak var weak_tvc_albums: AlbumsTVC?
 	
 	private init() {
 		refresh()
