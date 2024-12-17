@@ -39,8 +39,6 @@ extension AppleLibrary {
 		create_library_items(infos_new: to_create)
 		clean_up_library_items(songs_to_delete: to_delete, infos_all: mediaItems_unsorted)
 		
-		context.save_please()
-		
 		context.migrate_to_disk()
 		Librarian.load()
 	}

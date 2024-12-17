@@ -222,7 +222,7 @@ import MusicKit
 			list_state.change_album_range(from: id_album, forward: false)
 		}.disabled({
 			return (list_state.signal_albums_reordered && false) ||
-			apple_lib.is_merging || // TO DO: Change icon to spinner.
+			apple_lib.is_merging ||
 			!list_state.has_album_range(from: id_album, forward: false)
 		}())
 	}

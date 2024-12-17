@@ -20,7 +20,7 @@ import MusicKit
 			VCRMain()
 				.ignoresSafeArea()
 				.task {
-					ZZZDatabase.viewContext.migrate_to_disk() // TO DO: Indicate progress.
+					ZZZDatabase.viewContext.migrate_to_disk()
 					Librarian.load()
 					
 					guard MusicAuthorization.currentStatus == .authorized else { return }

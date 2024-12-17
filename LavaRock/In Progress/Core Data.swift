@@ -132,50 +132,6 @@ extension ZZZAlbum {
 		container = collection
 		albumPersistentID = mpidAlbum
 	}
-	
-	/*
-	 final func promote_songs(with ids_to_promote: Set<MPIDSong>) {
-	 var my_songs = songs(sorted: true)
-	 let rs_to_promote = my_songs.indices { ids_to_promote.contains($0.persistentID) }
-	 guard let front: Int = rs_to_promote.ranges.first?.first else { return }
-	 let target: Int = (rs_to_promote.ranges.count == 1)
-	 ? max(front-1, 0)
-	 : front
-	 
-	 my_songs.moveSubranges(rs_to_promote, to: target)
-	 ZZZDatabase.renumber(my_songs)
-	 managedObjectContext!.save_please()
-	 }
-	 final func demote_songs(with ids_to_demote: Set<MPIDSong>) {
-	 var my_songs = songs(sorted: true)
-	 let rs_to_demote = my_songs.indices { ids_to_demote.contains($0.persistentID) }
-	 guard let back: Int = rs_to_demote.ranges.last?.last else { return }
-	 let target: Int = (rs_to_demote.ranges.count == 1)
-	 ? min(back+1, my_songs.count-1)
-	 : back
-	 
-	 my_songs.moveSubranges(rs_to_demote, to: target+1)
-	 ZZZDatabase.renumber(my_songs)
-	 managedObjectContext!.save_please()
-	 }
-	 
-	 final func floatSongs(with ids_to_float: Set<MPIDSong>) {
-	 var my_songs = songs(sorted: true)
-	 let rs_to_float = my_songs.indices { ids_to_float.contains($0.persistentID) }
-	 
-	 my_songs.moveSubranges(rs_to_float, to: 0)
-	 ZZZDatabase.renumber(my_songs)
-	 managedObjectContext!.save_please()
-	 }
-	 final func sink_songs(with ids_to_sink: Set<MPIDSong>) {
-	 var my_songs = songs(sorted: true)
-	 let rs_to_sink = my_songs.indices { ids_to_sink.contains($0.persistentID) }
-	 
-	 my_songs.moveSubranges(rs_to_sink, to: my_songs.count)
-	 ZZZDatabase.renumber(my_songs)
-	 managedObjectContext!.save_please()
-	 }
-	 */
 }
 
 // MARK: - Song
@@ -225,15 +181,6 @@ extension NSManagedObjectContext {
 		return result
 	}
 	
-	final func save_please() {
-		guard hasChanges else { return }
-		do {
-			try save()
-		} catch {
-			fatalError("Core Data couldn’t save. \(error)")
-		}
-	}
-	
 	// MARK: Migration
 	
 	final func migrate_to_single_collection() {
@@ -259,7 +206,6 @@ extension NSManagedObjectContext {
 			}
 			delete(collection)
 		}
-		save_please()
 	}
 	private func mock_multicollection() {
 		fetch_please(ZZZSong.fetchRequest()).forEach { delete($0) }

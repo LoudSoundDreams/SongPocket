@@ -78,7 +78,6 @@ struct Parser {
 				// No valid albums for this crate. Skip this crate line.
 				continue
 			}
-			// TO DO
 //			result.append(
 //				LRCrate(title: String(content), lrAlbums: albums)
 //			)
@@ -125,7 +124,6 @@ struct Parser {
 				// No valid songs for this album. Skip this album line.
 				continue
 			}
-			// TO DO
 //			result.append(
 //				LRAlbum(mpid: mpidAlbum, lrSongs: songs)
 //			)
@@ -163,7 +161,6 @@ struct Parser {
 			}
 			
 			i_line += 1
-			// TO DO
 //			result.append(
 //				LRSong(mpid: mpidSong, album_mpid: album_mpid)
 //			)

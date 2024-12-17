@@ -74,7 +74,7 @@ extension PlayerState {
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return ""
 		}
-		guard nil != ZZZDatabase.viewContext.fetch_collection() else {
+		guard let the_crate = Librarian.the_lrCrate, !the_crate.lrAlbums.isEmpty else {
 			return InterfaceText._empty_library_message
 		}
 		return ""
