@@ -20,7 +20,7 @@ import MusicKit
 			VCRMain()
 				.ignoresSafeArea()
 				.task {
-					ZZZDatabase.viewContext.migrate_to_disk()
+					ZZZDatabase.viewContext.migrate_to_disk() // TO DO: Indicate progress.
 					
 					Librarian.lrCrate = Disk.load_crates().first
 					

@@ -40,6 +40,9 @@ extension AppleLibrary {
 		clean_up_library_items(songs_to_delete: to_delete, infos_all: mediaItems_unsorted)
 		
 		context.save_please()
+		
+		context.migrate_to_disk()
+		Librarian.lrCrate = Disk.load_crates().first
 	}
 	
 	// MARK: Update

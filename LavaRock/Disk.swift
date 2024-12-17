@@ -82,7 +82,12 @@ struct Parser {
 		}
 		return result
 	}
-	private func albums_until_outdent(from start: Int) -> (next_i_line: Int, [LRAlbum]) {
+	private func albums_until_outdent(
+		from start: Int
+	) -> (
+		next_i_line: Int,
+		[LRAlbum]
+	) {
 		let _albums = signposter.beginInterval("albums")
 		defer { signposter.endInterval("albums", _albums) }
 		
@@ -106,7 +111,9 @@ struct Parser {
 			}
 			
 			i_line += 1
-			let (next_i_line, songs) = songs_until_outdent(from: i_line)
+			let (next_i_line, songs) = songs_until_outdent(
+				from: i_line,
+				album_mpid: mpidAlbum)
 			
 			i_line = next_i_line
 			guard !songs.isEmpty else {
@@ -119,7 +126,13 @@ struct Parser {
 		}
 		return (i_line, result)
 	}
-	private func songs_until_outdent(from start: Int) -> (next_i_line: Int, [LRSong]) {
+	private func songs_until_outdent(
+		from start: Int,
+		album_mpid: MPIDAlbum
+	) -> (
+		next_i_line: Int,
+		[LRSong]
+	) {
 		let _songs = signposter.beginInterval("songs")
 		defer { signposter.endInterval("songs", _songs) }
 		
@@ -143,12 +156,9 @@ struct Parser {
 			}
 			
 			i_line += 1
-			// TO DO
-//			result.append(
-//				LRSong(mpid: mpidSong)
-//			)
-			let _ = mpidSong
-			result.append(contentsOf: [])
+			result.append(
+				LRSong(mpid: mpidSong, album_mpid: album_mpid)
+			)
 		}
 		return (i_line, result)
 	}
