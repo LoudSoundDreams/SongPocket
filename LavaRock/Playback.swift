@@ -18,21 +18,21 @@ import SwiftUI
 	}
 	
 	final func play_now(
-		_ ids_to_play: [MPIDSong],
+		_ to_play: [MPIDSong],
 		starting_at id_start: MPIDSong? = nil
 	) {
 		Task {
 			let to_play: [MKSong] = await {
 				var result: [MKSong] = []
-				for mpID in ids_to_play {
-					guard let mkSong = await AppleLibrary.shared.mkSong(mpidSong: mpID) else { continue }
+				for mpidSong in to_play {
+					guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
 					result.append(mkSong)
 				}
 				return result
 			}()
 			let start: MKSong? = await {
 				guard let id_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-				return await AppleLibrary.shared.mkSong(mpidSong: id_start)
+				return await AppleLibrary.shared.mkSong(mpid: id_start)
 			}()
 			
 			queue = Queue(for: to_play, startingAt: start) // Slow.
@@ -42,14 +42,12 @@ import SwiftUI
 		}
 	}
 	
-	final func play_later(
-		_ ids_to_append: [MPIDSong]
-	) {
+	final func play_later(_ to_append: [MPIDSong]) {
 		Task {
 			let to_append: [MKSong] = await {
 				var result: [MKSong] = []
-				for mpID in ids_to_append {
-					guard let mkSong = await AppleLibrary.shared.mkSong(mpidSong: mpID) else { continue }
+				for mpidSong in to_append {
+					guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
 					result.append(mkSong)
 				}
 				return result
@@ -87,13 +85,6 @@ import SwiftUI
 				@unknown default:
 					self = .paused
 			}
-#endif
-		}
-		init(mpidAlbum: MPIDAlbum) {
-#if targetEnvironment(simulator)
-			self = .not_playing
-#else
-			self = .not_playing
 #endif
 		}
 		var foreground_color: Color {

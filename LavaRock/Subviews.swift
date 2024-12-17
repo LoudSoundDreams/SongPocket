@@ -176,10 +176,6 @@ import MusicKit
 			}
 			Text(title_and_input_label)
 				.font_title3_bold()
-				.foregroundStyle({
-					if sel_dimmed { return Color.secondary }
-					return ApplicationMusicPlayer.StatusNowPlaying(mpidAlbum: id_album).foreground_color
-				}())
 				.foregroundStyle(sel_dimmed ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Higher means sooner.
 		}
@@ -265,7 +261,7 @@ import MusicKit
 				let infoSong: InfoSong__? = {
 #if targetEnvironment(simulator)
 					guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
-						Task { await apple_lib.cache_mkSong(mpidSong: id_song) }
+						Task { await apple_lib.cache_mkSong(mpid: id_song) }
 						return nil
 					}
 					return InfoSong__(
@@ -275,7 +271,7 @@ import MusicKit
 						_track: sim_song.track_number_on_disk)
 #else
 					guard let mkSong = apple_lib.mkSongs[MusicItemID(String(id_song))] else {
-						Task { await apple_lib.cache_mkSong(mpidSong: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
+						Task { await apple_lib.cache_mkSong(mpid: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
 						// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
 						return nil
 					}

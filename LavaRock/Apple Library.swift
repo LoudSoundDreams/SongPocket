@@ -57,16 +57,16 @@ extension AppleLibrary {
 	func mkSection(mpidAlbum: MPIDAlbum) -> MKSection? {
 		return mkSections[MusicItemID(String(mpidAlbum))]
 	}
-	func mkSong(mpidSong: MPIDSong) async -> MKSong? {
-		let mkID = MusicItemID(String(mpidSong))
+	func mkSong(mpid: MPIDSong) async -> MKSong? {
+		let mkID = MusicItemID(String(mpid))
 		if let cached = mkSongs[mkID] { return cached }
 		
-		await cache_mkSong(mpidSong: mpidSong)
+		await cache_mkSong(mpid: mpid)
 		
 		return mkSongs[mkID]
 	}
-	func cache_mkSong(mpidSong: MPIDSong) async { // Slow; 11ms in 2024.
-		let mkID = MusicItemID(String(mpidSong))
+	func cache_mkSong(mpid: MPIDSong) async { // Slow; 11ms in 2024.
+		let mkID = MusicItemID(String(mpid))
 		
 		var request = MusicLibraryRequest<MKSong>()
 		request.filter(matching: \.id, equalTo: mkID)
