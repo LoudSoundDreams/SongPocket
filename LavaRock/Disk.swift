@@ -4,7 +4,7 @@ import Foundation
 import os
 
 enum Disk {
-	static func save_crates(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
+	static func _save_crates(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let _save = signposter.beginInterval("save")
 		signposter.endInterval("save", _save)
 		
@@ -27,7 +27,7 @@ enum Disk {
 		try! data.write(to: path_folder.appending(path: step_crates), options: [.atomic, .completeFileProtection])
 	}
 	
-	static func load_crates() -> [LRCrate] {
+	static func _load_crates() -> [LRCrate] {
 		guard let data = try? Data(contentsOf: path_folder.appending(path: step_crates)) else {
 			// Maybe the file doesn’t exist.
 			return []
@@ -78,9 +78,12 @@ struct Parser {
 				// No valid albums for this crate. Skip this crate line.
 				continue
 			}
-			result.append(
-				LRCrate(title: String(content), lrAlbums: albums)
-			)
+			// TO DO
+//			result.append(
+//				LRCrate(title: String(content), lrAlbums: albums)
+//			)
+			result.append(contentsOf: [])
+			let _ = content
 		}
 		return result
 	}
@@ -122,9 +125,11 @@ struct Parser {
 				// No valid songs for this album. Skip this album line.
 				continue
 			}
-			result.append(
-				LRAlbum(mpid: mpidAlbum, lrSongs: songs)
-			)
+			// TO DO
+//			result.append(
+//				LRAlbum(mpid: mpidAlbum, lrSongs: songs)
+//			)
+			result.append(contentsOf: [])
 		}
 		return (i_line, result)
 	}
@@ -158,9 +163,12 @@ struct Parser {
 			}
 			
 			i_line += 1
-			result.append(
-				LRSong(mpid: mpidSong, album_mpid: album_mpid)
-			)
+			// TO DO
+//			result.append(
+//				LRSong(mpid: mpidSong, album_mpid: album_mpid)
+//			)
+			result.append(contentsOf: [])
+			let _ = mpidSong
 		}
 		return (i_line, result)
 	}

@@ -1,23 +1,56 @@
 // 2024-09-04
 
-struct LRCrate: Equatable {
+final class LRCrate {
 	let title: String
-	var lrAlbums: [LRAlbum]
+	var lrAlbums: [LRAlbum] = []
+	
+	init(title: String) {
+		self.title = title
+	}
 }
-struct LRAlbum: Equatable {
+final class LRAlbum {
 	let mpid: MPIDAlbum
-	var lrSongs: [LRSong]
+	var lrCrate: LRCrate!
+	var lrSongs: [LRSong] = []
+	
+	init(mpid: MPIDAlbum, parent: LRCrate) {
+		self.mpid = mpid
+		lrCrate = parent
+	}
 }
-struct LRSong: Equatable {
+final class LRSong {
 	let mpid: MPIDSong
-	let album_mpid: MPIDAlbum
+	var lrAlbum: LRAlbum!
+	
+	init(mpid: MPIDSong, parent: LRAlbum) {
+		self.mpid = mpid
+		lrAlbum = parent
+	}
 }
 
 @MainActor struct Librarian {
-	private(set) static var lrCrate: LRCrate? = nil
+	private(set) static var the_crate: LRCrate?
 	
 	static func load() {
 		// TO DO
+	}
+	static func save() {
+		// TO DO
+	}
+	
+	static func append_lrAlbum(mpid: MPIDAlbum) -> LRAlbum {
+		if the_crate == nil {
+			the_crate = LRCrate(title: InterfaceText._tilde)
+		}
+		let the_crate = the_crate!
+		
+		let lrAlbum_new = LRAlbum(mpid: mpid, parent: the_crate)
+		the_crate.lrAlbums.append(lrAlbum_new)
+		return lrAlbum_new
+	}
+	static func append_lrSong(mpid: MPIDSong, in parent: LRAlbum) {
+		let lrSong_new = LRSong(mpid: mpid, parent: parent)
+		parent.lrSongs.append(lrSong_new)
 	}
 	
 	static func find_lrAlbum(mpid: MPIDAlbum) -> LRAlbum? {
@@ -30,12 +63,12 @@ struct LRSong: Equatable {
 	}
 	
 	static func debug_print() {
-		guard let lrCrate else {
+		guard let the_crate else {
 			print("nil crate")
 			return
 		}
-		print(lrCrate.title)
-		lrCrate.lrAlbums.forEach { lrAlbum in
+		print(the_crate.title)
+		the_crate.lrAlbums.forEach { lrAlbum in
 			print("  \(lrAlbum.mpid)")
 			lrAlbum.lrSongs.forEach { lrSong in
 				print("    \(lrSong.mpid)")

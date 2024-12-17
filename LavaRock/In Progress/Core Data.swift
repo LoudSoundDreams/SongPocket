@@ -312,32 +312,20 @@ extension NSManagedObjectContext {
 		cuatro.persistentID = Int64(-10000)
 	}
 	
-	final func migrate_to_disk() {
-		// Return early if there’s nothing to migrate.
-		guard let zzzCollection = fetch_collection() else { return }
-		
+	@MainActor final func migrate_to_disk() {
 		// Write data to persistent storage as if the app never used Core Data previously.
 		
-		let lrCrate = LRCrate(
-			title: zzzCollection.title ?? InterfaceText._tilde,
-			lrAlbums: {
-				let zzzAlbums = zzzCollection.albums(sorted: true)
-				return zzzAlbums.map { zzzAlbum in
-					// Return one `LRAlbum`.
-					let mpidAlbum = zzzAlbum.albumPersistentID
-					return LRAlbum(
-						mpid: mpidAlbum,
-						lrSongs: {
-							let zzzSongs = zzzAlbum.songs(sorted: true)
-							return zzzSongs.map { zzzSong in
-								// Return one `LRSong`.
-								return LRSong(
-									mpid: zzzSong.persistentID,
-									album_mpid: mpidAlbum)
-							}
-						}())
-				}
-			}())
-		Disk.save_crates([lrCrate])
+		// Exit early if there’s nothing to migrate. The rest of the app must handle empty persistent storage anyway.
+		guard let zzzCollection = fetch_collection() else { return }
+		
+		zzzCollection.albums(sorted: true).forEach { zzzAlbum in
+			let lrAlbum = Librarian.append_lrAlbum(mpid: zzzAlbum.albumPersistentID)
+			zzzAlbum.songs(sorted: true).forEach { zzzSong in
+				Librarian.append_lrSong(mpid: zzzSong.persistentID, in: lrAlbum)
+			}
+		}
+		
+		Librarian.save() // This makes `Librarian` save and reload the same library items, but lets it always use the same code to load during startup, regardless of whether we ran this migration.
+		ZZZDatabase.destroy()
 	}
 }

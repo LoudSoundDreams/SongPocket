@@ -73,8 +73,8 @@ extension AlbumListState {
 		}
 	}
 	private static func album_mpids_fresh() -> [MPIDAlbum] {
-		guard let lrCrate = Librarian.lrCrate else { return [] }
-		return lrCrate.lrAlbums.map { $0.mpid }
+		guard let the_crate = Librarian.the_crate else { return [] }
+		return the_crate.lrAlbums.map { $0.mpid }
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
@@ -359,9 +359,9 @@ final class AlbumsTVC: LibraryTVC {
 	func show_current() {
 		guard
 			let id_current = MPMusicPlayerController.mpidSong_current,
-			let song_current = Librarian.find_lrSong(mpid: id_current)
+			let lrSong = Librarian.find_lrSong(mpid: id_current)
 		else { return }
-		let mpidAlbum_target = song_current.album_mpid
+		let mpidAlbum_target = lrSong.lrAlbum.mpid
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
 			case .song_mpid: return false
 			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
@@ -447,13 +447,10 @@ final class AlbumsTVC: LibraryTVC {
 				Task {
 					self.list_state.select_mode = .view(nil)
 					
-					guard
-						let song_activated = Librarian.find_lrSong(mpid: id_activated),
-						let album_chosen = Librarian.find_lrAlbum(mpid: song_activated.album_mpid)
-					else { return }
+					guard let lrSong = Librarian.find_lrSong(mpid: id_activated) else { return }
 					
 					ApplicationMusicPlayer._shared?.play_now(
-						album_chosen.lrSongs.map { $0.mpid },
+						lrSong.lrAlbum.lrSongs.map { $0.mpid },
 						starting_at: id_activated)
 				}
 			}
