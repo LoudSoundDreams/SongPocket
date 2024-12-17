@@ -633,7 +633,7 @@ final class AlbumsTVC: LibraryTVC {
 		switch album_order {
 			case .random, .reverse, .recently_added: return true
 			case .recently_released: return ids_albums_to_sort().contains {
-				nil != AppleLibrary.shared.infoAlbum(mpidAlbum: $0)?._date_released
+				nil != AppleLibrary.shared.infoAlbum(mpid: $0)?._date_released
 			}
 		}
 	}

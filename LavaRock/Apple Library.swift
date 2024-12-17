@@ -30,9 +30,9 @@ extension AppleLibrary {
 		merge_changes()
 	}
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
-	func infoAlbum(mpidAlbum: MPIDAlbum) -> InfoAlbum? {
+	func infoAlbum(mpid: MPIDAlbum) -> InfoAlbum? {
 #if targetEnvironment(simulator)
-		guard let sim_album = Sim_MusicLibrary.shared.sim_albums[mpidAlbum]
+		guard let sim_album = Sim_MusicLibrary.shared.sim_albums[mpid]
 		else { return nil }
 		return InfoAlbum(
 			_title: sim_album.title,
@@ -41,7 +41,7 @@ extension AppleLibrary {
 			_disc_count: 1
 		)
 #else
-		guard let mkAlbum = mkSection(mpidAlbum: mpidAlbum)
+		guard let mkAlbum = mkSection(mpid: mpid)
 		else { return nil }
 		let mkSongs = mkAlbum.items
 		return InfoAlbum(
@@ -54,8 +54,8 @@ extension AppleLibrary {
 		)
 #endif
 	}
-	func mkSection(mpidAlbum: MPIDAlbum) -> MKSection? {
-		return mkSections[MusicItemID(String(mpidAlbum))]
+	func mkSection(mpid: MPIDAlbum) -> MKSection? {
+		return mkSections[MusicItemID(String(mpid))]
 	}
 	func mkSong(mpid: MPIDSong) async -> MKSong? {
 		let mkID = MusicItemID(String(mpid))

@@ -100,7 +100,7 @@ import MusicKit
 	let dim_limit: CGFloat
 	
 	private var artwork: MusicKit.Artwork? {
-		return AppleLibrary.shared.mkSection(mpidAlbum: id_album)?.artwork
+		return AppleLibrary.shared.mkSection(mpid: id_album)?.artwork
 	}
 	var body: some View {
 		ZStack {
@@ -155,7 +155,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let info_album: InfoAlbum? = apple_lib.infoAlbum(mpidAlbum: id_album)
+		let info_album: InfoAlbum? = apple_lib.infoAlbum(mpid: id_album)
 		let title_and_input_label: String = {
 			guard let title_album = info_album?._title, title_album != ""
 			else { return InterfaceText._tilde }
@@ -282,7 +282,7 @@ import MusicKit
 						_track: mkSong.trackNumber)
 #endif
 				}()
-				let infoAlbum: InfoAlbum? = apple_lib.infoAlbum(mpidAlbum: id_album)
+				let infoAlbum: InfoAlbum? = apple_lib.infoAlbum(mpid: id_album)
 				
 				stack_main(infoSong, infoAlbum)
 				Spacer()

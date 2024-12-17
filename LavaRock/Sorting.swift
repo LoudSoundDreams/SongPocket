@@ -40,7 +40,7 @@ enum AlbumOrder {
 				let albums_and_first_added: [(album: ZZZAlbum, first_added: Date)] = in_original_order.map { album in (
 					album: album,
 					first_added: {
-						let mkSongs = AppleLibrary.shared.mkSection(mpidAlbum: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
+						let mkSongs = AppleLibrary.shared.mkSection(mpid: album.albumPersistentID)?.items ?? [] // As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 						// I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
 						return ZZZAlbum.date_created(mkSongs) ?? now
 					}()
@@ -54,7 +54,7 @@ enum AlbumOrder {
 			case .recently_released:
 				let albums_and_dates_released: [(album: ZZZAlbum, date_released: Date?)] = in_original_order.map {(
 					album: $0,
-					date_released: AppleLibrary.shared.infoAlbum(mpidAlbum: $0.albumPersistentID)?._date_released
+					date_released: AppleLibrary.shared.infoAlbum(mpid: $0.albumPersistentID)?._date_released
 				)}
 				let sorted = albums_and_dates_released.sorted_stably {
 					$0.date_released == $1.date_released
