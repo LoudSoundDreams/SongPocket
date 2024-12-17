@@ -29,21 +29,39 @@ private let badStructure: String = """
 
 @Test private func parseBadStructure() {
 	let crates = Parser(badStructure).parse_crates()
+	let mpidAlbum_13 = MPIDAlbum("13")!
+	let mpidAlbum_41 = MPIDAlbum("41")!
 	#expect(
 		crates ==
 		[
-			LRCrate(title: "7", lrAlbums: [
-				LRAlbum(mpidAlbum: MPIDAlbum("13")!, lrSongs: [
-					LRSong(mpidSong: MPIDSong("17")!),
-					LRSong(mpidSong: MPIDSong("19")!),
-					LRSong(mpidSong: MPIDSong("23")!),
+			LRCrate(
+				title: "7",
+				lrAlbums: [
+					LRAlbum(
+						mpid: mpidAlbum_13,
+						lrSongs: [
+							LRSong(
+								mpid: MPIDSong("17")!,
+								album_mpid: mpidAlbum_13),
+							LRSong(
+								mpid: MPIDSong("19")!,
+								album_mpid: mpidAlbum_13),
+							LRSong(
+								mpid: MPIDSong("23")!,
+								album_mpid: mpidAlbum_13),
+						]),
 				]),
-			]),
-			LRCrate(title: "", lrAlbums: [
-				LRAlbum(mpidAlbum: MPIDAlbum("41")!, lrSongs: [
-					LRSong(mpidSong: MPIDSong("43")!),
+			LRCrate(
+				title: "",
+				lrAlbums: [
+					LRAlbum(
+						mpid: mpidAlbum_41,
+						lrSongs: [
+							LRSong(
+								mpid: MPIDSong("43")!,
+								album_mpid: mpidAlbum_41),
+						]),
 				]),
-			]),
 		]
 	)
 }

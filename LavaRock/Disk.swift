@@ -12,18 +12,18 @@ enum Disk {
 		try! filer.createDirectory(at: path_folder, withIntermediateDirectories: true)
 		
 		let _serialize = signposter.beginInterval("serialize")
-		var output: String = ""
+		var string_out: String = ""
 		crates.forEach {
-			output.append(contentsOf: "\($0.title)\n")
+			string_out.append(contentsOf: "\($0.title)\(newline)")
 			$0.lrAlbums.forEach { album in
-				output.append(contentsOf: "\(tab)\(album.mpid)\n")
+				string_out.append(contentsOf: "\(tab)\(album.mpid)\(newline)")
 				album.lrSongs.forEach { song in
-					output.append(contentsOf: "\(tab_tab)\(song.mpid)\n")
+					string_out.append(contentsOf: "\(tab_tab)\(song.mpid)\(newline)")
 				}
 			}
 		}
 		signposter.endInterval("serialize", _serialize)
-		let data = Data(output.utf8)
+		let data = string_out.data(using: encoding_utf8, allowLossyConversion: false)!
 		try! data.write(to: path_folder.appending(path: step_crates), options: [.atomic, .completeFileProtection])
 	}
 	
@@ -32,13 +32,15 @@ enum Disk {
 			// Maybe the file doesn’t exist.
 			return []
 		}
-		guard let input: String = String(data: data, encoding: .utf8) else {
+		guard let input: String = String(data: data, encoding: encoding_utf8) else {
 			print("Couldn’t decode crates file.")
 			return []
 		}
 		return Parser(input).parse_crates()
 	}
 	
+	fileprivate static let encoding_utf8: String.Encoding = .utf8
+	fileprivate static let newline = "\n"
 	fileprivate static let tab = "\t"
 	fileprivate static let tab_tab = "\t\t"
 	
@@ -49,7 +51,7 @@ enum Disk {
 
 struct Parser {
 	init(_ string: String) {
-		self.lines = string.split(separator: "\n", omittingEmptySubsequences: false)
+		self.lines = string.split(separator: Disk.newline, omittingEmptySubsequences: false)
 	}
 	private let lines: [Substring]
 	
