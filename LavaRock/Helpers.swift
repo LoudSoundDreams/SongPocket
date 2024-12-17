@@ -1,6 +1,11 @@
 import SwiftUI
 import UIKit
 
+final class WeakRef<Referencee: AnyObject> {
+	weak var referencee: Referencee?
+	init(_ referencee: Referencee) { self.referencee = referencee }
+}
+
 extension Array {
 	func in_any_other_order() -> Self
 	where Element: Equatable
