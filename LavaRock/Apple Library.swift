@@ -10,7 +10,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
 @MainActor @Observable final class AppleLibrary {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
-	private(set) var mkSongs_cache: [MusicItemID: MKSong] = [:]
+	private(set) var mkSongs_cache: [MPIDSong: MKSong] = [:]
 	var is_merging = false { didSet {
 		if !is_merging {
 			NotificationCenter.default.post(name: Self.did_merge, object: nil)
@@ -58,25 +58,22 @@ extension AppleLibrary {
 		return mkSections[MusicItemID(String(mpid))]
 	}
 	func mkSong_cached_or_fetched(mpid: MPIDSong) async -> MKSong? {
-		let mkid = MusicItemID(String(mpid))
-		if let cached = mkSongs_cache[mkid] { return cached }
+		if let cached = mkSongs_cache[mpid] { return cached }
 		
 		await cache_mkSong(mpid: mpid)
 		
-		return mkSongs_cache[mkid]
+		return mkSongs_cache[mpid]
 	}
 	func cache_mkSong(mpid: MPIDSong) async { // Slow; 11ms in 2024.
-		let mkid = MusicItemID(String(mpid))
-		
 		var request = MusicLibraryRequest<MKSong>()
-		request.filter(matching: \.id, equalTo: mkid)
+		request.filter(matching: \.id, equalTo: MusicItemID(String(mpid)))
 		guard
 			let response = try? await request.response(),
 			response.items.count == 1,
 			let mkSong = response.items.first
 		else { return }
 		
-		mkSongs_cache[mkid] = mkSong
+		mkSongs_cache[mpid] = mkSong
 	}
 	static func open_Apple_Music() {
 		guard let url = URL(string: "music://") else { return }
