@@ -155,14 +155,14 @@ import MusicKit
 extension NSManagedObjectContext {
 	final func debug_print(referencing: [MusicItemID: MKSection]) {
 		fetch_please(ZZZCollection.fetch_request_sorted()).forEach { collection in
-			print(collection.index, collection.title ?? "")
+			Print(collection.index, collection.title ?? "")
 			
 			collection.albums(sorted: true).forEach { album in
 				let mkSection: MKSection? = referencing[MusicItemID(String(album.albumPersistentID))]
-				print(" ", album.index, album.albumPersistentID, mkSection?.title ?? "")
+				Print(" ", album.index, album.albumPersistentID, mkSection?.title ?? "")
 				
 				album.songs(sorted: true).forEach { song in
-					print("   ", song.index, song.persistentID)
+					Print("   ", song.index, song.persistentID)
 				}
 			}
 		}

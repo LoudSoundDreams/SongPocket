@@ -33,7 +33,7 @@ enum Disk {
 			return []
 		}
 		guard let input: String = String(data: data, encoding: encoding_utf8) else {
-			print("Couldn’t decode crates file.")
+			Print("Couldn’t decode crates file.")
 			return []
 		}
 		return Parser(input).parse_crates()

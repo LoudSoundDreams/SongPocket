@@ -65,38 +65,38 @@ final class LRSong {
 	}
 	
 	static func debug_print() {
-		print()
+		Print()
 		guard let the_lrCrate else {
-			print("nil crate")
+			Print("nil crate")
 			return
 		}
-		print("crate tree")
-		print(the_lrCrate.title)
+		Print("crate tree")
+		Print(the_lrCrate.title)
 		the_lrCrate.lrAlbums.forEach { lrAlbum in
-			print("  \(lrAlbum.mpid) in \(lrAlbum.lrCrate.title)")
+			Print("  \(lrAlbum.mpid) in \(lrAlbum.lrCrate.title)")
 			lrAlbum.lrSongs.forEach { lrSong in
-				print("    \(lrSong.mpid) in \(lrSong.lrAlbum.mpid)")
+				Print("    \(lrSong.mpid) in \(lrSong.lrAlbum.mpid)")
 			}
 		}
 		
-		print()
-		print("album dict")
+		Print()
+		Print("album dict")
 		lrAlbums.forEach { (mpidAlbum, lrAlbum_ref) in
 			var value_description = "nil"
 			if let lrAlbum = lrAlbum_ref.referencee {
 				value_description = "\(ObjectIdentifier(lrAlbum).debugDescription), \(lrAlbum.mpid)"
 			}
-			print("\(mpidAlbum) → \(value_description)")
+			Print("\(mpidAlbum) → \(value_description)")
 		}
 		
-		print()
-		print("song dict")
+		Print()
+		Print("song dict")
 		lrSongs.forEach { (mpidSong, lrSong_ref) in
 			var value_description = "nil"
 			if let lrSong = lrSong_ref.referencee {
 				value_description = "\(ObjectIdentifier(lrSong).debugDescription), \(lrSong.mpid)"
 			}
-			print("\(mpidSong) → \(value_description)")
+			Print("\(mpidSong) → \(value_description)")
 		}
 	}
 }

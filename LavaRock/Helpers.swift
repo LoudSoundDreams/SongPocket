@@ -1,6 +1,16 @@
 import SwiftUI
 import UIKit
 
+struct Print {
+	@discardableResult init(_ items: Any...) {
+		guard !items.isEmpty else {
+			print("__")
+			return
+		}
+		print("__\(items)")
+	}
+}
+
 final class WeakRef<Referencee: AnyObject> {
 	weak var referencee: Referencee?
 	init(_ referencee: Referencee) { self.referencee = referencee }
