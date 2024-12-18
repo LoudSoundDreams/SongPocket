@@ -1,6 +1,6 @@
 // 2022-03-19
 
-import MusicKit
+@preconcurrency import MusicKit
 import MediaPlayer
 import SwiftUI
 import Combine
@@ -22,49 +22,45 @@ import Combine
 	final func play_now(
 		_ to_play: [MPIDSong],
 		starting_at id_start: MPIDSong? = nil
-	) {
-		Task {
-			let to_play: [MKSong] = await {
-				var result: [MKSong] = []
-				for mpidSong in to_play {
-					guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
-					result.append(mkSong)
-				}
-				return result
-			}()
-			let start: MKSong? = await {
-				guard let id_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-				return await AppleLibrary.shared.mkSong(mpid: id_start)
-			}()
-			
-			queue = Queue(for: to_play, startingAt: start) // Slow.
-			guard let _ = try? await play() else { return }
-			
-			state.repeatMode = RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
-		}
+	) async {
+		let to_play: [MKSong] = await {
+			var result: [MKSong] = []
+			for mpidSong in to_play {
+				guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
+				result.append(mkSong)
+			}
+			return result
+		}()
+		let start: MKSong? = await {
+			guard let id_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
+			return await AppleLibrary.shared.mkSong(mpid: id_start)
+		}()
+		
+		queue = Queue(for: to_play, startingAt: start) // Slow.
+		guard let _ = try? await play() else { return }
+		
+		state.repeatMode = RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
-	final func play_later(_ to_append: [MPIDSong]) {
-		Task {
-			let to_append: [MKSong] = await {
-				var result: [MKSong] = []
-				for mpidSong in to_append {
-					guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
-					result.append(mkSong)
-				}
-				return result
-			}()
-			
-			if queue.currentEntry == nil {
-				queue = Queue(for: to_append)
-				guard let _ = try? await prepareToPlay() else { return }
-			} else {
-				guard let _ = try? await queue.insert(to_append, position: .tail) else { return }
+	final func play_later(_ to_append: [MPIDSong]) async {
+		let to_append: [MKSong] = await {
+			var result: [MKSong] = []
+			for mpidSong in to_append {
+				guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
+				result.append(mkSong)
 			}
-			
-			let rumbler = UINotificationFeedbackGenerator()
-			rumbler.notificationOccurred(.success)
+			return result
+		}()
+		
+		if queue.currentEntry == nil {
+			queue = Queue(for: to_append)
+			guard let _ = try? await prepareToPlay() else { return }
+		} else {
+			guard let _ = try? await queue.insert(to_append, position: .tail) else { return }
 		}
+		
+		let rumbler = UINotificationFeedbackGenerator()
+		rumbler.notificationOccurred(.success)
 	}
 	
 	@MainActor enum StatusNowPlaying {

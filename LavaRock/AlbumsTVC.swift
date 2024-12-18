@@ -444,12 +444,11 @@ final class AlbumsTVC: LibraryTVC {
 		action_sheet.popoverPresentationController?.sourceView = view_popover_anchor
 		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
+				self.list_state.select_mode = .view(nil)
 				Task {
-					self.list_state.select_mode = .view(nil)
-					
 					guard let lrSong = Librarian.find_lrSong(mpid: id_activated) else { return }
 					
-					ApplicationMusicPlayer._shared?.play_now(
+					await ApplicationMusicPlayer._shared?.play_now(
 						lrSong.lrAlbum.lrSongs.map { $0.mpid },
 						starting_at: id_activated)
 				}
@@ -542,8 +541,10 @@ final class AlbumsTVC: LibraryTVC {
 					let ids_songs = ids_songs_focused()
 					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 						guard let self else { return }
-						ApplicationMusicPlayer._shared?.play_now(ids_songs)
 						end_selecting_animated()
+						Task {
+							await ApplicationMusicPlayer._shared?.play_now(ids_songs)
+						}
 					}
 					if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
 					use([action])
@@ -553,8 +554,10 @@ final class AlbumsTVC: LibraryTVC {
 					let ids_songs = ids_songs_focused()
 					let action = UIAction(title: InterfaceText.Play_Later, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 						guard let self else { return }
-						ApplicationMusicPlayer._shared?.play_later(ids_songs)
 						end_selecting_animated()
+						Task {
+							await ApplicationMusicPlayer._shared?.play_later(ids_songs)
+						}
 					}
 					if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
 					use([action])
@@ -564,8 +567,10 @@ final class AlbumsTVC: LibraryTVC {
 					let ids_songs = ids_songs_focused()
 					let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
 						guard let self else { return }
-						ApplicationMusicPlayer._shared?.play_now(ids_songs.in_any_other_order()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 						end_selecting_animated()
+						Task {
+							await ApplicationMusicPlayer._shared?.play_now(ids_songs.in_any_other_order()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+						}
 					}
 					if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
 					use([action])
