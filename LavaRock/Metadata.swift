@@ -1,6 +1,7 @@
 // 2021-12-24
 
 import MusicKit
+import MediaPlayer
 
 struct InfoAlbum {
 	let _title: String
@@ -26,8 +27,6 @@ struct InfoSong__ {
 	let _disc: Int?
 	let _track: Int?
 }
-
-import MediaPlayer
 
 typealias MPIDAlbum = Int64
 typealias MPIDSong = Int64

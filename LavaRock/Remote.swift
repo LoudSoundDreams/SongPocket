@@ -3,29 +3,6 @@
 import UIKit
 @preconcurrency import MusicKit
 import MediaPlayer
-import Combine
-
-@MainActor @Observable final class PlayerState {
-	@ObservationIgnored static let shared = PlayerState()
-	var signal = false { didSet {
-		Task { // We’re responding to `objectWillChange` events, which aren’t what we actually want. This might wait for the next turn of the run loop, when the value might actually have changed.
-			NotificationCenter.default.post(name: Self.musicKit, object: nil)
-		}
-	}}
-	private init() {}
-	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
-}
-extension PlayerState {
-	func watch() {
-		ApplicationMusicPlayer._shared?.state.objectWillChange
-			.sink { [weak self] in self?.signal.toggle() }
-			.store(in: &cancellables)
-		ApplicationMusicPlayer._shared?.queue.objectWillChange
-			.sink { [weak self] in self?.signal.toggle() }
-			.store(in: &cancellables)
-	}
-	static let musicKit = Notification.Name("LRMusicKitPlayerStateOrQueue")
-}
 
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor final class Remote {

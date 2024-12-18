@@ -1,7 +1,9 @@
 // 2022-03-19
 
 import MusicKit
+import MediaPlayer
 import SwiftUI
+import Combine
 
 @MainActor extension ApplicationMusicPlayer {
 	static var _shared: ApplicationMusicPlayer? {
@@ -97,10 +99,31 @@ import SwiftUI
 	}
 }
 
-import MediaPlayer
 @MainActor extension MPMusicPlayerController {
 	static var mpidSong_current: MPIDSong? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return applicationQueuePlayer.nowPlayingItem?.id_song
 	}
+}
+
+@MainActor @Observable final class PlayerState {
+	@ObservationIgnored static let shared = PlayerState()
+	var signal = false { didSet {
+		Task { // We’re responding to `objectWillChange` events, which aren’t what we actually want. This might wait for the next turn of the run loop, when the value might actually have changed.
+			NotificationCenter.default.post(name: Self.musicKit, object: nil)
+		}
+	}}
+	private init() {}
+	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
+}
+extension PlayerState {
+	func watch() {
+		ApplicationMusicPlayer._shared?.state.objectWillChange
+			.sink { [weak self] in self?.signal.toggle() }
+			.store(in: &cancellables)
+		ApplicationMusicPlayer._shared?.queue.objectWillChange
+			.sink { [weak self] in self?.signal.toggle() }
+			.store(in: &cancellables)
+	}
+	static let musicKit = Notification.Name("LRMusicKitPlayerStateOrQueue")
 }
