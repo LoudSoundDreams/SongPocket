@@ -30,8 +30,7 @@
 		07E0BBFB276567F70010117E /* Core Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBFA276567F70010117E /* Core Data.swift */; };
 		07FB52CB2813909400CCCBA5 /* Sorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB52CA2813909400CCCBA5 /* Sorting.swift */; };
 		07FF080128652A4C00EE4FD4 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* Sort.swift */; };
-		1500211F2D0FAFC70089B5E2 /* Apple Library A.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500211E2D0FAFC40089B5E2 /* Apple Library A.swift */; };
-		150021212D0FAFCB0089B5E2 /* Apple Library B.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150021202D0FAFCA0089B5E2 /* Apple Library B.swift */; };
+		150021212D0FAFCB0089B5E2 /* Apple Library +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150021202D0FAFCA0089B5E2 /* Apple Library +.swift */; };
 		15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15048E612CF0FBA3005DC698 /* Subsubviews.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,8 +82,7 @@
 		07E0BBFA276567F70010117E /* Core Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Core Data.swift"; sourceTree = "<group>"; };
 		07FB52CA2813909400CCCBA5 /* Sorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sorting.swift; sourceTree = "<group>"; };
 		07FF080028652A4C00EE4FD4 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
-		1500211E2D0FAFC40089B5E2 /* Apple Library A.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Apple Library A.swift"; sourceTree = "<group>"; };
-		150021202D0FAFCA0089B5E2 /* Apple Library B.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Apple Library B.swift"; sourceTree = "<group>"; };
+		150021202D0FAFCA0089B5E2 /* Apple Library +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Apple Library +.swift"; sourceTree = "<group>"; };
 		15048E612CF0FBA3005DC698 /* Subsubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subsubviews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,15 +142,14 @@
 				076830BB24B42E3E0033E3CC /* LibraryTVC.swift */,
 				07755A57294821860056E90C /* Subviews.swift */,
 				15048E612CF0FBA3005DC698 /* Subsubviews.swift */,
-				07DF65D127766C95003B2EA3 /* Metadata.swift */,
 				071B30932C88CD3400239BF3 /* Librarian.swift */,
 				079B2C9424E227BF00A949FA /* Apple Library.swift */,
-				1500211E2D0FAFC40089B5E2 /* Apple Library A.swift */,
 				070056902C8275C0006F1069 /* Disk.swift */,
 				150021222D0FB1D20089B5E2 /* In Progress */,
+				07DF65D127766C95003B2EA3 /* Metadata.swift */,
+				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
 				076F1C0127E66DAA00220C2B /* Playback.swift */,
 				07DF76E32828D8AB00B03103 /* Remote.swift */,
-				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
 				078FDD0E2638872100779AF2 /* Helpers.swift */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
 				075FC9052B4677D800219146 /* Dev Assets */,
@@ -185,7 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
-				150021202D0FAFCA0089B5E2 /* Apple Library B.swift */,
+				150021202D0FAFCA0089B5E2 /* Apple Library +.swift */,
 				07E0BBFA276567F70010117E /* Core Data.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
 			);
@@ -336,8 +333,7 @@
 				076F1C0227E66DAA00220C2B /* Playback.swift in Sources */,
 				071A0B9E277E76510017F76D /* App.swift in Sources */,
 				07DF65D227766C95003B2EA3 /* Metadata.swift in Sources */,
-				150021212D0FAFCB0089B5E2 /* Apple Library B.swift in Sources */,
-				1500211F2D0FAFC70089B5E2 /* Apple Library A.swift in Sources */,
+				150021212D0FAFCB0089B5E2 /* Apple Library +.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
 				07E0BBFB276567F70010117E /* Core Data.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,

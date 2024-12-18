@@ -1,6 +1,7 @@
 // 2020-08-22
 
 import CoreData
+import MusicKit
 
 enum ZZZDatabase {
 	@MainActor static let viewContext = container.viewContext
@@ -151,7 +152,6 @@ extension ZZZSong {
 
 // MARK: - Managed object context
 
-import MusicKit
 extension NSManagedObjectContext {
 	final func debug_print(referencing: [MusicItemID: MKSection]) {
 		fetch_please(ZZZCollection.fetch_request_sorted()).forEach { collection in

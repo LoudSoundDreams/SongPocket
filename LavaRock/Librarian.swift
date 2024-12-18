@@ -57,10 +57,10 @@ final class LRSong {
 		parent.lrSongs.append(lrSong_new)
 	}
 	
-	static func load() {
+	static func save() {
 		// TO DO
 	}
-	static func save() {
+	static func load() {
 		// TO DO
 	}
 	

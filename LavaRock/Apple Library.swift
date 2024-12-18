@@ -86,9 +86,7 @@ extension AppleLibrary {
 	@objc private func merge_changes() {
 		Task {
 #if targetEnvironment(simulator)
-			await merge_from_Apple_Music(
-				musicKit: [],
-				mediaPlayer: Array(Sim_MusicLibrary.shared.sim_songs.values))
+			merge_from_MediaPlayer(Array(Sim_MusicLibrary.shared.sim_songs.values))
 #else
 			guard let mediaItems_fresh = MPMediaQuery.songs().items else { return }
 			
@@ -116,9 +114,9 @@ extension AppleLibrary {
 			mkSections = sections_union
 			mkSongs = songs_union
 			
-			await merge_from_Apple_Music(
-				musicKit: array_sections_fresh,
-				mediaPlayer: mediaItems_fresh)
+			is_merging = true
+			merge_from_MediaPlayer(mediaItems_fresh)
+			is_merging = false
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
