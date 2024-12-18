@@ -41,42 +41,42 @@ extension AppleLibrary {
 			_disc_count: 1
 		)
 #else
-		guard let mkAlbum = mkSection(mpid: mpid)
+		guard let mkAlbum = mkSection_cached(mpid: mpid)
 		else { return nil }
-		let mkSongs = mkAlbum.items
 		return InfoAlbum(
 			_title: mkAlbum.title,
 			_artist: mkAlbum.artistName,
 			_date_released: mkAlbum.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
-			_disc_count: mkSongs.reduce(into: 1) { highest, mkSong in // Bad time complexity
+			_disc_count: mkAlbum.items.reduce(into: 1) { // Bad time complexity
+				highest, mkSong in
 				if let disc = mkSong.discNumber, disc > highest { highest = disc }
 			}
 		)
 #endif
 	}
-	func mkSection(mpid: MPIDAlbum) -> MKSection? {
+	func mkSection_cached(mpid: MPIDAlbum) -> MKSection? {
 		return mkSections[MusicItemID(String(mpid))]
 	}
-	func mkSong(mpid: MPIDSong) async -> MKSong? {
-		let mkID = MusicItemID(String(mpid))
-		if let cached = mkSongs[mkID] { return cached }
+	func mkSong_cached_or_fetched(mpid: MPIDSong) async -> MKSong? {
+		let mkid = MusicItemID(String(mpid))
+		if let cached = mkSongs[mkid] { return cached }
 		
 		await cache_mkSong(mpid: mpid)
 		
-		return mkSongs[mkID]
+		return mkSongs[mkid]
 	}
 	func cache_mkSong(mpid: MPIDSong) async { // Slow; 11ms in 2024.
-		let mkID = MusicItemID(String(mpid))
+		let mkid = MusicItemID(String(mpid))
 		
 		var request = MusicLibraryRequest<MKSong>()
-		request.filter(matching: \.id, equalTo: mkID)
+		request.filter(matching: \.id, equalTo: mkid)
 		guard
 			let response = try? await request.response(),
 			response.items.count == 1,
 			let mkSong = response.items.first
 		else { return }
 		
-		mkSongs[mkID] = mkSong
+		mkSongs[mkid] = mkSong
 	}
 	static func open_Apple_Music() {
 		guard let url = URL(string: "music://") else { return }

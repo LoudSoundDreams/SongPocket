@@ -100,7 +100,7 @@ import MusicKit
 	let dim_limit: CGFloat
 	
 	private var artwork: MusicKit.Artwork? {
-		return AppleLibrary.shared.mkSection(mpid: id_album)?.artwork
+		return AppleLibrary.shared.mkSection_cached(mpid: id_album)?.artwork
 	}
 	var body: some View {
 		ZStack {

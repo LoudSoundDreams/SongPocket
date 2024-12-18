@@ -153,7 +153,7 @@ extension ZZZSong {
 // MARK: - Managed object context
 
 extension NSManagedObjectContext {
-	final func debug_print(referencing: [MusicItemID: MKSection]) {
+	final func debug_Print(referencing: [MusicItemID: MKSection]) {
 		fetch_please(ZZZCollection.fetch_request_sorted()).forEach { collection in
 			Print(collection.index, collection.title ?? "")
 			

@@ -26,14 +26,14 @@ import Combine
 		let to_play: [MKSong] = await {
 			var result: [MKSong] = []
 			for mpidSong in to_play {
-				guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
+				guard let mkSong = await AppleLibrary.shared.mkSong_cached_or_fetched(mpid: mpidSong) else { continue }
 				result.append(mkSong)
 			}
 			return result
 		}()
 		let start: MKSong? = await {
 			guard let id_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-			return await AppleLibrary.shared.mkSong(mpid: id_start)
+			return await AppleLibrary.shared.mkSong_cached_or_fetched(mpid: id_start)
 		}()
 		
 		queue = Queue(for: to_play, startingAt: start) // Slow.
@@ -46,7 +46,7 @@ import Combine
 		let to_append: [MKSong] = await {
 			var result: [MKSong] = []
 			for mpidSong in to_append {
-				guard let mkSong = await AppleLibrary.shared.mkSong(mpid: mpidSong) else { continue }
+				guard let mkSong = await AppleLibrary.shared.mkSong_cached_or_fetched(mpid: mpidSong) else { continue }
 				result.append(mkSong)
 			}
 			return result
@@ -104,7 +104,7 @@ import Combine
 
 @MainActor @Observable final class PlayerState {
 	@ObservationIgnored static let shared = PlayerState()
-	var signal = false { didSet {
+	var signal = false { didSet { // Value is meaningless; we’re using this to tell SwiftUI to redraw views. As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.
 		Task { // We’re responding to `objectWillChange` events, which aren’t what we actually want. This might wait for the next turn of the run loop, when the value might actually have changed.
 			NotificationCenter.default.post(name: Self.musicKit, object: nil)
 		}

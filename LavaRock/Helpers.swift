@@ -3,11 +3,12 @@ import UIKit
 
 struct Print {
 	@discardableResult init(_ items: Any...) {
+		let prefix = "__"
 		guard !items.isEmpty else {
-			print("__")
+			print(prefix)
 			return
 		}
-		print("__\(items)")
+		print(prefix, items)
 	}
 }
 
@@ -86,6 +87,14 @@ extension String {
 			case .orderedAscending: return true
 			case .orderedSame: return true
 			case .orderedDescending: return false
+		}
+	}
+}
+
+extension Dictionary {
+	func debug_Print() {
+		forEach { (key, value) in
+			Print("\(key) → \(value)")
 		}
 	}
 }

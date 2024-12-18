@@ -64,7 +64,7 @@ final class LRSong {
 		// TO DO
 	}
 	
-	static func debug_print() {
+	static func debug_Print() {
 		Print()
 		guard let the_lrCrate else {
 			Print("nil crate")
