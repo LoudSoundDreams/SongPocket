@@ -270,7 +270,7 @@ import MusicKit
 						_disc: 1,
 						_track: sim_song.track_number_on_disk)
 #else
-					guard let mkSong = apple_lib.mkSongs[MusicItemID(String(id_song))] else {
+					guard let mkSong = apple_lib.mkSongs_cache[MusicItemID(String(id_song))] else {
 						Task { await apple_lib.cache_mkSong(mpid: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
 						// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
 						return nil

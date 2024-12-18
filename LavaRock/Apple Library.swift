@@ -10,7 +10,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
 @MainActor @Observable final class AppleLibrary {
 	private(set) var mkSections: [MusicItemID: MKSection] = [:]
-	private(set) var mkSongs: [MusicItemID: MKSong] = [:]
+	private(set) var mkSongs_cache: [MusicItemID: MKSong] = [:]
 	var is_merging = false { didSet {
 		if !is_merging {
 			NotificationCenter.default.post(name: Self.did_merge, object: nil)
@@ -59,11 +59,11 @@ extension AppleLibrary {
 	}
 	func mkSong_cached_or_fetched(mpid: MPIDSong) async -> MKSong? {
 		let mkid = MusicItemID(String(mpid))
-		if let cached = mkSongs[mkid] { return cached }
+		if let cached = mkSongs_cache[mkid] { return cached }
 		
 		await cache_mkSong(mpid: mpid)
 		
-		return mkSongs[mkid]
+		return mkSongs_cache[mkid]
 	}
 	func cache_mkSong(mpid: MPIDSong) async { // Slow; 11ms in 2024.
 		let mkid = MusicItemID(String(mpid))
@@ -76,7 +76,7 @@ extension AppleLibrary {
 			let mkSong = response.items.first
 		else { return }
 		
-		mkSongs[mkid] = mkSong
+		mkSongs_cache[mkid] = mkSong
 	}
 	static func open_Apple_Music() {
 		guard let url = URL(string: "music://") else { return }
@@ -102,17 +102,8 @@ extension AppleLibrary {
 			}()
 			let sections_union = mkSections.merging(sections_fresh) { old, new in new }
 			
-			// 12,000 songs takes 37ms in 2024.
-			let songs_fresh: [MusicItemID: MKSong] = {
-				let songs_all = sections_fresh.values.flatMap { $0.items }
-				let tuples = songs_all.map { ($0.id, $0) }
-				return Dictionary(tuples) { former, latter in latter } // As of iOS 18 developer beta 7, I’ve seen a library where multiple pairs of MusicKit `Song`s had the same `MusicItemID`; they also had the same title, album title, and song artist.
-			}()
-			let songs_union = mkSongs.merging(songs_fresh) { old, new in new }
-			
 			// Show new data immediately…
 			mkSections = sections_union
-			mkSongs = songs_union
 			
 			is_merging = true
 			merge_from_MediaPlayer(mediaItems_fresh)
@@ -121,7 +112,6 @@ extension AppleLibrary {
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
 			mkSections = sections_fresh
-			mkSongs = songs_fresh
 #endif
 		}
 	}
