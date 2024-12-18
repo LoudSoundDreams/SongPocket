@@ -46,7 +46,7 @@ enum Disk {
 	
 	private static let path_folder = URL.applicationSupportDirectory.appending(path: "v1/")
 	private static let step_crates = "crates"
-	static let signposter = OSSignposter(subsystem: "persistence", category: "disk")
+	private static let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 }
 
 struct Parser {

@@ -20,12 +20,12 @@ import Combine
 	}
 	
 	final func play_now(
-		_ to_play: [MPIDSong],
+		_ ids_to_play: [MPIDSong],
 		starting_at id_start: MPIDSong? = nil
 	) async {
-		let to_play: [MKSong] = await {
+		let mkSongs_to_play: [MKSong] = await {
 			var result: [MKSong] = []
-			for mpidSong in to_play {
+			for mpidSong in ids_to_play {
 				guard let mkSong = await AppleLibrary.shared.mkSong_cached_or_fetched(mpid: mpidSong) else { continue }
 				result.append(mkSong)
 			}
@@ -36,16 +36,16 @@ import Combine
 			return await AppleLibrary.shared.mkSong_cached_or_fetched(mpid: id_start)
 		}()
 		
-		queue = Queue(for: to_play, startingAt: start) // Slow.
+		queue = Queue(for: mkSongs_to_play, startingAt: start) // Slow.
 		guard let _ = try? await play() else { return }
 		
 		state.repeatMode = RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
-	final func play_later(_ to_append: [MPIDSong]) async {
-		let to_append: [MKSong] = await {
+	final func play_later(_ ids_to_append: [MPIDSong]) async {
+		let mkSongs_to_append: [MKSong] = await {
 			var result: [MKSong] = []
-			for mpidSong in to_append {
+			for mpidSong in ids_to_append {
 				guard let mkSong = await AppleLibrary.shared.mkSong_cached_or_fetched(mpid: mpidSong) else { continue }
 				result.append(mkSong)
 			}
@@ -53,10 +53,10 @@ import Combine
 		}()
 		
 		if queue.currentEntry == nil {
-			queue = Queue(for: to_append)
+			queue = Queue(for: mkSongs_to_append)
 			guard let _ = try? await prepareToPlay() else { return }
 		} else {
-			guard let _ = try? await queue.insert(to_append, position: .tail) else { return }
+			guard let _ = try? await queue.insert(mkSongs_to_append, position: .tail) else { return }
 		}
 		
 		let rumbler = UINotificationFeedbackGenerator()
@@ -72,7 +72,13 @@ import Combine
 			self = .playing
 #else
 			guard
-				mpidSong == MPMusicPlayerController.mpidSong_current, // I could compare MusicKit’s now-playing `Song` to this instance’s Media Player identifier, but haven’t found a simple way. We could request the MusicKit `Song` with this `MPIDSong`, but that requires `await`ing.
+				/*
+				 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
+				 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.
+				 `queue.currentEntry.item.id` doesn’t match either: “593338428”. (This stays the same each time the program runs.)
+				 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
+				 */
+				mpidSong == MPMusicPlayerController.mpidSong_current,
 				let state = _shared?.state
 			else { self = .not_playing; return }
 			switch state.playbackStatus {

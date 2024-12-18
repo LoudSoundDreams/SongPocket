@@ -146,53 +146,43 @@ enum InterfaceText {
 	static let To_Bottom = "To Bottom"
 }
 
+// MARK: UserDefaults
+
 /*
- extension UserDefaults {
- enum Key: String, CaseIterable {
- }
- }
- */
-/*
- Deprecated after version 2.7.1
- Introduced in version ?
  "hasEverImportedFromMusic"
  Values: Bool
+ Used in versions ? through 2.7.1
  
- Deprecated after version 1.13.3
- Introduced in version 1.8
  "nowPlayingIcon"
  Values: String
- Introduced in version 1.12
- • "Paw"
- • "Luxo"
- Introduced in version 1.8
+ Used in versions 1.8 through 1.13.3:
  • "Speaker"
  • "Fish"
- Deprecated after version 1.11.2:
+ Used in versions 1.12 through 1.13.3:
+ • "Paw"
+ • "Luxo"
+ Used in versions 1.8 through 1.11.2:
  • "Bird"
  • "Sailboat"
  • "Beach umbrella"
  
- Deprecated after version 1.13.3
- Introduced in version 1.0
  "accentColorName"
  Values: String
+ Used in versions 1.0 through 1.13.3
  • "Blueberry"
  • "Grape"
  • "Strawberry"
  • "Tangerine"
  • "Lime"
  
- Deprecated after version 1.13
- Introduced in version 1.6
  "appearance"
  Values: Int
+ Used in versions 1.6 through 1.13
  • `0` for “match system”
  • `1` for “always light”
  • `2` for “always dark”
  
- Deprecated after version 1.7
- Introduced in version ?
  "shouldExplainQueueAction"
  Values: Bool
+ Used in versions ? through 1.7
  */
