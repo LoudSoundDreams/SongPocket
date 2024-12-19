@@ -267,12 +267,15 @@ extension NSManagedObjectContext {
 		guard let zzzCollection = fetch_collection() else { return }
 		
 		// TO DO: Don’t use the live `Librarian` for this.
+		let _ = zzzCollection
+		/*
 		zzzCollection.albums(sorted: true).forEach { zzzAlbum in
 			let lrAlbum = Librarian.append_lrAlbum(mpid: zzzAlbum.albumPersistentID)
 			zzzAlbum.songs(sorted: true).forEach { zzzSong in
 				Librarian.append_lrSong(mpid: zzzSong.persistentID, in: lrAlbum)
 			}
 		}
+		*/
 		
 		Librarian.save() // This makes `Librarian` save and reload the same library items, but lets it always use the same code to load during startup, regardless of whether we ran this migration.
 		ZZZDatabase.destroy()

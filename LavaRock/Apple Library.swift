@@ -102,6 +102,7 @@ extension AppleLibrary {
 			is_merging = true
 			__merge_MediaPlayer_items(__fresh_mpSongs)
 			Librarian.merge_MediaPlayer_items(fresh_mpAlbums)
+			Librarian.save()
 			is_merging = false
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.

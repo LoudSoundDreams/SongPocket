@@ -11,7 +11,9 @@ import MusicKit
 			defaults.removeObject(forKey: key_existing)
 		}
 		
-		ZZZDatabase.viewContext.migrate_to_single_collection() // Run this before any UI code, so our UI can assume an already-migrated database.
+		// Migrate persistent data, then show persistent data, then update persistent data, in that order.
+		// It’s simpler to migrate before running any UI code, so our UI can assume already-migrated data. But slow migrations ought to show UI while in progress.
+		ZZZDatabase.viewContext.migrate_to_single_collection()
 	}
 	var body: some Scene {
 		WindowGroup {
