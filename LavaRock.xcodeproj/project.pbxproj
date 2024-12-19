@@ -31,6 +31,7 @@
 		07FB52CB2813909400CCCBA5 /* Sorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FB52CA2813909400CCCBA5 /* Sorting.swift */; };
 		07FF080128652A4C00EE4FD4 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* Sort.swift */; };
 		150021212D0FAFCB0089B5E2 /* Apple Library +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150021202D0FAFCA0089B5E2 /* Apple Library +.swift */; };
+		1500E98D2D13A9BB00CDF5E6 /* Librarian +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500E98C2D13A9B600CDF5E6 /* Librarian +.swift */; };
 		15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15048E612CF0FBA3005DC698 /* Subsubviews.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		07FB52CA2813909400CCCBA5 /* Sorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sorting.swift; sourceTree = "<group>"; };
 		07FF080028652A4C00EE4FD4 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		150021202D0FAFCA0089B5E2 /* Apple Library +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Apple Library +.swift"; sourceTree = "<group>"; };
+		1500E98C2D13A9B600CDF5E6 /* Librarian +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Librarian +.swift"; sourceTree = "<group>"; };
 		15048E612CF0FBA3005DC698 /* Subsubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subsubviews.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,6 +145,7 @@
 				07755A57294821860056E90C /* Subviews.swift */,
 				15048E612CF0FBA3005DC698 /* Subsubviews.swift */,
 				071B30932C88CD3400239BF3 /* Librarian.swift */,
+				1500E98C2D13A9B600CDF5E6 /* Librarian +.swift */,
 				079B2C9424E227BF00A949FA /* Apple Library.swift */,
 				070056902C8275C0006F1069 /* Disk.swift */,
 				150021222D0FB1D20089B5E2 /* In Progress */,
@@ -335,6 +338,7 @@
 				07DF65D227766C95003B2EA3 /* Metadata.swift in Sources */,
 				150021212D0FAFCB0089B5E2 /* Apple Library +.swift in Sources */,
 				076830C524B42E3F0033E3CC /* LibraryTVC.swift in Sources */,
+				1500E98D2D13A9BB00CDF5E6 /* Librarian +.swift in Sources */,
 				07E0BBFB276567F70010117E /* Core Data.swift in Sources */,
 				076830C824B42E400033E3CC /* AlbumsTVC.swift in Sources */,
 				07FB52CB2813909400CCCBA5 /* Sorting.swift in Sources */,

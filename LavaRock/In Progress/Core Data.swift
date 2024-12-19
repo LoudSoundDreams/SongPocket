@@ -266,6 +266,7 @@ extension NSManagedObjectContext {
 		// Exit early if there’s nothing to migrate. The rest of the app must handle empty persistent storage anyway.
 		guard let zzzCollection = fetch_collection() else { return }
 		
+		// TO DO: Don’t use the live `Librarian` for this.
 		zzzCollection.albums(sorted: true).forEach { zzzAlbum in
 			let lrAlbum = Librarian.append_lrAlbum(mpid: zzzAlbum.albumPersistentID)
 			zzzAlbum.songs(sorted: true).forEach { zzzSong in
