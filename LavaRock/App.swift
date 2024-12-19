@@ -11,9 +11,13 @@ import MusicKit
 			defaults.removeObject(forKey: key_existing)
 		}
 		
-		// Migrate persistent data, then show persistent data, then update persistent data, in that order.
-		// It’s simpler to migrate before running any UI code, so our UI can assume already-migrated data. But slow migrations ought to show UI while in progress.
+		// Migrate persistent data (1), then show persistent data (2), then update persistent data (3), in that order.
+		
+		// (1) It’s simpler to migrate before running any UI code, so our UI can assume already-migrated data. But slow migrations ought to show UI while in progress.
 		ZZZDatabase.viewContext.migrate_to_single_collection()
+		ZZZDatabase.viewContext.migrate_to_disk()
+		
+		Librarian.load() // (2)
 	}
 	var body: some Scene {
 		WindowGroup {
@@ -22,11 +26,8 @@ import MusicKit
 			VCRMain()
 				.ignoresSafeArea()
 				.task {
-					ZZZDatabase.viewContext.migrate_to_disk()
-					Librarian.load()
-					
 					guard MusicAuthorization.currentStatus == .authorized else { return }
-					Self.integrate_Apple_Music()
+					Self.integrate_Apple_Music() // (3)
 				}
 		}
 	}

@@ -6,15 +6,17 @@ extension Librarian {
 	static func merge_MediaPlayer_items(
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
 	) {
-		// For each album in the user’s Apple Music library, determine whether we already have a corresponding `LRAlbum` tracking its ID and position.
-		
-		// Insert unfamiliar albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger. (Determine “date created” using the earliest “date added to library” among songs in the album.)
-		
-		// When modifying existing albums (by adding and removing songs), maintain the order of existing items.
-		// When adding songs to an existing album: if the existing songs are in default order, maintain default order after adding songs. Otherwise, insert them on top, most-recently-added on top.
-		
-		// Removing songs can change whether the remaining songs are in default order; removing an album means its ID becomes unfamiliar. So procrastinate on those operations.
-		// Remove `LRAlbum`s and `LRSong`s that now lack counterparts in the Apple Music library; that should automatically leave no empty `LRAlbum`s. Remove empty `LRCrate`s.
+		/*
+		 For each album in the user’s Apple Music library, determine whether we already have a corresponding `LRAlbum` tracking its ID and position.
+		 
+		 Insert unfamiliar albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger. (Determine “date created” using the earliest “date added to library” among songs in the album.)
+		 
+		 When modifying existing albums (by adding and removing songs), maintain the order of existing items.
+		 When adding songs to an existing album: if the existing songs are in default order, maintain default order after adding songs. Otherwise, insert them on top, most-recently-added on top.
+		 
+		 Removing songs can change whether the remaining songs are in default order; removing an album makes its ID unfamiliar. So procrastinate on those operations.
+		 Remove `LRAlbum`s and `LRSong`s that now lack counterparts in the Apple Music library. Remove empty `LRAlbum`s and `LRCrate`s.
+		 */
 		
 		// TO DO
 		if let the_lrCrate = the_lrCrate {
