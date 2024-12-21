@@ -1,5 +1,6 @@
 // 2024-12-18
 
+import MusicKit
 import MediaPlayer
 
 extension Librarian {
@@ -23,8 +24,28 @@ extension Librarian {
 			remove_lrCrate(the_lrCrate)
 		}
 		
+		// Use MediaPlayer for album and song IDs.
+		// Use MusicKit for all other metadata. `AppleLibrary.shared.mkSections_cache` should be ready by now.
+		
 		let mpAlbums_by_recently_created = mpAlbums_unsorted.sorted { left, right in
-			left.items.count > right.items.count
+			guard
+				let rep_right = right.representativeItem,
+				let info_right = AppleLibrary.shared.albumInfo(mpid: MPIDAlbum(rep_right.albumPersistentID))
+			else { return true }
+			guard
+				let rep_left = left.representativeItem,
+				let info_left = AppleLibrary.shared.albumInfo(mpid: MPIDAlbum(rep_left.albumPersistentID))
+			else { return false }
+			
+			let date_left: Date? = info_left._date_first_added
+			let date_right: Date? = info_right._date_first_added
+			
+			guard date_left != date_right else {
+				return info_left._title.precedes_in_Finder(info_right._title)
+			}
+			guard let date_right else { return true }
+			guard let date_left else { return false }
+			return date_left > date_right
 		}
 		mpAlbums_by_recently_created.forEach { mpAlbum in
 			Print()
