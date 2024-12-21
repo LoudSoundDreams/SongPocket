@@ -187,7 +187,7 @@ extension AppleLibrary {
 		if let album_existing = albums_existing[id_album] {
 			// …then add the `Song`s to that `Album`.
 			let is_in_default_order: Bool = {
-				let infos_existing: [some InfoSong] = album_existing.songs(sorted: true).compactMap { ZZZSong.InfoSong(MPID: $0.persistentID) }
+				let infos_existing: [some InfoSong] = album_existing.songs(sorted: true).compactMap { ZZZSong.infoSong(MPID: $0.persistentID) }
 				return infos_existing.all_neighbors_satisfy {
 					SongOrder.__precedes_numerically(strict: true, $0, $1)
 				}

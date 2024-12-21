@@ -51,12 +51,8 @@ extension ZZZAlbum {
 }
 
 extension ZZZSong {
-	@MainActor static func InfoSong(MPID: MPIDSong) -> (some InfoSong)? {
-#if targetEnvironment(simulator)
-		return Sim_MusicLibrary.shared.sim_songs[MPID]
-#else
+	@MainActor static func infoSong(MPID: MPIDSong) -> (some InfoSong)? {
 		return mpMediaItem(id: MPID)
-#endif
 	}
 	private static func mpMediaItem(id: MPIDSong) -> MPMediaItem? {
 		let query_songs = MPMediaQuery.songs()
@@ -105,9 +101,9 @@ struct DemoAlbum {
 struct DemoSong {
 	let title: String
 	let artist: String
-	init(_ title: String, artist: String? = nil) {
+	init(_ title: String, artist: String = "") {
 		self.title = title
-		self.artist = artist ?? ""
+		self.artist = artist
 	}
 }
 private extension Date {
