@@ -1,10 +1,5 @@
 // 2021-12-24
 
-import MediaPlayer
-
-typealias MPIDAlbum = Int64
-typealias MPIDSong = Int64
-
 struct InfoAlbum {
 	let _title: String
 	let _artist: String
@@ -18,41 +13,6 @@ struct SongInfo {
 	let _title: String
 	let _artist: String
 }
-
-protocol InfoSong {
-	var id_album: MPIDAlbum { get }
-	var id_song: MPIDSong { get }
-	
-	var disc_number_on_disk: Int { get }
-	var track_number_on_disk: Int { get }
-	var title_on_disk: String? { get }
-	var date_added_on_disk: Date { get }
-}
-extension ZZZSong {
-	@MainActor static func infoSong(MPID: MPIDSong) -> (some InfoSong)? {
-		return mpMediaItem(id: MPID)
-	}
-	private static func mpMediaItem(id: MPIDSong) -> MPMediaItem? {
-		let query_songs = MPMediaQuery.songs()
-		query_songs.addFilterPredicate(MPMediaPropertyPredicate(
-			value: id,
-			forProperty: MPMediaItemPropertyPersistentID))
-		guard let items = query_songs.items, items.count == 1 else { return nil }
-		return items.first
-	}
-}
-extension MPMediaItem: InfoSong {
-	final var id_album: MPIDAlbum { MPIDAlbum(bitPattern: albumPersistentID) }
-	final var id_song: MPIDSong { MPIDSong(bitPattern: persistentID) }
-	
-	// Media Player reports unknown values as…
-	final var disc_number_on_disk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
-	final var track_number_on_disk: Int { albumTrackNumber }
-	final var title_on_disk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
-	final var date_added_on_disk: Date { dateAdded }
-}
-
-// MARK: Simulator
 
 #if targetEnvironment(simulator)
 @MainActor final class Sim_MusicLibrary {
@@ -108,3 +68,37 @@ struct DemoSong {
 	}
 }
 #endif
+
+import MediaPlayer
+typealias MPIDAlbum = Int64
+typealias MPIDSong = Int64
+protocol InfoSong {
+	var id_album: MPIDAlbum { get }
+	var id_song: MPIDSong { get }
+	var disc_number_on_disk: Int { get }
+	var track_number_on_disk: Int { get }
+	var title_on_disk: String? { get }
+	var date_added_on_disk: Date { get }
+}
+extension ZZZSong {
+	@MainActor static func infoSong(MPID: MPIDSong) -> (some InfoSong)? {
+		return mpMediaItem(id: MPID)
+	}
+	private static func mpMediaItem(id: MPIDSong) -> MPMediaItem? {
+		let query_songs = MPMediaQuery.songs()
+		query_songs.addFilterPredicate(MPMediaPropertyPredicate(
+			value: id,
+			forProperty: MPMediaItemPropertyPersistentID))
+		guard let items = query_songs.items, items.count == 1 else { return nil }
+		return items.first
+	}
+}
+extension MPMediaItem: InfoSong {
+	final var id_album: MPIDAlbum { MPIDAlbum(bitPattern: albumPersistentID) }
+	final var id_song: MPIDSong { MPIDSong(bitPattern: persistentID) }
+	// Media Player reports unknown values as…
+	final var disc_number_on_disk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
+	final var track_number_on_disk: Int { albumTrackNumber }
+	final var title_on_disk: String? { title } // …we don’t know, because Apple Music for Mac as of version 1.1.5.74 doesn’t allow blank song titles. But that means we shouldn’t need to move unknown song titles to the end.
+	final var date_added_on_disk: Date { dateAdded }
+}
