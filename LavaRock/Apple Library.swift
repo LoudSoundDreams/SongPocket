@@ -7,7 +7,7 @@ typealias MKSong = MusicKit.Song
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 
 @MainActor @Observable final class AppleLibrary {
-	private(set) var mkSections: [MusicItemID: MKSection] = [:]
+	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs_cache: [MPIDSong: MKSong] = [:]
 	private(set) var is_merging = false { didSet {
 		if !is_merging {
@@ -28,7 +28,7 @@ extension AppleLibrary {
 	}
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
 	func infoAlbum(mpid: MPIDAlbum) -> InfoAlbum? {
-		guard let mkAlbum = mkSections[MusicItemID(String(mpid))] else { return nil }
+		guard let mkAlbum = mkSections_cache[MusicItemID(String(mpid))] else { return nil }
 		let mkSongs = mkAlbum.items
 		return InfoAlbum(
 			_title: mkAlbum.title,
@@ -97,10 +97,10 @@ extension AppleLibrary {
 				let tuples = fresh_mkSections.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let union_mkSections_dict = mkSections.merging(fresh_mkSections_dict) { old, new in new }
+			let union_mkSections_dict = mkSections_cache.merging(fresh_mkSections_dict) { old, new in new }
 			
 			// Show new data immediately…
-			mkSections = union_mkSections_dict
+			mkSections_cache = union_mkSections_dict
 			
 			is_merging = true
 			__merge_MediaPlayer_items(__fresh_mpSongs)
@@ -110,7 +110,7 @@ extension AppleLibrary {
 			
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
-			mkSections = fresh_mkSections_dict
+			mkSections_cache = fresh_mkSections_dict
 		}
 	}
 }
