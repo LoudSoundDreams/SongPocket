@@ -10,7 +10,7 @@
 		070056912C8275C0006F1069 /* Disk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070056902C8275C0006F1069 /* Disk.swift */; };
 		071A0B9E277E76510017F76D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* App.swift */; };
 		071B30942C88CD3400239BF3 /* Librarian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071B30932C88CD3400239BF3 /* Librarian.swift */; };
-		075FC9042B46765D00219146 /* Sample Artwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Sample Artwork.xcassets */; };
+		075FC9042B46765D00219146 /* Demo.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Demo.xcassets */; };
 		0768309324B42DEC0033E3CC /* ZZZContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* ZZZContainer.xcdatamodeld */; };
 		076830AE24B42DEF0033E3CC /* LavaRockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */; };
 		076830C824B42E400033E3CC /* AlbumTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BE24B42E3E0033E3CC /* AlbumTable.swift */; };
@@ -57,7 +57,7 @@
 		071B30932C88CD3400239BF3 /* Librarian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Librarian.swift; sourceTree = "<group>"; };
 		071B30952C88CDDE00239BF3 /* LavaRock v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LavaRock v2.xcdatamodel"; sourceTree = "<group>"; };
 		073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		075FC9032B46765D00219146 /* Sample Artwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Sample Artwork.xcassets"; sourceTree = "<group>"; };
+		075FC9032B46765D00219146 /* Demo.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Demo.xcassets; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0768309224B42DEC0033E3CC /* ZZZContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ZZZContainer.xcdatamodel; sourceTree = "<group>"; };
 		0768309924B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 		075FC9052B4677D800219146 /* Dev Assets */ = {
 			isa = PBXGroup;
 			children = (
-				075FC9032B46765D00219146 /* Sample Artwork.xcassets */,
+				075FC9032B46765D00219146 /* Demo.xcassets */,
 			);
 			path = "Dev Assets";
 			sourceTree = "<group>";
@@ -286,7 +286,7 @@
 			files = (
 				07A8786B2BAE2A2900717BA7 /* PrivacyInfo.xcprivacy in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
-				075FC9042B46765D00219146 /* Sample Artwork.xcassets in Resources */,
+				075FC9042B46765D00219146 /* Demo.xcassets in Resources */,
 				07934CFA27CDBEB0002B2444 /* AlbumTable.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
