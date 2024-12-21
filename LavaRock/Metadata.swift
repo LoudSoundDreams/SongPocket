@@ -1,11 +1,11 @@
 // 2021-12-24
 
-struct InfoAlbum {
+struct AlbumInfo {
 	let _title: String
 	let _artist: String
 	let _date_first_added: Date?
 	let _date_released: Date?
-	let _disc_count: Int
+	let _num_discs: Int
 }
 struct SongInfo {
 	let _disc: Int?
@@ -16,12 +16,12 @@ struct SongInfo {
 
 #if targetEnvironment(simulator)
 @MainActor final class Sim_MusicLibrary {
-	private static let demo_albums: [DemoAlbum] = [
+	private static let demoAlbums: [DemoAlbum] = [
 		DemoAlbum(
 			title: "Hillside",
 			artist: "Wanderer",
-			release_date: .strategy(iso8601_10char: "2024-05-31"),
-			art_file_name: "field",
+			date_released: .strategy(iso8601_10char: "2024-05-31"),
+			image_file: "field",
 			tracks: [
 				.init("Magic"),
 				.init("Robot"),
@@ -30,16 +30,16 @@ struct SongInfo {
 		DemoAlbum(
 			title: "Dawn",
 			artist: "Wanderer",
-			release_date: .strategy(iso8601_10char: "2024-03-31"),
-			art_file_name: "city",
+			date_released: .strategy(iso8601_10char: "2024-03-31"),
+			image_file: "city",
 			tracks: [
 				.init("Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.", artist: "Tony Harnell"),
 			]),
 		DemoAlbum(
 			title: "Skyway",
 			artist: "Wanderer",
-			release_date: .strategy(iso8601_10char: "2024-02-29"),
-			art_file_name: "sky",
+			date_released: .strategy(iso8601_10char: "2024-02-29"),
+			image_file: "sky",
 			tracks: [
 				.init(""),
 			]),
@@ -49,8 +49,8 @@ struct SongInfo {
 struct DemoAlbum {
 	let title: String
 	let artist: String
-	let release_date: Date?
-	let art_file_name: String
+	let date_released: Date?
+	let image_file: String
 	let tracks: [DemoSong]
 }
 private extension Date {

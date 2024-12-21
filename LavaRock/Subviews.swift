@@ -146,20 +146,20 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let info_album: InfoAlbum? = apple_lib.infoAlbum(mpid: id_album)
+		let albumInfo: AlbumInfo? = apple_lib.albumInfo(mpid: id_album)
 		let title_and_input_label: String = {
-			guard let title_album = info_album?._title, title_album != ""
+			guard let title_album = albumInfo?._title, title_album != ""
 			else { return InterfaceText._tilde }
 			return title_album
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
-			if let date = info_album?._date_released {
+			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
 					.font(.caption2).monospacedDigit()
 					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
 					.accessibilitySortPriority(10)
 			}
-			if let artist_album = info_album?._artist, artist_album != "" {
+			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
 					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
@@ -261,11 +261,11 @@ import MusicKit
 						_title: mkSong.title,
 						_artist: mkSong.artistName)
 				}()
-				let infoAlbum: InfoAlbum? = apple_lib.infoAlbum(mpid: id_album)
+				let albumInfo: AlbumInfo? = apple_lib.albumInfo(mpid: id_album)
 				
-				stack_main(songInfo, infoAlbum)
+				stack_main(songInfo, albumInfo)
 				Spacer()
-				menu_select(songInfo, infoAlbum)
+				menu_select(songInfo, albumInfo)
 			}
 			.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
@@ -278,7 +278,7 @@ import MusicKit
 	}
 	@ViewBuilder private func stack_main(
 		_ songInfo: SongInfo?,
-		_ infoAlbum: InfoAlbum?
+		_ albumInfo: AlbumInfo?
 	) -> some View {
 		let title: String? = songInfo?._title
 		VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
@@ -290,7 +290,7 @@ import MusicKit
 				}())
 			if
 				let artist_song = songInfo?._artist,
-				let artist_album = infoAlbum?._artist,
+				let artist_album = albumInfo?._artist,
 				artist_song != "", artist_album != "",
 				artist_song != artist_album
 			{
@@ -345,18 +345,18 @@ import MusicKit
 	
 	private func menu_select(
 		_ songInfo: SongInfo?,
-		_ infoAlbum: InfoAlbum?
+		_ albumInfo: AlbumInfo?
 	) -> some View {
 		Menu {
 			Section({ () -> String in
-				guard let songInfo, let infoAlbum else { return "" }
+				guard let songInfo, let albumInfo else { return "" }
 				// TO DO: “Disc 2, track 3”. Include “Disc 1” if appropriate.
 				let numbers: String = {
 					let f_track: String = {
 						guard let track = songInfo._track else { return InterfaceText._octothorpe }
 						return String(track)
 					}()
-					guard infoAlbum._disc_count >= 2 else { return f_track }
+					guard albumInfo._num_discs >= 2 else { return f_track }
 					
 					let f_disc: String = {
 						guard let disc = songInfo._disc else { return InterfaceText._octothorpe }
