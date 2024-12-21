@@ -65,28 +65,6 @@ extension MPMediaItem: InfoSong {
 // MARK: Simulator
 
 #if targetEnvironment(simulator)
-struct DemoAlbum {
-	let title: String
-	let artist: String
-	let release_date: Date?
-	let art_file_name: String
-	let tracks: [DemoSong]
-}
-struct DemoSong {
-	let title: String
-	let artist: String
-	init(_ title: String, artist: String = "") {
-		self.title = title
-		self.artist = artist
-	}
-}
-private extension Date {
-	// "1984-01-24"
-	static func strategy(iso8601_10char: String) -> Self {
-		return try! Self("\(iso8601_10char)T23:59:59Z", strategy: .iso8601)
-	}
-}
-
 @MainActor final class Sim_MusicLibrary {
 	private static let demo_albums: [DemoAlbum] = [
 		DemoAlbum(
@@ -116,5 +94,27 @@ private extension Date {
 				.init(""),
 			]),
 	]
+}
+
+struct DemoAlbum {
+	let title: String
+	let artist: String
+	let release_date: Date?
+	let art_file_name: String
+	let tracks: [DemoSong]
+}
+private extension Date {
+	static func strategy(iso8601_10char: String) -> Self { // "1984-01-24"
+		return try! Self("\(iso8601_10char)T23:59:59Z", strategy: .iso8601)
+	}
+}
+
+struct DemoSong {
+	let title: String
+	let artist: String
+	init(_ title: String, artist: String = "") {
+		self.title = title
+		self.artist = artist
+	}
 }
 #endif
