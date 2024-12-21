@@ -12,7 +12,6 @@
 		071B30942C88CD3400239BF3 /* Librarian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071B30932C88CD3400239BF3 /* Librarian.swift */; };
 		075FC9042B46765D00219146 /* Demo.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Demo.xcassets */; };
 		0768309324B42DEC0033E3CC /* ZZZContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* ZZZContainer.xcdatamodeld */; };
-		076830AE24B42DEF0033E3CC /* LavaRockUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */; };
 		076830C824B42E400033E3CC /* AlbumTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BE24B42E3E0033E3CC /* AlbumTable.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		076F1C0227E66DAA00220C2B /* Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Playback.swift */; };
@@ -42,13 +41,6 @@
 			remoteGlobalIDString = 0768308424B42DEC0033E3CC;
 			remoteInfo = LavaRock;
 		};
-		076830AA24B42DEF0033E3CC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0768307D24B42DEC0033E3CC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0768308424B42DEC0033E3CC;
-			remoteInfo = LavaRock;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -63,9 +55,6 @@
 		0768309924B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0768309E24B42DEE0033E3CC /* LavaRockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LavaRockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		076830A424B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		076830A924B42DEF0033E3CC /* LavaRockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LavaRockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LavaRockUITests.swift; sourceTree = "<group>"; };
-		076830AF24B42DEF0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		076830BE24B42E3E0033E3CC /* AlbumTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumTable.swift; sourceTree = "<group>"; };
 		076830CF24B42E510033E3CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		076F1C0127E66DAA00220C2B /* Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playback.swift; sourceTree = "<group>"; };
@@ -94,13 +83,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		076830A624B42DEF0033E3CC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -117,7 +99,6 @@
 			children = (
 				0768308724B42DEC0033E3CC /* LavaRock */,
 				076830A124B42DEE0033E3CC /* LavaRockTests */,
-				076830AC24B42DEF0033E3CC /* LavaRockUITests */,
 				0768308624B42DEC0033E3CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -127,7 +108,6 @@
 			children = (
 				0768308524B42DEC0033E3CC /* LavaRock.app */,
 				0768309E24B42DEE0033E3CC /* LavaRockTests.xctest */,
-				076830A924B42DEF0033E3CC /* LavaRockUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,15 +152,6 @@
 			path = LavaRockTests;
 			sourceTree = "<group>";
 		};
-		076830AC24B42DEF0033E3CC /* LavaRockUITests */ = {
-			isa = PBXGroup;
-			children = (
-				076830AD24B42DEF0033E3CC /* LavaRockUITests.swift */,
-				076830AF24B42DEF0033E3CC /* Info.plist */,
-			);
-			path = LavaRockUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -218,24 +189,6 @@
 			productReference = 0768309E24B42DEE0033E3CC /* LavaRockTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		076830A824B42DEF0033E3CC /* LavaRockUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 076830B824B42DEF0033E3CC /* Build configuration list for PBXNativeTarget "LavaRockUITests" */;
-			buildPhases = (
-				076830A524B42DEF0033E3CC /* Sources */,
-				076830A624B42DEF0033E3CC /* Frameworks */,
-				076830A724B42DEF0033E3CC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				076830AB24B42DEF0033E3CC /* PBXTargetDependency */,
-			);
-			name = LavaRockUITests;
-			productName = LavaRockUITests;
-			productReference = 076830A924B42DEF0033E3CC /* LavaRockUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -250,10 +203,6 @@
 						CreatedOnToolsVersion = 12.0;
 					};
 					0768309D24B42DEE0033E3CC = {
-						CreatedOnToolsVersion = 12.0;
-						TestTargetID = 0768308424B42DEC0033E3CC;
-					};
-					076830A824B42DEF0033E3CC = {
 						CreatedOnToolsVersion = 12.0;
 						TestTargetID = 0768308424B42DEC0033E3CC;
 					};
@@ -274,7 +223,6 @@
 			targets = (
 				0768308424B42DEC0033E3CC /* LavaRock */,
 				0768309D24B42DEE0033E3CC /* LavaRockTests */,
-				076830A824B42DEF0033E3CC /* LavaRockUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -292,13 +240,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0768309C24B42DEE0033E3CC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		076830A724B42DEF0033E3CC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -342,14 +283,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		076830A524B42DEF0033E3CC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				076830AE24B42DEF0033E3CC /* LavaRockUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -357,11 +290,6 @@
 			isa = PBXTargetDependency;
 			target = 0768308424B42DEC0033E3CC /* LavaRock */;
 			targetProxy = 0768309F24B42DEE0033E3CC /* PBXContainerItemProxy */;
-		};
-		076830AB24B42DEF0033E3CC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0768308424B42DEC0033E3CC /* LavaRock */;
-			targetProxy = 076830AA24B42DEF0033E3CC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -594,44 +522,6 @@
 			};
 			name = Release;
 		};
-		076830B924B42DEF0033E3CC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DN5BFUM2N5;
-				INFOPLIST_FILE = LavaRockUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.loudsounddreams.LavaRockUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = LavaRock;
-			};
-			name = Debug;
-		};
-		076830BA24B42DEF0033E3CC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DN5BFUM2N5;
-				INFOPLIST_FILE = LavaRockUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.loudsounddreams.LavaRockUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = LavaRock;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -658,15 +548,6 @@
 			buildConfigurations = (
 				076830B624B42DEF0033E3CC /* Debug */,
 				076830B724B42DEF0033E3CC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		076830B824B42DEF0033E3CC /* Build configuration list for PBXNativeTarget "LavaRockUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				076830B924B42DEF0033E3CC /* Debug */,
-				076830BA24B42DEF0033E3CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
