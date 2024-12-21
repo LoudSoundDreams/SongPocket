@@ -28,7 +28,7 @@ extension AppleLibrary {
 	}
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
 	func infoAlbum(mpid: MPIDAlbum) -> InfoAlbum? {
-		guard let mkAlbum = mkSection_cached(mpid: mpid) else { return nil }
+		guard let mkAlbum = mkSections[MusicItemID(String(mpid))] else { return nil }
 		let mkSongs = mkAlbum.items
 		return InfoAlbum(
 			_title: mkAlbum.title,
@@ -56,9 +56,6 @@ extension AppleLibrary {
 				}
 			}()
 		)
-	}
-	func mkSection_cached(mpid: MPIDAlbum) -> MKSection? {
-		return mkSections[MusicItemID(String(mpid))]
 	}
 	func mkSong_cached_or_fetched(mpid: MPIDSong) async -> MKSong? {
 		if let cached = mkSongs_cache[mpid] { return cached }
