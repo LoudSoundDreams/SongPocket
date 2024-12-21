@@ -1,7 +1,6 @@
 // 2020-08-22
 
 import CoreData
-import MusicKit
 
 enum ZZZDatabase {
 	@MainActor static let viewContext = container.viewContext
@@ -43,23 +42,6 @@ enum ZZZDatabase {
 // MARK: - Managed object context
 
 extension NSManagedObjectContext {
-	final func debug_Print(
-		referencing_mkSections_by_musicItemID mkSections: [MusicItemID: MKSection]
-	) {
-		fetch_please(ZZZCollection.fetch_request_sorted()).forEach { collection in
-			Print(collection.index, collection.title ?? "")
-			
-			collection.albums(sorted: true).forEach { album in
-				let mkSection: MKSection? = mkSections[MusicItemID(String(album.albumPersistentID))]
-				Print(" ", album.index, album.albumPersistentID, mkSection?.title ?? "")
-				
-				album.songs(sorted: true).forEach { song in
-					Print("   ", song.index, song.persistentID)
-				}
-			}
-		}
-	}
-	
 	final func fetch_collection() -> ZZZCollection? {
 		return fetch_please(ZZZCollection.fetch_request_sorted()).first
 	}
