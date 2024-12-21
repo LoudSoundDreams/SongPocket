@@ -12,12 +12,13 @@ struct InfoAlbum {
 	let _date_released: Date?
 	let _disc_count: Int
 }
-struct InfoSong__ {
-	let _title: String
-	let _artist: String
+struct SongInfo {
 	let _disc: Int?
 	let _track: Int?
+	let _title: String
+	let _artist: String
 }
+
 protocol InfoSong {
 	var id_album: MPIDAlbum { get }
 	var id_song: MPIDSong { get }
@@ -27,7 +28,6 @@ protocol InfoSong {
 	var title_on_disk: String? { get }
 	var date_added_on_disk: Date { get }
 }
-
 extension ZZZSong {
 	@MainActor static func infoSong(MPID: MPIDSong) -> (some InfoSong)? {
 		return mpMediaItem(id: MPID)
@@ -41,7 +41,6 @@ extension ZZZSong {
 		return items.first
 	}
 }
-
 extension MPMediaItem: InfoSong {
 	final var id_album: MPIDAlbum { MPIDAlbum(bitPattern: albumPersistentID) }
 	final var id_song: MPIDSong { MPIDSong(bitPattern: persistentID) }

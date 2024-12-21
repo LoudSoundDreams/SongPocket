@@ -249,23 +249,23 @@ import MusicKit
 	var body: some View {
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
-				let infoSong: InfoSong__? = {
+				let songInfo: SongInfo? = {
 					guard let mkSong = apple_lib.mkSongs_cache[id_song] else {
 						Task { await apple_lib.cache_mkSong(mpid: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
 						// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
 						return nil
 					}
-					return InfoSong__(
-						_title: mkSong.title,
-						_artist: mkSong.artistName,
+					return SongInfo(
 						_disc: mkSong.discNumber,
-						_track: mkSong.trackNumber)
+						_track: mkSong.trackNumber,
+						_title: mkSong.title,
+						_artist: mkSong.artistName)
 				}()
 				let infoAlbum: InfoAlbum? = apple_lib.infoAlbum(mpid: id_album)
 				
-				stack_main(infoSong, infoAlbum)
+				stack_main(songInfo, infoAlbum)
 				Spacer()
-				menu_select(infoSong, infoAlbum)
+				menu_select(songInfo, infoAlbum)
 			}
 			.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
@@ -277,10 +277,10 @@ import MusicKit
 		.onTapGesture { tapped() }
 	}
 	@ViewBuilder private func stack_main(
-		_ infoSong: InfoSong__?,
+		_ songInfo: SongInfo?,
 		_ infoAlbum: InfoAlbum?
 	) -> some View {
-		let title: String? = infoSong?._title
+		let title: String? = songInfo?._title
 		VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
@@ -289,7 +289,7 @@ import MusicKit
 					return ApplicationMusicPlayer.StatusNowPlaying(mpidSong: id_song).foreground_color
 				}())
 			if
-				let artist_song = infoSong?._artist,
+				let artist_song = songInfo?._artist,
 				let artist_album = infoAlbum?._artist,
 				artist_song != "", artist_album != "",
 				artist_song != artist_album
@@ -344,22 +344,22 @@ import MusicKit
 	}
 	
 	private func menu_select(
-		_ infoSong: InfoSong__?,
+		_ songInfo: SongInfo?,
 		_ infoAlbum: InfoAlbum?
 	) -> some View {
 		Menu {
 			Section({ () -> String in
-				guard let infoSong, let infoAlbum else { return "" }
+				guard let songInfo, let infoAlbum else { return "" }
 				// TO DO: “Disc 2, track 3”. Include “Disc 1” if appropriate.
 				let numbers: String = {
 					let f_track: String = {
-						guard let track = infoSong._track else { return InterfaceText._octothorpe }
+						guard let track = songInfo._track else { return InterfaceText._octothorpe }
 						return String(track)
 					}()
 					guard infoAlbum._disc_count >= 2 else { return f_track }
 					
 					let f_disc: String = {
-						guard let disc = infoSong._disc else { return InterfaceText._octothorpe }
+						guard let disc = songInfo._disc else { return InterfaceText._octothorpe }
 						return String(disc)
 					}()
 					return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
