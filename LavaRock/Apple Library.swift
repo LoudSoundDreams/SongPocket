@@ -29,14 +29,32 @@ extension AppleLibrary {
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
 	func infoAlbum(mpid: MPIDAlbum) -> InfoAlbum? {
 		guard let mkAlbum = mkSection_cached(mpid: mpid) else { return nil }
+		let mkSongs = mkAlbum.items
 		return InfoAlbum(
 			_title: mkAlbum.title,
 			_artist: mkAlbum.artistName,
+			_date_first_added: {
+				return mkSongs.reduce(into: nil) { // Bad time complexity
+					result, mkSong in
+					guard let date_added = mkSong.libraryAddedDate else { return }
+					guard let earliest_so_far = result else {
+						result = date_added
+						return
+					}
+					if date_added < earliest_so_far {
+						result = date_added
+					}
+				}
+			}(),
 			_date_released: mkAlbum.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
-			_disc_count: mkAlbum.items.reduce(into: 1) { // Bad time complexity
-				highest, mkSong in
-				if let disc = mkSong.discNumber, disc > highest { highest = disc }
-			}
+			_disc_count: {
+				return mkSongs.reduce(into: 1) { // Bad time complexity
+					highest_so_far, mkSong in
+					if let disc = mkSong.discNumber, disc > highest_so_far {
+						highest_so_far = disc
+					}
+				}
+			}()
 		)
 	}
 	func mkSection_cached(mpid: MPIDAlbum) -> MKSection? {

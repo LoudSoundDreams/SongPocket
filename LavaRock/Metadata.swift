@@ -8,6 +8,7 @@ typealias MPIDSong = Int64
 struct InfoAlbum {
 	let _title: String
 	let _artist: String
+	let _date_first_added: Date?
 	let _date_released: Date?
 	let _disc_count: Int
 }
@@ -25,16 +26,6 @@ protocol InfoSong {
 	var track_number_on_disk: Int { get }
 	var title_on_disk: String? { get }
 	var date_added_on_disk: Date { get }
-}
-
-extension ZZZAlbum {
-	static func date_created(_ mkSongs: any Sequence<MKSong>) -> Date? {
-		return mkSongs.reduce(into: nil) { result, mkSong in
-			guard let date_added = mkSong.libraryAddedDate else { return }
-			guard let earliest_so_far = result else { result = date_added; return }
-			if date_added < earliest_so_far { result = date_added }
-		}
-	}
 }
 
 extension ZZZSong {
