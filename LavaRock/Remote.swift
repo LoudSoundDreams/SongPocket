@@ -83,7 +83,7 @@ import MediaPlayer
 #else
 			guard
 				let id_current = MPMusicPlayerController.mpidSong_current,
-				nil != Librarian.find_lrSong(mpid: id_current)
+				nil != Librarian.lrSong_with(mpid: id_current)
 			else { return .disabled }
 			return []
 #endif

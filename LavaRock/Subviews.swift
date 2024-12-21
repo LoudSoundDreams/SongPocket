@@ -252,7 +252,6 @@ import MusicKit
 				let songInfo: SongInfo? = {
 					guard let mkSong = apple_lib.mkSongs_cache[id_song] else {
 						Task { await apple_lib.cache_mkSong(mpid: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
-						// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
 						return nil
 					}
 					return SongInfo(

@@ -30,10 +30,10 @@ final class LRSong {
 
 @MainActor struct Librarian {
 	private(set) static var the_lrCrate: LRCrate?
-	static func find_lrAlbum(mpid: MPIDAlbum) -> LRAlbum? {
+	static func lrAlbum_with(mpid: MPIDAlbum) -> LRAlbum? {
 		return lrAlbums[mpid]?.referencee
 	}
-	static func find_lrSong(mpid: MPIDSong) -> LRSong? {
+	static func lrSong_with(mpid: MPIDSong) -> LRSong? {
 		return lrSongs[mpid]?.referencee
 	}
 	

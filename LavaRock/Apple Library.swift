@@ -57,7 +57,7 @@ extension AppleLibrary {
 			}()
 		)
 	}
-	func mkSong_cached_or_fetched(mpid: MPIDSong) async -> MKSong? {
+	func mkSong_fetched(mpid: MPIDSong) async -> MKSong? {
 		if let cached = mkSongs_cache[mpid] { return cached }
 		
 		await cache_mkSong(mpid: mpid)
@@ -83,34 +83,35 @@ extension AppleLibrary {
 	@objc private func merge_changes() {
 		Task {
 			guard
-				let fresh_mpAlbums = MPMediaQuery.albums().collections,
-				let __fresh_mpSongs = MPMediaQuery.songs().items
+				let mpAlbums = MPMediaQuery.albums().collections,
+				let __mpSongs = MPMediaQuery.songs().items
 			else { return }
 			
-			let fresh_mkSections: [MKSection] = await {
+			let array_mkSections: [MKSection]? = await {
 				let request = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
-				guard let response = try? await request.response() else { return [] }
-				
-				return response.sections
+				return try? await request.response().sections
 			}()
-			let fresh_mkSections_dict: [MusicItemID: MKSection] = {
-				let tuples = fresh_mkSections.map { section in (section.id, section) }
+			guard let array_mkSections else { return }
+			
+			let fresh_mkSections: [MusicItemID: MKSection] = {
+				let tuples = array_mkSections.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let union_mkSections_dict = mkSections_cache.merging(fresh_mkSections_dict) { old, new in new }
 			
 			// Show new data immediately…
-			mkSections_cache = union_mkSections_dict
+			let union_mkSections = mkSections_cache.merging(fresh_mkSections) { old, new in new }
+			mkSections_cache = union_mkSections
 			
 			is_merging = true
-			__merge_MediaPlayer_items(__fresh_mpSongs)
-			Librarian.merge_MediaPlayer_items(fresh_mpAlbums)
+			__merge_MediaPlayer_items(__mpSongs)
+			Librarian.merge_MediaPlayer_items(mpAlbums)
 			Librarian.save()
 			is_merging = false
 			
-			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
+			// …but don’t hide deleted data before removing it from the screen anyway.
+			try? await Task.sleep(for: .seconds(3))
 			
-			mkSections_cache = fresh_mkSections_dict
+			mkSections_cache = fresh_mkSections
 		}
 	}
 }
