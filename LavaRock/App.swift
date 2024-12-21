@@ -17,21 +17,21 @@ import MusicKit
 	}
 	var body: some Scene {
 		WindowGroup {
-//			AlbumShelf()
 			VCRMain()
 				.ignoresSafeArea()
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
-					Self.integrate_Apple_Music() // (3)
+					Self.integrate_Apple_Music()
 				}
 		}
 	}
 	
 	@MainActor static func integrate_Apple_Music() {
-		AppleLibrary.shared.watch()
+		AppleLibrary.shared.watch() // (3)
 		PlayerState.shared.watch()
 	}
 }
+
 private struct VCRMain: UIViewControllerRepresentable {
 	typealias VCType = NCMain
 	func makeUIViewController(context: Context) -> VCType { NCMain.create() }

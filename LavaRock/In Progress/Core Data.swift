@@ -42,8 +42,6 @@ enum ZZZDatabase {
 	}
 }
 
-// MARK: - Managed object context
-
 extension NSManagedObjectContext {
 	final func migrate_to_single_collection() {
 		// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
@@ -52,7 +50,11 @@ extension NSManagedObjectContext {
 #endif
 		// Move all `Album`s into the first `Collection`, and give it the default title.
 		
-		let all = fetch_please(ZZZCollection.fetch_request_sorted())
+		let all: [ZZZCollection] = {
+			let request = ZZZCollection.fetchRequest()
+			request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+			return fetch_please(request)
+		}()
 		guard let top = all.first else { return }
 		
 		let rest = all.dropFirst()
@@ -126,14 +128,16 @@ extension NSManagedObjectContext {
 		// Write data to persistent storage as if the app never used Core Data previously.
 		
 		// Exit early if there’s nothing to migrate. The rest of the app must handle empty persistent storage anyway.
-		guard let zzzCollection = fetch_collection() else { return }
+		let zzzCollection: ZZZCollection? = {
+			let request = ZZZCollection.fetchRequest()
+			return fetch_please(request).first
+		}()
+		guard let zzzCollection else { return }
 		
-		let _ = zzzCollection // TO DO
+		// TO DO
+		let _ = zzzCollection
 	}
 	
-	final func fetch_collection() -> ZZZCollection? {
-		return fetch_please(ZZZCollection.fetch_request_sorted()).first
-	}
 	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		do {
@@ -145,112 +149,19 @@ extension NSManagedObjectContext {
 	}
 }
 
-// MARK: - Collection
-
 extension ZZZCollection {
-	fileprivate static func fetch_request_sorted() -> NSFetchRequest<ZZZCollection> {
-		let result = fetchRequest()
-		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		return result
-	}
-	
-	// Similar to `Album.songs`.
 	final func albums(sorted: Bool) -> [ZZZAlbum] {
 		guard let contents else { return [] }
-		
 		let unsorted = contents.map { $0 as! ZZZAlbum }
 		guard sorted else { return unsorted }
-		
 		return unsorted.sorted { $0.index < $1.index }
 	}
-	
-	/*
-	 final func promote_albums(with ids_to_promote: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_promote = my_albums.indices { ids_to_promote.contains($0.albumPersistentID) }
-	 guard let front: Int = rs_to_promote.ranges.first?.first else { return }
-	 let target: Int = (rs_to_promote.ranges.count == 1)
-	 ? max(front-1, 0)
-	 : front
-	 
-	 my_albums.moveSubranges(rs_to_promote, to: target)
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
-	 }
-	 final func demote_albums(with ids_to_demote: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_demote = my_albums.indices { ids_to_demote.contains($0.albumPersistentID) }
-	 guard let back: Int = rs_to_demote.ranges.last?.last else { return }
-	 let target: Int = (rs_to_demote.ranges.count == 1)
-	 ? min(back+1, my_albums.count-1)
-	 : back
-	 
-	 my_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
-	 }
-	 
-	 final func float_albums(with ids_to_float: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_float = my_albums.indices { ids_to_float.contains($0.albumPersistentID) }
-	 
-	 my_albums.moveSubranges(rs_to_float, to: 0)
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
-	 }
-	 final func sink_albums(with ids_to_sink: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_sink = my_albums.indices { ids_to_sink.contains($0.albumPersistentID) }
-	 
-	 my_albums.moveSubranges(rs_to_sink, to: my_albums.count)
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
-	 }
-	 */
 }
-
-// MARK: - Album
-
 extension ZZZAlbum {
-	static func fetch_request_sorted() -> NSFetchRequest<ZZZAlbum> {
-		let result = fetchRequest()
-		result.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-		return result
-	}
-	
-	// Similar to `Collection.albums`.
 	final func songs(sorted: Bool) -> [ZZZSong] {
 		guard let contents else { return [] }
-		
 		let unsorted = contents.map { $0 as! ZZZSong }
 		guard sorted else { return unsorted }
-		
 		return unsorted.sorted { $0.index < $1.index }
-	}
-	
-	convenience init?(at_beginning_of collection: ZZZCollection, mpidAlbum: MPIDAlbum) {
-		guard let context = collection.managedObjectContext else { return nil }
-		
-		collection.albums(sorted: false).forEach { $0.index += 1 }
-		
-		self.init(context: context)
-		index = 0
-		container = collection
-		albumPersistentID = mpidAlbum
-	}
-}
-
-// MARK: - Song
-
-extension ZZZSong {
-	convenience init?(at_beginning_of album: ZZZAlbum, mpidSong: MPIDSong) {
-		guard let context = album.managedObjectContext else { return nil }
-		
-		album.songs(sorted: false).forEach { $0.index += 1 }
-		
-		self.init(context: context)
-		index = 0
-		container = album
-		persistentID = mpidSong
 	}
 }

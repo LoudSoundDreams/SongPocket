@@ -1,5 +1,44 @@
 // 2024-12-15
 
+import CoreData
+
+private extension NSManagedObjectContext {
+	func __the_collection() -> ZZZCollection? {
+		let request = ZZZCollection.fetchRequest()
+		return fetch_please(request).first
+	}
+}
+private extension ZZZAlbum {
+	convenience init?(
+		__at_beginning_of collection: ZZZCollection,
+		mpidAlbum: MPIDAlbum
+	) {
+		guard let context = collection.managedObjectContext else { return nil }
+		
+		collection.albums(sorted: false).forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		index = 0
+		container = collection
+		albumPersistentID = mpidAlbum
+	}
+}
+private extension ZZZSong {
+	convenience init?(
+		__at_beginning_of album: ZZZAlbum,
+		mpidSong: MPIDSong
+	) {
+		guard let context = album.managedObjectContext else { return nil }
+		
+		album.songs(sorted: false).forEach { $0.index += 1 }
+		
+		self.init(context: context)
+		index = 0
+		container = album
+		persistentID = mpidSong
+	}
+}
+
 extension AppleLibrary {
 	func __merge_MediaPlayer_items(_ mediaItems_unsorted: [InfoSong]) {
 		// Find out which existing `Song`s we need to delete, and which we need to potentially update.
@@ -60,7 +99,9 @@ extension AppleLibrary {
 		// To merge `Album`s with the same `albumPersistentID`, we’ll move their `Song`s into one `Album`, then delete empty `Album`s.
 		// The one `Album` we’ll keep is the uppermost in the user’s custom order.
 		let topmost_unique: [MPIDAlbum: ZZZAlbum] = {
-			let albums_all = context.fetch_please(ZZZAlbum.fetch_request_sorted())
+			let request = ZZZAlbum.fetchRequest()
+			request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+			let albums_all = context.fetch_please(request)
 			let tuples = albums_all.map { ($0.albumPersistentID, $0) }
 			return Dictionary(tuples, uniquingKeysWith: { left, _ in left })
 		}()
@@ -119,7 +160,7 @@ extension AppleLibrary {
 			} else {
 				// Otherwise, create the `Album` to move the `Song` to…
 				let collection_existing = song.container!.container!
-				let album_new = ZZZAlbum(at_beginning_of: collection_existing, mpidAlbum: id_album_fresh)
+				let album_new = ZZZAlbum(__at_beginning_of: collection_existing, mpidAlbum: id_album_fresh)
 				
 				// …and then move the `Song` to that `Album`.
 				song.index = 0
@@ -195,7 +236,7 @@ extension AppleLibrary {
 			let ids_songs = infos_new.map { $0.id_song }
 			if is_in_default_order {
 				ids_songs.reversed().forEach {
-					let _ = ZZZSong(at_beginning_of: album_existing, mpidSong: $0)
+					let _ = ZZZSong(__at_beginning_of: album_existing, mpidSong: $0)
 				}
 				
 				let songs_in_album = album_existing.songs(sorted: true)
@@ -203,7 +244,7 @@ extension AppleLibrary {
 				ZZZDatabase.renumber(sorted)
 			} else {
 				ids_songs.reversed().forEach {
-					let _ = ZZZSong(at_beginning_of: album_existing, mpidSong: $0)
+					let _ = ZZZSong(__at_beginning_of: album_existing, mpidSong: $0)
 				}
 			}
 			
@@ -212,7 +253,7 @@ extension AppleLibrary {
 			// Otherwise, create the `Album` to add the `Song`s to…
 			let album_new: ZZZAlbum = {
 				let collection: ZZZCollection = {
-					if let existing = context.fetch_collection() {
+					if let existing = context.__the_collection() {
 						return existing
 					}
 					let new = ZZZCollection(context: context)
@@ -220,7 +261,7 @@ extension AppleLibrary {
 					new.title = InterfaceText._tilde
 					return new
 				}()
-				return ZZZAlbum(at_beginning_of: collection, mpidAlbum: id_album)!
+				return ZZZAlbum(__at_beginning_of: collection, mpidAlbum: id_album)!
 			}()
 			
 			// …and then add the `Song`s to that `Album`.
@@ -248,7 +289,7 @@ extension AppleLibrary {
 		
 		// Delete empty containers and reindex everything.
 		
-		guard let collection = context.fetch_collection() else { return }
+		guard let collection = context.__the_collection() else { return }
 		
 		var albums = collection.albums(sorted: true)
 		albums.indices.reversed().forEach { iAlbum in
