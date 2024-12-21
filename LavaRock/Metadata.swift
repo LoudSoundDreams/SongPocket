@@ -73,8 +73,8 @@ extension ZZZSong {
 // MARK: Apple Music
 
 extension MPMediaItem: InfoSong {
-	final var id_album: MPIDAlbum { MPIDAlbum(albumPersistentID) }
-	final var id_song: MPIDSong { MPIDSong(persistentID) }
+	final var id_album: MPIDAlbum { MPIDAlbum(bitPattern: albumPersistentID) }
+	final var id_song: MPIDSong { MPIDSong(bitPattern: persistentID) }
 	
 	// Media Player reports unknown values as…
 	final var disc_number_on_disk: Int { discNumber } // `1`, as of iOS 14.7 developer beta 5
