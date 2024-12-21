@@ -199,7 +199,7 @@ extension AppleLibrary {
 				}
 				
 				let songs_in_album = album_existing.songs(sorted: true)
-				let sorted = SongOrder.sorted_numerically(strict: true, songs_in_album)
+				let sorted = SongOrder.__sorted_numerically(strict: true, songs_in_album)
 				ZZZDatabase.renumber(sorted)
 			} else {
 				ids_songs.reversed().forEach {
