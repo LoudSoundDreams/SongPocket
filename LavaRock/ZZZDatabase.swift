@@ -17,7 +17,7 @@ enum ZZZDatabase {
 	}
 	
 	private static let container: NSPersistentContainer = {
-		let container = NSPersistentContainer(name: "LavaRock")
+		let container = NSPersistentContainer(name: "ZZZContainer")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 			container.viewContext.automaticallyMergesChangesFromParent = true
 			if let error = error as NSError? {
@@ -43,7 +43,7 @@ enum ZZZDatabase {
 }
 
 extension NSManagedObjectContext {
-	final func migrate_to_single_collection() {
+	fileprivate final func migrate_to_single_collection() {
 		// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
 #if DEBUG
 		//		mock_multicollection()
@@ -124,7 +124,7 @@ extension NSManagedObjectContext {
 	}
 #endif
 	
-	final func migrate_to_disk() {
+	fileprivate final func migrate_to_disk() {
 		// Write data to persistent storage as if the app never used Core Data previously.
 		
 		// Exit early if there’s nothing to migrate. The rest of the app must handle empty persistent storage anyway.

@@ -77,8 +77,6 @@ extension AppleLibrary {
 		update_library_items(existing_and_fresh: to_update)
 		create_library_items(infos_new: to_create)
 		clean_up_library_items(songs_to_delete: to_delete, infos_all: mediaItems_unsorted)
-		
-		context.migrate_to_disk()
 	}
 	
 	// MARK: Update
