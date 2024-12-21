@@ -3,15 +3,11 @@
 import CoreData
 
 enum ZZZDatabase {
-	@MainActor static let viewContext = container.viewContext
-	
-	static func renumber(_ items: [NSManagedObject]) {
-		items.enumerated().forEach { (index, item) in
-			item.setValue(Int64(index), forKey: "index")
-		}
-	}
-	
-	static func destroy() {
+	@MainActor static func migrate() {
+		let context = container.viewContext
+		context.migrate_to_single_collection()
+		context.migrate_to_disk()
+		
 		let coordinator = container.persistentStoreCoordinator
 		coordinator.persistentStores.forEach { store in
 			try! coordinator.destroyPersistentStore(
@@ -37,26 +33,18 @@ enum ZZZDatabase {
 		})
 		return container
 	}()
+	
+	@MainActor static let __viewContext = container.viewContext
+	static func renumber(_ items: [NSManagedObject]) {
+		items.enumerated().forEach { (index, item) in
+			item.setValue(Int64(index), forKey: "index")
+		}
+	}
 }
 
 // MARK: - Managed object context
 
 extension NSManagedObjectContext {
-	final func fetch_collection() -> ZZZCollection? {
-		return fetch_please(ZZZCollection.fetch_request_sorted()).first
-	}
-	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
-		var result: [T] = []
-		do {
-			result = try fetch(request)
-		} catch {
-			fatalError("Core Data couldn’t fetch: \(request). \(error)")
-		}
-		return result
-	}
-	
-	// MARK: Migration
-	
 	final func migrate_to_single_collection() {
 		// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
 #if DEBUG
@@ -81,6 +69,7 @@ extension NSManagedObjectContext {
 			delete(collection)
 		}
 	}
+#if DEBUG
 	private func mock_multicollection() {
 		fetch_please(ZZZSong.fetchRequest()).forEach { delete($0) }
 		fetch_please(ZZZAlbum.fetchRequest()).forEach { delete($0) }
@@ -131,16 +120,28 @@ extension NSManagedObjectContext {
 		cuatro.container = delta; cuatro.index = Int64(0)
 		cuatro.persistentID = Int64(-10000)
 	}
+#endif
 	
-	@MainActor final func migrate_to_disk() {
+	final func migrate_to_disk() {
 		// Write data to persistent storage as if the app never used Core Data previously.
 		
 		// Exit early if there’s nothing to migrate. The rest of the app must handle empty persistent storage anyway.
 		guard let zzzCollection = fetch_collection() else { return }
 		
 		let _ = zzzCollection // TO DO
-		
-		ZZZDatabase.destroy()
+	}
+	
+	final func fetch_collection() -> ZZZCollection? {
+		return fetch_please(ZZZCollection.fetch_request_sorted()).first
+	}
+	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
+		var result: [T] = []
+		do {
+			result = try fetch(request)
+		} catch {
+			fatalError("Core Data couldn’t fetch: \(request). \(error)")
+		}
+		return result
 	}
 }
 

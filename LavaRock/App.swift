@@ -12,17 +12,12 @@ import MusicKit
 		}
 		
 		// Migrate persistent data (1), then show persistent data (2), then update persistent data (3), in that order.
-		
-		// (1) It’s simpler to migrate before running any UI code, so our UI can assume already-migrated data. But slow migrations ought to show UI while in progress.
-		ZZZDatabase.viewContext.migrate_to_single_collection()
-		ZZZDatabase.viewContext.migrate_to_disk()
-		
+		ZZZDatabase.migrate() // (1) It’s simpler to migrate before running any UI code, so our UI can assume already-migrated data. But slow migrations ought to show UI while in progress.
 		Librarian.load() // (2)
 	}
 	var body: some Scene {
 		WindowGroup {
 //			AlbumShelf()
-			
 			VCRMain()
 				.ignoresSafeArea()
 				.task {

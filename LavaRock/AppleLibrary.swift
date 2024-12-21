@@ -16,7 +16,7 @@ typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 	}}
 	
 	private init() {}
-	@ObservationIgnored let context = ZZZDatabase.viewContext
+	@ObservationIgnored let context = ZZZDatabase.__viewContext
 }
 extension AppleLibrary {
 	static let shared = AppleLibrary()

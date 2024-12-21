@@ -3,7 +3,7 @@ import UIKit
 
 struct Print {
 	@discardableResult init(_ items: Any...) {
-		let prefix = "__"
+		let prefix = "___"
 		guard !items.isEmpty else {
 			print(prefix)
 			return
