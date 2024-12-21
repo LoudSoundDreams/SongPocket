@@ -66,11 +66,6 @@ import Combine
 	@MainActor enum StatusNowPlaying {
 		case not_playing, paused, playing
 		init(mpidSong: MPIDSong) {
-#if targetEnvironment(simulator)
-			guard mpidSong == Sim_MusicLibrary.shared.sim_song_current?.id_song
-			else { self = .not_playing; return }
-			self = .playing
-#else
 			guard
 				/*
 				 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
@@ -89,7 +84,6 @@ import Combine
 				@unknown default:
 					self = .paused
 			}
-#endif
 		}
 		var foreground_color: Color {
 			switch self {

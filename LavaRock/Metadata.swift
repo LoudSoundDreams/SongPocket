@@ -2,34 +2,21 @@
 
 import MediaPlayer
 
+typealias MPIDAlbum = Int64
+typealias MPIDSong = Int64
+
 struct InfoAlbum {
 	let _title: String
 	let _artist: String
 	let _date_released: Date?
 	let _disc_count: Int
 }
-#if targetEnvironment(simulator)
-struct Sim_Album {
-	let title: String
-	let artist: String
-	let date_released: Date?
-	
-	let _date_added: Date?
-	let art_file_name: String
-	let _items: [Sim_Song]
-}
-#endif
-
 struct InfoSong__ {
 	let _title: String
 	let _artist: String
 	let _disc: Int?
 	let _track: Int?
 }
-
-typealias MPIDAlbum = Int64
-typealias MPIDSong = Int64
-
 protocol InfoSong {
 	var id_album: MPIDAlbum { get }
 	var id_song: MPIDSong { get }
@@ -64,8 +51,6 @@ extension ZZZSong {
 	}
 }
 
-// MARK: Apple Music
-
 extension MPMediaItem: InfoSong {
 	final var id_album: MPIDAlbum { MPIDAlbum(bitPattern: albumPersistentID) }
 	final var id_song: MPIDSong { MPIDSong(bitPattern: persistentID) }
@@ -80,17 +65,6 @@ extension MPMediaItem: InfoSong {
 // MARK: Simulator
 
 #if targetEnvironment(simulator)
-struct Sim_Song: InfoSong {
-	let id_album: MPIDAlbum
-	let id_song: MPIDSong
-	
-	let disc_number_on_disk: Int
-	let track_number_on_disk: Int
-	let title_on_disk: String?
-	let date_added_on_disk: Date
-}
-
-// Helpers for less typing
 struct DemoAlbum {
 	let title: String
 	let artist: String
@@ -114,48 +88,6 @@ private extension Date {
 }
 
 @MainActor final class Sim_MusicLibrary {
-	static let shared = Sim_MusicLibrary()
-	let sim_albums: [MPIDAlbum: Sim_Album]
-	let sim_songs: [MPIDSong: Sim_Song]
-	let sim_song_current: Sim_Song?
-	
-	private init() {
-		var d_albums: [MPIDAlbum: Sim_Album] = [:]
-		var d_songs: [MPIDSong: Sim_Song] = [:]
-		var id_album_next: MPIDAlbum = 0
-		var id_song_next: MPIDSong = 0
-		let date_demo = Date.now
-		Self.demo_albums.forEach { demo_album in
-			defer { id_album_next += 1 }
-			let items: [Sim_Song] = demo_album.tracks.indices.map { i_in_album in
-				defer { id_song_next += 1 }
-				let demo_song = demo_album.tracks[i_in_album]
-				let result = Sim_Song(
-					id_album: id_album_next,
-					id_song: id_song_next,
-					disc_number_on_disk: 1,
-					track_number_on_disk: i_in_album + 1,
-					title_on_disk: demo_song.title,
-					date_added_on_disk: date_demo)
-				d_songs[id_song_next] = result
-				return result
-			}
-			d_albums[id_album_next] = Sim_Album(
-				title: demo_album.title,
-				artist: demo_album.artist,
-				date_released: demo_album.release_date,
-				_date_added: date_demo,
-				art_file_name: demo_album.art_file_name,
-				_items: items)
-		}
-		
-//		self.sim_albums = [:]
-//		self.sim_songs = [:]
-		
-		self.sim_albums = d_albums
-		self.sim_songs = d_songs
-		sim_song_current = sim_songs[MPIDSong(0)]
-	}
 	private static let demo_albums: [DemoAlbum] = [
 		DemoAlbum(
 			title: "Hillside",

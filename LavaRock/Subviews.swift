@@ -104,14 +104,6 @@ import MusicKit
 	}
 	var body: some View {
 		ZStack {
-#if targetEnvironment(simulator)
-			if let sim_album = Sim_MusicLibrary.shared.sim_albums[id_album] {
-				Image(sim_album.art_file_name)
-					.resizable()
-					.scaledToFit()
-					.frame(width: dim_limit, height: dim_limit)
-			}
-#else
 			if let artwork {
 				/*
 				 As of iOS 17.5.1:
@@ -131,7 +123,6 @@ import MusicKit
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
 			}
-#endif
 		}
 		.animation(nil, value: id_album) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
 	}
@@ -259,17 +250,6 @@ import MusicKit
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let infoSong: InfoSong__? = {
-#if targetEnvironment(simulator)
-					guard let sim_song = Sim_MusicLibrary.shared.sim_songs[id_song] else {
-						Task { await apple_lib.cache_mkSong(mpid: id_song) }
-						return nil
-					}
-					return InfoSong__(
-						_title: sim_song.title_on_disk ?? "",
-						_artist: "",
-						_disc: 1,
-						_track: sim_song.track_number_on_disk)
-#else
 					guard let mkSong = apple_lib.mkSongs_cache[id_song] else {
 						Task { await apple_lib.cache_mkSong(mpid: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
 						// TO DO: Prevent unnecessary redraw to nil and back to content after merging from Apple Music.
@@ -280,7 +260,6 @@ import MusicKit
 						_artist: mkSong.artistName,
 						_disc: mkSong.discNumber,
 						_track: mkSong.trackNumber)
-#endif
 				}()
 				let infoAlbum: InfoAlbum? = apple_lib.infoAlbum(mpid: id_album)
 				

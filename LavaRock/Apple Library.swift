@@ -28,14 +28,6 @@ extension AppleLibrary {
 	}
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
 	func infoAlbum(mpid: MPIDAlbum) -> InfoAlbum? {
-#if targetEnvironment(simulator)
-		guard let sim_album = Sim_MusicLibrary.shared.sim_albums[mpid] else { return nil }
-		return InfoAlbum(
-			_title: sim_album.title,
-			_artist: sim_album.artist,
-			_date_released: sim_album.date_released,
-			_disc_count: 1)
-#else
 		guard let mkAlbum = mkSection_cached(mpid: mpid) else { return nil }
 		return InfoAlbum(
 			_title: mkAlbum.title,
@@ -46,7 +38,6 @@ extension AppleLibrary {
 				if let disc = mkSong.discNumber, disc > highest { highest = disc }
 			}
 		)
-#endif
 	}
 	func mkSection_cached(mpid: MPIDAlbum) -> MKSection? {
 		return mkSections[MusicItemID(String(mpid))]
@@ -76,9 +67,6 @@ extension AppleLibrary {
 	
 	@objc private func merge_changes() {
 		Task {
-#if targetEnvironment(simulator)
-			__merge_MediaPlayer_items(Array(Sim_MusicLibrary.shared.sim_songs.values))
-#else
 			guard
 				let fresh_mpAlbums = MPMediaQuery.albums().collections,
 				let __fresh_mpSongs = MPMediaQuery.songs().items
@@ -108,7 +96,6 @@ extension AppleLibrary {
 			try? await Task.sleep(for: .seconds(3)) // …but don’t hide deleted data before removing it from the screen anyway.
 			
 			mkSections = fresh_mkSections_dict
-#endif
 		}
 	}
 }
