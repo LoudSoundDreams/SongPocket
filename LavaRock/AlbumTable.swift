@@ -218,7 +218,7 @@ extension AlbumListState {
 
 // MARK: - View controller
 
-final class AlbumsTVC: LibraryTVC {
+final class AlbumTable: LRTableViewController {
 	private let list_state = AlbumListState()
 	
 	override func viewDidLoad() {

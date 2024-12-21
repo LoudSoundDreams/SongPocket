@@ -40,7 +40,7 @@ private struct VCRMain: UIViewControllerRepresentable {
 private final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let result = Self(
-			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
+			rootViewController: UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController()!
 		)
 		let nav_bar = result.navigationBar
 		nav_bar.scrollEdgeAppearance = nav_bar.standardAppearance
