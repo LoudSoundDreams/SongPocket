@@ -42,7 +42,7 @@ final class LRSong {
 	private static var dict_albums: [MPIDAlbum: WeakRef<LRAlbum>] = [:]
 	private static var dict_songs: [MPIDSong: WeakRef<LRSong>] = [:]
 	
-	static func append_album(mpid: MPIDAlbum) -> LRAlbum {
+	static func register_album(mpid: MPIDAlbum) -> LRAlbum {
 		if the_crate == nil {
 			the_crate = LRCrate(title: InterfaceText._tilde) // TO DO: Do this explicitly, not as a side effect.
 		}
@@ -53,13 +53,13 @@ final class LRSong {
 		crate.lrAlbums.append(album_new)
 		return album_new
 	}
-	static func append_song(mpid: MPIDSong, in parent: LRAlbum) {
+	static func register_song(mpid: MPIDSong, in parent: LRAlbum) {
 		let song_new = LRSong(mpid: mpid, parent: parent)
 		dict_songs[mpid] = WeakRef(song_new)
 		parent.lrSongs.append(song_new)
 	}
 	
-	static func remove_crate(_ crate_to_remove: LRCrate) {
+	static func deregister_crate(_ crate_to_remove: LRCrate) {
 		// TO DO
 	}
 	
