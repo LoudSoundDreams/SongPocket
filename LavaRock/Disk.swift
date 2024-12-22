@@ -6,32 +6,35 @@ import os
 enum Disk {
 	static func save_crates(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
 		let _save = signposter.beginInterval("save")
-		signposter.endInterval("save", _save)
+		defer { signposter.endInterval("save", _save) }
 		
-		let filer = FileManager.default
-		try! filer.createDirectory(at: path_folder, withIntermediateDirectories: true)
+		try! FileManager.default.createDirectory(at: folder_v1, withIntermediateDirectories: true)
 		
 		let _serialize = signposter.beginInterval("serialize")
-		var string_out: String = ""
+		var stream: String = ""
 		crates.forEach {
-			string_out.append(contentsOf: "\($0.title)\(newline)")
+			stream.append(contentsOf: "\($0.title)\(newline)")
 			$0.lrAlbums.forEach { album in
-				string_out.append(contentsOf: "\(tab)\(album.mpid)\(newline)")
+				stream.append(contentsOf: "\(tab)\(album.mpid)\(newline)")
 				album.lrSongs.forEach { song in
-					string_out.append(contentsOf: "\(tab_tab)\(song.mpid)\(newline)")
+					stream.append(contentsOf: "\(tab_tab)\(song.mpid)\(newline)")
 				}
 			}
 		}
 		signposter.endInterval("serialize", _serialize)
-		let data = string_out.data(using: encoding_utf8, allowLossyConversion: false)!
-		try! data.write(to: path_folder.appending(path: step_crates), options: [.atomic, .completeFileProtection])
+		
+		let data = stream.data(using: encoding_utf8, allowLossyConversion: false)!
+		try! data.write(
+			to: file_crates,
+			options: [.atomic, .completeFileProtection])
 	}
 	
 	static func load_crates() -> [LRCrate] {
-		guard let data = try? Data(contentsOf: path_folder.appending(path: step_crates)) else {
+		guard let data = try? Data(contentsOf: file_crates) else {
 			// Maybe the file doesn’t exist.
 			return []
 		}
+		
 		guard let input: String = String(data: data, encoding: encoding_utf8) else {
 			Print("Couldn’t decode crates file.")
 			return []
@@ -44,8 +47,8 @@ enum Disk {
 	fileprivate static let tab = "\t"
 	fileprivate static let tab_tab = "\t\t"
 	
-	private static let path_folder = URL.applicationSupportDirectory.appending(path: "v1/")
-	private static let step_crates = "crates"
+	private static let folder_v1: URL = .applicationSupportDirectory.appending(path: "v1/")
+	private static let file_crates: URL = folder_v1.appending(path: "crates")
 	private static let signposter = OSSignposter(subsystem: "persistence", category: "disk")
 }
 

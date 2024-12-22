@@ -43,21 +43,14 @@ extension Librarian {
 			return date_left > date_right
 		}
 		mpAlbums_by_recently_created.forEach { mpAlbum in
-			Print()
-			Print("album")
-			Print(mpAlbum.persistentID, mpAlbum.count)
 			let int64 = MPIDAlbum(bitPattern: mpAlbum.persistentID) // TO DO
-			Print(int64)
-			
 			let album = register_album(mpid: int64)
 			mpAlbum.items.shuffled().forEach { mpSong in
-				Print("song")
-				Print(mpSong.persistentID, mpSong.title ?? "no title")
 				let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // TO DO
-				Print(int64_song)
-				
 				register_song(mpid: int64_song, in: album)
 			}
 		}
+		
+		debug_Print()
 	}
 }

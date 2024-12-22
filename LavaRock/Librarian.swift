@@ -2,7 +2,7 @@
 
 final class LRCrate {
 	let title: String
-	var lrAlbums: [LRAlbum] = []
+	var lrAlbums: [LRAlbum] = [] // TO DO: Require at least 1 album.
 	
 	init(title: String) {
 		self.title = title
@@ -11,7 +11,7 @@ final class LRCrate {
 final class LRAlbum {
 	let mpid: MPIDAlbum
 	weak var lrCrate: LRCrate!
-	var lrSongs: [LRSong] = []
+	var lrSongs: [LRSong] = [] // TO DO: Require at least 1 song.
 	
 	init(mpid: MPIDAlbum, parent: LRCrate) {
 		self.mpid = mpid
@@ -82,9 +82,9 @@ final class LRSong {
 		Print("crate tree")
 		Print(the_crate.title)
 		the_crate.lrAlbums.forEach { album in
-			Print("  \(album.mpid) in \(album.lrCrate.title)")
+			Print("  \(album.mpid), in \(album.lrCrate.title)")
 			album.lrSongs.forEach { song in
-				Print("    \(song.mpid) in \(song.lrAlbum.mpid)")
+				Print("    \(song.mpid), in \(song.lrAlbum.mpid)")
 			}
 		}
 		
@@ -93,7 +93,7 @@ final class LRSong {
 		dict_albums.forEach { (mpidAlbum, album_ref) in
 			var value_description = "nil"
 			if let album = album_ref.referencee {
-				value_description = "\(ObjectIdentifier(album).debugDescription), \(album.mpid)"
+				value_description = "\(ObjectIdentifier(album))"
 			}
 			Print("\(mpidAlbum) → \(value_description)")
 		}
@@ -103,7 +103,7 @@ final class LRSong {
 		dict_songs.forEach { (mpidSong, song_ref) in
 			var value_description = "nil"
 			if let song = song_ref.referencee {
-				value_description = "\(ObjectIdentifier(song).debugDescription), \(song.mpid)"
+				value_description = "\(ObjectIdentifier(song))"
 			}
 			Print("\(mpidSong) → \(value_description)")
 		}
