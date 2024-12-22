@@ -51,7 +51,7 @@ import MediaPlayer
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return ""
 		}
-		guard let the_crate = Librarian.the_lrCrate, !the_crate.lrAlbums.isEmpty else {
+		guard let lrCrate = Librarian.the_crate, !lrCrate.lrAlbums.isEmpty else {
 			return InterfaceText._empty_library_message
 		}
 		return ""
@@ -83,7 +83,7 @@ import MediaPlayer
 #else
 			guard
 				let id_current = MPMusicPlayerController.mpidSong_current,
-				nil != Librarian.lrSong_with(mpid: id_current)
+				nil != Librarian.song_with(mpid: id_current)
 			else { return .disabled }
 			return []
 #endif

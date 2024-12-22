@@ -29,36 +29,36 @@ final class LRSong {
 }
 
 @MainActor struct Librarian {
-	private(set) static var the_lrCrate: LRCrate?
-	static func lrAlbum_with(mpid: MPIDAlbum) -> LRAlbum? {
-		return lrAlbums[mpid]?.referencee
+	private(set) static var the_crate: LRCrate?
+	static func album_with(mpid: MPIDAlbum) -> LRAlbum? {
+		return dict_albums[mpid]?.referencee
 	}
-	static func lrSong_with(mpid: MPIDSong) -> LRSong? {
-		return lrSongs[mpid]?.referencee
+	static func song_with(mpid: MPIDSong) -> LRSong? {
+		return dict_songs[mpid]?.referencee
 	}
 	
-	private static var lrAlbums: [MPIDAlbum: WeakRef<LRAlbum>] = [:]
-	private static var lrSongs: [MPIDSong: WeakRef<LRSong>] = [:]
+	private static var dict_albums: [MPIDAlbum: WeakRef<LRAlbum>] = [:]
+	private static var dict_songs: [MPIDSong: WeakRef<LRSong>] = [:]
 	
-	static func _remove_lrCrate(_ lrCrate_to_remove: LRCrate) {
+	static func remove_crate(_ crate_to_remove: LRCrate) {
 		// TO DO
 	}
 	
-	static func append_lrAlbum(mpid: MPIDAlbum) -> LRAlbum {
-		if the_lrCrate == nil {
-			the_lrCrate = LRCrate(title: InterfaceText._tilde)
+	static func append_album(mpid: MPIDAlbum) -> LRAlbum {
+		if the_crate == nil {
+			the_crate = LRCrate(title: InterfaceText._tilde) // TO DO: Do this explicitly, not as a side effect.
 		}
-		let the_lrCrate = the_lrCrate!
+		let crate = the_crate!
 		
-		let lrAlbum_new = LRAlbum(mpid: mpid, parent: the_lrCrate)
-		lrAlbums[mpid] = WeakRef(lrAlbum_new)
-		the_lrCrate.lrAlbums.append(lrAlbum_new)
-		return lrAlbum_new
+		let album_new = LRAlbum(mpid: mpid, parent: crate)
+		dict_albums[mpid] = WeakRef(album_new)
+		crate.lrAlbums.append(album_new)
+		return album_new
 	}
-	static func append_lrSong(mpid: MPIDSong, in parent: LRAlbum) {
-		let lrSong_new = LRSong(mpid: mpid, parent: parent)
-		lrSongs[mpid] = WeakRef(lrSong_new)
-		parent.lrSongs.append(lrSong_new)
+	static func append_song(mpid: MPIDSong, in parent: LRAlbum) {
+		let song_new = LRSong(mpid: mpid, parent: parent)
+		dict_songs[mpid] = WeakRef(song_new)
+		parent.lrSongs.append(song_new)
 	}
 	
 	static func save() {
@@ -70,35 +70,35 @@ final class LRSong {
 	
 	static func debug_Print() {
 		Print()
-		guard let the_lrCrate else {
+		guard let the_crate else {
 			Print("nil crate")
 			return
 		}
 		Print("crate tree")
-		Print(the_lrCrate.title)
-		the_lrCrate.lrAlbums.forEach { lrAlbum in
-			Print("  \(lrAlbum.mpid) in \(lrAlbum.lrCrate.title)")
-			lrAlbum.lrSongs.forEach { lrSong in
-				Print("    \(lrSong.mpid) in \(lrSong.lrAlbum.mpid)")
+		Print(the_crate.title)
+		the_crate.lrAlbums.forEach { album in
+			Print("  \(album.mpid) in \(album.lrCrate.title)")
+			album.lrSongs.forEach { song in
+				Print("    \(song.mpid) in \(song.lrAlbum.mpid)")
 			}
 		}
 		
 		Print()
 		Print("album dict")
-		lrAlbums.forEach { (mpidAlbum, lrAlbum_ref) in
+		dict_albums.forEach { (mpidAlbum, album_ref) in
 			var value_description = "nil"
-			if let lrAlbum = lrAlbum_ref.referencee {
-				value_description = "\(ObjectIdentifier(lrAlbum).debugDescription), \(lrAlbum.mpid)"
+			if let album = album_ref.referencee {
+				value_description = "\(ObjectIdentifier(album).debugDescription), \(album.mpid)"
 			}
 			Print("\(mpidAlbum) → \(value_description)")
 		}
 		
 		Print()
 		Print("song dict")
-		lrSongs.forEach { (mpidSong, lrSong_ref) in
+		dict_songs.forEach { (mpidSong, song_ref) in
 			var value_description = "nil"
-			if let lrSong = lrSong_ref.referencee {
-				value_description = "\(ObjectIdentifier(lrSong).debugDescription), \(lrSong.mpid)"
+			if let song = song_ref.referencee {
+				value_description = "\(ObjectIdentifier(song).debugDescription), \(song.mpid)"
 			}
 			Print("\(mpidSong) → \(value_description)")
 		}

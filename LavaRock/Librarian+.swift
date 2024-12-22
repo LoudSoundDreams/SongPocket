@@ -49,14 +49,14 @@ extension Librarian {
 			let int64 = MPIDAlbum(bitPattern: mpAlbum.persistentID) // TO DO
 			Print(int64)
 			
-			let lrAlbum = append_lrAlbum(mpid: int64)
+			let album = append_album(mpid: int64)
 			mpAlbum.items.shuffled().forEach { mpSong in
 				Print("song")
 				Print(mpSong.persistentID, mpSong.title ?? "no title")
 				let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // TO DO
 				Print(int64_song)
 				
-				append_lrSong(mpid: int64_song, in: lrAlbum)
+				append_song(mpid: int64_song, in: album)
 			}
 		}
 	}

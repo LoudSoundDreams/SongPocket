@@ -31,7 +31,7 @@ extension AlbumListState {
 					// If we removed the expanded album, go to collapsed mode.
 					guard
 						let i_expanded = album_mpids.firstIndex(where: { $0 == id_expanded }),
-						let lrAlbum = Librarian.lrAlbum_with(mpid: id_expanded)
+						let lrAlbum = Librarian.album_with(mpid: id_expanded)
 					else {
 						expansion = .collapsed
 						return album_mpids.map { .album_mpid($0) }
@@ -73,8 +73,8 @@ extension AlbumListState {
 		}
 	}
 	private static func album_mpids_fresh() -> [MPIDAlbum] {
-		guard let the_crate = Librarian.the_lrCrate else { return [] }
-		return the_crate.lrAlbums.map { $0.mpid }
+		guard let lrCrate = Librarian.the_crate else { return [] }
+		return lrCrate.lrAlbums.map { $0.mpid }
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
@@ -359,7 +359,7 @@ final class AlbumTable: LRTableViewController {
 	func show_current() {
 		guard
 			let id_current = MPMusicPlayerController.mpidSong_current,
-			let lrSong = Librarian.lrSong_with(mpid: id_current)
+			let lrSong = Librarian.song_with(mpid: id_current)
 		else { return }
 		let mpidAlbum_target = lrSong.lrAlbum.mpid
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
@@ -446,7 +446,7 @@ final class AlbumTable: LRTableViewController {
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				self.list_state.select_mode = .view(nil)
 				Task {
-					guard let lrSong = Librarian.lrSong_with(mpid: id_activated) else { return }
+					guard let lrSong = Librarian.song_with(mpid: id_activated) else { return }
 					
 					await ApplicationMusicPlayer._shared?.play_now(
 						lrSong.lrAlbum.lrSongs.map { $0.mpid },
@@ -498,7 +498,7 @@ final class AlbumTable: LRTableViewController {
 			case .select_albums(let ids_selected):
 				if always_songs {
 					let num_songs_selected: Int = list_state.album_mpids(with: ids_selected).reduce(into: 0) { songs_so_far, mpidAlbum_selected in
-						guard let lrAlbum_selected = Librarian.lrAlbum_with(mpid: mpidAlbum_selected) else { return }
+						guard let lrAlbum_selected = Librarian.album_with(mpid: mpidAlbum_selected) else { return }
 						songs_so_far += lrAlbum_selected.lrSongs.count
 					}
 					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
@@ -512,7 +512,7 @@ final class AlbumTable: LRTableViewController {
 					case .collapsed:
 						if always_songs {
 							let num_all_songs: Int = list_state.album_mpids().reduce(into: 0) { songs_so_far, mpidAlbum in
-								guard let lrAlbum = Librarian.lrAlbum_with(mpid: mpidAlbum) else { return }
+								guard let lrAlbum = Librarian.album_with(mpid: mpidAlbum) else { return }
 								songs_so_far += lrAlbum.lrSongs.count
 							}
 							return InterfaceText.NUMBER_songs(num_all_songs)
@@ -585,7 +585,7 @@ final class AlbumTable: LRTableViewController {
 			case .select_albums(let ids_selected):
 				var result: [MPIDSong] = []
 				ids_selected.forEach {
-					guard let lrAlbum_selected = Librarian.lrAlbum_with(mpid: $0) else { return }
+					guard let lrAlbum_selected = Librarian.album_with(mpid: $0) else { return }
 					result.append(contentsOf: lrAlbum_selected.lrSongs.map { $0.mpid })
 				}
 				return result
@@ -596,7 +596,7 @@ final class AlbumTable: LRTableViewController {
 					case .collapsed:
 						var result: [MPIDSong] = []
 						list_state.album_mpids().forEach {
-							guard let lrAlbum = Librarian.lrAlbum_with(mpid: $0) else { return }
+							guard let lrAlbum = Librarian.album_with(mpid: $0) else { return }
 							result.append(contentsOf: lrAlbum.lrSongs.map { $0.mpid })
 						}
 						return result
