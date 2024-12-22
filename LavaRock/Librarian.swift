@@ -10,12 +10,10 @@ final class LRCrate {
 }
 final class LRAlbum {
 	let mpid: MPIDAlbum
-	weak var lrCrate: LRCrate!
 	var lrSongs: [LRSong] = [] // TO DO: Require at least 1 song.
 	
-	init(mpid: MPIDAlbum, parent: LRCrate) {
+	init(mpid: MPIDAlbum) {
 		self.mpid = mpid
-		lrCrate = parent
 	}
 }
 final class LRSong {
@@ -48,7 +46,7 @@ final class LRSong {
 		}
 		let crate = the_crate!
 		
-		let album_new = LRAlbum(mpid: mpid, parent: crate)
+		let album_new = LRAlbum(mpid: mpid)
 		dict_albums[mpid] = WeakRef(album_new)
 		crate.lrAlbums.append(album_new)
 		return album_new
@@ -82,7 +80,7 @@ final class LRSong {
 		Print("crate tree")
 		Print(the_crate.title)
 		the_crate.lrAlbums.forEach { album in
-			Print("  \(album.mpid), in \(album.lrCrate.title)")
+			Print("  \(album.mpid)")
 			album.lrSongs.forEach { song in
 				Print("    \(song.mpid), in \(song.lrAlbum.mpid)")
 			}
