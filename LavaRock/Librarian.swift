@@ -29,20 +29,18 @@ final class LRSong {
 }
 
 @MainActor struct Librarian {
+	// Tree
 	private(set) static var the_crate: LRCrate?
+	
+	// Dictionaries
 	static func album_with(mpid: MPIDAlbum) -> LRAlbum? {
 		return dict_albums[mpid]?.referencee
 	}
 	static func song_with(mpid: MPIDSong) -> LRSong? {
 		return dict_songs[mpid]?.referencee
 	}
-	
 	private static var dict_albums: [MPIDAlbum: WeakRef<LRAlbum>] = [:]
 	private static var dict_songs: [MPIDSong: WeakRef<LRSong>] = [:]
-	
-	static func remove_crate(_ crate_to_remove: LRCrate) {
-		// TO DO
-	}
 	
 	static func append_album(mpid: MPIDAlbum) -> LRAlbum {
 		if the_crate == nil {
@@ -61,6 +59,11 @@ final class LRSong {
 		parent.lrSongs.append(song_new)
 	}
 	
+	static func remove_crate(_ crate_to_remove: LRCrate) {
+		// TO DO
+	}
+	
+	// Persistence
 	static func save() {
 		// TO DO
 	}
