@@ -65,7 +65,9 @@ final class LRSong {
 	
 	// Persistence
 	static func save() {
-		// TO DO
+		guard let the_crate else { return }
+		
+		Disk.save_crates([the_crate])
 	}
 	static func load() {
 		// TO DO
