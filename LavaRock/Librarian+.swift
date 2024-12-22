@@ -19,11 +19,6 @@ extension Librarian {
 		 Remove `LRAlbum`s and `LRSong`s that now lack counterparts in the Apple Music library. Remove empty `LRAlbum`s and `LRCrate`s.
 		 */
 		
-		// TO DO
-		if let the_lrCrate = the_lrCrate {
-			remove_lrCrate(the_lrCrate)
-		}
-		
 		// Use MediaPlayer for album and song IDs.
 		// Use MusicKit for all other metadata. `AppleLibrary.shared.mkSections_cache` should be ready by now.
 		

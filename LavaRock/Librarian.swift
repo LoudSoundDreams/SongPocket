@@ -40,11 +40,10 @@ final class LRSong {
 	private static var lrAlbums: [MPIDAlbum: WeakRef<LRAlbum>] = [:]
 	private static var lrSongs: [MPIDSong: WeakRef<LRSong>] = [:]
 	
-	static func remove_lrCrate(_ lrCrate_to_remove: LRCrate) {
+	static func _remove_lrCrate(_ lrCrate_to_remove: LRCrate) {
 		// TO DO
 	}
 	
-	// TO DO: Disallow empty crates and albums.
 	static func append_lrAlbum(mpid: MPIDAlbum) -> LRAlbum {
 		if the_lrCrate == nil {
 			the_lrCrate = LRCrate(title: InterfaceText._tilde)
