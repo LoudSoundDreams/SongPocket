@@ -42,15 +42,24 @@ extension Librarian {
 			guard let date_left else { return false }
 			return date_left > date_right
 		}
-		mpAlbums_by_recently_created.forEach { mpAlbum in
-			let int64 = MPIDAlbum(bitPattern: mpAlbum.persistentID) // TO DO
-			let album = register_album(mpid: int64)
-			mpAlbum.items.shuffled().forEach { mpSong in
-				let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // TO DO
-				register_song(mpid: int64_song, in: album)
-			}
-		}
 		
+		if let the_crate {
+			deregister_crate(the_crate)
+		}
+		debug_Print()
+		
+		mpAlbums_by_recently_created
+			.shuffled()
+			.forEach { mpAlbum in
+				register_album(
+					LRAlbum(
+						mpid: MPIDAlbum(bitPattern: mpAlbum.persistentID), // TO DO
+						songs: mpAlbum.items.shuffled().map { mpSong in
+							let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // TO DO
+							return LRSong(mpid: int64_song)
+						})
+				)
+			}
 		debug_Print()
 	}
 }

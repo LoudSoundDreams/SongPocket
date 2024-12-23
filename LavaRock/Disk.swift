@@ -81,10 +81,9 @@ struct Parser {
 				// No valid albums for this crate. Skip this crate line.
 				continue
 			}
-//			result.append(
-//				LRCrate(title: String(content), lrAlbums: albums)
-//			)
-			result.append(contentsOf: [])
+			let parsed_crate = LRCrate(title: String(content))
+			parsed_crate.lrAlbums = albums
+			result.append(parsed_crate)
 			let _ = content
 		}
 		return result
@@ -127,11 +126,8 @@ struct Parser {
 				// No valid songs for this album. Skip this album line.
 				continue
 			}
-			// TO DO
-			result.append(contentsOf: [])
-//			result.append(
-//				LRAlbum(mpid: mpidAlbum, lrSongs: songs)
-//			)
+			let parsed_album = LRAlbum(mpid: mpidAlbum, songs: songs)
+			result.append(parsed_album)
 		}
 		return (i_line, result)
 	}
@@ -165,12 +161,8 @@ struct Parser {
 			}
 			
 			i_line += 1
-			// TO DO
-			result.append(contentsOf: [])
-//			result.append(
-//				LRSong(mpid: mpidSong, album_mpid: album_mpid)
-//			)
-			let _ = mpidSong
+			let parsed_song = LRSong(mpid: mpidSong)
+			result.append(parsed_song)
 		}
 		return (i_line, result)
 	}

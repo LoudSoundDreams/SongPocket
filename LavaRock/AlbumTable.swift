@@ -359,9 +359,9 @@ final class AlbumTable: LRTableViewController {
 	func show_current() {
 		guard
 			let id_current = MPMusicPlayerController.mpidSong_current,
-			let lrSong = Librarian.song_with(mpid: id_current)
+			let album_target = Librarian.album_from_mpidSong[id_current]?.referencee
 		else { return }
-		let mpidAlbum_target = lrSong.lrAlbum.mpid
+		let mpidAlbum_target = album_target.mpid
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
 			case .song_mpid: return false
 			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
@@ -446,10 +446,9 @@ final class AlbumTable: LRTableViewController {
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				self.list_state.select_mode = .view(nil)
 				Task {
-					guard let lrSong = Librarian.song_with(mpid: id_activated) else { return }
-					
+					guard let album_chosen = Librarian.album_from_mpidSong[id_activated]?.referencee else { return }
 					await ApplicationMusicPlayer._shared?.play_now(
-						lrSong.lrAlbum.lrSongs.map { $0.mpid },
+						album_chosen.lrSongs.map { $0.mpid },
 						starting_at: id_activated)
 				}
 			}
