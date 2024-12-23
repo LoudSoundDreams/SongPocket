@@ -76,6 +76,30 @@ final class LRSong {
 		}
 	}
 	
+	static func promote_songs(_ mpids_selected: Set<MPIDSong>) {
+		// Verify that the selected songs are in the same album. Find that album.
+		var parent: LRAlbum? = nil
+		for mpid in mpids_selected {
+			guard let this_parent = album_from_mpidSong[mpid]?.referencee else { return }
+			if parent == nil { parent = this_parent }
+			guard parent?.mpid == this_parent.mpid else { return }
+		}
+		guard let parent else { return }
+		
+		// Find the index of the frontmost selected song.
+		let rs_to_promote = parent.lrSongs.indices(where: { song in
+			mpids_selected.contains(song.mpid)
+		})
+		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
+		
+		let target: Int = (rs_to_promote.ranges.count == 1) // If contiguous …
+		? max(front-1, 0) // … 1 step toward beginning, but stay in bounds.
+		: front // … make contiguous starting at front.
+		var songs_reordered = parent.lrSongs
+		songs_reordered.moveSubranges(rs_to_promote, to: target)
+		parent.lrSongs = songs_reordered
+	}
+	
 	static func debug_Print() {
 		Print()
 		Print("crate tree")

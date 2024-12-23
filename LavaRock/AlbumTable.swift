@@ -713,8 +713,8 @@ final class AlbumTable: LRTableViewController {
 	private func promote_songs() {
 		Task {
 			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
-			// 2do: Tell `Librarian` to promote the selected songs within their album, and save the changes.
-			let _ = ids_selected
+			Librarian.promote_songs(ids_selected)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
