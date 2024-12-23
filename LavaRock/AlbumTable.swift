@@ -662,6 +662,67 @@ final class AlbumTable: LRTableViewController {
 		}
 	}()
 	
+	private func sort_albums(by album_order: AlbumOrder) {
+		Task {
+			// 2do: Tell `Librarian` to sort the albums, and save the changes.
+			
+			list_state.refresh_items()
+			list_state.signal_albums_reordered.toggle()
+			let _ = await apply_ids_rows(list_state.row_identifiers())
+		}
+	}
+	private func sort_songs(by song_order: SongOrder) {
+		Task {
+			// 2do: Tell `Librarian` to sort the songs, and save the changes.
+			
+			list_state.refresh_items()
+			list_state.signal_songs_reordered.toggle()
+			let _ = await apply_ids_rows(list_state.row_identifiers())
+		}
+	}
+	
+	private func ids_albums_to_sort() -> [MPIDAlbum] {
+		switch list_state.select_mode {
+			case .select_songs: return []
+			case .view: return list_state.album_mpids()
+			case .select_albums(let ids_selected): return list_state.album_mpids(with: ids_selected)
+		}
+	}
+	private func ids_songs_to_sort() -> [MPIDSong] {
+		switch list_state.select_mode {
+			case .select_albums: return []
+			case .view: return list_state.song_mpids()
+			case .select_songs(let ids_selected): return list_state.song_mpids(with: ids_selected)
+		}
+	}
+	
+	// MARK: Moving up and down
+	
+	private func promote_albums() {
+		Task {
+			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
+			// 2do: Tell `Librarian` to promote the selected albums, and save the changes.
+			let _ = ids_selected
+			
+			list_state.refresh_items()
+			list_state.signal_albums_reordered.toggle() // Refresh “select range” commands.
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			let _ = await apply_ids_rows(list_state.row_identifiers())
+		}
+	}
+	private func promote_songs() {
+		Task {
+			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
+			// 2do: Tell `Librarian` to promote the selected songs within their album, and save the changes.
+			let _ = ids_selected
+			
+			list_state.refresh_items()
+			list_state.signal_songs_reordered.toggle()
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			let _ = await apply_ids_rows(list_state.row_identifiers())
+		}
+	}
+	
 	/*
 	 final func promote_albums(with ids_to_promote: Set<MPIDAlbum>) {
 	 var my_albums = albums(sorted: true)
@@ -706,71 +767,9 @@ final class AlbumTable: LRTableViewController {
 	 }
 	 */
 	
-	private func sort_albums(by album_order: AlbumOrder) {
-		Task {
-			// TO DO: Tell `Librarian` to sort the albums, and save the changes.
-//			album_order.reindex(albums_to_sort())
-			
-			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle()
-			let _ = await apply_ids_rows(list_state.row_identifiers())
-		}
-	}
-	private func sort_songs(by song_order: SongOrder) {
-		Task {
-			// TO DO: Tell `Librarian` to sort the songs, and save the changes.
-			
-			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
-			let _ = await apply_ids_rows(list_state.row_identifiers())
-		}
-	}
-	
-	private func ids_albums_to_sort() -> [MPIDAlbum] {
-		switch list_state.select_mode {
-			case .select_songs: return []
-			case .view: return list_state.album_mpids()
-			case .select_albums(let ids_selected): return list_state.album_mpids(with: ids_selected)
-		}
-	}
-	private func ids_songs_to_sort() -> [MPIDSong] {
-		switch list_state.select_mode {
-			case .select_albums: return []
-			case .view: return list_state.song_mpids()
-			case .select_songs(let ids_selected): return list_state.song_mpids(with: ids_selected)
-		}
-	}
-	
-	// MARK: Moving up and down
-	
-	private func promote_albums() {
-		Task {
-			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
-			// TO DO: Tell `Librarian` to promote the selected albums, and save the changes.
-			let _ = ids_selected
-			
-			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle() // Refresh “select range” commands.
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await apply_ids_rows(list_state.row_identifiers())
-		}
-	}
-	private func promote_songs() {
-		Task {
-			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
-			// TO DO: Tell `Librarian` to promote the selected songs within their album, and save the changes.
-			let _ = ids_selected
-			
-			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers())
-		}
-	}
-	
 	private func demote_albums() {
 		Task {
-			// TO DO
+			// 2do
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -780,7 +779,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func demote_songs() {
 		Task {
-			// TO DO
+			// 2do
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -793,7 +792,7 @@ final class AlbumTable: LRTableViewController {
 	
 	private func float_albums() {
 		Task {
-			// TO DO
+			// 2do
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -803,7 +802,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func float_songs() {
 		Task {
-			// TO DO
+			// 2do
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -814,7 +813,7 @@ final class AlbumTable: LRTableViewController {
 	
 	private func sink_albums() {
 		Task {
-			// TO DO
+			// 2do
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -824,7 +823,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func sink_songs() {
 		Task {
-			// TO DO
+			// 2do
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()

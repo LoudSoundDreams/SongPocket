@@ -349,7 +349,7 @@ import MusicKit
 		Menu {
 			Section({ () -> String in
 				guard let songInfo, let albumInfo else { return "" }
-				// TO DO: “Disc 2, track 3”. Include “Disc 1” if appropriate.
+				// 2do: “Disc 2, track 3”. Include “Disc 1” if appropriate.
 				let numbers: String = {
 					let f_track: String = {
 						guard let track = songInfo._track else { return InterfaceText._octothorpe }

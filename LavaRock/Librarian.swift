@@ -2,7 +2,7 @@
 
 final class LRCrate {
 	let title: String
-	var lrAlbums: [LRAlbum] = [] // TO DO: Require at least 1 album.
+	var lrAlbums: [LRAlbum] = [] // 2do: Require at least 1 album.
 	
 	init(title: String) {
 		self.title = title
@@ -10,7 +10,7 @@ final class LRCrate {
 }
 final class LRAlbum {
 	let mpid: MPIDAlbum
-	var lrSongs: [LRSong] = [] // TO DO: Require at least 1 song.
+	var lrSongs: [LRSong] = [] // 2do: Require at least 1 song.
 	
 	init(mpid: MPIDAlbum, songs: [LRSong]) {
 		self.mpid = mpid
@@ -31,26 +31,26 @@ final class LRSong {
 	
 	// Search
 	static func album_with(mpid: MPIDAlbum) -> LRAlbum? {
-		return dict_albums[mpid]?.referencee
+		return album_by_id[mpid]?.referencee
 	}
 	static func song_with(mpid: MPIDSong) -> LRSong? {
-		return dict_songs[mpid]?.referencee
+		return song_by_id[mpid]?.referencee
 	}
 	private(set) static var album_from_mpidSong: [MPIDSong: WeakRef<LRAlbum>] = [:]
-	private static var dict_albums: [MPIDAlbum: WeakRef<LRAlbum>] = [:] // TO DO: album_by_mpidAlbum
-	private static var dict_songs: [MPIDSong: WeakRef<LRSong>] = [:] // TO DO: song_by_mpid
+	private static var album_by_id: [MPIDAlbum: WeakRef<LRAlbum>] = [:]
+	private static var song_by_id: [MPIDSong: WeakRef<LRSong>] = [:]
 	
 	// Register
 	static func register_album(_ album_new: LRAlbum) {
 		if the_crate == nil {
-			the_crate = LRCrate(title: InterfaceText._tilde) // TO DO: Do this explicitly, not as a side effect.
+			the_crate = LRCrate(title: InterfaceText._tilde) // 2do: Do this explicitly, not as a side effect.
 		}
 		let crate = the_crate!
 		
 		crate.lrAlbums.append(album_new)
-		dict_albums[album_new.mpid] = WeakRef(album_new)
+		album_by_id[album_new.mpid] = WeakRef(album_new)
 		album_new.lrSongs.forEach { song_new in
-			dict_songs[song_new.mpid] = WeakRef(song_new)
+			song_by_id[song_new.mpid] = WeakRef(song_new)
 			album_from_mpidSong[song_new.mpid] = WeakRef(album_new)
 		}
 	}
@@ -59,7 +59,7 @@ final class LRSong {
 	static func deregister_crate(_ crate_to_remove: LRCrate) {
 		the_crate = nil
 		
-		// TO DO: Remove unused dictionary entries.
+		// 2do: Remove unused dictionary entries.
 	}
 	
 	// Persist
@@ -93,7 +93,7 @@ final class LRSong {
 		
 		Print()
 		Print("album dict")
-		dict_albums.forEach { (mpidAlbum, album_ref) in
+		album_by_id.forEach { (mpidAlbum, album_ref) in
 			var pointee_album = "nil"
 			if let album = album_ref.referencee {
 				pointee_album = "\(ObjectIdentifier(album))"
@@ -103,7 +103,7 @@ final class LRSong {
 		
 		Print()
 		Print("song dict")
-		dict_songs.forEach { (mpidSong, song_ref) in
+		song_by_id.forEach { (mpidSong, song_ref) in
 			var pointee_song = "nil"
 			if let song = song_ref.referencee {
 				pointee_song = "\(ObjectIdentifier(song))"

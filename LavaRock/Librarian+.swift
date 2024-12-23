@@ -46,20 +46,18 @@ extension Librarian {
 		if let the_crate {
 			deregister_crate(the_crate)
 		}
-		debug_Print()
 		
 		mpAlbums_by_recently_created
 			.shuffled()
 			.forEach { mpAlbum in
 				register_album(
 					LRAlbum(
-						mpid: MPIDAlbum(bitPattern: mpAlbum.persistentID), // TO DO
+						mpid: MPIDAlbum(bitPattern: mpAlbum.persistentID), // 22do
 						songs: mpAlbum.items.shuffled().map { mpSong in
-							let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // TO DO
+							let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // 22do
 							return LRSong(mpid: int64_song)
 						})
 				)
 			}
-		debug_Print()
 	}
 }
