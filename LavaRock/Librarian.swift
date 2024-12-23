@@ -76,6 +76,20 @@ final class LRSong {
 		}
 	}
 	
+	static func promote_albums(_ mpids_selected: Set<MPIDAlbum>) {
+		guard let parent = the_crate else { return }
+		let rs_to_promote = parent.lrAlbums.indices(where: { album in
+			mpids_selected.contains(album.mpid)
+		})
+		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
+		
+		let target: Int = (rs_to_promote.ranges.count == 1)
+		? max(front-1, 0)
+		: front
+		var albums_reordered = parent.lrAlbums
+		albums_reordered.moveSubranges(rs_to_promote, to: target)
+		parent.lrAlbums = albums_reordered
+	}
 	static func promote_songs(_ mpids_selected: Set<MPIDSong>) {
 		// Verify that the selected songs are in the same album. Find that album.
 		var parent: LRAlbum? = nil

@@ -701,8 +701,8 @@ final class AlbumTable: LRTableViewController {
 	private func promote_albums() {
 		Task {
 			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
-			// 2do: Tell `Librarian` to promote the selected albums, and save the changes.
-			let _ = ids_selected
+			Librarian.promote_albums(ids_selected)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle() // Refresh “select range” commands.
@@ -724,18 +724,6 @@ final class AlbumTable: LRTableViewController {
 	}
 	
 	/*
-	 final func promote_albums(with ids_to_promote: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_promote = my_albums.indices { ids_to_promote.contains($0.albumPersistentID) }
-	 guard let front: Int = rs_to_promote.ranges.first?.first else { return }
-	 let target: Int = (rs_to_promote.ranges.count == 1)
-	 ? max(front-1, 0)
-	 : front
-	 
-	 my_albums.moveSubranges(rs_to_promote, to: target)
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
-	 }
 	 final func demote_albums(with ids_to_demote: Set<MPIDAlbum>) {
 	 var my_albums = albums(sorted: true)
 	 let rs_to_demote = my_albums.indices { ids_to_demote.contains($0.albumPersistentID) }
