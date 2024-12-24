@@ -23,13 +23,11 @@ extension Librarian {
 		// Use MusicKit for all other metadata. `AppleLibrary.shared.mkSections_cache` should be ready by now.
 		
 		let mpAlbums_by_recently_created = mpAlbums_unsorted.sorted { left, right in
-			guard
-				let rep_right = right.representativeItem,
-				let info_right = AppleLibrary.shared.albumInfo(mpid: MPIDAlbum(rep_right.albumPersistentID))
+			let mpidAlbum_right = MPIDAlbum(bitPattern: right.persistentID)
+			guard let info_right = AppleLibrary.shared.albumInfo(mpid: mpidAlbum_right)
 			else { return true }
-			guard
-				let rep_left = left.representativeItem,
-				let info_left = AppleLibrary.shared.albumInfo(mpid: MPIDAlbum(rep_left.albumPersistentID))
+			let mpidAlbum_left = MPIDAlbum(bitPattern: left.persistentID)
+			guard let info_left = AppleLibrary.shared.albumInfo(mpid: mpidAlbum_left)
 			else { return false }
 			
 			let date_left: Date? = info_left._date_first_added
@@ -47,13 +45,12 @@ extension Librarian {
 			deregister_crate(the_crate)
 		}
 		mpAlbums_by_recently_created.forEach { mpAlbum in
-			register_album(
-				LRAlbum(
-					mpid: MPIDAlbum(bitPattern: mpAlbum.persistentID), // 22do
-					songs: mpAlbum.items.shuffled().map { mpSong in
-						let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // 22do
-						return LRSong(mpid: int64_song)
-					})
+			register_album(LRAlbum(
+				mpid: MPIDAlbum(bitPattern: mpAlbum.persistentID), // 22do
+				songs: mpAlbum.items.shuffled().map { mpSong in
+					let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // 22do
+					return LRSong(mpid: int64_song)
+				})
 			)
 		}
 	}
