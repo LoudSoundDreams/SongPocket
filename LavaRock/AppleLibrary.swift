@@ -107,7 +107,6 @@ extension AppleLibrary {
 			
 			is_merging = true
 			__merge_MediaPlayer_items(__mpSongs)
-			try? await Task.sleep(for: .seconds(2))
 			await Librarian.merge_MediaPlayer_items(mpAlbums)
 			
 			Librarian.save()

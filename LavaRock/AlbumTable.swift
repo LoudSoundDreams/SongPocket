@@ -668,7 +668,7 @@ final class AlbumTable: LRTableViewController {
 	
 	private func sort_albums(by album_order: AlbumOrder) {
 		Task {
-			// 2do: Tell `Librarian` to sort the albums, and save the changes.
+			
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()

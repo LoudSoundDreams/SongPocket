@@ -26,7 +26,7 @@ extension Librarian {
 		
 		let lrAlbums_existing: [LRAlbum] = the_crate?.lrAlbums ?? []
 		var to_update: [(LRAlbum, MPMediaItemCollection)] = [] // Order doesn’t matter.
-		var to_remove: [LRAlbum] = [] // Order doesn’t matter.
+		var to_delete: [LRAlbum] = [] // Order doesn’t matter.
 		var mpAlbum_with_uAlbum: [UAlbum: MPMediaItemCollection] = {
 			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
@@ -38,13 +38,13 @@ extension Librarian {
 				
 				mpAlbum_with_uAlbum[uAlbum] = nil
 			} else {
-				to_remove.append(lrAlbum)
+				to_delete.append(lrAlbum)
 			}
 		}
 		// `mpAlbum_with_uAlbum` now contains only unfamiliar albums.
-		let to_insert = Array(mpAlbum_with_uAlbum.values) // We’ll sort these later.
+		let to_add = Array(mpAlbum_with_uAlbum.values) // We’ll sort these later.
 		
-		for mpAlbum in to_insert {
+		for mpAlbum in to_add {
 			for mpSong in mpAlbum.items {
 				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID) // 22do: Does this repeatedly redraw SwiftUI views?
 			}
@@ -60,12 +60,12 @@ extension Librarian {
 			}
 		}
 		
-		insert_albums(to_insert)
+		add_albums(to_add)
 		update_albums(to_update)
-		remove_albums(to_remove)
+		delete_albums(to_delete)
 	}
 	
-	private static func insert_albums(
+	private static func add_albums(
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
 	) {
 		let mpAlbums_sorted = mpAlbums_unsorted.sorted {
@@ -135,22 +135,21 @@ extension Librarian {
 			if uSongs_fresh.contains(uSong) {
 				uSongs_fresh.remove(uSong)
 			} else {
-				lrAlbum.lrSongs.remove(at: i_lrSong)
-				// 22do: Remove unused dictionary entries.
+				lrAlbum.lrSongs.remove(at: i_lrSong) // 22do: Remove unused dictionary entries.
 			}
 		}
 		// `uSongs_fresh` now contains only unfamiliar songs.
-		let to_insert_unsorted = Array(uSongs_fresh)
+		let to_add_unsorted = Array(uSongs_fresh)
 		
 		if was_in_track_order {
-			let to_insert = to_insert_unsorted.sorted { left, right in // For consistency.
+			let to_add = to_add_unsorted.sorted { left, right in // For consistency.
 				guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
 				else { return true }
 				guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
 				else { return false }
 				return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
 			}
-			to_insert.reversed().forEach { uSong in
+			to_add.reversed().forEach { uSong in
 				register_song(LRSong(uSong: uSong), in: lrAlbum)
 			}
 			lrAlbum.lrSongs.sort { lr_left, lr_right in
@@ -161,7 +160,7 @@ extension Librarian {
 				return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
 			}
 		} else {
-			let to_insert = to_insert_unsorted.sorted { left, right in
+			let to_add = to_add_unsorted.sorted { left, right in
 				guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
 				else { return true }
 				guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
@@ -173,24 +172,23 @@ extension Librarian {
 				guard let date_left = mk_left.libraryAddedDate else { return false }
 				return date_left > date_right
 			}
-			to_insert.reversed().forEach { uSong in
+			to_add.reversed().forEach { uSong in
 				register_song(LRSong(uSong: uSong), in: lrAlbum)
 			}
 		}
 	}
 	
-	private static func remove_albums(
-		_ to_remove: [LRAlbum]
+	private static func delete_albums(
+		_ to_delete: [LRAlbum]
 	) {
 		guard let the_crate else { return }
 		
-		let uAlbums_to_remove = Set(to_remove.map { $0.uAlbum })
+		let uAlbums_to_delete = Set(to_delete.map { $0.uAlbum })
 		// 2do: Skip checking albums at the beginning that we created just now.
 		the_crate.lrAlbums.indices.reversed().forEach { i_album in
 			let album = the_crate.lrAlbums[i_album]
-			if uAlbums_to_remove.contains(album.uAlbum) {
-				the_crate.lrAlbums.remove(at: i_album)
-				// 22do: Remove unused dictionary entries.
+			if uAlbums_to_delete.contains(album.uAlbum) {
+				the_crate.lrAlbums.remove(at: i_album) // 22do: Remove unused dictionary entries.
 			}
 		}
 	}
