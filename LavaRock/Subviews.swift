@@ -250,8 +250,9 @@ import MusicKit
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let songInfo: SongInfo? = {
-					guard let mkSong = apple_lib.mkSongs_cache[id_song] else {
-						Task { await apple_lib.cache_mkSong(mpid: id_song) } // SwiftUI redraws this view afterward because this view observes the cache.
+					let uSong = USong(bitPattern: id_song)
+					guard let mkSong = apple_lib.mkSongs_cache[uSong] else {
+						Task { await apple_lib.cache_mkSong(uSong: uSong) } // SwiftUI redraws this view afterward because this view observes the cache.
 						return nil
 					}
 					return SongInfo(

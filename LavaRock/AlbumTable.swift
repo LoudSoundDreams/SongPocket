@@ -446,10 +446,11 @@ final class AlbumTable: LRTableViewController {
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				self.list_state.select_mode = .view(nil)
 				Task {
-					guard let album_chosen = Librarian.album_containing_uSong[USong(bitPattern: id_activated)]?.referencee else { return }
+					let uSong_activated = USong(bitPattern: id_activated)
+					guard let album_chosen = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
 					await ApplicationMusicPlayer._shared?.play_now(
-						album_chosen.lrSongs.map { MPIDSong(bitPattern: $0.uSong) },
-						starting_at: id_activated)
+						album_chosen.lrSongs.map { $0.uSong },
+						starting_at: uSong_activated)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -537,41 +538,41 @@ final class AlbumTable: LRTableViewController {
 			UIMenu(options: .displayInline, children: [
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let ids_songs = ids_songs_focused()
+					let uSongs = uSongs_focused()
 					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
 						Task {
-							await ApplicationMusicPlayer._shared?.play_now(ids_songs)
+							await ApplicationMusicPlayer._shared?.play_now(uSongs)
 						}
 					}
-					if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
+					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
 					use([action])
 				},
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let ids_songs = ids_songs_focused()
+					let uSongs = uSongs_focused()
 					let action = UIAction(title: InterfaceText.Play_Later, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
 						Task {
-							await ApplicationMusicPlayer._shared?.play_later(ids_songs)
+							await ApplicationMusicPlayer._shared?.play_later(uSongs)
 						}
 					}
-					if ids_songs.isEmpty { action.attributes.formUnion(.disabled) }
+					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
 					use([action])
 				},
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let ids_songs = ids_songs_focused()
+					let uSongs = uSongs_focused()
 					let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
 						Task {
-							await ApplicationMusicPlayer._shared?.play_now(ids_songs.in_any_other_order()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+							await ApplicationMusicPlayer._shared?.play_now(uSongs.in_any_other_order()) // Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 						}
 					}
-					if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
+					if uSongs.count <= 1 { action.attributes.formUnion(.disabled) }
 					use([action])
 				},
 			]),
@@ -579,28 +580,28 @@ final class AlbumTable: LRTableViewController {
 		return UIMenu(title: title_focused(always_songs: true), children: menu_sections)
 	}
 	
-	private func ids_songs_focused() -> [MPIDSong] { // In display order.
+	private func uSongs_focused() -> [USong] { // In display order.
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
-				var result: [MPIDSong] = []
+				var result: [USong] = []
 				ids_selected.forEach {
 					guard let lrAlbum_selected = Librarian.album_with_uAlbum[UAlbum(bitPattern: $0)]?.referencee else { return }
-					result.append(contentsOf: lrAlbum_selected.lrSongs.map { MPIDSong(bitPattern: $0.uSong) })
+					result.append(contentsOf: lrAlbum_selected.lrSongs.map { $0.uSong })
 				}
 				return result
 			case .select_songs(let ids_selected):
-				return list_state.song_mpids(with: ids_selected)
+				return list_state.song_mpids(with: ids_selected).map { USong(bitPattern: $0) }
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
-						var result: [MPIDSong] = []
+						var result: [USong] = []
 						list_state.album_mpids().forEach {
 							guard let lrAlbum = Librarian.album_with_uAlbum[UAlbum(bitPattern: $0)]?.referencee else { return }
-							result.append(contentsOf: lrAlbum.lrSongs.map { MPIDSong(bitPattern: $0.uSong) })
+							result.append(contentsOf: lrAlbum.lrSongs.map { $0.uSong })
 						}
 						return result
 					case .expanded:
-						return list_state.song_mpids()
+						return list_state.song_mpids().map { USong(bitPattern: $0) }
 				}
 		}
 	}

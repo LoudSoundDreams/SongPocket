@@ -20,20 +20,20 @@ import Combine
 	}
 	
 	final func play_now(
-		_ ids_to_play: [MPIDSong], // 22do
-		starting_at id_start: MPIDSong? = nil
+		_ uSongs_to_play: [USong],
+		starting_at uSong_start: USong? = nil
 	) async {
 		let mkSongs_to_play: [MKSong] = await {
 			var result: [MKSong] = []
-			for mpidSong in ids_to_play {
-				guard let mkSong = await AppleLibrary.shared.mkSong_fetched(mpid: mpidSong) else { continue }
+			for uSong in uSongs_to_play {
+				guard let mkSong = await AppleLibrary.shared.mkSong_fetched(uSong: uSong) else { continue }
 				result.append(mkSong)
 			}
 			return result
 		}()
 		let start: MKSong? = await {
-			guard let id_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-			return await AppleLibrary.shared.mkSong_fetched(mpid: id_start)
+			guard let uSong_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
+			return await AppleLibrary.shared.mkSong_fetched(uSong: uSong_start)
 		}()
 		
 		queue = Queue(for: mkSongs_to_play, startingAt: start) // Slow.
@@ -42,11 +42,11 @@ import Combine
 		state.repeatMode = RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
-	final func play_later(_ ids_to_append: [MPIDSong]) async {
+	final func play_later(_ uSongs_to_append: [USong]) async {
 		let mkSongs_to_append: [MKSong] = await {
 			var result: [MKSong] = []
-			for mpidSong in ids_to_append {
-				guard let mkSong = await AppleLibrary.shared.mkSong_fetched(mpid: mpidSong) else { continue }
+			for uSong in uSongs_to_append {
+				guard let mkSong = await AppleLibrary.shared.mkSong_fetched(uSong: uSong) else { continue }
 				result.append(mkSong)
 			}
 			return result
