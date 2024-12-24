@@ -73,7 +73,10 @@ extension AlbumListState {
 		}
 	}
 	private static func album_mpids_fresh() -> [MPIDAlbum] {
-		guard let lrCrate = Librarian.the_crate else { return [] }
+		guard
+			MusicAuthorization.currentStatus == .authorized,
+			let lrCrate = Librarian.the_crate
+		else { return [] }
 		return lrCrate.lrAlbums.map { MPIDAlbum(bitPattern: $0.uAlbum) }
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
