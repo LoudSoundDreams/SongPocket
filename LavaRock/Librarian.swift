@@ -46,9 +46,6 @@ final class LRSong {
 		}
 	}
 	
-	// Remove
-	// 22do: Remove unused dictionary entries.
-	
 	// Persist
 	static func save() {
 		guard let the_crate else { return }

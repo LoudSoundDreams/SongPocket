@@ -26,7 +26,7 @@ extension Librarian {
 		
 		let lrAlbums_existing: [LRAlbum] = the_crate?.lrAlbums ?? []
 		var to_update: [(LRAlbum, MPMediaItemCollection)] = [] // Order doesn’t matter.
-		var to_delete: [LRAlbum] = [] // Order doesn’t matter.
+		var to_remove: [LRAlbum] = [] // Order doesn’t matter.
 		var mpAlbum_with_uAlbum: [UAlbum: MPMediaItemCollection] = {
 			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
@@ -38,7 +38,7 @@ extension Librarian {
 				
 				mpAlbum_with_uAlbum[uAlbum] = nil
 			} else {
-				to_delete.append(lrAlbum)
+				to_remove.append(lrAlbum)
 			}
 		}
 		// `mpAlbum_with_uAlbum` now contains only unfamiliar albums.
@@ -52,7 +52,7 @@ extension Librarian {
 		
 		insert_albums(to_insert)
 		update_albums(to_update)
-		delete_albums(to_delete)
+		remove_albums(to_remove)
 	}
 	
 	private static func insert_albums(
@@ -101,8 +101,19 @@ extension Librarian {
 	) {
 	}
 	
-	private static func delete_albums(
-		_ lrAlbums: [LRAlbum]
+	private static func remove_albums(
+		_ to_remove: [LRAlbum]
 	) {
+		guard let the_crate else { return }
+		
+		let uAlbums_to_remove = Set(to_remove.map { $0.uAlbum })
+		// 2do: Skip checking albums at the beginning that we created just now.
+		the_crate.lrAlbums.indices.reversed().forEach { i_album in
+			let album = the_crate.lrAlbums[i_album]
+			if uAlbums_to_remove.contains(album.uAlbum) {
+				the_crate.lrAlbums.remove(at: i_album)
+				// 22do: Remove unused dictionary entries.
+			}
+		}
 	}
 }
