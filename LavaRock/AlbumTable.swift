@@ -674,7 +674,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func sort_songs(by song_order: SongOrder) {
 		Task {
-			// 2do: Tell `Librarian` to sort the songs, and save the changes.
+			
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -752,7 +752,7 @@ final class AlbumTable: LRTableViewController {
 	
 	private func demote_albums() {
 		Task {
-			// 2do
+			
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -762,7 +762,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func demote_songs() {
 		Task {
-			// 2do
+			
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -775,7 +775,7 @@ final class AlbumTable: LRTableViewController {
 	
 	private func float_albums() {
 		Task {
-			// 2do
+			
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -785,7 +785,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func float_songs() {
 		Task {
-			// 2do
+			
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -796,7 +796,7 @@ final class AlbumTable: LRTableViewController {
 	
 	private func sink_albums() {
 		Task {
-			// 2do
+			
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -806,7 +806,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func sink_songs() {
 		Task {
-			// 2do
+			
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()

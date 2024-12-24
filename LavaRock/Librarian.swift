@@ -2,14 +2,14 @@
 
 final class LRCrate {
 	let title: String
-	var lrAlbums: [LRAlbum] = [] // 2do: Require at least 1 album.
+	var lrAlbums: [LRAlbum] = []
 	init(title: String) {
 		self.title = title
 	}
 }
 final class LRAlbum {
 	let uAlbum: UAlbum
-	var lrSongs: [LRSong] = [] // 2do: Require at least 1 song.
+	var lrSongs: [LRSong] = []
 	init(uAlbum: UAlbum, songs: [LRSong]) {
 		self.uAlbum = uAlbum
 		self.lrSongs = songs
@@ -34,7 +34,7 @@ final class LRSong {
 	// Register
 	static func register_album(_ album_new: LRAlbum) {
 		if the_crate == nil {
-			the_crate = LRCrate(title: InterfaceText._tilde) // 2do: Do this explicitly, not as a side effect.
+			the_crate = LRCrate(title: InterfaceText._tilde)
 		}
 		let crate = the_crate!
 		
