@@ -20,7 +20,7 @@ import Combine
 	}
 	
 	final func play_now(
-		_ ids_to_play: [MPIDSong],
+		_ ids_to_play: [MPIDSong], // 22do
 		starting_at id_start: MPIDSong? = nil
 	) async {
 		let mkSongs_to_play: [MKSong] = await {
@@ -65,7 +65,7 @@ import Combine
 	
 	@MainActor enum StatusNowPlaying {
 		case not_playing, paused, playing
-		init(mpidSong: MPIDSong) {
+		init(uSong: USong) {
 			guard
 				/*
 				 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
@@ -73,7 +73,7 @@ import Combine
 				 `queue.currentEntry.item.id` doesn’t match either: “593338428”. (This stays the same each time the program runs.)
 				 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
 				 */
-				mpidSong == MPMusicPlayerController.mpidSong_current,
+				uSong == MPMusicPlayerController.uSong_current,
 				let state = _shared?.state
 			else { self = .not_playing; return }
 			switch state.playbackStatus {
@@ -96,9 +96,9 @@ import Combine
 }
 
 @MainActor extension MPMusicPlayerController {
-	static var mpidSong_current: MPIDSong? {
+	static var uSong_current: USong? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
-		return applicationQueuePlayer.nowPlayingItem?.id_song
+		return applicationQueuePlayer.nowPlayingItem?.persistentID
 	}
 }
 

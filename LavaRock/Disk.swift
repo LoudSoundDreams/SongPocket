@@ -15,9 +15,9 @@ enum Disk {
 		crates.forEach {
 			stream.append(contentsOf: "\($0.title)\(newline)")
 			$0.lrAlbums.forEach { album in
-				stream.append(contentsOf: "\(tab)\(album.mpid)\(newline)")
+				stream.append(contentsOf: "\(tab)\(album.uAlbum)\(newline)")
 				album.lrSongs.forEach { song in
-					stream.append(contentsOf: "\(tab_tab)\(song.mpid)\(newline)")
+					stream.append(contentsOf: "\(tab_tab)\(song.uSong)\(newline)")
 				}
 			}
 		}
@@ -105,11 +105,11 @@ struct Parser {
 		{
 			let line = lines[i_line]
 			let content = line.dropFirst(Disk.tab.count)
-			let mpidAlbum: MPIDAlbum? = MPIDAlbum(String(content))
+			let uAlbum: UAlbum? = UAlbum(String(content))
 			
 			guard
 				is_album(at: i_line),
-				let mpidAlbum
+				let uAlbum
 			else {
 				// Not an album line. Skip it.
 				i_line += 1
@@ -119,21 +119,21 @@ struct Parser {
 			i_line += 1
 			let (next_i_line, songs) = songs_until_outdent(
 				from: i_line,
-				album_mpid: mpidAlbum)
+				uAlbum: uAlbum)
 			
 			i_line = next_i_line
 			guard !songs.isEmpty else {
 				// No valid songs for this album. Skip this album line.
 				continue
 			}
-			let parsed_album = LRAlbum(mpid: mpidAlbum, songs: songs)
+			let parsed_album = LRAlbum(uAlbum: uAlbum, songs: songs)
 			result.append(parsed_album)
 		}
 		return (i_line, result)
 	}
 	private func songs_until_outdent(
 		from start: Int,
-		album_mpid: MPIDAlbum
+		uAlbum: UAlbum
 	) -> (
 		next_i_line: Int,
 		[LRSong]
@@ -149,11 +149,11 @@ struct Parser {
 		{
 			let line = lines[i_line]
 			let content = line.dropFirst(Disk.tab_tab.count)
-			let mpidSong: MPIDSong? = MPIDSong(String(content))
+			let uSong: USong? = USong(String(content))
 			
 			guard
 				is_song(at: i_line),
-				let mpidSong
+				let uSong
 			else {
 				// Not a valid song line. Skip it.
 				i_line += 1
@@ -161,7 +161,7 @@ struct Parser {
 			}
 			
 			i_line += 1
-			let parsed_song = LRSong(mpid: mpidSong)
+			let parsed_song = LRSong(uSong: uSong)
 			result.append(parsed_song)
 		}
 		return (i_line, result)

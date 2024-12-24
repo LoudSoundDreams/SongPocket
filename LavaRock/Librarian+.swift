@@ -46,10 +46,9 @@ extension Librarian {
 		}
 		mpAlbums_by_recently_created.forEach { mpAlbum in
 			register_album(LRAlbum(
-				mpid: MPIDAlbum(bitPattern: mpAlbum.persistentID), // 22do
+				uAlbum: mpAlbum.persistentID,
 				songs: mpAlbum.items.shuffled().map { mpSong in
-					let int64_song = MPIDSong(bitPattern: mpSong.persistentID) // 22do
-					return LRSong(mpid: int64_song)
+					LRSong(uSong: mpSong.persistentID)
 				})
 			)
 		}

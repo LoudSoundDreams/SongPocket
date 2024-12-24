@@ -3,25 +3,22 @@
 final class LRCrate {
 	let title: String
 	var lrAlbums: [LRAlbum] = [] // 2do: Require at least 1 album.
-	
 	init(title: String) {
 		self.title = title
 	}
 }
 final class LRAlbum {
-	let mpid: MPIDAlbum
+	let uAlbum: UAlbum
 	var lrSongs: [LRSong] = [] // 2do: Require at least 1 song.
-	
-	init(mpid: MPIDAlbum, songs: [LRSong]) {
-		self.mpid = mpid
+	init(uAlbum: UAlbum, songs: [LRSong]) {
+		self.uAlbum = uAlbum
 		self.lrSongs = songs
 	}
 }
 final class LRSong {
-	let mpid: MPIDSong
-	
-	init(mpid: MPIDSong) {
-		self.mpid = mpid
+	let uSong: USong
+	init(uSong: USong) {
+		self.uSong = uSong
 	}
 }
 
@@ -30,15 +27,9 @@ final class LRSong {
 	private(set) static var the_crate: LRCrate?
 	
 	// Search
-	static func album_with(mpid: MPIDAlbum) -> LRAlbum? {
-		return album_by_id[mpid]?.referencee
-	}
-	static func song_with(mpid: MPIDSong) -> LRSong? {
-		return song_by_id[mpid]?.referencee
-	}
-	private(set) static var album_from_mpidSong: [MPIDSong: WeakRef<LRAlbum>] = [:]
-	private static var album_by_id: [MPIDAlbum: WeakRef<LRAlbum>] = [:]
-	private static var song_by_id: [MPIDSong: WeakRef<LRSong>] = [:]
+	private(set) static var album_with_uAlbum: [UAlbum: WeakRef<LRAlbum>] = [:]
+	private(set) static var song_with_uSong: [USong: WeakRef<LRSong>] = [:]
+	private(set) static var album_containing_uSong: [USong: WeakRef<LRAlbum>] = [:]
 	
 	// Register
 	static func register_album(_ album_new: LRAlbum) {
@@ -48,10 +39,10 @@ final class LRSong {
 		let crate = the_crate!
 		
 		crate.lrAlbums.append(album_new)
-		album_by_id[album_new.mpid] = WeakRef(album_new)
+		album_with_uAlbum[album_new.uAlbum] = WeakRef(album_new)
 		album_new.lrSongs.forEach { song_new in
-			song_by_id[song_new.mpid] = WeakRef(song_new)
-			album_from_mpidSong[song_new.mpid] = WeakRef(album_new)
+			song_with_uSong[song_new.uSong] = WeakRef(song_new)
+			album_containing_uSong[song_new.uSong] = WeakRef(album_new)
 		}
 	}
 	
@@ -76,10 +67,10 @@ final class LRSong {
 		}
 	}
 	
-	static func promote_albums(_ mpids_selected: Set<MPIDAlbum>) {
+	static func promote_albums(_ uAlbums_selected: Set<UAlbum>) {
 		guard let parent = the_crate else { return }
 		let rs_to_promote = parent.lrAlbums.indices(where: { album in
-			mpids_selected.contains(album.mpid)
+			uAlbums_selected.contains(album.uAlbum)
 		})
 		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
 		
@@ -90,19 +81,19 @@ final class LRSong {
 		albums_reordered.moveSubranges(rs_to_promote, to: target)
 		parent.lrAlbums = albums_reordered
 	}
-	static func promote_songs(_ mpids_selected: Set<MPIDSong>) {
+	static func promote_songs(_ uSongs_selected: Set<USong>) {
 		// Verify that the selected songs are in the same album. Find that album.
 		var parent: LRAlbum? = nil
-		for mpid in mpids_selected {
-			guard let this_parent = album_from_mpidSong[mpid]?.referencee else { return }
+		for uSong in uSongs_selected {
+			guard let this_parent = album_containing_uSong[uSong]?.referencee else { return }
 			if parent == nil { parent = this_parent }
-			guard parent?.mpid == this_parent.mpid else { return }
+			guard parent?.uAlbum == this_parent.uAlbum else { return }
 		}
 		guard let parent else { return }
 		
 		// Find the index of the frontmost selected song.
 		let rs_to_promote = parent.lrSongs.indices(where: { song in
-			mpids_selected.contains(song.mpid)
+			uSongs_selected.contains(song.uSong)
 		})
 		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
 		
@@ -120,9 +111,9 @@ final class LRSong {
 		if let the_crate {
 			Print(the_crate.title)
 			the_crate.lrAlbums.forEach { album in
-				Print("  \(album.mpid)")
+				Print("  \(album.uAlbum)")
 				album.lrSongs.forEach { song in
-					Print("    \(song.mpid)")
+					Print("    \(song.uSong)")
 				}
 			}
 		} else {
@@ -131,32 +122,32 @@ final class LRSong {
 		
 		Print()
 		Print("album dict")
-		album_by_id.forEach { (mpidAlbum, album_ref) in
+		album_with_uAlbum.forEach { (uAlbum, album_ref) in
 			var pointee_album = "nil"
 			if let album = album_ref.referencee {
 				pointee_album = "\(ObjectIdentifier(album))"
 			}
-			Print("\(mpidAlbum) → \(pointee_album)")
+			Print("\(uAlbum) → \(pointee_album)")
 		}
 		
 		Print()
 		Print("song dict")
-		song_by_id.forEach { (mpidSong, song_ref) in
+		song_with_uSong.forEach { (uSong, song_ref) in
 			var pointee_song = "nil"
 			if let song = song_ref.referencee {
 				pointee_song = "\(ObjectIdentifier(song))"
 			}
-			Print("\(mpidSong) → \(pointee_song)")
+			Print("\(uSong) → \(pointee_song)")
 		}
 		
 		Print()
 		Print("song ID → album")
-		album_from_mpidSong.forEach { (mpidSong, album_ref) in
+		album_containing_uSong.forEach { (uSong, album_ref) in
 			var about_album = "nil"
 			if let album = album_ref.referencee {
-				about_album = "\(album.mpid), \(ObjectIdentifier(album))"
+				about_album = "\(album.uAlbum), \(ObjectIdentifier(album))"
 			}
-			Print("\(mpidSong) → \(about_album)")
+			Print("\(uSong) → \(about_album)")
 		}
 	}
 }

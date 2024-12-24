@@ -3,8 +3,11 @@
 import MusicKit
 import MediaPlayer
 
-typealias MKSong = MusicKit.Song
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
+typealias MKSong = MusicKit.Song
+
+typealias UAlbum = MPMediaEntityPersistentID
+typealias USong = MPMediaEntityPersistentID
 
 @MainActor @Observable final class AppleLibrary {
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
@@ -27,7 +30,7 @@ extension AppleLibrary {
 		merge_changes()
 	}
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
-	func albumInfo(mpid: MPIDAlbum) -> AlbumInfo? {
+	func albumInfo(mpid: MPIDAlbum) -> AlbumInfo? { // 22do
 		guard let mkAlbum = mkSections_cache[MusicItemID(String(mpid))] else { return nil }
 		let mkSongs = mkAlbum.items
 		return AlbumInfo(
@@ -57,7 +60,7 @@ extension AppleLibrary {
 			}()
 		)
 	}
-	func mkSong_fetched(mpid: MPIDSong) async -> MKSong? {
+	func mkSong_fetched(mpid: MPIDSong) async -> MKSong? { // 22do
 		if let cached = mkSongs_cache[mpid] { return cached }
 		
 		await cache_mkSong(mpid: mpid)
