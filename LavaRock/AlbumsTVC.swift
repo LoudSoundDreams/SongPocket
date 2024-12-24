@@ -13,8 +13,8 @@ import MediaPlayer
 	var select_mode: SelectMode = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
-	var signal_sorted_albums = false // Value doesn’t actually matter.
-	var signal_sorted_songs = false
+	var signal_albums_reordered = false
+	var signal_songs_reordered = false
 	var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
 extension AlbumListState {
@@ -655,7 +655,7 @@ final class AlbumsTVC: LibraryTVC {
 			album_order.reindex(albums_to_sort())
 			ZZZDatabase.viewContext.save_please()
 			list_state.refresh_items()
-			list_state.signal_sorted_albums.toggle()
+			list_state.signal_albums_reordered.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
@@ -664,7 +664,7 @@ final class AlbumsTVC: LibraryTVC {
 			song_order.reindex(songs_to_sort())
 			ZZZDatabase.viewContext.save_please()
 			list_state.refresh_items()
-			list_state.signal_sorted_songs.toggle()
+			list_state.signal_songs_reordered.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
@@ -695,6 +695,7 @@ final class AlbumsTVC: LibraryTVC {
 			crate.promote_albums(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_albums_reordered.toggle() // Refresh “select range” commands.
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -709,6 +710,7 @@ final class AlbumsTVC: LibraryTVC {
 			album.promote_songs(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_songs_reordered.toggle()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -723,6 +725,7 @@ final class AlbumsTVC: LibraryTVC {
 			crate.demote_albums(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_albums_reordered.toggle()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -737,6 +740,7 @@ final class AlbumsTVC: LibraryTVC {
 			album.demote_songs(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_songs_reordered.toggle()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -753,6 +757,7 @@ final class AlbumsTVC: LibraryTVC {
 			crate.float_albums(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_albums_reordered.toggle()
 			list_state.select_mode = .select_albums([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -767,6 +772,7 @@ final class AlbumsTVC: LibraryTVC {
 			album.floatSongs(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_songs_reordered.toggle()
 			list_state.select_mode = .select_songs([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -781,6 +787,7 @@ final class AlbumsTVC: LibraryTVC {
 			crate.sink_albums(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_albums_reordered.toggle()
 			list_state.select_mode = .select_albums([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -795,6 +802,7 @@ final class AlbumsTVC: LibraryTVC {
 			album.sink_songs(with: ids_selected)
 			
 			list_state.refresh_items()
+			list_state.signal_songs_reordered.toggle()
 			list_state.select_mode = .select_songs([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
