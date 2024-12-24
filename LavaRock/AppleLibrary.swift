@@ -30,8 +30,8 @@ extension AppleLibrary {
 		merge_changes()
 	}
 	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
-	func albumInfo(mpid: MPIDAlbum) -> AlbumInfo? { // 22do
-		guard let mkAlbum = mkSections_cache[MusicItemID(String(mpid))] else { return nil }
+	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
+		guard let mkAlbum = mkSections_cache[MusicItemID(String(uAlbum))] else { return nil }
 		let mkSongs = mkAlbum.items
 		return AlbumInfo(
 			_title: mkAlbum.title,

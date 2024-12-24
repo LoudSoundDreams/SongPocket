@@ -635,7 +635,7 @@ final class AlbumTable: LRTableViewController {
 		switch album_order {
 			case .random, .reverse, .recently_added: return true
 			case .recently_released: return ids_albums_to_sort().contains {
-				nil != AppleLibrary.shared.albumInfo(mpid: $0)?._date_released
+				nil != AppleLibrary.shared.albumInfo(uAlbum: UAlbum(bitPattern: $0))?._date_released
 			}
 		}
 	}

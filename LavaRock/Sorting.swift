@@ -43,7 +43,7 @@ enum AlbumOrder {
 					As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
 					I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
 					 */
-					first_added: AppleLibrary.shared.albumInfo(mpid: album.albumPersistentID)?._date_first_added ?? now
+					first_added: AppleLibrary.shared.albumInfo(uAlbum: UAlbum(bitPattern: album.albumPersistentID))?._date_first_added ?? now
 				)}
 				let sorted = albums_and_first_added.sorted_stably { // 10,000 albums takes 41ms in 2024.
 					$0.first_added == $1.first_added // MusicKit’s granularity is 1 second; we can’t meaningfully compare items added within the same second.
@@ -54,7 +54,7 @@ enum AlbumOrder {
 			case .recently_released:
 				let albums_and_dates_released: [(album: ZZZAlbum, date_released: Date?)] = in_original_order.map {(
 					album: $0,
-					date_released: AppleLibrary.shared.albumInfo(mpid: $0.albumPersistentID)?._date_released
+					date_released: AppleLibrary.shared.albumInfo(uAlbum: UAlbum(bitPattern: $0.albumPersistentID))?._date_released
 				)}
 				let sorted = albums_and_dates_released.sorted_stably {
 					$0.date_released == $1.date_released

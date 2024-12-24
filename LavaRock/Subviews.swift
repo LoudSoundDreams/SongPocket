@@ -146,7 +146,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let albumInfo: AlbumInfo? = apple_lib.albumInfo(mpid: id_album)
+		let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: UAlbum(bitPattern: id_album))
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""
 			else { return InterfaceText._tilde }
@@ -261,7 +261,7 @@ import MusicKit
 						_title: mkSong.title,
 						_artist: mkSong.artistName)
 				}()
-				let albumInfo: AlbumInfo? = apple_lib.albumInfo(mpid: id_album)
+				let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: UAlbum(bitPattern: id_album))
 				
 				stack_main(songInfo, albumInfo)
 				Spacer()

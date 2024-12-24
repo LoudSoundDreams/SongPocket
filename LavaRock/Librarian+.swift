@@ -23,11 +23,9 @@ extension Librarian {
 		// Use MusicKit for all other metadata. `AppleLibrary.shared.mkSections_cache` should be ready by now.
 		
 		let mpAlbums_by_recently_created = mpAlbums_unsorted.sorted { left, right in
-			let mpidAlbum_right = MPIDAlbum(bitPattern: right.persistentID)
-			guard let info_right = AppleLibrary.shared.albumInfo(mpid: mpidAlbum_right)
+			guard let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.persistentID)
 			else { return true }
-			let mpidAlbum_left = MPIDAlbum(bitPattern: left.persistentID)
-			guard let info_left = AppleLibrary.shared.albumInfo(mpid: mpidAlbum_left)
+			guard let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
 			else { return false }
 			
 			let date_left: Date? = info_left._date_first_added
