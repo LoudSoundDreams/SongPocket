@@ -5,7 +5,7 @@ import MediaPlayer
 extension Librarian {
 	static func merge_MediaPlayer_items(
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
-	) {
+	) async {
 		/*
 		 For each `LRAlbum`, determine whether it still corresponds to an album in the Apple Music library.
 		 • If so, update its songs.
@@ -42,26 +42,24 @@ extension Librarian {
 			}
 		}
 		// `mpAlbum_with_uAlbum` now contains only unfamiliar albums.
-		let to_create = mpAlbum_with_uAlbum
+		let to_insert = Array(mpAlbum_with_uAlbum.values) // We’ll sort these later.
 		
-		Print()
-		Print("update:")
-		to_update.forEach { (lrAlbum, mpAlbum) in
-			Print("\(mpAlbum.persistentID) • \(lrAlbum.uAlbum), \(AppleLibrary.shared.albumInfo(uAlbum: lrAlbum.uAlbum)?._title)")
-		}
-		Print()
-		Print("delete:")
-		to_delete.forEach { lrAlbum in
-			Print(lrAlbum.uAlbum, AppleLibrary.shared.albumInfo(uAlbum: lrAlbum.uAlbum)?._title)
-		}
-		Print()
-		Print("create:")
-		to_create.forEach { (uAlbum, mpAlbum) in
-			Print(uAlbum, mpAlbum.representativeItem?.albumTitle)
+		for mpAlbum in to_insert {
+			for mpSong in mpAlbum.items {
+				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID) // 22do: Does this repeatedly redraw SwiftUI views?
+			}
 		}
 		
-		
-		let mpAlbums_by_recently_created = mpAlbums_unsorted.sorted { left, right in
+		insert_albums(to_insert)
+		update_albums(to_update)
+		delete_albums(to_delete)
+	}
+	
+	private static func insert_albums(
+		_ mpAlbums_unsorted: [MPMediaItemCollection]
+	) {
+		let mpAlbums_sorted = mpAlbums_unsorted.sorted {
+			left, right in
 			guard let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.persistentID)
 			else { return true }
 			guard let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
@@ -77,17 +75,34 @@ extension Librarian {
 			guard let date_left else { return false }
 			return date_left > date_right
 		}
-		
-		if let the_crate {
-			deregister_crate(the_crate)
-		}
-		mpAlbums_by_recently_created.forEach { mpAlbum in
-			register_album(LRAlbum(
-				uAlbum: mpAlbum.persistentID,
-				songs: mpAlbum.items.shuffled().map { mpSong in
-					LRSong(uSong: mpSong.persistentID)
-				})
+		mpAlbums_sorted.reversed().forEach { mpAlbum in
+			insert_album(
+				LRAlbum(
+					uAlbum: mpAlbum.persistentID,
+					songs: { // Sort them by our own track order for consistency.
+						let uSongs_unsorted = mpAlbum.items.map { $0.persistentID }
+						let uSongs_by_track_order = uSongs_unsorted.sorted {
+							left, right in
+							guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
+							else { return true }
+							guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+							else { return false }
+							return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+						}
+						return uSongs_by_track_order.map { LRSong(uSong: $0) }
+					}()
+				)
 			)
 		}
+	}
+	
+	private static func update_albums(
+		_ lrAlbums_and_mpAlbums: [(LRAlbum, MPMediaItemCollection)]
+	) {
+	}
+	
+	private static func delete_albums(
+		_ lrAlbums: [LRAlbum]
+	) {
 	}
 }
