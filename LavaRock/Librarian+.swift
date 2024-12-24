@@ -49,6 +49,16 @@ extension Librarian {
 				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID) // 22do: Does this repeatedly redraw SwiftUI views?
 			}
 		}
+		for (lrAlbum, mpAlbum) in to_update {
+			for lrSong in lrAlbum.lrSongs {
+				let uSong_existing = lrSong.uSong
+				await AppleLibrary.shared.cache_mkSong(uSong: uSong_existing)
+			}
+			for mpSong in mpAlbum.items {
+				let uSong_fresh = mpSong.persistentID
+				await AppleLibrary.shared.cache_mkSong(uSong: uSong_fresh)
+			}
+		}
 		
 		insert_albums(to_insert)
 		update_albums(to_update)
@@ -76,7 +86,7 @@ extension Librarian {
 			return date_left > date_right
 		}
 		mpAlbums_sorted.reversed().forEach { mpAlbum in
-			insert_album(
+			register_album(
 				LRAlbum(
 					uAlbum: mpAlbum.persistentID,
 					songs: { // Sort them by our own track order for consistency.
@@ -99,6 +109,74 @@ extension Librarian {
 	private static func update_albums(
 		_ lrAlbums_and_mpAlbums: [(LRAlbum, MPMediaItemCollection)]
 	) {
+		lrAlbums_and_mpAlbums.forEach { lrAlbum, mpAlbum in
+			update_album(lrAlbum, to_match: mpAlbum)
+		}
+	}
+	private static func update_album(
+		_ lrAlbum: LRAlbum,
+		to_match mpAlbum: MPMediaItemCollection
+	) {
+		let was_in_track_order: Bool = lrAlbum.lrSongs.all_neighbors_satisfy {
+			each, next in
+			// Some `LRSong`s here might lack counterparts in the Apple Music library. If so, assume it was in track order.
+			// 2do: That means if we have existing songs E, G, F; and G lacks a counterpart, we think the album was in track order.
+			guard
+				let mk_left = AppleLibrary.shared.mkSongs_cache[each.uSong],
+				let mk_right = AppleLibrary.shared.mkSongs_cache[next.uSong]
+			else { return true }
+			return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+		}
+		
+		// If we have existing songs A, E, C; and the fresh songs are D, C, B, we want to insert D, B; and remove A, E.
+		var uSongs_fresh: Set<USong> = Set(mpAlbum.items.map { $0.persistentID })
+		lrAlbum.lrSongs.indices.reversed().forEach { i_lrSong in
+			let uSong = lrAlbum.lrSongs[i_lrSong].uSong
+			if uSongs_fresh.contains(uSong) {
+				uSongs_fresh.remove(uSong)
+			} else {
+				lrAlbum.lrSongs.remove(at: i_lrSong)
+				// 22do: Remove unused dictionary entries.
+			}
+		}
+		// `uSongs_fresh` now contains only unfamiliar songs.
+		let to_insert_unsorted = Array(uSongs_fresh)
+		
+		if was_in_track_order {
+			let to_insert = to_insert_unsorted.sorted { left, right in // For consistency.
+				guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
+				else { return true }
+				guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+				else { return false }
+				return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+			}
+			to_insert.reversed().forEach { uSong in
+				register_song(LRSong(uSong: uSong), in: lrAlbum)
+			}
+			lrAlbum.lrSongs.sort { lr_left, lr_right in
+				guard let mk_right = AppleLibrary.shared.mkSongs_cache[lr_right.uSong]
+				else { return true }
+				guard let mk_left = AppleLibrary.shared.mkSongs_cache[lr_left.uSong]
+				else { return false }
+				return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+			}
+		} else {
+			let to_insert = to_insert_unsorted.sorted { left, right in
+				guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
+				else { return true }
+				guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+				else { return false }
+				guard mk_left.libraryAddedDate != mk_right.libraryAddedDate else {
+					return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+				}
+				guard let date_right = mk_right.libraryAddedDate else { return true }
+				guard let date_left = mk_left.libraryAddedDate else { return false }
+				return date_left > date_right
+			}
+			to_insert.reversed().forEach { uSong in
+				register_song(LRSong(uSong: uSong), in: lrAlbum)
+			}
+		}
 	}
 	
 	private static func remove_albums(

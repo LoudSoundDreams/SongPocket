@@ -31,8 +31,8 @@ final class LRSong {
 	private(set) static var song_with_uSong: [USong: WeakRef<LRSong>] = [:]
 	private(set) static var album_containing_uSong: [USong: WeakRef<LRAlbum>] = [:]
 	
-	// Insert
-	static func insert_album(_ album_new: LRAlbum) {
+	// Register
+	static func register_album(_ album_new: LRAlbum) {
 		if the_crate == nil {
 			the_crate = LRCrate(title: InterfaceText._tilde)
 		}
@@ -41,10 +41,22 @@ final class LRSong {
 		crate.lrAlbums.insert(album_new, at: 0)
 		album_with_uAlbum[album_new.uAlbum] = WeakRef(album_new)
 		album_new.lrSongs.forEach { song_new in
+			// 2do: Deduplicate with `register_song`.
 			song_with_uSong[song_new.uSong] = WeakRef(song_new)
 			album_containing_uSong[song_new.uSong] = WeakRef(album_new)
 		}
 	}
+	static func register_song(
+		_ song_new: LRSong,
+		in album_target: LRAlbum
+	) {
+		album_target.lrSongs.insert(song_new, at: 0)
+		song_with_uSong[song_new.uSong] = WeakRef(song_new)
+		album_containing_uSong[song_new.uSong] = WeakRef(album_target)
+	}
+	
+	// Deregister
+	// 22do: Remove unused dictionary entries.
 	
 	// Persist
 	static func save() {
@@ -56,7 +68,7 @@ final class LRSong {
 		guard let crate_loaded = Disk.load_crates().first else { return }
 		
 		crate_loaded.lrAlbums.reversed().forEach { album_loaded in
-			insert_album(album_loaded)
+			register_album(album_loaded)
 		}
 	}
 	
