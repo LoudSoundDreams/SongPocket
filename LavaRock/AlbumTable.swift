@@ -734,27 +734,19 @@ final class AlbumTable: LRTableViewController {
 	 let target: Int = (rs_to_demote.ranges.count == 1)
 	 ? min(back+1, my_albums.count-1)
 	 : back
-	 
 	 my_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
 	 }
 	 
 	 final func float_albums(with ids_to_float: Set<MPIDAlbum>) {
 	 var my_albums = albums(sorted: true)
 	 let rs_to_float = my_albums.indices { ids_to_float.contains($0.albumPersistentID) }
-	 
 	 my_albums.moveSubranges(rs_to_float, to: 0)
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
 	 }
+	 
 	 final func sink_albums(with ids_to_sink: Set<MPIDAlbum>) {
 	 var my_albums = albums(sorted: true)
 	 let rs_to_sink = my_albums.indices { ids_to_sink.contains($0.albumPersistentID) }
-	 
 	 my_albums.moveSubranges(rs_to_sink, to: my_albums.count)
-	 ZZZDatabase.renumber(my_albums)
-	 managedObjectContext!.save_please()
 	 }
 	 */
 	
