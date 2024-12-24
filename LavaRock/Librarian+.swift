@@ -1,6 +1,5 @@
 // 2024-12-18
 
-import MusicKit
 import MediaPlayer
 
 extension Librarian {
@@ -29,8 +28,7 @@ extension Librarian {
 		var to_update: [(LRAlbum, MPMediaItemCollection)] = [] // Order doesn’t matter.
 		var to_delete: [LRAlbum] = [] // Order doesn’t matter.
 		var mpAlbum_with_uAlbum: [UAlbum: MPMediaItemCollection] = {
-			let tuples: [(UAlbum, MPMediaItemCollection)]
-			= mpAlbums_unsorted.map { ($0.persistentID, $0) }
+			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
 		lrAlbums_existing.forEach { lrAlbum in

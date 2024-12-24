@@ -31,7 +31,7 @@ final class LRSong {
 	private(set) static var song_with_uSong: [USong: WeakRef<LRSong>] = [:]
 	private(set) static var album_containing_uSong: [USong: WeakRef<LRAlbum>] = [:]
 	
-	// Register
+	// Insert
 	static func register_album(_ album_new: LRAlbum) {
 		if the_crate == nil {
 			the_crate = LRCrate(title: InterfaceText._tilde)
@@ -46,7 +46,7 @@ final class LRSong {
 		}
 	}
 	
-	// Deregister
+	// Remove
 	static func deregister_crate(_ crate_to_remove: LRCrate) {
 		the_crate = nil
 		
@@ -67,6 +67,7 @@ final class LRSong {
 		}
 	}
 	
+	// Edit
 	static func promote_albums(_ uAlbums_selected: Set<UAlbum>) {
 		guard let parent = the_crate else { return }
 		let rs_to_promote = parent.lrAlbums.indices(where: { album in
