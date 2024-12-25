@@ -142,14 +142,7 @@ extension Librarian {
 		let to_add_unsorted = Array(uSongs_fresh)
 		
 		if was_in_track_order {
-			let to_add = to_add_unsorted.sorted { left, right in // For consistency.
-				guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
-				else { return true }
-				guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
-				else { return false }
-				return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
-			}
-			to_add.reversed().forEach { uSong in
+			to_add_unsorted.reversed().forEach { uSong in
 				register_song(LRSong(uSong: uSong), in: lrAlbum)
 			}
 			lrAlbum.lrSongs.sort { lr_left, lr_right in
