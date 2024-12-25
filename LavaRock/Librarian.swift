@@ -1,5 +1,7 @@
 // 2024-09-04
 
+import os
+
 final class LRCrate {
 	let title: String
 	var lrAlbums: [LRAlbum] = []
@@ -23,6 +25,8 @@ final class LRSong {
 }
 
 @MainActor struct Librarian {
+	static let signposter = OSSignposter(subsystem: "librarian", category: .pointsOfInterest)
+	
 	// Browse
 	private(set) static var the_crate: LRCrate?
 	
@@ -56,7 +60,7 @@ final class LRSong {
 	}
 	
 	// Deregister
-	// 22do: Remove unused dictionary entries.
+	// 2do: Remove unused dictionary entries.
 	
 	// Persist
 	static func save() {
@@ -126,7 +130,6 @@ final class LRSong {
 			Print("nil crate")
 		}
 		
-		Print()
 		Print("album dict")
 		album_with_uAlbum.forEach { (uAlbum, album_ref) in
 			var pointee_album = "nil"
@@ -136,7 +139,6 @@ final class LRSong {
 			Print("\(uAlbum) → \(pointee_album)")
 		}
 		
-		Print()
 		Print("song dict")
 		song_with_uSong.forEach { (uSong, song_ref) in
 			var pointee_song = "nil"
@@ -146,7 +148,6 @@ final class LRSong {
 			Print("\(uSong) → \(pointee_song)")
 		}
 		
-		Print()
 		Print("song ID → album")
 		album_containing_uSong.forEach { (uSong, album_ref) in
 			var about_album = "nil"

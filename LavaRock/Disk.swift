@@ -4,64 +4,81 @@ import Foundation
 import os
 
 enum Disk {
-	static func save_crates(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
-		let _save = signposter.beginInterval("save")
-		defer { signposter.endInterval("save", _save) }
-		
-		try! FileManager.default.createDirectory(at: folder_v1, withIntermediateDirectories: true)
-		
-		let _serialize = signposter.beginInterval("serialize")
-		var stream: String = ""
-		crates.forEach {
-			stream.append(contentsOf: "\($0.title)\(newline)")
-			$0.lrAlbums.forEach { album in
-				stream.append(contentsOf: "\(tab)\(album.uAlbum)\(newline)")
-				album.lrSongs.forEach { song in
-					stream.append(contentsOf: "\(tab_tab)\(song.uSong)\(newline)")
-				}
-			}
-		}
-		signposter.endInterval("serialize", _serialize)
-		
-		let data = stream.data(using: encoding_utf8, allowLossyConversion: false)!
-		try! data.write(
-			to: file_crates,
-			options: [.atomic, .completeFileProtection])
-	}
+	private static let signposter = OSSignposter(subsystem: "disk", category: .pointsOfInterest)
 	
-	static func load_crates() -> [LRCrate] {
-		guard let data = try? Data(contentsOf: file_crates) else {
-			// Maybe the file doesn’t exist.
-			return []
-		}
-		
-		guard let input: String = String(data: data, encoding: encoding_utf8) else {
-			Print("Couldn’t decode crates file.")
-			return []
-		}
-		return Parser(input).parse_crates()
-	}
-	
-	fileprivate static let encoding_utf8: String.Encoding = .utf8
 	fileprivate static let newline = "\n"
 	fileprivate static let tab = "\t"
 	fileprivate static let tab_tab = "\t\t"
 	
+	static func save_crates(_ crates: [LRCrate]) { // 10,000 albums and 12,000 songs takes 40ms in 2024.
+		let _save = signposter.beginInterval("save")
+		defer { signposter.endInterval("save", _save) }
+		
+		// Serialize
+		var stream: String = ""
+		crates.forEach { crate in
+			stream.append(
+				contentsOf: "\(crate.title)\(newline)"
+			)
+			crate.lrAlbums.forEach { album in
+				stream.append(
+					contentsOf: "\(tab)\(album.uAlbum)\(newline)"
+				)
+				album.lrSongs.forEach { song in
+					stream.append(
+						contentsOf: "\(tab_tab)\(song.uSong)\(newline)"
+					)
+				}
+			}
+		}
+		
+		// Write
+		let data = stream.data(
+			using: encoding_utf8,
+			allowLossyConversion: false)!
+		try! FileManager.default.createDirectory(
+			at: folder_v1,
+			withIntermediateDirectories: true)
+		try! data.write(
+			to: file_crates,
+			options: [.atomic, .completeFileProtection])
+	}
+	static func load_crates() -> [LRCrate] {
+		let _load = signposter.beginInterval("load")
+		defer { signposter.endInterval("load", _load) }
+		
+		// Read
+		guard let data = try? Data(contentsOf: file_crates)
+		else {
+			// Maybe the file doesn’t exist.
+			return []
+		}
+		
+		// Parse
+		guard let stream: String = String(
+			data: data,
+			encoding: encoding_utf8)
+		else {
+			Print("Couldn’t decode crates file.")
+			return []
+		}
+		return Parser(stream).parse_crates()
+	}
+	
 	private static let folder_v1: URL = .applicationSupportDirectory.appending(path: "v1/")
 	private static let file_crates: URL = folder_v1.appending(path: "crates")
-	private static let signposter = OSSignposter(subsystem: "persistence", category: "disk")
+	private static let encoding_utf8: String.Encoding = .utf8
 }
 
 struct Parser {
 	init(_ string: String) {
-		self.lines = string.split(separator: Disk.newline, omittingEmptySubsequences: false)
+		self.lines = string.split(
+			separator: Disk.newline,
+			omittingEmptySubsequences: false)
 	}
 	private let lines: [Substring]
 	
 	func parse_crates() -> [LRCrate] {
-		let _crates = signposter.beginInterval("crates")
-		defer { signposter.endInterval("crates", _crates) }
-		
 		var result: [LRCrate] = []
 		var i_line = 0
 		while i_line < lines.count {
@@ -94,9 +111,6 @@ struct Parser {
 		next_i_line: Int,
 		[LRAlbum]
 	) {
-		let _albums = signposter.beginInterval("albums")
-		defer { signposter.endInterval("albums", _albums) }
-		
 		var result: [LRAlbum] = []
 		var i_line = start
 		while
@@ -138,9 +152,6 @@ struct Parser {
 		next_i_line: Int,
 		[LRSong]
 	) {
-		let _songs = signposter.beginInterval("songs")
-		defer { signposter.endInterval("songs", _songs) }
-		
 		var result: [LRSong] = []
 		var i_line = start
 		while
@@ -182,6 +193,4 @@ struct Parser {
 		return line.count > Disk.tab_tab.count &&
 		line.hasPrefix(Disk.tab_tab)
 	}
-	
-	private let signposter = OSSignposter(subsystem: "persistence", category: "parser")
 }

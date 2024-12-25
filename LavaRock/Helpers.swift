@@ -82,19 +82,11 @@ extension Array {
 extension String {
 	// Don’t sort `String`s by `<`. That puts all capital letters before all lowercase letters, meaning “Z” comes before “a”.
 	func precedes_in_Finder(_ other: Self) -> Bool {
-		let comparison = localizedStandardCompare(other) // The comparison method that the Finder uses
+		let comparison = localizedStandardCompare(other) // The Finder uses this.
 		switch comparison {
 			case .orderedAscending: return true
 			case .orderedSame: return true
 			case .orderedDescending: return false
-		}
-	}
-}
-
-extension Dictionary {
-	func debug_Print() {
-		forEach { (key, value) in
-			Print("\(key) → \(value)")
 		}
 	}
 }

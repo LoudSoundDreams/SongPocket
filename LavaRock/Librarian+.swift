@@ -6,6 +6,9 @@ extension Librarian {
 	static func merge_MediaPlayer_items(
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
 	) async {
+		let _merge = signposter.beginInterval("merge")
+		defer { signposter.endInterval("merge", _merge) }
+		
 		/*
 		 For each `LRAlbum`, determine whether it still corresponds to an album in the Apple Music library.
 		 • If so, update its songs.
@@ -46,7 +49,8 @@ extension Librarian {
 		
 		for mpAlbum in to_add {
 			for mpSong in mpAlbum.items {
-				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID) // 22do: Does this repeatedly redraw SwiftUI views?
+				// This repeatedly updates an `@Observable` property, but SwiftUI doesn’t redraw dependent views for every update; maybe only once per turn of the run loop.
+				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID)
 			}
 		}
 		for (lrAlbum, mpAlbum) in to_update {
@@ -120,7 +124,7 @@ extension Librarian {
 		let was_in_track_order: Bool = lrAlbum.lrSongs.all_neighbors_satisfy {
 			each, next in
 			// Some `LRSong`s here might lack counterparts in the Apple Music library. If so, assume it was in track order.
-			// 2do: That means if we have existing songs E, G, F; and G lacks a counterpart, we think the album was in track order.
+			// Unfortunately, that means if we have existing songs E, G, F; and G lacks a counterpart, we think the album was in track order.
 			guard
 				let mk_left = AppleLibrary.shared.mkSongs_cache[each.uSong],
 				let mk_right = AppleLibrary.shared.mkSongs_cache[next.uSong]
@@ -135,7 +139,7 @@ extension Librarian {
 			if uSongs_fresh.contains(uSong) {
 				uSongs_fresh.remove(uSong)
 			} else {
-				lrAlbum.lrSongs.remove(at: i_lrSong) // 22do: Remove unused dictionary entries.
+				lrAlbum.lrSongs.remove(at: i_lrSong) // 2do: Remove unused dictionary entries.
 			}
 		}
 		// `uSongs_fresh` now contains only unfamiliar songs.
@@ -181,7 +185,7 @@ extension Librarian {
 		the_crate.lrAlbums.indices.reversed().forEach { i_album in
 			let album = the_crate.lrAlbums[i_album]
 			if uAlbums_to_delete.contains(album.uAlbum) {
-				the_crate.lrAlbums.remove(at: i_album) // 22do: Remove unused dictionary entries.
+				the_crate.lrAlbums.remove(at: i_album) // 2do: Remove unused dictionary entries.
 			}
 		}
 	}

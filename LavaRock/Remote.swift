@@ -51,7 +51,10 @@ import MediaPlayer
 		guard MusicAuthorization.currentStatus == .authorized else {
 			return ""
 		}
-		guard let lrCrate = Librarian.the_crate, !lrCrate.lrAlbums.isEmpty else {
+		guard
+			let lrCrate = Librarian.the_crate,
+			!lrCrate.lrAlbums.isEmpty
+		else {
 			return InterfaceText._empty_library_message
 		}
 		return ""
