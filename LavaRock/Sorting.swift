@@ -114,7 +114,7 @@ enum SongOrder {
 		}
 		return sorted.map { $0.song }
 	}
-	static func is_in_track_order(
+	static func is_ordered_by_track(
 		strict: Bool,
 		_ left: MKSong, _ right: MKSong
 	) -> Bool {

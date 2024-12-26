@@ -105,7 +105,7 @@ extension Librarian {
 						else { return true }
 						guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
 						else { return false }
-						return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+						return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
 					}
 					return uSongs_by_track_order.map { LRSong(uSong: $0) }
 				}()
@@ -137,7 +137,7 @@ extension Librarian {
 				let mk_left = AppleLibrary.shared.mkSongs_cache[each.uSong],
 				let mk_right = AppleLibrary.shared.mkSongs_cache[next.uSong]
 			else { return true }
-			return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+			return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
 		}
 		
 		// If we have existing songs A, E, C; and the fresh songs are D, C, B, we want to insert D, B; and remove A, E.
@@ -165,7 +165,7 @@ extension Librarian {
 				else { return true }
 				guard let mk_left = AppleLibrary.shared.mkSongs_cache[lr_left.uSong]
 				else { return false }
-				return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+				return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
 			}
 		} else {
 			let to_add = to_add_unsorted.sorted { left, right in
@@ -174,7 +174,7 @@ extension Librarian {
 				guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
 				else { return false }
 				guard mk_left.libraryAddedDate != mk_right.libraryAddedDate else {
-					return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+					return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
 				}
 				guard let date_right = mk_right.libraryAddedDate else { return true }
 				guard let date_left = mk_left.libraryAddedDate else { return false }
