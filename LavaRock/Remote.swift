@@ -86,7 +86,7 @@ import MediaPlayer
 #else
 			guard
 				let uSong_current = MPMusicPlayerController.uSong_current,
-				nil != Librarian.song_with_uSong[uSong_current]?.referencee
+				Librarian.uSongs_known.contains(uSong_current)
 			else { return .disabled }
 			return []
 #endif

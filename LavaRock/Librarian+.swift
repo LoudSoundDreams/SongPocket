@@ -21,7 +21,7 @@ extension Librarian {
 		 When adding songs to an existing album: if the existing songs are in default order, maintain default order after adding songs. Otherwise, insert them on top, most-recently-added on top.
 		 
 		 Removing songs can change whether the remaining songs are in default order; removing an album makes its ID unfamiliar. So procrastinate on those operations.
-		 Remove `LRAlbum`s and `LRSong`s that now lack counterparts in the Apple Music library. Remove empty `LRAlbum`s and `LRCrate`s.
+		 Remove `LRAlbum`s that now lack counterparts in the Apple Music library. Remove empty `LRAlbum`s and `LRCrate`s.
 		 */
 		
 		// Use MediaPlayer for album and song IDs.
@@ -55,8 +55,7 @@ extension Librarian {
 			}
 		}
 		for (lrAlbum, mpAlbum) in to_update {
-			for lrSong in lrAlbum.lrSongs {
-				let uSong_existing = lrSong.uSong
+			for uSong_existing in lrAlbum.uSongs {
 				await AppleLibrary.shared.cache_mkSong(uSong: uSong_existing)
 			}
 			for mpSong in mpAlbum.items {
@@ -98,9 +97,9 @@ extension Librarian {
 		mpAlbums_sorted.reversed().forEach { mpAlbum in
 			let lrAlbum_new = LRAlbum(
 				uAlbum: mpAlbum.persistentID,
-				songs: { // Sort them by our own track order for consistency.
+				uSongs: { // Sort them by our own track order for consistency.
 					let uSongs_unsorted = mpAlbum.items.map { $0.persistentID }
-					let uSongs_by_track_order = uSongs_unsorted.sorted { left, right in
+					return uSongs_unsorted.sorted { left, right in
 						let mk_left = AppleLibrary.shared.mkSongs_cache[left]
 						let mk_right = AppleLibrary.shared.mkSongs_cache[right]
 						if mk_left == nil && mk_right == nil { return false }
@@ -109,7 +108,6 @@ extension Librarian {
 						
 						return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
 					}
-					return uSongs_by_track_order.map { LRSong(uSong: $0) }
 				}()
 			)
 			the_crate.lrAlbums.insert(lrAlbum_new, at: 0)
@@ -131,25 +129,25 @@ extension Librarian {
 		_ lrAlbum: LRAlbum,
 		to_match uSongs_fresh: Set<USong>
 	) {
-		let was_in_track_order: Bool = lrAlbum.lrSongs.all_neighbors_satisfy {
+		let was_in_track_order: Bool = lrAlbum.uSongs.all_neighbors_satisfy {
 			each, next in
-			// Some `LRSong`s here might lack counterparts in the Apple Music library. If so, assume it was in track order.
+			// Some `USong`s here might lack counterparts in the Apple Music library. If so, assume it was in track order.
 			// Unfortunately, that means if we have existing songs E, G, F; and G lacks a counterpart, we think the album was in track order.
 			guard
-				let mk_left = AppleLibrary.shared.mkSongs_cache[each.uSong],
-				let mk_right = AppleLibrary.shared.mkSongs_cache[next.uSong]
+				let mk_left = AppleLibrary.shared.mkSongs_cache[each],
+				let mk_right = AppleLibrary.shared.mkSongs_cache[next]
 			else { return true }
 			return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
 		}
 		
 		// If we have existing songs A, E, C; and the fresh songs are D, C, B, we want to insert D, B; and remove A, E.
 		var uSongs_fresh = uSongs_fresh
-		lrAlbum.lrSongs.indices.reversed().forEach { i_lrSong in
-			let uSong = lrAlbum.lrSongs[i_lrSong].uSong
+		lrAlbum.uSongs.indices.reversed().forEach { i_uSong in
+			let uSong = lrAlbum.uSongs[i_uSong]
 			if uSongs_fresh.contains(uSong) {
 				uSongs_fresh.remove(uSong)
 			} else {
-				lrAlbum.lrSongs.remove(at: i_lrSong)
+				lrAlbum.uSongs.remove(at: i_uSong)
 				deregister_uSong(uSong)
 			}
 		}
@@ -158,13 +156,12 @@ extension Librarian {
 		
 		if was_in_track_order {
 			to_add_unsorted.reversed().forEach { uSong in
-				let lrSong_new = LRSong(uSong: uSong)
-				lrAlbum.lrSongs.insert(lrSong_new, at: 0)
-				register_song(lrSong_new, with: lrAlbum)
+				lrAlbum.uSongs.insert(uSong, at: 0)
+				register_uSong(uSong, with: lrAlbum)
 			}
-			lrAlbum.lrSongs.sort { lr_left, lr_right in
-				let mk_left = AppleLibrary.shared.mkSongs_cache[lr_left.uSong]
-				let mk_right = AppleLibrary.shared.mkSongs_cache[lr_right.uSong]
+			lrAlbum.uSongs.sort { left, right in
+				let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+				let mk_right = AppleLibrary.shared.mkSongs_cache[right]
 				if mk_left == nil && mk_right == nil { return false }
 				guard let mk_right else { return true }
 				guard let mk_left else { return false }
@@ -189,9 +186,8 @@ extension Librarian {
 				return date_left > date_right
 			}
 			to_add.reversed().forEach { uSong in
-				let lrSong_new = LRSong(uSong: uSong)
-				lrAlbum.lrSongs.insert(lrSong_new, at: 0)
-				register_song(lrSong_new, with: lrAlbum)
+				lrAlbum.uSongs.insert(uSong, at: 0)
+				register_uSong(uSong, with: lrAlbum)
 			}
 		}
 	}

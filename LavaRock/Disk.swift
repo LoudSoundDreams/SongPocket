@@ -24,9 +24,9 @@ enum Disk {
 				stream.append(
 					contentsOf: "\(tab)\(album.uAlbum)\(newline)"
 				)
-				album.lrSongs.forEach { song in
+				album.uSongs.forEach { uSong in
 					stream.append(
-						contentsOf: "\(tab_tab)\(song.uSong)\(newline)"
+						contentsOf: "\(tab_tab)\(uSong)\(newline)"
 					)
 				}
 			}
@@ -129,28 +129,28 @@ struct Parser {
 			}
 			
 			i_line += 1
-			let (next_i_line, songs) = songs_until_outdent(
+			let (next_i_line, uSongs) = uSongs_until_outdent(
 				from: i_line,
 				uAlbum: uAlbum)
 			
 			i_line = next_i_line
-			guard !songs.isEmpty else {
+			guard !uSongs.isEmpty else {
 				// No valid songs for this album. Skip this album line.
 				continue
 			}
-			let parsed_album = LRAlbum(uAlbum: uAlbum, songs: songs)
+			let parsed_album = LRAlbum(uAlbum: uAlbum, uSongs: uSongs)
 			result.append(parsed_album)
 		}
 		return (i_line, result)
 	}
-	private func songs_until_outdent(
+	private func uSongs_until_outdent(
 		from start: Int,
 		uAlbum: UAlbum
 	) -> (
 		next_i_line: Int,
-		[LRSong]
+		[USong]
 	) {
-		var result: [LRSong] = []
+		var result: [USong] = []
 		var i_line = start
 		while
 			i_line < lines.count,
@@ -170,8 +170,7 @@ struct Parser {
 			}
 			
 			i_line += 1
-			let parsed_song = LRSong(uSong: uSong)
-			result.append(parsed_song)
+			result.append(uSong)
 		}
 		return (i_line, result)
 	}

@@ -11,16 +11,10 @@ final class LRCrate {
 }
 final class LRAlbum {
 	let uAlbum: UAlbum
-	var lrSongs: [LRSong] = []
-	init(uAlbum: UAlbum, songs: [LRSong]) {
+	var uSongs: [USong] = []
+	init(uAlbum: UAlbum, uSongs: [USong]) {
 		self.uAlbum = uAlbum
-		self.lrSongs = songs
-	}
-}
-final class LRSong { // 2do: Needless! Delete.
-	let uSong: USong
-	init(uSong: USong) {
-		self.uSong = uSong
+		self.uSongs = uSongs
 	}
 }
 
@@ -32,7 +26,7 @@ final class LRSong { // 2do: Needless! Delete.
 	
 	// Search
 	private(set) static var album_with_uAlbum: [UAlbum: WeakRef<LRAlbum>] = [:]
-	private(set) static var song_with_uSong: [USong: WeakRef<LRSong>] = [:]
+	private(set) static var uSongs_known: Set<USong> = []
 	private(set) static var album_containing_uSong: [USong: WeakRef<LRAlbum>] = [:]
 	
 	// Register
@@ -43,28 +37,28 @@ final class LRSong { // 2do: Needless! Delete.
 		_ album_new: LRAlbum
 	) {
 		album_with_uAlbum[album_new.uAlbum] = WeakRef(album_new)
-		album_new.lrSongs.forEach { song_new in
-			register_song(song_new, with: album_new)
+		album_new.uSongs.forEach { uSong in
+			register_uSong(uSong, with: album_new)
 		}
 	}
-	static func register_song(
-		_ song_new: LRSong,
+	static func register_uSong(
+		_ uSong: USong,
 		with album_target: LRAlbum
 	) {
-		song_with_uSong[song_new.uSong] = WeakRef(song_new)
-		album_containing_uSong[song_new.uSong] = WeakRef(album_target)
+		uSongs_known.insert(uSong)
+		album_containing_uSong[uSong] = WeakRef(album_target)
 	}
 	
 	// Deregister
 	static func deregister_uAlbum(_ uAlbum: UAlbum) {
 		let album = album_with_uAlbum[uAlbum]?.referencee
 		album_with_uAlbum[uAlbum] = nil
-		album?.lrSongs.forEach { song in
-			deregister_uSong(song.uSong)
+		album?.uSongs.forEach { uSong in
+			deregister_uSong(uSong)
 		}
 	}
 	static func deregister_uSong(_ uSong: USong) {
-		song_with_uSong[uSong] = nil
+		uSongs_known.remove(uSong)
 		album_containing_uSong[uSong] = nil
 	}
 	
@@ -107,8 +101,8 @@ final class LRSong { // 2do: Needless! Delete.
 		to_limit: Bool
 	) {
 		guard let album = album_containing_uSongs(uSongs_selected) else { return } // Verify that the selected songs are in the same album. Find that album.
-		let rs_to_promote = album.lrSongs.indices(where: { song in
-			uSongs_selected.contains(song.uSong)
+		let rs_to_promote = album.uSongs.indices(where: { uSong in
+			uSongs_selected.contains(uSong)
 		})
 		let target: Int? = (
 			to_limit
@@ -116,7 +110,7 @@ final class LRSong { // 2do: Needless! Delete.
 			: target_promoting(rs_to_promote)
 		)
 		guard let target else { return }
-		album.lrSongs.moveSubranges(rs_to_promote, to: target)
+		album.uSongs.moveSubranges(rs_to_promote, to: target)
 	}
 	private static func target_promoting(
 		_ rangeSet: RangeSet<Int>
@@ -153,18 +147,18 @@ final class LRSong { // 2do: Needless! Delete.
 		to_limit: Bool
 	) {
 		guard let album = album_containing_uSongs(uSongs_selected) else { return }
-		let rs_to_demote = album.lrSongs.indices(where: { song in
-			uSongs_selected.contains(song.uSong)
+		let rs_to_demote = album.uSongs.indices(where: { uSong in
+			uSongs_selected.contains(uSong)
 		})
 		let target: Int? = (
 			to_limit
-			? album.lrSongs.count-1
+			? album.uSongs.count-1
 			: target_demoting(
 				rs_to_demote,
-				index_max: album.lrSongs.count-1)
+				index_max: album.uSongs.count-1)
 		)
 		guard let target else { return }
-		album.lrSongs.moveSubranges(rs_to_demote, to: target+1)
+		album.uSongs.moveSubranges(rs_to_demote, to: target+1)
 	}
 	private static func target_demoting(
 		_ rangeSet: RangeSet<Int>,
@@ -227,17 +221,17 @@ final class LRSong { // 2do: Needless! Delete.
 		by songOrder: SongOrder
 	) {
 		guard let album = album_containing_uSongs(uSongs_selected) else { return }
-		let songs_selected_sorted: [LRSong] = {
-			let songs_selected = album.lrSongs.filter {
-				uSongs_selected.contains($0.uSong)
+		let uSongs_selected_sorted: [USong] = {
+			let uSongs_selected_unsorted = album.uSongs.filter {
+				uSongs_selected.contains($0)
 			}
 			switch songOrder {
-				case .reverse: return songs_selected.reversed()
-				case .random: return songs_selected.in_any_other_order { $0.uSong == $1.uSong }
+				case .reverse: return uSongs_selected_unsorted.reversed()
+				case .random: return uSongs_selected_unsorted.in_any_other_order { $0 == $1 }
 				case .track:
-					return songs_selected.sorted { left, right in
-						let mk_left = AppleLibrary.shared.mkSongs_cache[left.uSong]
-						let mk_right = AppleLibrary.shared.mkSongs_cache[right.uSong]
+					return uSongs_selected_unsorted.sorted { left, right in
+						let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+						let mk_right = AppleLibrary.shared.mkSongs_cache[right]
 						if mk_left == nil && mk_right == nil { return false }
 						guard let mk_right else { return true }
 						guard let mk_left else { return false }
@@ -246,16 +240,16 @@ final class LRSong { // 2do: Needless! Delete.
 					}
 			}
 		}()
-		let indices_selected: [Int] = album.lrSongs.indices.filter {
-			uSongs_selected.contains(album.lrSongs[$0].uSong)
+		let indices_selected: [Int] = album.uSongs.indices.filter {
+			uSongs_selected.contains(album.uSongs[$0])
 		}
-		var songs_sorted = album.lrSongs
+		var uSongs_sorted = album.uSongs
 		indices_selected.indices.forEach { counter in
 			let i_selected = indices_selected[counter]
-			let song_for_here = songs_selected_sorted[counter]
-			songs_sorted[i_selected] = song_for_here
+			let song_for_here = uSongs_selected_sorted[counter]
+			uSongs_sorted[i_selected] = song_for_here
 		}
-		album.lrSongs = songs_sorted
+		album.uSongs = uSongs_sorted
 	}
 	
 	private static func album_containing_uSongs(
@@ -277,8 +271,8 @@ final class LRSong { // 2do: Needless! Delete.
 			Print("\(the_crate.title): \(the_crate.lrAlbums.count) albums")
 			the_crate.lrAlbums.forEach { album in
 				Print("  \(album.uAlbum)")
-				album.lrSongs.forEach { song in
-					Print("    \(song.uSong)")
+				album.uSongs.forEach { uSong in
+					Print("    \(uSong)")
 				}
 			}
 		} else {
@@ -294,14 +288,7 @@ final class LRSong { // 2do: Needless! Delete.
 			Print("\(uAlbum) → \(pointee_album)")
 		}
 		
-		Print("song dict:", song_with_uSong.count)
-		song_with_uSong.forEach { (uSong, song_ref) in
-			var pointee_song = "nil"
-			if let song = song_ref.referencee {
-				pointee_song = "\(ObjectIdentifier(song))"
-			}
-			Print("\(uSong) → \(pointee_song)")
-		}
+		Print("song IDs:", uSongs_known.count)
 		
 		Print("song ID → album:", album_containing_uSong.count)
 		album_containing_uSong.forEach { (uSong, album_ref) in

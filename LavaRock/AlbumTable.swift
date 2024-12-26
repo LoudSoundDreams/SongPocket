@@ -37,8 +37,8 @@ extension AlbumListState {
 						return album_mpids.map { .album_mpid($0) }
 					}
 					
-					let song_mpids_inline: [AlbumListItem] = lrAlbum.lrSongs.map {
-						.song_mpid(MPIDSong(bitPattern: $0.uSong))
+					let song_mpids_inline: [AlbumListItem] = lrAlbum.uSongs.map {
+						.song_mpid(MPIDSong(bitPattern: $0))
 					}
 					var result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
 					result.insert(contentsOf: song_mpids_inline, at: i_expanded + 1)
@@ -475,7 +475,7 @@ final class AlbumTable: LRTableViewController {
 					let uSong_activated = USong(bitPattern: id_activated)
 					guard let album_chosen = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
 					await ApplicationMusicPlayer._shared?.play_now(
-						album_chosen.lrSongs.map { $0.uSong },
+						album_chosen.uSongs,
 						starting_at: uSong_activated)
 				}
 			}
@@ -523,9 +523,9 @@ final class AlbumTable: LRTableViewController {
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
 				if always_songs {
-					let num_songs_selected: Int = list_state.album_mpids(with: ids_selected).reduce(into: 0) { songs_so_far, mpidAlbum_selected in
+					let num_songs_selected: Int = list_state.album_mpids(with: ids_selected).reduce(into: 0) { uSongs_so_far, mpidAlbum_selected in
 						guard let lrAlbum_selected = Librarian.album_with_uAlbum[UAlbum(bitPattern: mpidAlbum_selected)]?.referencee else { return }
-						songs_so_far += lrAlbum_selected.lrSongs.count
+						uSongs_so_far += lrAlbum_selected.uSongs.count
 					}
 					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
 				} else {
@@ -537,9 +537,9 @@ final class AlbumTable: LRTableViewController {
 				switch list_state.expansion {
 					case .collapsed:
 						if always_songs {
-							let num_all_songs: Int = list_state.album_mpids().reduce(into: 0) { songs_so_far, mpidAlbum in
+							let num_all_songs: Int = list_state.album_mpids().reduce(into: 0) { uSongs_so_far, mpidAlbum in
 								guard let lrAlbum = Librarian.album_with_uAlbum[UAlbum(bitPattern: mpidAlbum)]?.referencee else { return }
-								songs_so_far += lrAlbum.lrSongs.count
+								uSongs_so_far += lrAlbum.uSongs.count
 							}
 							return InterfaceText.NUMBER_songs(num_all_songs)
 						} else {
@@ -614,7 +614,7 @@ final class AlbumTable: LRTableViewController {
 				var result: [USong] = []
 				ids_selected.forEach {
 					guard let lrAlbum_selected = Librarian.album_with_uAlbum[UAlbum(bitPattern: $0)]?.referencee else { return }
-					result.append(contentsOf: lrAlbum_selected.lrSongs.map { $0.uSong })
+					result.append(contentsOf: lrAlbum_selected.uSongs)
 				}
 				return result
 			case .select_songs(let ids_selected):
@@ -625,7 +625,7 @@ final class AlbumTable: LRTableViewController {
 						var result: [USong] = []
 						list_state.album_mpids().forEach {
 							guard let lrAlbum = Librarian.album_with_uAlbum[UAlbum(bitPattern: $0)]?.referencee else { return }
-							result.append(contentsOf: lrAlbum.lrSongs.map { $0.uSong })
+							result.append(contentsOf: lrAlbum.uSongs)
 						}
 						return result
 					case .expanded:
