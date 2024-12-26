@@ -85,43 +85,85 @@ final class LRSong {
 		}
 	}
 	
-	// Edit
+	// Promote
 	static func promote_albums(_ uAlbums_selected: Set<UAlbum>) {
-		guard let parent = the_crate else { return }
-		let rs_to_promote = parent.lrAlbums.indices(where: { album in
+		guard let crate = the_crate else { return }
+		
+		let rs_to_promote = crate.lrAlbums.indices(where: { album in
 			uAlbums_selected.contains(album.uAlbum)
 		})
-		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
-		
-		let target: Int = (rs_to_promote.ranges.count == 1)
-		? max(front-1, 0)
-		: front
-		var albums_reordered = parent.lrAlbums
-		albums_reordered.moveSubranges(rs_to_promote, to: target)
-		parent.lrAlbums = albums_reordered
+		guard let target = target_promoting(rs_to_promote) else { return }
+		crate.lrAlbums.moveSubranges(rs_to_promote, to: target)
 	}
 	static func promote_songs(_ uSongs_selected: Set<USong>) {
 		// Verify that the selected songs are in the same album. Find that album.
-		var parent: LRAlbum? = nil
+		var album: LRAlbum? = nil
 		for uSong in uSongs_selected {
-			guard let this_parent = album_containing_uSong[uSong]?.referencee else { return }
-			if parent == nil { parent = this_parent }
-			guard parent?.uAlbum == this_parent.uAlbum else { return }
+			guard let this_album = album_containing_uSong[uSong]?.referencee else { return }
+			if album == nil { album = this_album }
+			guard this_album.uAlbum == album?.uAlbum else { return }
 		}
-		guard let parent else { return }
+		guard let album else { return }
 		
 		// Find the index of the frontmost selected song.
-		let rs_to_promote = parent.lrSongs.indices(where: { song in
+		let rs_to_promote = album.lrSongs.indices(where: { song in
 			uSongs_selected.contains(song.uSong)
 		})
-		guard let front: Int = rs_to_promote.ranges.first?.first else { return }
+		guard let target = target_promoting(rs_to_promote) else { return }
+		album.lrSongs.moveSubranges(rs_to_promote, to: target)
+	}
+	private static func target_promoting(
+		_ rangeSet: RangeSet<Int>
+	) -> Int? {
+		guard let front = rangeSet.ranges.first?.first else { return nil }
+		if rangeSet.ranges.count == 1 { // If contiguous …
+			return max(front-1, 0) // … 1 step toward beginning, but stay in bounds.
+		} else {
+			return front // … make contiguous starting at front.
+		}
+	}
+	
+	// Demote
+	static func demote_albums(_ uAlbums_selected: Set<UAlbum>) {
+		guard let crate = the_crate else { return }
 		
-		let target: Int = (rs_to_promote.ranges.count == 1) // If contiguous …
-		? max(front-1, 0) // … 1 step toward beginning, but stay in bounds.
-		: front // … make contiguous starting at front.
-		var songs_reordered = parent.lrSongs
-		songs_reordered.moveSubranges(rs_to_promote, to: target)
-		parent.lrSongs = songs_reordered
+		let rs_to_demote = crate.lrAlbums.indices(where: { album in
+			uAlbums_selected.contains(album.uAlbum)
+		})
+		guard let target = target_demoting(
+			rs_to_demote,
+			index_max: crate.lrAlbums.count-1
+		) else { return }
+		crate.lrAlbums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
+	}
+	static func demote_songs(_ uSongs_selected: Set<USong>) {
+		var album: LRAlbum? = nil
+		for uSong in uSongs_selected {
+			guard let this_album = album_containing_uSong[uSong]?.referencee else { return }
+			if album == nil { album = this_album }
+			guard this_album.uAlbum == album?.uAlbum else { return }
+		}
+		guard let album else { return }
+		
+		let rs_to_demote = album.lrSongs.indices(where: { song in
+			uSongs_selected.contains(song.uSong)
+		})
+		guard let target = target_demoting(
+			rs_to_demote,
+			index_max: album.lrSongs.count-1
+		) else { return }
+		album.lrSongs.moveSubranges(rs_to_demote, to: target+1)
+	}
+	private static func target_demoting(
+		_ rangeSet: RangeSet<Int>,
+		index_max: Int
+	) -> Int? {
+		guard let back = rangeSet.ranges.last?.last else { return nil }
+		if rangeSet.ranges.count == 1 {
+			return min(back+1, index_max)
+		} else {
+			return back
+		}
 	}
 	
 	static func debug_Print() {

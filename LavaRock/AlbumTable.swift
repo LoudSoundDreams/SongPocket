@@ -729,17 +729,36 @@ final class AlbumTable: LRTableViewController {
 		}
 	}
 	
+	private func demote_albums() {
+		Task {
+			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
+			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
+			Librarian.demote_albums(uAlbums_selected)
+			Librarian.save()
+			
+			list_state.refresh_items()
+			list_state.signal_albums_reordered.toggle()
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			let _ = await apply_ids_rows(list_state.row_identifiers())
+		}
+	}
+	private func demote_songs() {
+		Task {
+			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
+			let uSongs_selected = Set(ids_selected.map { USong(bitPattern: $0) })
+			Librarian.demote_songs(uSongs_selected)
+			Librarian.save()
+			
+			list_state.refresh_items()
+			list_state.signal_songs_reordered.toggle()
+			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			let _ = await apply_ids_rows(list_state.row_identifiers())
+		}
+	}
+	
+	// MARK: To top and bottom
+	
 	/*
-	 final func demote_albums(with ids_to_demote: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_demote = my_albums.indices { ids_to_demote.contains($0.albumPersistentID) }
-	 guard let back: Int = rs_to_demote.ranges.last?.last else { return }
-	 let target: Int = (rs_to_demote.ranges.count == 1)
-	 ? min(back+1, my_albums.count-1)
-	 : back
-	 my_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
-	 }
-	 
 	 final func float_albums(with ids_to_float: Set<MPIDAlbum>) {
 	 var my_albums = albums(sorted: true)
 	 let rs_to_float = my_albums.indices { ids_to_float.contains($0.albumPersistentID) }
@@ -752,29 +771,6 @@ final class AlbumTable: LRTableViewController {
 	 my_albums.moveSubranges(rs_to_sink, to: my_albums.count)
 	 }
 	 */
-	
-	private func demote_albums() {
-		Task {
-			
-			
-			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle()
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers())
-		}
-	}
-	private func demote_songs() {
-		Task {
-			
-			
-			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers())
-		}
-	}
-	
-	// MARK: To top and bottom
 	
 	private func float_albums() {
 		Task {
