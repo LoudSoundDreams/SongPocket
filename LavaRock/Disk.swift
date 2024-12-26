@@ -43,9 +43,7 @@ enum Disk {
 		try! FileManager.default.createDirectory(
 			at: folder_v1,
 			withIntermediateDirectories: true)
-		try! data.write(
-			to: file_crates,
-			options: [.atomic, .completeFileProtection])
+		try! data.write(to: file_crates)
 	}
 	static func load_crates() -> [LRCrate] {
 		let _load = signposter.beginInterval("load")
