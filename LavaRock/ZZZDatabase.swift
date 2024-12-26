@@ -4,19 +4,6 @@ import CoreData
 
 enum ZZZDatabase {
 	@MainActor static func migrate() {
-		let context = container.viewContext
-		context.migrate_to_single_collection()
-		context.migrate_to_disk()
-		
-		let coordinator = container.persistentStoreCoordinator
-		coordinator.persistentStores.forEach { store in
-			try! coordinator.destroyPersistentStore(
-				at: store.url!,
-				type: NSPersistentStore.StoreType(rawValue: store.type))
-		}
-	}
-	
-	private static let container: NSPersistentContainer = {
 		let container = NSPersistentContainer(name: "ZZZContainer")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 			container.viewContext.automaticallyMergesChangesFromParent = true
@@ -31,8 +18,19 @@ enum ZZZDatabase {
 				fatalError("Core Data couldn’t load some persistent store. \(error), \(error.userInfo)")
 			}
 		})
-		return container
-	}()
+		
+		let context = container.viewContext
+		context.migrate_to_single_collection()
+		context.migrate_to_disk()
+		
+		// Destroy persistent stores.
+		let coordinator = container.persistentStoreCoordinator
+		coordinator.persistentStores.forEach { store in
+			try! coordinator.destroyPersistentStore(
+				at: store.url!,
+				type: NSPersistentStore.StoreType(rawValue: store.type))
+		}
+	}
 }
 
 extension NSManagedObjectContext {
