@@ -228,9 +228,14 @@ final class LRSong { // 2do: Needless! Delete.
 				case .reverse: return songs_selected.reversed()
 				case .random: return songs_selected.in_any_other_order { $0.uSong == $1.uSong }
 				case .track:
-					break
+					return songs_selected.sorted { left, right in
+						guard let mk_right = AppleLibrary.shared.mkSongs_cache[right.uSong]
+						else { return true }
+						guard let mk_left = AppleLibrary.shared.mkSongs_cache[left.uSong]
+						else { return false }
+						return SongOrder.is_ordered_by_track(strict: false, mk_left, mk_right)
+					}
 			}
-			return songs_selected // 2do
 		}()
 		let indices_selected: [Int] = album.lrSongs.indices.filter {
 			uSongs_selected.contains(album.lrSongs[$0].uSong)
