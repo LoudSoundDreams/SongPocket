@@ -356,7 +356,7 @@ import MusicKit
 						guard let track = songInfo._track else { return InterfaceText._octothorpe }
 						return String(track)
 					}()
-					guard albumInfo._num_discs >= 2 else { return f_track }
+					guard albumInfo._disc_max >= 2 else { return f_track }
 					
 					let f_disc: String = {
 						guard let disc = songInfo._disc else { return InterfaceText._octothorpe }

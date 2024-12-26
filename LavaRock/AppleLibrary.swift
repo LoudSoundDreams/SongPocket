@@ -9,6 +9,10 @@ typealias MKSong = MusicKit.Song
 typealias UAlbum = MPMediaEntityPersistentID
 typealias USong = MPMediaEntityPersistentID
 
+// 2do: Replace.
+typealias MPIDAlbum = Int64
+typealias MPIDSong = Int64
+
 @MainActor @Observable final class AppleLibrary {
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs_cache: [USong: MKSong] = [:]
@@ -53,7 +57,7 @@ extension AppleLibrary {
 				}
 			}(),
 			_date_released: mkAlbum.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
-			_num_discs: {
+			_disc_max: {
 				return mkSongs.reduce(into: 1) { // Bad time complexity
 					highest_so_far, mkSong in
 					if let disc = mkSong.discNumber, disc > highest_so_far {

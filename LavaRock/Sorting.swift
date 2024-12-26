@@ -25,47 +25,6 @@ enum AlbumOrder {
 			}}(),
 			handler: { _ in handler() })
 	}
-	
-	@MainActor func reindex(_ in_original_order: [ZZZAlbum]) {
-		let replace_at: [Int64] = in_original_order.map { $0.index }
-		let arranged: [ZZZAlbum] = { switch self {
-			case .random: return in_original_order.in_any_other_order { $0.objectID == $1.objectID }
-			case .reverse: return in_original_order.reversed()
-				
-				// Sort stably: keep elements in the same order if they have the same release date, artist, or so on.
-				
-			case .recently_added:
-				// 10,000 albums takes 11.4s in 2024.
-				let now = Date.now // Keeps `Album`s without date added at the beginning, maintaining their current order.
-				let albums_and_first_added: [(album: ZZZAlbum, first_added: Date)] = in_original_order.map { album in (
-					album: album,
-					first_added: AppleLibrary.shared.albumInfo(uAlbum: UAlbum(bitPattern: album.albumPersistentID))?._date_first_added ?? now
-				)}
-				let sorted = albums_and_first_added.sorted_stably { // 10,000 albums takes 41ms in 2024.
-					$0.first_added == $1.first_added
-				} are_in_order: {
-					$0.first_added > $1.first_added
-				}
-				return sorted.map { $0.album }
-			case .recently_released:
-				let albums_and_dates_released: [(album: ZZZAlbum, date_released: Date?)] = in_original_order.map {(
-					album: $0,
-					date_released: AppleLibrary.shared.albumInfo(uAlbum: UAlbum(bitPattern: $0.albumPersistentID))?._date_released
-				)}
-				let sorted = albums_and_dates_released.sorted_stably {
-					$0.date_released == $1.date_released
-				} are_in_order: {
-					// Move unknown release date to the end
-					guard let date_right = $1.date_released else { return true }
-					guard let date_left = $0.date_released else { return false }
-					return date_left > date_right
-				}
-				return sorted.map { $0.album }
-		}}()
-		arranged.indices.forEach { counter in
-			arranged[counter].index = replace_at[counter]
-		}
-	}
 }
 
 enum SongOrder {
@@ -89,27 +48,6 @@ enum SongOrder {
 			handler: { _ in handler() })
 	}
 	
-	@MainActor static func __sorted_numerically(
-		strict: Bool,
-		_ input: [ZZZSong]
-	) -> [ZZZSong] {
-		let songs_and_infos: [(song: ZZZSong, info: (some InfoSong)?)] = input.map {(
-			song: $0,
-			info: ZZZSong.infoSong(MPID: $0.persistentID)
-		)}
-		let sorted = songs_and_infos.sorted_stably {
-			let left = $0.info; let right = $1.info
-			return (
-				left?.disc_number_on_disk == right?.disc_number_on_disk &&
-				left?.track_number_on_disk == right?.track_number_on_disk
-			)
-		} are_in_order: {
-			guard let right = $1.info else { return true }
-			guard let left = $0.info else { return false }
-			return Self.__precedes_numerically(strict: false, left, right)
-		}
-		return sorted.map { $0.song }
-	}
 	static func is_increasing_by_track(
 		same_every_time: Bool,
 		_ left: MKSong, _ right: MKSong
@@ -139,35 +77,5 @@ enum SongOrder {
 		}
 		
 		return left.id.rawValue < right.id.rawValue
-	}
-	static func __precedes_numerically(
-		strict: Bool,
-		_ left: some InfoSong, _ right: some InfoSong
-	) -> Bool {
-		let disc_left = left.disc_number_on_disk
-		let disc_right = right.disc_number_on_disk
-		guard disc_left == disc_right else {
-			return disc_left < disc_right
-		}
-		
-		let track_left = left.track_number_on_disk
-		let track_right = right.track_number_on_disk
-		guard track_left == track_right else {
-			guard track_right != 0 else { return true }
-			guard track_left != 0 else { return false }
-			return track_left < track_right
-		}
-		
-		guard strict else { return true }
-		
-		let title_left = left.title_on_disk
-		let title_right = right.title_on_disk
-		guard title_left == title_right else {
-			guard let title_right else { return true }
-			guard let title_left else { return false }
-			return title_left.is_increasing_in_Finder(title_right)
-		}
-		
-		return left.id_song < right.id_song
 	}
 }
