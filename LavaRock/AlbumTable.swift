@@ -706,7 +706,7 @@ final class AlbumTable: LRTableViewController {
 		Task {
 			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
 			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
-			Librarian.promote_albums(uAlbums_selected)
+			Librarian.promote_albums(uAlbums_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -719,7 +719,7 @@ final class AlbumTable: LRTableViewController {
 		Task {
 			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
 			let uSongs_selected = Set(ids_selected.map { USong(bitPattern: $0) })
-			Librarian.promote_songs(uSongs_selected)
+			Librarian.promote_songs(uSongs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -733,7 +733,7 @@ final class AlbumTable: LRTableViewController {
 		Task {
 			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
 			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
-			Librarian.demote_albums(uAlbums_selected)
+			Librarian.demote_albums(uAlbums_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -746,7 +746,7 @@ final class AlbumTable: LRTableViewController {
 		Task {
 			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
 			let uSongs_selected = Set(ids_selected.map { USong(bitPattern: $0) })
-			Librarian.demote_songs(uSongs_selected)
+			Librarian.demote_songs(uSongs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -758,23 +758,12 @@ final class AlbumTable: LRTableViewController {
 	
 	// MARK: To top and bottom
 	
-	/*
-	 final func float_albums(with ids_to_float: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_float = my_albums.indices { ids_to_float.contains($0.albumPersistentID) }
-	 my_albums.moveSubranges(rs_to_float, to: 0)
-	 }
-	 
-	 final func sink_albums(with ids_to_sink: Set<MPIDAlbum>) {
-	 var my_albums = albums(sorted: true)
-	 let rs_to_sink = my_albums.indices { ids_to_sink.contains($0.albumPersistentID) }
-	 my_albums.moveSubranges(rs_to_sink, to: my_albums.count)
-	 }
-	 */
-	
 	private func float_albums() {
 		Task {
-			
+			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
+			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
+			Librarian.promote_albums(uAlbums_selected, to_limit: true)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -784,7 +773,10 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func float_songs() {
 		Task {
-			
+			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
+			let uSongs_selected = Set(ids_selected.map { USong(bitPattern: $0) })
+			Librarian.promote_songs(uSongs_selected, to_limit: true)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
@@ -795,7 +787,10 @@ final class AlbumTable: LRTableViewController {
 	
 	private func sink_albums() {
 		Task {
-			
+			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
+			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
+			Librarian.demote_albums(uAlbums_selected, to_limit: true)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
@@ -805,7 +800,10 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func sink_songs() {
 		Task {
-			
+			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
+			let uSongs_selected = Set(ids_selected.map { USong(bitPattern: $0) })
+			Librarian.demote_songs(uSongs_selected, to_limit: true)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
