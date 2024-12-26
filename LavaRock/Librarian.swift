@@ -190,7 +190,7 @@ final class LRSong { // 2do: Needless! Delete.
 			}
 			switch albumOrder {
 				case .reverse: return albums_selected.reversed()
-				case .random: break
+				case .random: return albums_selected.in_any_other_order { $0.uAlbum == $1.uAlbum }
 				case .recently_added:
 					return albums_selected.sorted { left, right in
 						guard let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)
@@ -226,7 +226,7 @@ final class LRSong { // 2do: Needless! Delete.
 			}
 			switch songOrder {
 				case .reverse: return songs_selected.reversed()
-				case .random: break
+				case .random: return songs_selected.in_any_other_order { $0.uSong == $1.uSong }
 				case .track:
 					break
 			}

@@ -29,7 +29,7 @@ enum AlbumOrder {
 	@MainActor func reindex(_ in_original_order: [ZZZAlbum]) {
 		let replace_at: [Int64] = in_original_order.map { $0.index }
 		let arranged: [ZZZAlbum] = { switch self {
-			case .random: return in_original_order.in_any_other_order()
+			case .random: return in_original_order.in_any_other_order { $0.objectID == $1.objectID }
 			case .reverse: return in_original_order.reversed()
 				
 				// Sort stably: keep elements in the same order if they have the same release date, artist, or so on.

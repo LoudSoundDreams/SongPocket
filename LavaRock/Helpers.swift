@@ -18,15 +18,21 @@ final class WeakRef<Referencee: AnyObject> {
 }
 
 extension Array {
-	func in_any_other_order() -> Self
-	where Element: Equatable
-	{
+	func in_any_other_order(
+		are_equivalent: (_ left: Element, _ right: Element) -> Bool
+	) -> Self {
 		guard count >= 2 else { return self }
-		var result: Self
-		repeat {
-			result = shuffled()
-		} while result == self
-		return result
+		var try_number = 1
+		while true {
+			let result = shuffled()
+			if
+				!result.indices.allSatisfy({ i_result in
+					are_equivalent(self[i_result], result[i_result])
+				})
+					|| try_number >= 42
+			{ return result }
+			try_number += 1
+		}
 	}
 	
 	func difference_inferring_moves(
@@ -57,25 +63,14 @@ extension Array {
 	func all_neighbors_satisfy(
 		_ predicate: (_ each_element: Element, _ next_element: Element) -> Bool
 	) -> Bool {
-		let rest = dropFirst() // Empty subsequence if self is empty
-		return all_neighbors_satisfy(first: first, rest: rest, predicate: predicate)
-		
-		func all_neighbors_satisfy(
-			first: Element?,
-			rest: ArraySlice<Element>,
-			predicate: (_ each_element: Element, _ next_element: Element) -> Bool
-		) -> Bool {
-			guard let first = first, let second = rest.first else {
-				// We’ve reached the end.
-				return true
-			}
-			guard predicate(first, second) else {
-				// Test case.
-				return false // Short-circuit.
-			}
-			let new_rest = rest.dropFirst()
-			return all_neighbors_satisfy(first: second, rest: new_rest, predicate: predicate)
+		var i_right = 1
+		while i_right <= count - 1 {
+			let left = self[i_right - 1]
+			let right = self[i_right]
+			if !predicate(left, right) { return false }
+			i_right += 1
 		}
+		return true
 	}
 }
 
