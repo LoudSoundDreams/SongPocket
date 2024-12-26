@@ -6,6 +6,10 @@ import os
 enum Disk {
 	private static let signposter = OSSignposter(subsystem: "disk", category: .pointsOfInterest)
 	
+	static func delete_unused() {
+		// 2do
+	}
+	
 	fileprivate static let newline = "\n"
 	fileprivate static let tab = "\t"
 	fileprivate static let tab_tab = "\t\t"
