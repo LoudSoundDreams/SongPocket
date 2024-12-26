@@ -135,7 +135,7 @@ enum SongOrder {
 		let title_left = left.title
 		let title_right = right.title
 		guard title_left == title_right else {
-			return title_left.precedes_in_Finder(title_right)
+			return title_left.is_increasing_in_Finder(title_right)
 		}
 		
 		return left.id.rawValue < right.id.rawValue
@@ -165,7 +165,7 @@ enum SongOrder {
 		guard title_left == title_right else {
 			guard let title_right else { return true }
 			guard let title_left else { return false }
-			return title_left.precedes_in_Finder(title_right)
+			return title_left.is_increasing_in_Finder(title_right)
 		}
 		
 		return left.id_song < right.id_song

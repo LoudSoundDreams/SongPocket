@@ -14,7 +14,7 @@ class SortingTests: XCTestCase {
 		XCTAssertTrue(expected.all_neighbors_satisfy { left, right in
 			guard let right else { return true }
 			guard let left else { return false }
-			return left.precedes_in_Finder(right)
+			return left.is_increasing_in_Finder(right)
 		})
 	}
 	
