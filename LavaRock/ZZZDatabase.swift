@@ -134,7 +134,7 @@ extension NSManagedObjectContext {
 		}()
 		guard let zzzCollection else { return }
 		
-		let _ = zzzCollection
+		let _ = zzzCollection // 2do
 	}
 	
 	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {

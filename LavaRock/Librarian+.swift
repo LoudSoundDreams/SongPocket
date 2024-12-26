@@ -74,8 +74,7 @@ extension Librarian {
 	private static func add_albums(
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
 	) {
-		let mpAlbums_sorted = mpAlbums_unsorted.sorted {
-			left, right in
+		let mpAlbums_sorted = mpAlbums_unsorted.sorted { left, right in
 			guard let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.persistentID)
 			else { return true }
 			guard let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
@@ -90,8 +89,7 @@ extension Librarian {
 				uAlbum: mpAlbum.persistentID,
 				songs: { // Sort them by our own track order for consistency.
 					let uSongs_unsorted = mpAlbum.items.map { $0.persistentID }
-					let uSongs_by_track_order = uSongs_unsorted.sorted {
-						left, right in
+					let uSongs_by_track_order = uSongs_unsorted.sorted { left, right in
 						guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
 						else { return true }
 						guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
@@ -184,7 +182,6 @@ extension Librarian {
 	) {
 		guard let the_crate else { return }
 		
-		// 2do: Skip checking albums at the beginning that we created just now.
 		the_crate.lrAlbums.indices.reversed().forEach { i_album in
 			let uAlbum = the_crate.lrAlbums[i_album].uAlbum
 			if to_delete.contains(uAlbum) {

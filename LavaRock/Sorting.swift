@@ -68,16 +68,11 @@ enum AlbumOrder {
 	}
 	
 	static func is_ordered_by_recently_created(
-		strict: Bool,
+		strict: Bool, // 2do: strict_not_stable
 		_ left: AlbumInfo, _ right: AlbumInfo
 	) -> Bool {
-		/*
-		 As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
-		 I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
-		 */
 		let date_left: Date? = left._date_first_added
 		let date_right: Date? = right._date_first_added
-		
 		if date_left == date_right {
 			guard strict else { return true }
 			return left._title.precedes_in_Finder(right._title)
@@ -131,7 +126,7 @@ enum SongOrder {
 		return sorted.map { $0.song }
 	}
 	static func is_ordered_by_track(
-		strict: Bool,
+		strict: Bool, // 2do: strict_not_stable
 		_ left: MKSong, _ right: MKSong
 	) -> Bool {
 		let disc_left = left.discNumber

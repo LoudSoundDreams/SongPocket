@@ -37,6 +37,10 @@ extension AppleLibrary {
 			_title: mkAlbum.title,
 			_artist: mkAlbum.artistName,
 			_date_first_added: {
+				/*
+				 As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
+				 I prefer using date created, because it’s stable: that’s the order we naturally get by adding new albums at the top when we first import them, regardless of when that is.
+				 */
 				return mkSongs.reduce(into: nil) { // Bad time complexity
 					result, mkSong in
 					guard let date_added = mkSong.libraryAddedDate else { return }
