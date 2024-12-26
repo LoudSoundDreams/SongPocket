@@ -40,6 +40,7 @@ extension AppleLibrary {
 				return mkSongs.reduce(into: nil) { // Bad time complexity
 					result, mkSong in
 					guard let date_added = mkSong.libraryAddedDate else { return }
+					// MusicKit’s granularity is 1 second; we can’t meaningfully compare items added within the same second.
 					guard let earliest_so_far = result else {
 						result = date_added
 						return

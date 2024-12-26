@@ -80,16 +80,7 @@ extension Librarian {
 			else { return true }
 			guard let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
 			else { return false }
-			
-			let date_left: Date? = info_left._date_first_added
-			let date_right: Date? = info_right._date_first_added
-			
-			guard date_left != date_right else {
-				return info_left._title.precedes_in_Finder(info_right._title)
-			}
-			guard let date_right else { return true }
-			guard let date_left else { return false }
-			return date_left > date_right
+			return AlbumOrder.is_ordered_by_recently_created(strict: true, info_left, info_right)
 		}
 		
 		if the_crate == nil { reset_the_crate() }; let the_crate = the_crate!

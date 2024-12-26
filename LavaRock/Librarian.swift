@@ -192,7 +192,13 @@ final class LRSong { // 2do: Needless! Delete.
 				case .reverse: return albums_selected.reversed()
 				case .random: break
 				case .recently_added:
-					break
+					return albums_selected.sorted { left, right in
+						guard let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)
+						else { return true }
+						guard let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)
+						else { return false }
+						return AlbumOrder.is_ordered_by_recently_created(strict: false, info_left, info_right)
+					}
 				case .recently_released:
 					break
 			}
