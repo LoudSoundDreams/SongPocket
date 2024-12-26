@@ -184,17 +184,29 @@ final class LRSong { // 2do: Needless! Delete.
 		by albumOrder: AlbumOrder
 	) {
 		guard let crate = the_crate else { return }
-		let albums_sorted: [LRAlbum] = {
+		let albums_selected_sorted: [LRAlbum] = {
+			let albums_selected = crate.lrAlbums.filter {
+				uAlbums_selected.contains($0.uAlbum)
+			}
 			switch albumOrder {
-				case .reverse: break
+				case .reverse: return albums_selected.reversed()
 				case .random: break
 				case .recently_added:
 					break
 				case .recently_released:
 					break
 			}
-			return crate.lrAlbums // 2do
+			return albums_selected // 2do
 		}()
+		let indices_selected: [Int] = crate.lrAlbums.indices.filter {
+			uAlbums_selected.contains(crate.lrAlbums[$0].uAlbum)
+		}
+		var albums_sorted = crate.lrAlbums
+		indices_selected.indices.forEach { counter in
+			let i_selected = indices_selected[counter]
+			let album_for_here = albums_selected_sorted[counter]
+			albums_sorted[i_selected] = album_for_here
+		}
 		crate.lrAlbums = albums_sorted
 	}
 	static func sort_songs(
@@ -202,15 +214,27 @@ final class LRSong { // 2do: Needless! Delete.
 		by songOrder: SongOrder
 	) {
 		guard let album = album_containing_uSongs(uSongs_selected) else { return }
-		let songs_sorted: [LRSong] = {
+		let songs_selected_sorted: [LRSong] = {
+			let songs_selected = album.lrSongs.filter {
+				uSongs_selected.contains($0.uSong)
+			}
 			switch songOrder {
-				case .reverse: break
+				case .reverse: return songs_selected.reversed()
 				case .random: break
 				case .track:
 					break
 			}
-			return album.lrSongs // 2do
+			return songs_selected // 2do
 		}()
+		let indices_selected: [Int] = album.lrSongs.indices.filter {
+			uSongs_selected.contains(album.lrSongs[$0].uSong)
+		}
+		var songs_sorted = album.lrSongs
+		indices_selected.indices.forEach { counter in
+			let i_selected = indices_selected[counter]
+			let song_for_here = songs_selected_sorted[counter]
+			songs_sorted[i_selected] = song_for_here
+		}
 		album.lrSongs = songs_sorted
 	}
 	

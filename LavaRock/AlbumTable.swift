@@ -668,9 +668,8 @@ final class AlbumTable: LRTableViewController {
 	
 	private func sort_albums(by albumOrder: AlbumOrder) {
 		Task {
-			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
-			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
-			Librarian.sort_albums(uAlbums_selected, by: albumOrder)
+			let uAlbums_to_sort = Set(ids_albums_to_sort().map { UAlbum(bitPattern: $0) })
+			Librarian.sort_albums(uAlbums_to_sort, by: albumOrder)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -680,9 +679,8 @@ final class AlbumTable: LRTableViewController {
 	}
 	private func sort_songs(by songOrder: SongOrder) {
 		Task {
-			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
-			let uSongs_selected = Set(ids_selected.map { USong(bitPattern: $0) })
-			Librarian.sort_songs(uSongs_selected, by: songOrder)
+			let uSongs_to_sort = Set(ids_songs_to_sort().map { USong(bitPattern: $0) })
+			Librarian.sort_songs(uSongs_to_sort, by: songOrder)
 			Librarian.save()
 			
 			list_state.refresh_items()
