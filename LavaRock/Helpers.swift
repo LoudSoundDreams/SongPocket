@@ -46,20 +46,6 @@ extension Array {
 		}.inferringMoves()
 	}
 	
-	func sorted_stably(
-		should_maintain_order: (Element, Element) -> Bool,
-		are_in_order: (Element, Element) -> Bool
-	) -> Self {
-		let tuples_sorted = enumerated().sorted {
-			if should_maintain_order($0.element, $1.element) {
-				return $0.offset < $1.offset
-			} else {
-				return are_in_order($0.element, $1.element)
-			}
-		}
-		return tuples_sorted.map { $0.element }
-	}
-	
 	func all_neighbors_satisfy(
 		_ predicate: (_ each_element: Element, _ next_element: Element) -> Bool
 	) -> Bool {
