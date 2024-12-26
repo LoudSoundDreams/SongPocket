@@ -17,7 +17,7 @@ final class LRAlbum {
 		self.lrSongs = songs
 	}
 }
-final class LRSong {
+final class LRSong { // 2do: Needless! Delete.
 	let uSong: USong
 	init(uSong: USong) {
 		self.uSong = uSong
@@ -91,7 +91,6 @@ final class LRSong {
 		to_limit: Bool
 	) {
 		guard let crate = the_crate else { return }
-		
 		let rs_to_promote = crate.lrAlbums.indices(where: { album in
 			uAlbums_selected.contains(album.uAlbum)
 		})
@@ -107,16 +106,7 @@ final class LRSong {
 		_ uSongs_selected: Set<USong>,
 		to_limit: Bool
 	) {
-		// Verify that the selected songs are in the same album. Find that album.
-		var album: LRAlbum? = nil
-		for uSong in uSongs_selected {
-			guard let this_album = album_containing_uSong[uSong]?.referencee else { return }
-			if album == nil { album = this_album }
-			guard this_album.uAlbum == album?.uAlbum else { return }
-		}
-		guard let album else { return }
-		
-		// Find the index of the frontmost selected song.
+		guard let album = album_containing_uSongs(uSongs_selected) else { return } // Verify that the selected songs are in the same album. Find that album.
 		let rs_to_promote = album.lrSongs.indices(where: { song in
 			uSongs_selected.contains(song.uSong)
 		})
@@ -145,7 +135,6 @@ final class LRSong {
 		to_limit: Bool
 	) {
 		guard let crate = the_crate else { return }
-		
 		let rs_to_demote = crate.lrAlbums.indices(where: { album in
 			uAlbums_selected.contains(album.uAlbum)
 		})
@@ -163,14 +152,7 @@ final class LRSong {
 		_ uSongs_selected: Set<USong>,
 		to_limit: Bool
 	) {
-		var album: LRAlbum? = nil
-		for uSong in uSongs_selected {
-			guard let this_album = album_containing_uSong[uSong]?.referencee else { return }
-			if album == nil { album = this_album }
-			guard this_album.uAlbum == album?.uAlbum else { return }
-		}
-		guard let album else { return }
-		
+		guard let album = album_containing_uSongs(uSongs_selected) else { return }
 		let rs_to_demote = album.lrSongs.indices(where: { song in
 			uSongs_selected.contains(song.uSong)
 		})
@@ -201,13 +183,47 @@ final class LRSong {
 		_ uAlbums_selected: Set<UAlbum>,
 		by albumOrder: AlbumOrder
 	) {
-		// 2do
+		guard let crate = the_crate else { return }
+		let albums_sorted: [LRAlbum] = {
+			switch albumOrder {
+				case .reverse: break
+				case .random: break
+				case .recently_added:
+					break
+				case .recently_released:
+					break
+			}
+			return crate.lrAlbums // 2do
+		}()
+		crate.lrAlbums = albums_sorted
 	}
 	static func sort_songs(
 		_ uSongs_selected: Set<USong>,
 		by songOrder: SongOrder
 	) {
-		// 2do
+		guard let album = album_containing_uSongs(uSongs_selected) else { return }
+		let songs_sorted: [LRSong] = {
+			switch songOrder {
+				case .reverse: break
+				case .random: break
+				case .track:
+					break
+			}
+			return album.lrSongs // 2do
+		}()
+		album.lrSongs = songs_sorted
+	}
+	
+	private static func album_containing_uSongs(
+		_ uSongs: Set<USong>
+	) -> LRAlbum? {
+		var album_common: LRAlbum? = nil
+		for uSong in uSongs {
+			guard let album = album_containing_uSong[uSong]?.referencee else { return nil }
+			if album_common == nil { album_common = album }
+			guard album.uAlbum == album_common?.uAlbum else { return nil }
+		}
+		return album_common
 	}
 	
 	static func debug_Print() {
