@@ -12,11 +12,6 @@ extension CGFloat {
 	static var eight: Self { 8 }
 }
 
-extension Color {
-	static var white_one_eighth: Color { Color(white: .one_eighth) }
-	static var white_one_fourth: Color { Color(white: .one_fourth) }
-	static var white_one_half: Color { Color(white: .one_half) }
-}
 extension View {
 	// As of iOS 18.2 developer beta 4, Apple Music uses this for “Recently Added”.
 	func font_title2_semibold() -> some View { font(.title2).fontWeight(.semibold) }

@@ -227,7 +227,7 @@ final class AlbumTable: LRTableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = UIColor(Color.white_one_eighth)
+		view.backgroundColor = UIColor(Color(white: .one_eighth))
 		tableView.separatorStyle = .none
 		reflect_selection()
 		b_sort.preferredMenuElementOrder = .fixed
@@ -280,7 +280,7 @@ final class AlbumTable: LRTableViewController {
 			if list_state.list_items.isEmpty {
 				return UIHostingConfiguration {
 					Image(systemName: "music.note")
-						.foregroundStyle(Color.white_one_half)
+						.foregroundStyle(Color(white: .one_half))
 						.font(.title)
 						.accessibilityLabel(InterfaceText.No_music)
 						.accessibilityRemoveTraits(.isImage)
