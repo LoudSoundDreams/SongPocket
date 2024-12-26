@@ -47,6 +47,7 @@ extension Librarian {
 		// `mpAlbum_with_uAlbum` now contains only unfamiliar albums.
 		let to_add = Array(mpAlbum_with_uAlbum.values) // We’ll sort these later.
 		
+		let _fetch = signposter.beginInterval("fetch")
 		for mpAlbum in to_add {
 			for mpSong in mpAlbum.items {
 				// This repeatedly updates an `@Observable` property, but SwiftUI doesn’t redraw dependent views for every update; maybe only once per turn of the run loop.
@@ -63,6 +64,7 @@ extension Librarian {
 				await AppleLibrary.shared.cache_mkSong(uSong: uSong_fresh)
 			}
 		}
+		signposter.endInterval("fetch", _fetch)
 		
 		add_albums(to_add)
 		update_albums(to_update)
@@ -117,12 +119,15 @@ extension Librarian {
 		_ lrAlbums_and_mpAlbums: [(LRAlbum, MPMediaItemCollection)]
 	) {
 		lrAlbums_and_mpAlbums.forEach { lrAlbum, mpAlbum in
-			update_album(lrAlbum, to_match: mpAlbum)
+			update_album(
+				lrAlbum,
+				to_match: Set(mpAlbum.items.map { $0.persistentID })
+			)
 		}
 	}
 	private static func update_album(
 		_ lrAlbum: LRAlbum,
-		to_match mpAlbum: MPMediaItemCollection
+		to_match uSongs_fresh: Set<USong>
 	) {
 		let was_in_track_order: Bool = lrAlbum.lrSongs.all_neighbors_satisfy {
 			each, next in
@@ -136,7 +141,7 @@ extension Librarian {
 		}
 		
 		// If we have existing songs A, E, C; and the fresh songs are D, C, B, we want to insert D, B; and remove A, E.
-		var uSongs_fresh: Set<USong> = Set(mpAlbum.items.map { $0.persistentID })
+		var uSongs_fresh = uSongs_fresh
 		lrAlbum.lrSongs.indices.reversed().forEach { i_lrSong in
 			let uSong = lrAlbum.lrSongs[i_lrSong].uSong
 			if uSongs_fresh.contains(uSong) {
