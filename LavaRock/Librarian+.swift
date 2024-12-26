@@ -29,7 +29,7 @@ extension Librarian {
 		
 		let lrAlbums_existing: [LRAlbum] = the_crate?.lrAlbums ?? []
 		var to_update: [(LRAlbum, MPMediaItemCollection)] = [] // Order doesn’t matter.
-		var to_delete: [LRAlbum] = [] // Order doesn’t matter.
+		var to_delete: Set<UAlbum> = []
 		var mpAlbum_with_uAlbum: [UAlbum: MPMediaItemCollection] = {
 			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
@@ -41,7 +41,7 @@ extension Librarian {
 				
 				mpAlbum_with_uAlbum[uAlbum] = nil
 			} else {
-				to_delete.append(lrAlbum)
+				to_delete.insert(lrAlbum.uAlbum)
 			}
 		}
 		// `mpAlbum_with_uAlbum` now contains only unfamiliar albums.
@@ -184,17 +184,16 @@ extension Librarian {
 	}
 	
 	private static func delete_albums(
-		_ to_delete: [LRAlbum] // 2do: `Set<UAlbum>`
+		_ to_delete: Set<UAlbum>
 	) {
 		guard let the_crate else { return }
 		
-		let uAlbums_to_delete = Set(to_delete.map { $0.uAlbum })
 		// 2do: Skip checking albums at the beginning that we created just now.
 		the_crate.lrAlbums.indices.reversed().forEach { i_album in
-			let album = the_crate.lrAlbums[i_album]
-			if uAlbums_to_delete.contains(album.uAlbum) {
+			let uAlbum = the_crate.lrAlbums[i_album].uAlbum
+			if to_delete.contains(uAlbum) {
 				the_crate.lrAlbums.remove(at: i_album)
-				deregister_uAlbum(album.uAlbum)
+				deregister_uAlbum(uAlbum)
 			}
 		}
 	}
