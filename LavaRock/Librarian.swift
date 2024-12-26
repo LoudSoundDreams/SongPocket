@@ -200,9 +200,15 @@ final class LRSong { // 2do: Needless! Delete.
 						return AlbumOrder.is_ordered_by_recently_created(strict: false, info_left, info_right)
 					}
 				case .recently_released:
-					break
+					return albums_selected.sorted { left, right in
+						guard let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
+						else { return true }
+						guard let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
+						else { return false }
+						guard date_left != date_right else { return true } // 2do: Make stable
+						return date_left > date_right
+					}
 			}
-			return albums_selected // 2do
 		}()
 		let indices_selected: [Int] = crate.lrAlbums.indices.filter {
 			uAlbums_selected.contains(crate.lrAlbums[$0].uAlbum)
