@@ -55,6 +55,19 @@ final class LRSong {
 		album_containing_uSong[song_new.uSong] = WeakRef(album_target)
 	}
 	
+	// Deregister
+	static func deregister_uAlbum(_ uAlbum: UAlbum) {
+		let album = album_with_uAlbum[uAlbum]?.referencee
+		album_with_uAlbum[uAlbum] = nil
+		album?.lrSongs.forEach { song in
+			deregister_uSong(song.uSong)
+		}
+	}
+	static func deregister_uSong(_ uSong: USong) {
+		song_with_uSong[uSong] = nil
+		album_containing_uSong[uSong] = nil
+	}
+	
 	// Persist
 	static func save() {
 		guard let the_crate else { return }
@@ -115,7 +128,7 @@ final class LRSong {
 		Print()
 		Print("crate tree")
 		if let the_crate {
-			Print(the_crate.title)
+			Print("\(the_crate.title): \(the_crate.lrAlbums.count) albums")
 			the_crate.lrAlbums.forEach { album in
 				Print("  \(album.uAlbum)")
 				album.lrSongs.forEach { song in
@@ -126,7 +139,7 @@ final class LRSong {
 			Print("nil crate")
 		}
 		
-		Print("album dict")
+		Print("album dict:", album_with_uAlbum.count)
 		album_with_uAlbum.forEach { (uAlbum, album_ref) in
 			var pointee_album = "nil"
 			if let album = album_ref.referencee {
@@ -135,7 +148,7 @@ final class LRSong {
 			Print("\(uAlbum) → \(pointee_album)")
 		}
 		
-		Print("song dict")
+		Print("song dict:", song_with_uSong.count)
 		song_with_uSong.forEach { (uSong, song_ref) in
 			var pointee_song = "nil"
 			if let song = song_ref.referencee {
@@ -144,7 +157,7 @@ final class LRSong {
 			Print("\(uSong) → \(pointee_song)")
 		}
 		
-		Print("song ID → album")
+		Print("song ID → album", album_containing_uSong.count)
 		album_containing_uSong.forEach { (uSong, album_ref) in
 			var about_album = "nil"
 			if let album = album_ref.referencee {

@@ -142,7 +142,8 @@ extension Librarian {
 			if uSongs_fresh.contains(uSong) {
 				uSongs_fresh.remove(uSong)
 			} else {
-				lrAlbum.lrSongs.remove(at: i_lrSong) // 2do: Remove unused dictionary entries.
+				lrAlbum.lrSongs.remove(at: i_lrSong)
+				deregister_uSong(uSong)
 			}
 		}
 		// `uSongs_fresh` now contains only unfamiliar songs.
@@ -192,7 +193,8 @@ extension Librarian {
 		the_crate.lrAlbums.indices.reversed().forEach { i_album in
 			let album = the_crate.lrAlbums[i_album]
 			if uAlbums_to_delete.contains(album.uAlbum) {
-				the_crate.lrAlbums.remove(at: i_album) // 2do: Remove unused dictionary entries.
+				the_crate.lrAlbums.remove(at: i_album)
+				deregister_uAlbum(album.uAlbum)
 			}
 		}
 	}
