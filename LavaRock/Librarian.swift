@@ -196,6 +196,20 @@ final class LRSong {
 		}
 	}
 	
+	// Sort
+	static func sort_albums(
+		_ uAlbums_selected: Set<UAlbum>,
+		by albumOrder: AlbumOrder
+	) {
+		// 2do
+	}
+	static func sort_songs(
+		_ uSongs_selected: Set<USong>,
+		by songOrder: SongOrder
+	) {
+		// 2do
+	}
+	
 	static func debug_Print() {
 		Print()
 		Print("crate tree")

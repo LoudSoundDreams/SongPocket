@@ -666,18 +666,24 @@ final class AlbumTable: LRTableViewController {
 		}
 	}()
 	
-	private func sort_albums(by album_order: AlbumOrder) {
+	private func sort_albums(by albumOrder: AlbumOrder) {
 		Task {
-			
+			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
+			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
+			Librarian.sort_albums(uAlbums_selected, by: albumOrder)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_albums_reordered.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
-	private func sort_songs(by song_order: SongOrder) {
+	private func sort_songs(by songOrder: SongOrder) {
 		Task {
-			
+			guard case let .select_songs(ids_selected) = list_state.select_mode else { return }
+			let uSongs_selected = Set(ids_selected.map { USong(bitPattern: $0) })
+			Librarian.sort_songs(uSongs_selected, by: songOrder)
+			Librarian.save()
 			
 			list_state.refresh_items()
 			list_state.signal_songs_reordered.toggle()
