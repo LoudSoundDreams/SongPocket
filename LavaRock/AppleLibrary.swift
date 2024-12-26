@@ -17,9 +17,7 @@ typealias USong = MPMediaEntityPersistentID
 			NotificationCenter.default.post(name: Self.did_merge, object: nil)
 		}
 	}}
-	
 	private init() {}
-	@ObservationIgnored let context = ZZZDatabase.__viewContext
 }
 extension AppleLibrary {
 	static let shared = AppleLibrary()
@@ -90,9 +88,7 @@ extension AppleLibrary {
 	
 	@objc private func merge_changes() {
 		Task {
-			guard
-				let mpAlbums = MPMediaQuery.albums().collections,
-				let __mpSongs = MPMediaQuery.songs().items
+			guard let mpAlbums = MPMediaQuery.albums().collections
 			else { return }
 			
 			let array_mkSections: [MKSection]? = await {
@@ -111,7 +107,6 @@ extension AppleLibrary {
 			mkSections_cache = union_mkSections
 			
 			is_merging = true
-			__merge_MediaPlayer_items(__mpSongs)
 			await Librarian.merge_MediaPlayer_items(mpAlbums)
 			
 			Librarian.save()
