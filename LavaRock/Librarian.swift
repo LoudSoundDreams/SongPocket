@@ -193,19 +193,20 @@ final class LRSong { // 2do: Needless! Delete.
 				case .random: return albums_selected.in_any_other_order { $0.uAlbum == $1.uAlbum }
 				case .recently_added:
 					return albums_selected.sorted { left, right in
-						guard let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)
-						else { return true }
-						guard let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)
-						else { return false }
-						return AlbumOrder.is_ordered_by_recently_created(strict: false, info_left, info_right)
+						let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_first_added
+						let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_first_added
+						guard date_left != date_right else { return false }
+						guard let date_right else { return true }
+						guard let date_left else { return false }
+						return date_left > date_right
 					}
 				case .recently_released:
 					return albums_selected.sorted { left, right in
-						guard let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
-						else { return true }
-						guard let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
-						else { return false }
-						guard date_left != date_right else { return true } // 2do: Make stable
+						let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
+						let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
+						guard date_left != date_right else { return false }
+						guard let date_right else { return true }
+						guard let date_left else { return false }
 						return date_left > date_right
 					}
 			}

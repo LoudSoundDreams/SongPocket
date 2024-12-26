@@ -75,11 +75,22 @@ extension Librarian {
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
 	) {
 		let mpAlbums_sorted = mpAlbums_unsorted.sorted { left, right in
-			guard let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.persistentID)
-			else { return true }
-			guard let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
-			else { return false }
-			return AlbumOrder.is_ordered_by_recently_created(strict: true, info_left, info_right)
+			let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
+			let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.persistentID)
+			if info_left == nil && info_right == nil { return false }
+			guard let info_right else { return true }
+			guard let info_left else { return false }
+			
+			let date_left = info_left._date_first_added
+			let date_right = info_right._date_first_added
+			guard date_left != date_right else {
+				let title_left = info_left._title
+				let title_right = info_right._title
+				return title_left.is_increasing_in_Finder(title_right)
+			}
+			guard let date_right else { return true }
+			guard let date_left else { return false }
+			return date_left > date_right
 		}
 		
 		if the_crate == nil { reset_the_crate() }; let the_crate = the_crate!

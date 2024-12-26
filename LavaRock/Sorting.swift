@@ -66,21 +66,6 @@ enum AlbumOrder {
 			arranged[counter].index = replace_at[counter]
 		}
 	}
-	
-	static func is_ordered_by_recently_created(
-		strict: Bool, // 2do: strict_not_stable
-		_ left: AlbumInfo, _ right: AlbumInfo
-	) -> Bool {
-		let date_left: Date? = left._date_first_added
-		let date_right: Date? = right._date_first_added
-		if date_left == date_right {
-			guard strict else { return true }
-			return left._title.precedes_in_Finder(right._title)
-		}
-		guard let date_right else { return true }
-		guard let date_left else { return false }
-		return date_left > date_right
-	}
 }
 
 enum SongOrder {
