@@ -209,14 +209,14 @@ extension AlbumListState {
 		case collapsed
 		case expanded(MPIDAlbum)
 	}
-	static let expansion_changed = Notification.Name("LRAlbumExpandingOrCollapsing")
+	static let expansion_changed = Notification.Name("LR_AlbumExpandingOrCollapsing")
 	
 	enum SelectMode: Equatable {
 		case view(MPIDSong?)
 		case select_albums(Set<MPIDAlbum>)
 		case select_songs(Set<MPIDSong>) // Should always be within the same album.
 	}
-	static let selection_changed = Notification.Name("LRSelectModeOrSelectionChanged")
+	static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
 }
 
 // MARK: - View controller

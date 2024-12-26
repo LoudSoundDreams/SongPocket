@@ -240,7 +240,7 @@ import MusicKit
 // MARK: - Song row
 
 @MainActor struct SongRow: View {
-	static let confirm_play_id_song = Notification.Name("LRSongConfirmPlayWithID")
+	static let confirm_play_id_song = Notification.Name("LR_SongConfirmPlayWithID")
 	let id_song: MPIDSong
 	let id_album: MPIDAlbum
 	let list_state: AlbumListState

@@ -31,7 +31,7 @@ extension AppleLibrary {
 		NotificationCenter.default.add_observer_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
 		merge_changes()
 	}
-	static let did_merge = Notification.Name("LRMusicLibraryDidMerge")
+	static let did_merge = Notification.Name("LR_MusicLibraryDidMerge")
 	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
 		guard let mkAlbum = mkSections_cache[MusicItemID(String(uAlbum))] else { return nil }
 		let mkSongs = mkAlbum.items

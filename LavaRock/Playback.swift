@@ -121,5 +121,5 @@ extension PlayerState {
 			.sink { [weak self] in self?.signal.toggle() }
 			.store(in: &cancellables)
 	}
-	static let musicKit = Notification.Name("LRMusicKitPlayerStateOrQueue")
+	static let musicKit = Notification.Name("LR_MusicKitPlayerStateOrQueue")
 }

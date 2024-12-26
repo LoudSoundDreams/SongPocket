@@ -285,7 +285,7 @@ final class LRSong { // 2do: Needless! Delete.
 			Print("nil crate")
 		}
 		
-		Print("album dict:", album_with_uAlbum.count)
+		Print("album ID → album:", album_with_uAlbum.count)
 		album_with_uAlbum.forEach { (uAlbum, album_ref) in
 			var pointee_album = "nil"
 			if let album = album_ref.referencee {
@@ -303,7 +303,7 @@ final class LRSong { // 2do: Needless! Delete.
 			Print("\(uSong) → \(pointee_song)")
 		}
 		
-		Print("song ID → album", album_containing_uSong.count)
+		Print("song ID → album:", album_containing_uSong.count)
 		album_containing_uSong.forEach { (uSong, album_ref) in
 			var about_album = "nil"
 			if let album = album_ref.referencee {
