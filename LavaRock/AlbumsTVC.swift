@@ -347,12 +347,8 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func refresh_list_items() {
 		Task {
 			list_state.refresh_items()
-			switch list_state.expansion {
-				case .collapsed:
-					b_sort.menu = menu_sort()
-					b_focused.menu = menu_focused()
-				case .expanded: break // Should never run
-			}
+			b_sort.menu = menu_sort()
+			b_focused.menu = menu_focused()
 			guard await apply_ids_rows(list_state.row_identifiers()) else { return }
 		}
 	}
