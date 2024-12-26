@@ -405,23 +405,46 @@ final class AlbumTable: LRTableViewController {
 	@objc private func reflect_selection() {
 		switch list_state.select_mode {
 			case .view(let id_activated):
-				navigationItem.setRightBarButtonItems([], animated: true)
-				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
+				setToolbarItems([
+					b_sort,
+					.flexibleSpace(),
+					Remote.shared.b_remote,
+					.flexibleSpace(),
+					b_focused
+				], animated: true)
 				b_sort.menu = menu_sort()
 				b_focused.menu = menu_focused()
 				if id_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .select_albums(let ids_selected):
-				navigationItem.setRightBarButtonItems([b_done], animated: true)
-				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
+				setToolbarItems([
+					b_sort,
+					.flexibleSpace(),
+					b_album_promote,
+					.flexibleSpace(),
+					b_album_demote,
+					.flexibleSpace(),
+					b_done,
+					.flexibleSpace(),
+					b_focused,
+				], animated: true)
 				b_album_promote.isEnabled = !ids_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
 				b_sort.menu = menu_sort() // In case it’s open.
 				b_focused.menu = menu_focused()
 			case .select_songs(let ids_selected):
-				navigationItem.setRightBarButtonItems([b_done], animated: true)
-				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
+				setToolbarItems([
+					b_sort,
+					.flexibleSpace(),
+					b_song_promote,
+					.flexibleSpace(),
+					b_song_demote,
+					.flexibleSpace(),
+					b_done,
+					.flexibleSpace(),
+					b_focused,
+				], animated: true)
 				b_song_promote.isEnabled = !ids_selected.isEmpty
 				b_song_demote.isEnabled = b_song_promote.isEnabled
 				b_sort.menu = menu_sort()
