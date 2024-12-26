@@ -110,31 +110,31 @@ enum SongOrder {
 		}
 		return sorted.map { $0.song }
 	}
-	static func is_ordered_by_track(
-		strict: Bool, // 2do: strict_not_stable
+	static func is_increasing_by_track(
+		same_every_time: Bool,
 		_ left: MKSong, _ right: MKSong
 	) -> Bool {
-		let disc_left = left.discNumber
-		let disc_right = right.discNumber
-		guard disc_left == disc_right else {
+		let disc_left: Int? = left.discNumber
+		let disc_right: Int? = right.discNumber
+		if disc_left != disc_right {
 			guard let disc_right else { return true }
 			guard let disc_left else { return false }
 			return disc_left < disc_right
 		}
 		
-		let track_right = right.trackNumber
-		let track_left = left.trackNumber
-		guard track_left == track_right else {
+		let track_right: Int? = right.trackNumber
+		let track_left: Int? = left.trackNumber
+		if track_left != track_right {
 			guard let track_right else { return true }
 			guard let track_left else { return false }
 			return track_left < track_right
 		}
 		
-		guard strict else { return true }
+		guard same_every_time else { return false }
 		
-		let title_left = left.title
-		let title_right = right.title
-		guard title_left == title_right else {
+		let title_left: String = left.title
+		let title_right: String = right.title
+		if title_left != title_right {
 			return title_left.is_increasing_in_Finder(title_right)
 		}
 		

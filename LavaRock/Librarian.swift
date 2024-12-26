@@ -236,11 +236,13 @@ final class LRSong { // 2do: Needless! Delete.
 				case .random: return songs_selected.in_any_other_order { $0.uSong == $1.uSong }
 				case .track:
 					return songs_selected.sorted { left, right in
-						guard let mk_right = AppleLibrary.shared.mkSongs_cache[right.uSong]
-						else { return true }
-						guard let mk_left = AppleLibrary.shared.mkSongs_cache[left.uSong]
-						else { return false }
-						return SongOrder.is_ordered_by_track(strict: false, mk_left, mk_right)
+						let mk_left = AppleLibrary.shared.mkSongs_cache[left.uSong]
+						let mk_right = AppleLibrary.shared.mkSongs_cache[right.uSong]
+						if mk_left == nil && mk_right == nil { return false }
+						guard let mk_right else { return true }
+						guard let mk_left else { return false }
+						
+						return SongOrder.is_increasing_by_track(same_every_time: false, mk_left, mk_right)
 					}
 			}
 		}()

@@ -101,11 +101,13 @@ extension Librarian {
 				songs: { // Sort them by our own track order for consistency.
 					let uSongs_unsorted = mpAlbum.items.map { $0.persistentID }
 					let uSongs_by_track_order = uSongs_unsorted.sorted { left, right in
-						guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
-						else { return true }
-						guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
-						else { return false }
-						return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
+						let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+						let mk_right = AppleLibrary.shared.mkSongs_cache[right]
+						if mk_left == nil && mk_right == nil { return false }
+						guard let mk_right else { return true }
+						guard let mk_left else { return false }
+						
+						return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
 					}
 					return uSongs_by_track_order.map { LRSong(uSong: $0) }
 				}()
@@ -137,7 +139,7 @@ extension Librarian {
 				let mk_left = AppleLibrary.shared.mkSongs_cache[each.uSong],
 				let mk_right = AppleLibrary.shared.mkSongs_cache[next.uSong]
 			else { return true }
-			return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
+			return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
 		}
 		
 		// If we have existing songs A, E, C; and the fresh songs are D, C, B, we want to insert D, B; and remove A, E.
@@ -161,23 +163,29 @@ extension Librarian {
 				register_song(lrSong_new, with: lrAlbum)
 			}
 			lrAlbum.lrSongs.sort { lr_left, lr_right in
-				guard let mk_right = AppleLibrary.shared.mkSongs_cache[lr_right.uSong]
-				else { return true }
-				guard let mk_left = AppleLibrary.shared.mkSongs_cache[lr_left.uSong]
-				else { return false }
-				return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
+				let mk_left = AppleLibrary.shared.mkSongs_cache[lr_left.uSong]
+				let mk_right = AppleLibrary.shared.mkSongs_cache[lr_right.uSong]
+				if mk_left == nil && mk_right == nil { return false }
+				guard let mk_right else { return true }
+				guard let mk_left else { return false }
+				
+				return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
 			}
 		} else {
 			let to_add = to_add_unsorted.sorted { left, right in
-				guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
-				else { return true }
-				guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
-				else { return false }
-				guard mk_left.libraryAddedDate != mk_right.libraryAddedDate else {
-					return SongOrder.is_ordered_by_track(strict: true, mk_left, mk_right)
+				let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+				let mk_right = AppleLibrary.shared.mkSongs_cache[right]
+				if mk_left == nil && mk_right == nil { return false }
+				guard let mk_right else { return true }
+				guard let mk_left else { return false }
+				
+				let date_left: Date? = mk_left.libraryAddedDate
+				let date_right: Date? = mk_right.libraryAddedDate
+				if date_left == date_right {
+					return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
 				}
-				guard let date_right = mk_right.libraryAddedDate else { return true }
-				guard let date_left = mk_left.libraryAddedDate else { return false }
+				guard let date_right else { return true }
+				guard let date_left else { return false }
 				return date_left > date_right
 			}
 			to_add.reversed().forEach { uSong in
