@@ -89,24 +89,27 @@ extension Librarian {
 			guard let date_left else { return false }
 			return date_left > date_right
 		}
+		
+		if the_crate == nil { reset_the_crate() }; let the_crate = the_crate!
+		
 		mpAlbums_sorted.reversed().forEach { mpAlbum in
-			register_album(
-				LRAlbum(
-					uAlbum: mpAlbum.persistentID,
-					songs: { // Sort them by our own track order for consistency.
-						let uSongs_unsorted = mpAlbum.items.map { $0.persistentID }
-						let uSongs_by_track_order = uSongs_unsorted.sorted {
-							left, right in
-							guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
-							else { return true }
-							guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
-							else { return false }
-							return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
-						}
-						return uSongs_by_track_order.map { LRSong(uSong: $0) }
-					}()
-				)
+			let lrAlbum_new = LRAlbum(
+				uAlbum: mpAlbum.persistentID,
+				songs: { // Sort them by our own track order for consistency.
+					let uSongs_unsorted = mpAlbum.items.map { $0.persistentID }
+					let uSongs_by_track_order = uSongs_unsorted.sorted {
+						left, right in
+						guard let mk_right = AppleLibrary.shared.mkSongs_cache[right]
+						else { return true }
+						guard let mk_left = AppleLibrary.shared.mkSongs_cache[left]
+						else { return false }
+						return SongOrder.is_in_track_order(strict: true, mk_left, mk_right)
+					}
+					return uSongs_by_track_order.map { LRSong(uSong: $0) }
+				}()
 			)
+			the_crate.lrAlbums.insert(lrAlbum_new, at: 0)
+			register_album(lrAlbum_new)
 		}
 	}
 	
@@ -147,7 +150,9 @@ extension Librarian {
 		
 		if was_in_track_order {
 			to_add_unsorted.reversed().forEach { uSong in
-				register_song(LRSong(uSong: uSong), in: lrAlbum)
+				let lrSong_new = LRSong(uSong: uSong)
+				lrAlbum.lrSongs.insert(lrSong_new, at: 0)
+				register_song(lrSong_new, with: lrAlbum)
 			}
 			lrAlbum.lrSongs.sort { lr_left, lr_right in
 				guard let mk_right = AppleLibrary.shared.mkSongs_cache[lr_right.uSong]
@@ -170,13 +175,15 @@ extension Librarian {
 				return date_left > date_right
 			}
 			to_add.reversed().forEach { uSong in
-				register_song(LRSong(uSong: uSong), in: lrAlbum)
+				let lrSong_new = LRSong(uSong: uSong)
+				lrAlbum.lrSongs.insert(lrSong_new, at: 0)
+				register_song(lrSong_new, with: lrAlbum)
 			}
 		}
 	}
 	
 	private static func delete_albums(
-		_ to_delete: [LRAlbum]
+		_ to_delete: [LRAlbum] // 2do: `Set<UAlbum>`
 	) {
 		guard let the_crate else { return }
 		
