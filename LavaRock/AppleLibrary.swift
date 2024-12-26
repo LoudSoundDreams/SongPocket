@@ -102,7 +102,7 @@ extension AppleLibrary {
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
 			
-			// Show new data immediately…
+			// Show new data immediately …
 			let union_mkSections = mkSections_cache.merging(fresh_mkSections) { old, new in new }
 			mkSections_cache = union_mkSections
 			
@@ -112,7 +112,7 @@ extension AppleLibrary {
 			Librarian.save()
 			is_merging = false
 			
-			// …but don’t hide deleted data before removing it from the screen anyway.
+			// … but don’t hide deleted data before removing it from the screen anyway.
 			try? await Task.sleep(for: .seconds(3))
 			
 			mkSections_cache = fresh_mkSections

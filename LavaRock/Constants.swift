@@ -28,7 +28,7 @@ extension View {
 	func font_headline() -> some View { font(.headline) }
 	
 	/*
-	 As of iOS 16.6, Apple Music uses this for…
+	 As of iOS 16.6, Apple Music uses this for …
 	 • Genre, release year, and “Lossless” on album details views
 	 • Radio show titles
 	 */

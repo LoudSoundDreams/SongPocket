@@ -33,13 +33,6 @@ enum ZZZDatabase {
 		})
 		return container
 	}()
-	
-	@MainActor static let __viewContext = container.viewContext
-	static func renumber(_ items: [NSManagedObject]) {
-		items.enumerated().forEach { (index, item) in
-			item.setValue(Int64(index), forKey: "index")
-		}
-	}
 }
 
 extension NSManagedObjectContext {
@@ -64,7 +57,7 @@ extension NSManagedObjectContext {
 		
 		top.title = title_default
 		rest.forEach { collection in
-			collection.albums(sorted: true).forEach { album in
+			collection.zzzAlbums(sorted: true).forEach { album in
 				album.index = Int64(top.contents?.count ?? 0)
 				album.container = top
 			}
@@ -149,7 +142,7 @@ extension NSManagedObjectContext {
 }
 
 extension ZZZCollection {
-	final func albums(sorted: Bool) -> [ZZZAlbum] {
+	final func zzzAlbums(sorted: Bool) -> [ZZZAlbum] {
 		guard let contents else { return [] }
 		let unsorted = contents.map { $0 as! ZZZAlbum }
 		guard sorted else { return unsorted }
@@ -157,7 +150,7 @@ extension ZZZCollection {
 	}
 }
 extension ZZZAlbum {
-	final func songs(sorted: Bool) -> [ZZZSong] {
+	final func zzzSongs(sorted: Bool) -> [ZZZSong] {
 		guard let contents else { return [] }
 		let unsorted = contents.map { $0 as! ZZZSong }
 		guard sorted else { return unsorted }
