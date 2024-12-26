@@ -6,10 +6,6 @@ import os
 enum Disk {
 	private static let signposter = OSSignposter(subsystem: "disk", category: .pointsOfInterest)
 	
-	static func delete_unused() {
-		// 2do
-	}
-	
 	fileprivate static let newline = "\n"
 	fileprivate static let tab = "\t"
 	fileprivate static let tab_tab = "\t\t"
@@ -22,7 +18,7 @@ enum Disk {
 		var stream: String = ""
 		crates.forEach { crate in
 			stream.append(
-				contentsOf: "\(crate.title)\(newline)"
+				contentsOf: "\(crate.title)\(newline)" // 2do: Delete support for multiple crates.
 			)
 			crate.lrAlbums.forEach { album in
 				stream.append(

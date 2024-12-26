@@ -10,7 +10,6 @@ import MusicKit
 		defaults.dictionaryRepresentation().forEach { (key_existing, _) in
 			defaults.removeObject(forKey: key_existing)
 		}
-		Disk.delete_unused()
 		
 		// Migrate persistent data (1), then show persistent data (2), then update persistent data (3), in that order.
 		ZZZDatabase.migrate() // (1) It’s simpler to migrate before running any UI code, so our UI can assume already-migrated data. But slow migrations ought to show UI while in progress.
