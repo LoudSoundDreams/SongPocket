@@ -33,12 +33,8 @@ enum Disk {
 		}
 		
 		// Write
-		let data = stream.data(
-			using: encoding_utf8,
-			allowLossyConversion: false)!
-		try! FileManager.default.createDirectory(
-			at: folder_v1,
-			withIntermediateDirectories: true)
+		let data = stream.data(using: encoding_utf8, allowLossyConversion: false)!
+		try! FileManager.default.createDirectory(at: folder_v1, withIntermediateDirectories: true)
 		try! data.write(to: file_crates)
 	}
 	static func load_crates() -> [LRCrate] {
@@ -53,9 +49,7 @@ enum Disk {
 		}
 		
 		// Parse
-		guard let stream: String = String(
-			data: data,
-			encoding: encoding_utf8)
+		guard let stream: String = String(data: data, encoding: encoding_utf8)
 		else {
 			Print("Couldn’t decode crates file.")
 			return []
@@ -69,8 +63,8 @@ enum Disk {
 }
 
 struct Parser {
-	init(_ string: String) {
-		self.lines = string.split(
+	init(_ stream: String) {
+		self.lines = stream.split(
 			separator: Disk.newline,
 			omittingEmptySubsequences: false)
 	}
@@ -99,7 +93,6 @@ struct Parser {
 			let parsed_crate = LRCrate(title: String(content))
 			parsed_crate.lrAlbums = albums
 			result.append(parsed_crate)
-			let _ = content
 		}
 		return result
 	}
@@ -129,9 +122,7 @@ struct Parser {
 			}
 			
 			i_line += 1
-			let (next_i_line, uSongs) = uSongs_until_outdent(
-				from: i_line,
-				uAlbum: uAlbum)
+			let (next_i_line, uSongs) = uSongs_until_outdent(from: i_line)
 			
 			i_line = next_i_line
 			guard !uSongs.isEmpty else {
@@ -144,8 +135,7 @@ struct Parser {
 		return (i_line, result)
 	}
 	private func uSongs_until_outdent(
-		from start: Int,
-		uAlbum: UAlbum
+		from start: Int
 	) -> (
 		next_i_line: Int,
 		[USong]

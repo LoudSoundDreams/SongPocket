@@ -75,7 +75,9 @@ final class FakeAlbum: Identifiable {
 		}
 	}
 	static func renumber(_ albums: [FakeAlbum]) {
-		albums.indices.forEach { albums[$0].position = $0 }
+		albums.indices.forEach { i_album in
+			albums[i_album].position = i_album
+		}
 	}
 	
 	var position: Int

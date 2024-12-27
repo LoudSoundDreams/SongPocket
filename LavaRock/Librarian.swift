@@ -240,8 +240,8 @@ final class LRAlbum {
 					}
 			}
 		}()
-		let indices_selected: [Int] = album.uSongs.indices.filter {
-			uSongs_selected.contains(album.uSongs[$0])
+		let indices_selected: [Int] = album.uSongs.indices.filter { i_uSong in
+			uSongs_selected.contains(album.uSongs[i_uSong])
 		}
 		var uSongs_sorted = album.uSongs
 		indices_selected.indices.forEach { counter in

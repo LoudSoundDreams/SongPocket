@@ -656,7 +656,8 @@ final class AlbumTable: LRTableViewController {
 			case .select_songs, .view: break
 			case .select_albums(let ids_selected):
 				let rs_selected = list_state.album_mpids().indices(where: {
-					ids_selected.contains($0)
+					mpidAlbum in
+					ids_selected.contains(mpidAlbum)
 				})
 				guard rs_selected.ranges.count <= 1 else { return false }
 		}
@@ -680,7 +681,8 @@ final class AlbumTable: LRTableViewController {
 						case .select_albums, .view: break
 						case .select_songs(let ids_selected):
 							let rs_selected = list_state.song_mpids().indices(where: {
-								ids_selected.contains($0)
+								mpidSong in
+								ids_selected.contains(mpidSong)
 							})
 							if rs_selected.ranges.count >= 2 { enabling = false }
 					}

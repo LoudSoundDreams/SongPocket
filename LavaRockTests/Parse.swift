@@ -26,7 +26,6 @@ private let badStructure: String = """
 	53
 		//
 """
-
 @Test private func parseBadStructure() {
 	let crates = Parser(badStructure).parse_crates()
 	let _ = crates

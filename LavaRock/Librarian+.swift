@@ -13,15 +13,16 @@ extension Librarian {
 		 For each `LRAlbum`, determine whether it still corresponds to an album in the Apple Music library.
 		 • If so, update its songs.
 		 • If not, delete it.
-		 Meanwhile, collect any Apple Music album we don’t have an `LRAlbum` for; we’ll create one.
+		 Meanwhile, collect any Apple Music album we don’t have an `LRAlbum` for; we’ll add one.
 		 
-		 Insert unfamiliar albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger. (Determine “date created” using the earliest “date added to library” among songs in the album.)
+		 Add unfamiliar albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger. (Determine “date created” using the earliest “date added to library” among songs in the album.)
 		 
-		 When modifying existing albums (by adding and removing songs), maintain the order of existing items.
-		 When adding songs to an existing album: if the existing songs are in default order, maintain default order after adding songs. Otherwise, insert them on top, most-recently-added on top.
+		 When updating existing albums (by adding and removing songs), maintain the order of existing items.
+		 When adding songs to an existing album: if the existing songs are in default order, maintain default order after adding songs. Otherwise, add them on top, most-recently-added on top.
 		 
-		 Removing songs can change whether the remaining songs are in default order; removing an album makes its ID unfamiliar. So procrastinate on those operations.
-		 Remove `LRAlbum`s that now lack counterparts in the Apple Music library. Remove empty `LRAlbum`s and `LRCrate`s.
+		 Deleting songs can change whether the remaining songs are in default order; deleting an album makes its ID unfamiliar. So procrastinate on those operations.
+		 Delete `LRAlbum`s that now lack counterparts in the Apple Music library.
+		 Delete empty containers.
 		 */
 		
 		// Use MediaPlayer for album and song IDs.
