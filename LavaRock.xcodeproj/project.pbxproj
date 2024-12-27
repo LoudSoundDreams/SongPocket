@@ -11,7 +11,7 @@
 		071A0B9E277E76510017F76D /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071A0B9D277E76510017F76D /* App.swift */; };
 		071B30942C88CD3400239BF3 /* Librarian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071B30932C88CD3400239BF3 /* Librarian.swift */; };
 		075FC9042B46765D00219146 /* Demo.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075FC9032B46765D00219146 /* Demo.xcassets */; };
-		0768309324B42DEC0033E3CC /* ZZZContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* ZZZContainer.xcdatamodeld */; };
+		0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */; };
 		076830C824B42E400033E3CC /* AlbumTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076830BE24B42E3E0033E3CC /* AlbumTable.swift */; };
 		076830D024B42E520033E3CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076830CF24B42E510033E3CC /* Assets.xcassets */; };
 		076F1C0227E66DAA00220C2B /* Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Playback.swift */; };
@@ -50,7 +50,7 @@
 		073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		075FC9032B46765D00219146 /* Demo.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Demo.xcassets; sourceTree = "<group>"; };
 		0768308524B42DEC0033E3CC /* LavaRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LavaRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0768309224B42DEC0033E3CC /* ZZZContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ZZZContainer.xcdatamodel; sourceTree = "<group>"; };
+		0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LavaRock.xcdatamodel; sourceTree = "<group>"; };
 		0768309924B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0768309E24B42DEE0033E3CC /* LavaRockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LavaRockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		076830A424B42DEE0033E3CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -124,8 +124,8 @@
 				1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */,
 				079B2C9424E227BF00A949FA /* AppleLibrary.swift */,
 				070056902C8275C0006F1069 /* Disk.swift */,
-				0768309124B42DEC0033E3CC /* ZZZContainer.xcdatamodeld */,
 				07E0BBFA276567F70010117E /* ZZZDatabase.swift */,
+				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
 				07DF65D127766C95003B2EA3 /* Metadata.swift */,
 				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
 				076F1C0127E66DAA00220C2B /* Playback.swift */,
@@ -257,7 +257,7 @@
 				15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */,
 				07755A58294821860056E90C /* Subviews.swift in Sources */,
 				07CBB6FF2BBEA9DE008B0BB5 /* AlbumShelf.swift in Sources */,
-				0768309324B42DEC0033E3CC /* ZZZContainer.xcdatamodeld in Sources */,
+				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				07DF76E42828D8AB00B03103 /* Remote.swift in Sources */,
 				079B2C9524E227BF00A949FA /* AppleLibrary.swift in Sources */,
 				076F1C0227E66DAA00220C2B /* Playback.swift in Sources */,
@@ -418,7 +418,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1312;
+				CURRENT_PROJECT_VERSION = 1313;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -449,7 +449,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1312;
+				CURRENT_PROJECT_VERSION = 1313;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -551,14 +551,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		0768309124B42DEC0033E3CC /* ZZZContainer.xcdatamodeld */ = {
+		0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				071B30952C88CDDE00239BF3 /* LavaRock v2.xcdatamodel */,
-				0768309224B42DEC0033E3CC /* ZZZContainer.xcdatamodel */,
+				0768309224B42DEC0033E3CC /* LavaRock.xcdatamodel */,
 			);
 			currentVersion = 071B30952C88CDDE00239BF3 /* LavaRock v2.xcdatamodel */;
-			path = ZZZContainer.xcdatamodeld;
+			path = LavaRock.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

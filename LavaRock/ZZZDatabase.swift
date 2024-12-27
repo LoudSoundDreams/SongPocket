@@ -4,7 +4,7 @@ import CoreData
 
 enum ZZZDatabase {
 	@MainActor static func migrate() {
-		let container = NSPersistentContainer(name: "ZZZContainer")
+		let container = NSPersistentContainer(name: "LavaRock")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 			container.viewContext.automaticallyMergesChangesFromParent = true
 			if let error = error as NSError? {
@@ -19,9 +19,7 @@ enum ZZZDatabase {
 			}
 		})
 		
-		let context = container.viewContext
-		context.migrate_to_single_collection()
-		context.migrate_to_disk()
+		container.viewContext.migrate_to_disk()
 		
 		// Destroy persistent stores.
 		let coordinator = container.persistentStoreCoordinator
@@ -34,39 +32,41 @@ enum ZZZDatabase {
 }
 
 extension NSManagedObjectContext {
-	fileprivate final func migrate_to_single_collection() {
-		// Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
+	fileprivate final func migrate_to_disk() {
+		/*
+		 Write data to persistent storage as if the app never used Core Data previously.
+		 Determine how the user had arranged their albums and songs. Create the modern representation of that, and save it.
+		 */
 #if DEBUG
-		//		mock_multicollection()
+		//		mock_zCollections()
 #endif
-		// Move all `Album`s into the first `Collection`, and give it the default title.
-		
-		let all: [ZZZCollection] = {
+		let zCollections: [ZZZCollection] = {
 			let request = ZZZCollection.fetchRequest()
 			request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 			return fetch_please(request)
 		}()
-		guard let top = all.first else { return }
+		guard !zCollections.isEmpty else { return }
 		
-		let rest = all.dropFirst()
-		let title_default = ""
-		let needs_changes = !rest.isEmpty || (top.title != title_default)
-		guard needs_changes else { return }
-		
-		top.title = title_default
-		rest.forEach { collection in
-			collection.zzzAlbums(sorted: true).forEach { album in
-				album.index = Int64(top.contents?.count ?? 0)
-				album.container = top
+		let zAlbums = zCollections.flatMap { $0.zAlbums() }
+		let lrAlbums: [LRAlbum] = zAlbums.map {
+			let uAlbum = UAlbum(bitPattern: $0.albumPersistentID)
+			let uSongs = $0.zSongs().map { zSong in
+				USong(bitPattern: zSong.persistentID)
 			}
-			delete(collection)
+			return LRAlbum(uAlbum: uAlbum, uSongs: uSongs)
 		}
+		Disk.save_albums(lrAlbums)
 	}
 #if DEBUG
-	private func mock_multicollection() {
+	private func mock_zCollections() {
 		fetch_please(ZZZSong.fetchRequest()).forEach { delete($0) }
 		fetch_please(ZZZAlbum.fetchRequest()).forEach { delete($0) }
 		fetch_please(ZZZCollection.fetchRequest()).forEach { delete($0) }
+		
+		/*
+		 Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
+		 Database created and migrated after that contain exactly one `ZZZCollection`, with this title: ~
+		 */
 		
 		let one = ZZZCollection(context: self)
 		one.index = Int64(0)
@@ -115,21 +115,7 @@ extension NSManagedObjectContext {
 	}
 #endif
 	
-	fileprivate final func migrate_to_disk() {
-		// Write data to persistent storage as if the app never used Core Data previously.
-		
-		// Exit early if there’s nothing to migrate. The rest of the app must handle empty persistent storage anyway.
-		let zzzCollection: ZZZCollection? = {
-			let request = ZZZCollection.fetchRequest()
-			return fetch_please(request).first
-		}()
-		guard let zzzCollection else { return }
-		
-		// 2do
-		let _ = zzzCollection
-	}
-	
-	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
+	private func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		do {
 			result = try fetch(request)
@@ -141,18 +127,16 @@ extension NSManagedObjectContext {
 }
 
 extension ZZZCollection {
-	final func zzzAlbums(sorted: Bool) -> [ZZZAlbum] {
+	final func zAlbums() -> [ZZZAlbum] {
 		guard let contents else { return [] }
 		let unsorted = contents.map { $0 as! ZZZAlbum }
-		guard sorted else { return unsorted }
 		return unsorted.sorted { $0.index < $1.index }
 	}
 }
 extension ZZZAlbum {
-	final func zzzSongs(sorted: Bool) -> [ZZZSong] {
+	final func zSongs() -> [ZZZSong] {
 		guard let contents else { return [] }
 		let unsorted = contents.map { $0 as! ZZZSong }
-		guard sorted else { return unsorted }
 		return unsorted.sorted { $0.index < $1.index }
 	}
 }
