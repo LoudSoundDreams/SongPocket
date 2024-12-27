@@ -38,16 +38,6 @@
                ReferencedContainer = "container:LavaRock.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "076830A824B42DEF0033E3CC"
-               BuildableName = "LavaRockUITests.xctest"
-               BlueprintName = "LavaRockUITests"
-               ReferencedContainer = "container:LavaRock.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

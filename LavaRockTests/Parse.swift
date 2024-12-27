@@ -58,8 +58,7 @@ private func are_equivalent(
 ) -> Bool {
 	let zipped = zip(these, those)
 	return zipped.allSatisfy { this, that in
-		guard this.uAlbum == that.uAlbum
-		else { return false }
+		guard this.uAlbum == that.uAlbum else { return false }
 		let uSongs_zipped = zip(this.uSongs, that.uSongs)
 		return uSongs_zipped.allSatisfy { $0 == $1 }
 	}
