@@ -3,7 +3,14 @@
 import Testing
 @testable import LavaRock
 
-private let badStructure: String = """
+private let only_newline = "\n"
+@Test private func parse_1() {
+	let output = Parser(only_newline).parse_albums()
+	let correct: [LRAlbum] = []
+	#expect(are_equivalent(output, correct))
+}
+
+private let bad_1: String = """
 	1
 		2
 	3
@@ -26,23 +33,34 @@ private let badStructure: String = """
 	53
 		//
 """
-@Test private func parseBadStructure() {
-	let crates = Parser(badStructure).parse_crates()
-	let _ = crates
-	#expect(
-		true
-		/*
-		 crates == [
-		 ]
-		 
-		 crate 7
-		 album 13
-		 song 17
-		 song 19
-		 song 23
-		 crate ""
-		 album 41
-		 song 43
-		*/
-	)
+@Test private func parse_2() {
+	let output = Parser(bad_1).parse_albums()
+	let correct: [LRAlbum] = [
+		LRAlbum(
+			uAlbum: 7,
+			uSongs: [11, 13, 29]
+		),
+		LRAlbum(
+			uAlbum: 31,
+			uSongs: [37, 41]
+		),
+		LRAlbum(
+			uAlbum: 47,
+			uSongs: [53]
+		),
+	]
+	#expect(are_equivalent(output, correct))
+}
+
+private func are_equivalent(
+	_ these: [LRAlbum],
+	_ those: [LRAlbum]
+) -> Bool {
+	let zipped = zip(these, those)
+	return zipped.allSatisfy { this, that in
+		guard this.uAlbum == that.uAlbum
+		else { return false }
+		let uSongs_zipped = zip(this.uSongs, that.uSongs)
+		return uSongs_zipped.allSatisfy { $0 == $1 }
+	}
 }

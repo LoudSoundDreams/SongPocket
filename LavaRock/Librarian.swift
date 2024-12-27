@@ -2,13 +2,6 @@
 
 import os
 
-final class LRCrate {
-	let title: String
-	var lrAlbums: [LRAlbum] = []
-	init(title: String) {
-		self.title = title
-	}
-}
 final class LRAlbum {
 	let uAlbum: UAlbum
 	var uSongs: [USong] = []
@@ -22,7 +15,7 @@ final class LRAlbum {
 	static let signposter = OSSignposter(subsystem: "librarian", category: .pointsOfInterest)
 	
 	// Browse
-	private(set) static var the_crate: LRCrate?
+	static var the_albums: [LRAlbum] = []
 	
 	// Search
 	private(set) static var album_with_uAlbum: [UAlbum: WeakRef<LRAlbum>] = [:]
@@ -30,9 +23,6 @@ final class LRAlbum {
 	private(set) static var album_containing_uSong: [USong: WeakRef<LRAlbum>] = [:]
 	
 	// Register
-	static func reset_the_crate() {
-		the_crate = LRCrate(title: InterfaceText._tilde)
-	}
 	static func register_album(
 		_ album_new: LRAlbum
 	) {
@@ -64,18 +54,12 @@ final class LRAlbum {
 	
 	// Persist
 	static func save() {
-		guard let the_crate else { return }
-		
-		Disk.save_crates([the_crate])
+		Disk.save_albums(the_albums)
 	}
 	static func load() {
-		guard let crate_loaded = Disk.load_crates().first else { return }
-		
-		// Give the crate the default title.
-		reset_the_crate(); let the_crate = the_crate!
-		the_crate.lrAlbums = crate_loaded.lrAlbums
-		the_crate.lrAlbums.forEach { album in
-			register_album(album)
+		the_albums = Disk.load_albums()
+		the_albums.forEach {
+			register_album($0)
 		}
 	}
 	
@@ -84,8 +68,7 @@ final class LRAlbum {
 		_ uAlbums_selected: Set<UAlbum>,
 		to_limit: Bool
 	) {
-		guard let crate = the_crate else { return }
-		let rs_to_promote = crate.lrAlbums.indices(where: { album in
+		let rs_to_promote = the_albums.indices(where: { album in
 			uAlbums_selected.contains(album.uAlbum)
 		})
 		let target: Int? = (
@@ -94,7 +77,7 @@ final class LRAlbum {
 			: target_promoting(rs_to_promote)
 		)
 		guard let target else { return }
-		crate.lrAlbums.moveSubranges(rs_to_promote, to: target)
+		the_albums.moveSubranges(rs_to_promote, to: target)
 	}
 	static func promote_songs(
 		_ uSongs_selected: Set<USong>,
@@ -128,19 +111,18 @@ final class LRAlbum {
 		_ uAlbums_selected: Set<UAlbum>,
 		to_limit: Bool
 	) {
-		guard let crate = the_crate else { return }
-		let rs_to_demote = crate.lrAlbums.indices(where: { album in
+		let rs_to_demote = the_albums.indices(where: { album in
 			uAlbums_selected.contains(album.uAlbum)
 		})
 		let target: Int? = (
 			to_limit
-			? crate.lrAlbums.count-1
+			? the_albums.count-1
 			: target_demoting(
 				rs_to_demote,
-				index_max: crate.lrAlbums.count-1)
+				index_max: the_albums.count-1)
 		)
 		guard let target else { return }
-		crate.lrAlbums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
+		the_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
 	}
 	static func demote_songs(
 		_ uSongs_selected: Set<USong>,
@@ -177,9 +159,8 @@ final class LRAlbum {
 		_ uAlbums_selected: Set<UAlbum>,
 		by albumOrder: AlbumOrder
 	) {
-		guard let crate = the_crate else { return }
 		let albums_selected_sorted: [LRAlbum] = {
-			let albums_selected = crate.lrAlbums.filter {
+			let albums_selected = the_albums.filter {
 				uAlbums_selected.contains($0.uAlbum)
 			}
 			switch albumOrder {
@@ -205,16 +186,16 @@ final class LRAlbum {
 					}
 			}
 		}()
-		let indices_selected: [Int] = crate.lrAlbums.indices.filter {
-			uAlbums_selected.contains(crate.lrAlbums[$0].uAlbum)
+		let indices_selected: [Int] = the_albums.indices.filter { i_selected in
+			uAlbums_selected.contains(the_albums[i_selected].uAlbum)
 		}
-		var albums_sorted = crate.lrAlbums
+		var albums_sorted = the_albums
 		indices_selected.indices.forEach { counter in
 			let i_selected = indices_selected[counter]
 			let album_for_here = albums_selected_sorted[counter]
 			albums_sorted[i_selected] = album_for_here
 		}
-		crate.lrAlbums = albums_sorted
+		the_albums = albums_sorted
 	}
 	static func sort_songs(
 		_ uSongs_selected: Set<USong>,
@@ -266,17 +247,12 @@ final class LRAlbum {
 	
 	static func debug_Print() {
 		Print()
-		Print("crate tree")
-		if let the_crate {
-			Print("\(the_crate.title): \(the_crate.lrAlbums.count) albums")
-			the_crate.lrAlbums.forEach { album in
-				Print("  \(album.uAlbum)")
-				album.uSongs.forEach { uSong in
-					Print("    \(uSong)")
-				}
+		Print("albums:", the_albums.count)
+		the_albums.forEach { album in
+			Print("  \(album.uAlbum)")
+			album.uSongs.forEach { uSong in
+				Print("    \(uSong)")
 			}
-		} else {
-			Print("nil crate")
 		}
 		
 		Print("album ID → album:", album_with_uAlbum.count)

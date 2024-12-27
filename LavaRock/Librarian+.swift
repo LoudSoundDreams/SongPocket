@@ -28,14 +28,13 @@ extension Librarian {
 		// Use MediaPlayer for album and song IDs.
 		// Use MusicKit for all other metadata. `AppleLibrary.shared.mkSections_cache` should be ready by now.
 		
-		let lrAlbums_existing: [LRAlbum] = the_crate?.lrAlbums ?? []
 		var to_update: [(LRAlbum, MPMediaItemCollection)] = [] // Order doesn’t matter.
 		var to_delete: Set<UAlbum> = []
 		var mpAlbum_with_uAlbum: [UAlbum: MPMediaItemCollection] = {
 			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		lrAlbums_existing.forEach { lrAlbum in
+		the_albums.forEach { lrAlbum in
 			let uAlbum = lrAlbum.uAlbum
 			if let mpAlbum_corresponding = mpAlbum_with_uAlbum[uAlbum] {
 				to_update.append((lrAlbum, mpAlbum_corresponding))
@@ -92,9 +91,6 @@ extension Librarian {
 			guard let date_left else { return false }
 			return date_left > date_right
 		}
-		
-		if the_crate == nil { reset_the_crate() }; let the_crate = the_crate!
-		
 		mpAlbums_sorted.reversed().forEach { mpAlbum in
 			let lrAlbum_new = LRAlbum(
 				uAlbum: mpAlbum.persistentID,
@@ -111,7 +107,7 @@ extension Librarian {
 					}
 				}()
 			)
-			the_crate.lrAlbums.insert(lrAlbum_new, at: 0)
+			the_albums.insert(lrAlbum_new, at: 0)
 			register_album(lrAlbum_new)
 		}
 	}
@@ -196,12 +192,11 @@ extension Librarian {
 	private static func delete_albums(
 		_ to_delete: Set<UAlbum>
 	) {
-		guard let the_crate else { return }
-		
-		the_crate.lrAlbums.indices.reversed().forEach { i_album in
-			let uAlbum = the_crate.lrAlbums[i_album].uAlbum
+		// Suboptimal; unnecessarily checks albums we added or updated just earlier.
+		the_albums.indices.reversed().forEach { i_album in
+			let uAlbum = the_albums[i_album].uAlbum
 			if to_delete.contains(uAlbum) {
-				the_crate.lrAlbums.remove(at: i_album)
+				the_albums.remove(at: i_album)
 				deregister_uAlbum(uAlbum)
 			}
 		}

@@ -49,7 +49,7 @@ extension NSManagedObjectContext {
 		guard let top = all.first else { return }
 		
 		let rest = all.dropFirst()
-		let title_default = InterfaceText._tilde
+		let title_default = ""
 		let needs_changes = !rest.isEmpty || (top.title != title_default)
 		guard needs_changes else { return }
 		

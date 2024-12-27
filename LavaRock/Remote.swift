@@ -48,15 +48,10 @@ import MediaPlayer
 	private static let i_pause = UIImage(systemName: "pause.circle.fill")?.applying_hierarchical_tint()
 	
 	private func title_menu() -> String {
-		guard MusicAuthorization.currentStatus == .authorized else {
-			return ""
-		}
-		guard
-			let lrCrate = Librarian.the_crate,
-			!lrCrate.lrAlbums.isEmpty
-		else {
-			return InterfaceText._empty_library_message
-		}
+		guard MusicAuthorization.currentStatus == .authorized
+		else { return "" }
+		guard !Librarian.the_albums.isEmpty
+		else { return InterfaceText._empty_library_message }
 		return ""
 	}
 	private func menu() -> UIMenu {
