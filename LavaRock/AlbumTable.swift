@@ -83,7 +83,7 @@ extension AlbumListState {
 			case .song_mpid(let mpidSong): return mpidSong
 		}}
 	}
-	fileprivate func album_mpids(with ids_chosen: Set<MPIDAlbum>? = nil) -> [MPIDAlbum] {
+	fileprivate func album_mpids(with ids_chosen: Set<MPIDAlbum>? = nil) -> [MPIDAlbum] { // 2do: Do we ever actually need these in order?
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
 			case .song_mpid: return nil
 			case .album_mpid(let mpidAlbum):
@@ -92,7 +92,7 @@ extension AlbumListState {
 				return mpidAlbum
 		}}
 	}
-	fileprivate func song_mpids(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
+	fileprivate func song_mpids(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] { // 2do
 		return list_items.compactMap { switch $0 {
 			case .album_mpid: return nil
 			case .song_mpid(let mpidSong):
