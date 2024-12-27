@@ -58,14 +58,22 @@ struct FakeAlbumCover: View {
 	let album: FakeAlbum
 	var body: some View {
 		ZStack {
-			Rectangle().foregroundStyle(album.color_square)
-			Circle().foregroundStyle(album.color_circle)
+			Rectangle().foregroundStyle(Color.debug_random())
+			Circle().foregroundStyle(Color.debug_random())
 			Text(album.title)
-		}.aspectRatio(1, contentMode: .fit)
+		}
+		.aspectRatio(1, contentMode: .fit)
+		.scaleEffect(is_reordering ? (1 + 1 / CGFloat.eight) : 1)
+		.opacity(is_reordering ? Double.one_half : 1)
+		.animation(.linear(duration: .one_eighth), value: is_reordering)
+		.onLongPressGesture(minimumDuration: .one_eighth) {
+			is_reordering = true
+		} onPressingChanged: { is_pressing in
+			if !is_pressing { is_reordering = false }
+		}
 	}
+	@State private var is_reordering = false
 }
-
-// MARK: Model
 
 // If this were a struct, `[FakeAlbum].didSet` would loop infinitely when you set one of `FakeAlbum`’s properties.
 final class FakeAlbum: Identifiable {
@@ -82,9 +90,6 @@ final class FakeAlbum: Identifiable {
 	
 	var position: Int
 	let title: String
-	let color_circle = Color.debug_random()
-	let color_square = Color.debug_random()
-	
 	init(position: Int, title: String) {
 		self.position = position
 		self.title = title
@@ -103,8 +108,6 @@ extension FakeAlbum: Hashable {
 		hasher.combine(position)
 	}
 }
-
-// MARK: Helpers
 
 private extension String {
 	static func debug_random() -> Self {
