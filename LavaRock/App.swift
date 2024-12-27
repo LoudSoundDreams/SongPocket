@@ -42,7 +42,8 @@ private final class NCMain: UINavigationController {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController()!
 		)
-		result.setNavigationBarHidden(true, animated: false)
+		let nav_bar = result.navigationBar
+		nav_bar.scrollEdgeAppearance = nav_bar.standardAppearance
 		let toolbar = result.toolbar!
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		result.setToolbarHidden(false, animated: false)
