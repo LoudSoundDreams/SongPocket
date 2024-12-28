@@ -59,15 +59,13 @@ extension AlbumListState {
 				if ids_selected != selectable {
 					select_mode = .select_albums(selectable)
 				}
-			case .select_songs(let ids_selected):
+			case .select_songs(let old_selected):
 				guard !song_mpids().isEmpty else {
 					select_mode = .view(nil)
 					break
 				}
-				let selectable: Set<MPIDSong> = Set(
-					song_mpids(with: ids_selected)
-				)
-				if ids_selected != selectable{
+				let selectable = Set(song_mpids(with: old_selected))
+				if old_selected != selectable{
 					select_mode = .select_songs(selectable)
 				}
 		}
@@ -587,6 +585,7 @@ final class AlbumTable: LRTableViewController {
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
 				var result: [USong] = []
+				// 2do: WRONG ORDER
 				ids_selected.forEach {
 					guard let lrAlbum_selected = Librarian.album_with_uAlbum[UAlbum(bitPattern: $0)]?.referencee else { return }
 					result.append(contentsOf: lrAlbum_selected.uSongs)

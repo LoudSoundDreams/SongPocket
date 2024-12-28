@@ -100,7 +100,7 @@ import MusicKit
 	let dim_limit: CGFloat
 	
 	private var artwork: MusicKit.Artwork? {
-		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(id_album))]?.artwork
+		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(id_album))]?.artwork // 2do: Use unsigned?
 	}
 	var body: some View {
 		ZStack {
@@ -334,12 +334,12 @@ import MusicKit
 		switch list_state.select_mode {
 			case .select_albums: return
 			case .view: NotificationCenter.default.post(name: Self.confirm_play_id_song, object: id_song)
-			case .select_songs(let ids_selected):
-				var selected_new = ids_selected
-				if ids_selected.contains(id_song) {
-					selected_new.remove(id_song)
-				} else { selected_new.insert(id_song) }
-				list_state.select_mode = .select_songs(selected_new)
+			case .select_songs(let old_selected):
+				var new_selected = old_selected
+				if old_selected.contains(id_song) {
+					new_selected.remove(id_song)
+				} else { new_selected.insert(id_song) }
+				list_state.select_mode = .select_songs(new_selected)
 		}
 	}
 	
