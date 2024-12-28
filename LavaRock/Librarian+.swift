@@ -54,13 +54,9 @@ extension Librarian {
 				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID)
 			}
 		}
-		for (lrAlbum, mpAlbum) in to_update {
-			for uSong_existing in lrAlbum.uSongs {
-				await AppleLibrary.shared.cache_mkSong(uSong: uSong_existing)
-			}
+		for (_, mpAlbum) in to_update {
 			for mpSong in mpAlbum.items {
-				let uSong_fresh = mpSong.persistentID
-				await AppleLibrary.shared.cache_mkSong(uSong: uSong_fresh)
+				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID)
 			}
 		}
 		signposter.endInterval("fetch", _fetch)
