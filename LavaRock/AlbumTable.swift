@@ -6,7 +6,7 @@ import MusicKit
 import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var list_items: [AlbumListItem] = AlbumListState.album_mpids_fresh().map { .album_mpid($0) }
+	@ObservationIgnored fileprivate var list_items: [AlbumListItem] = AlbumListState.uAlbums_fresh().map { .uAlbum($0) }
 	var expansion: Expansion = .collapsed { didSet {
 		NotificationCenter.default.post(name: Self.expansion_changed, object: self)
 	}}
@@ -19,28 +19,28 @@ import MediaPlayer
 }
 extension AlbumListState {
 	fileprivate enum AlbumListItem {
-		case album_mpid(MPIDAlbum)
+		case uAlbum(UAlbum)
 		case song_mpid(MPIDSong)
 	}
 	fileprivate func refresh_items() {
 		list_items = {
-			let album_mpids = Self.album_mpids_fresh()
+			let uAlbums = Self.uAlbums_fresh()
 			switch expansion {
-				case .collapsed: return album_mpids.map { .album_mpid($0) }
-				case .expanded(let id_expanded):
+				case .collapsed: return uAlbums.map { .uAlbum($0) }
+				case .expanded(let uA_expanded):
 					// If we removed the expanded album, go to collapsed mode.
 					guard
-						let i_expanded = album_mpids.firstIndex(where: { $0 == id_expanded }),
-						let lrAlbum = Librarian.album_with_uAlbum[UAlbum(bitPattern: id_expanded)]?.referencee
+						let i_expanded = uAlbums.firstIndex(where: { $0 == uA_expanded }),
+						let lrAlbum = Librarian.album_with_uAlbum[uA_expanded]?.referencee
 					else {
 						expansion = .collapsed
-						return album_mpids.map { .album_mpid($0) }
+						return uAlbums.map { .uAlbum($0) }
 					}
 					
 					let song_mpids_inline: [AlbumListItem] = lrAlbum.uSongs.map {
 						.song_mpid(MPIDSong(bitPattern: $0))
 					}
-					var result: [AlbumListItem] = album_mpids.map { .album_mpid($0) }
+					var result: [AlbumListItem] = uAlbums.map { .uAlbum($0) }
 					result.insert(contentsOf: song_mpids_inline, at: i_expanded + 1)
 					return result
 			}
@@ -52,11 +52,9 @@ extension AlbumListState {
 				if let id_activated, song_mpids(with: [id_activated]).isEmpty {
 					select_mode = .view(nil)
 				}
-			case .select_albums(let ids_selected):
-				let selectable: Set<MPIDAlbum> = Set(
-					album_mpids(with: ids_selected)
-				)
-				if ids_selected != selectable {
+			case .select_albums(let old_selected):
+				let selectable = Set(uAlbums(with: old_selected))
+				if old_selected != selectable {
 					select_mode = .select_albums(selectable)
 				}
 			case .select_songs(let old_selected):
@@ -70,45 +68,45 @@ extension AlbumListState {
 				}
 		}
 	}
-	private static func album_mpids_fresh() -> [MPIDAlbum] {
+	private static func uAlbums_fresh() -> [UAlbum] {
 		guard MusicAuthorization.currentStatus == .authorized
 		else { return [] } // Don’t show any albums; show a placeholder.
-		return Librarian.the_albums.map { MPIDAlbum(bitPattern: $0.uAlbum) }
+		return Librarian.the_albums.map { $0.uAlbum }
 	}
 	fileprivate func row_identifiers() -> [AnyHashable] {
 		return list_items.map { switch $0 {
-			case .album_mpid(let mpidAlbum): return mpidAlbum
+			case .uAlbum(let uAlbum): return uAlbum
 			case .song_mpid(let mpidSong): return mpidSong
 		}}
 	}
-	fileprivate func album_mpids(with ids_chosen: Set<MPIDAlbum>? = nil) -> [MPIDAlbum] { // 2do: Do we ever actually need these in order?
+	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
 			case .song_mpid: return nil
-			case .album_mpid(let mpidAlbum):
-				guard let ids_chosen else { return mpidAlbum }
-				guard ids_chosen.contains(mpidAlbum) else { return nil }
-				return mpidAlbum
+			case .uAlbum(let uAlbum):
+				guard let chosen else { return uAlbum }
+				guard chosen.contains(uAlbum) else { return nil }
+				return uAlbum
 		}}
 	}
-	fileprivate func song_mpids(with ids_chosen: Set<MPIDSong>? = nil) -> [MPIDSong] { // 2do
+	fileprivate func song_mpids(with chosen: Set<MPIDSong>? = nil) -> [MPIDSong] {
 		return list_items.compactMap { switch $0 {
-			case .album_mpid: return nil
+			case .uAlbum: return nil
 			case .song_mpid(let mpidSong):
-				guard let ids_chosen else { return mpidSong }
-				guard ids_chosen.contains(mpidSong) else { return nil }
+				guard let chosen else { return mpidSong }
+				guard chosen.contains(mpidSong) else { return nil }
 				return mpidSong
 		}}
 	}
 	
-	func has_album_range(from id_anchor: MPIDAlbum, forward: Bool) -> Bool {
-		guard let i_anchor = album_mpids().firstIndex(where: { $0 == id_anchor }) else { return false }
+	func has_album_range(from uA_anchor: UAlbum, forward: Bool) -> Bool {
+		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor }) else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
-		guard album_mpids().indices.contains(i_neighbor) else { return false }
+		guard uAlbums().indices.contains(i_neighbor) else { return false }
 		switch select_mode {
 			case .select_songs, .view: return true
-			case .select_albums(let ids_selected):
-				let anchor_is_selected = ids_selected.contains(id_anchor)
-				let neighbor_is_selected = ids_selected.contains(album_mpids()[i_neighbor])
+			case .select_albums(let uAs_selected):
+				let anchor_is_selected = uAs_selected.contains(uA_anchor)
+				let neighbor_is_selected = uAs_selected.contains(uAlbums()[i_neighbor])
 				return anchor_is_selected == neighbor_is_selected
 		}
 	}
@@ -126,28 +124,25 @@ extension AlbumListState {
 		}
 	}
 	
-	func change_album_range(from id_anchor: MPIDAlbum, forward: Bool) {
-		guard let i_anchor = album_mpids().firstIndex(where: { $0 == id_anchor }) else { return }
-		let old_selected: Set<MPIDAlbum> = {
-			switch select_mode {
-				case .select_songs, .view: return []
-				case .select_albums(let ids_selected): return ids_selected
-			}
-		}()
-		let inserting: Bool = !old_selected.contains(id_anchor)
-		let new_selected: Set<MPIDAlbum> = {
+	func change_album_range(from uA_anchor: UAlbum, forward: Bool) {
+		guard
+			let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor }),
+			case let .select_albums(old_selected) = select_mode
+		else { return }
+		let inserting: Bool = !old_selected.contains(uA_anchor)
+		let new_selected: Set<UAlbum> = {
 			var result = old_selected
 			var i_in_range = i_anchor
 			while true {
-				guard album_mpids().indices.contains(i_in_range) else { break }
-				let id_in_range = album_mpids()[i_in_range]
+				guard uAlbums().indices.contains(i_in_range) else { break }
+				let uA_in_range = uAlbums()[i_in_range]
 				
 				if inserting {
-					guard !result.contains(id_in_range) else { break }
-					result.insert(id_in_range)
+					guard !result.contains(uA_in_range) else { break }
+					result.insert(uA_in_range)
 				} else {
-					guard result.contains(id_in_range) else { break }
-					result.remove(id_in_range)
+					guard result.contains(uA_in_range) else { break }
+					result.remove(uA_in_range)
 				}
 				if forward { i_in_range += 1 } else { i_in_range -= 1 }
 			}
@@ -203,13 +198,13 @@ extension AlbumListState {
 	
 	enum Expansion: Equatable {
 		case collapsed
-		case expanded(MPIDAlbum)
+		case expanded(UAlbum)
 	}
 	static let expansion_changed = Notification.Name("LR_AlbumExpandingOrCollapsing")
 	
 	enum SelectMode: Equatable {
 		case view(MPIDSong?)
-		case select_albums(Set<MPIDAlbum>)
+		case select_albums(Set<UAlbum>)
 		case select_songs(Set<MPIDSong>) // Should always be within the same album.
 	}
 	static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
@@ -296,7 +291,7 @@ final class AlbumTable: LRTableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch list_state.list_items[indexPath.row] {
-			case .album_mpid(let mpidAlbum):
+			case .uAlbum(let uAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 				cell.backgroundColor = .clear
@@ -309,15 +304,13 @@ final class AlbumTable: LRTableViewController {
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumRow(
-						id_album: mpidAlbum,
-						list_state: list_state)
+					AlbumRow(uAlbum: uAlbum, list_state: list_state)
 				}.margins(.all, .zero)
 				return cell
 			case .song_mpid(let mpidSong):
 				switch list_state.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
-					case .expanded(let id_expanded):
+					case .expanded(let uAlbum_expanded):
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
 						cell.backgroundColor = .clear
@@ -329,7 +322,7 @@ final class AlbumTable: LRTableViewController {
 						cell.contentConfiguration = UIHostingConfiguration {
 							SongRow(
 								id_song: mpidSong,
-								id_album: id_expanded,
+								uAlbum: uAlbum_expanded,
 								list_state: list_state)
 						}.margins(.all, .zero)
 						return cell
@@ -360,15 +353,15 @@ final class AlbumTable: LRTableViewController {
 			let uSong_current = MPMusicPlayerController.uSong_current,
 			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
 		else { return }
-		let mpidAlbum_target = MPIDAlbum(bitPattern: album_target.uAlbum)
+		let uAlbum_target = album_target.uAlbum
 		guard let row_target = list_state.list_items.firstIndex(where: { switch $0 {
 			case .song_mpid: return false
-			case .album_mpid(let mpidAlbum): return mpidAlbum == mpidAlbum_target
+			case .uAlbum(let uAlbum): return uAlbum == uAlbum_target
 		}}) else { return }
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.list_state.expansion = .expanded(mpidAlbum_target)
+			self.list_state.expansion = .expanded(uAlbum_target)
 		}
 	}
 	
@@ -381,16 +374,16 @@ final class AlbumTable: LRTableViewController {
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers())
 				}
-			case .expanded(let id_to_expand):
+			case .expanded(let uA_to_expand):
 				Task {
-					guard list_state.album_mpids().contains(where: { $0 == id_to_expand }) else { return }
+					guard list_state.uAlbums().contains(where: { $0 == uA_to_expand }) else { return }
 					list_state.refresh_items()
 					b_sort.menu = menu_sort()
 					b_focused.menu = menu_focused()
 					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
 						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
 							case .song_mpid: return false
-							case .album_mpid(let mpidAlbum): return mpidAlbum == id_to_expand
+							case .uAlbum(let uAlbum): return uAlbum == uA_to_expand
 						}})!
 						self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 					})
@@ -408,10 +401,10 @@ final class AlbumTable: LRTableViewController {
 				if id_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
-			case .select_albums(let ids_selected):
+			case .select_albums(let uAs_selected):
 				navigationItem.setRightBarButtonItems([b_done], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
-				b_album_promote.isEnabled = !ids_selected.isEmpty
+				b_album_promote.isEnabled = !uAs_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
 				b_sort.menu = menu_sort() // In case it’s open.
 				b_focused.menu = menu_focused()
@@ -430,7 +423,7 @@ final class AlbumTable: LRTableViewController {
 			let id_activated = notification.object as? MPIDSong,
 			let view_popover_anchor: UIView = { () -> UITableViewCell? in
 				guard let row_activated = list_state.list_items.firstIndex(where: { switch $0 {
-					case .album_mpid: return false
+					case .uAlbum: return false
 					case .song_mpid(let mpidSong): return mpidSong == id_activated
 				}}) else { return nil }
 				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
@@ -494,15 +487,15 @@ final class AlbumTable: LRTableViewController {
 	
 	private func title_focused(always_songs: Bool) -> String {
 		switch list_state.select_mode {
-			case .select_albums(let ids_selected):
+			case .select_albums(let uAs_selected):
 				if always_songs {
-					let num_songs_selected: Int = list_state.album_mpids(with: ids_selected).reduce(into: 0) { uSongs_so_far, mpidAlbum_selected in
-						guard let lrAlbum_selected = Librarian.album_with_uAlbum[UAlbum(bitPattern: mpidAlbum_selected)]?.referencee else { return }
+					let num_songs_selected: Int = uAs_selected.reduce(into: 0) { uSongs_so_far, uAlbum_selected in
+						guard let lrAlbum_selected = Librarian.album_with_uAlbum[uAlbum_selected]?.referencee else { return }
 						uSongs_so_far += lrAlbum_selected.uSongs.count
 					}
 					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
 				} else {
-					return InterfaceText.NUMBER_albums_selected(list_state.album_mpids(with: ids_selected).count)
+					return InterfaceText.NUMBER_albums_selected(list_state.uAlbums(with: uAs_selected).count)
 				}
 			case .select_songs(let ids_selected):
 				return InterfaceText.NUMBER_songs_selected(list_state.song_mpids(with: ids_selected).count)
@@ -510,13 +503,13 @@ final class AlbumTable: LRTableViewController {
 				switch list_state.expansion {
 					case .collapsed:
 						if always_songs {
-							let num_all_songs: Int = list_state.album_mpids().reduce(into: 0) { uSongs_so_far, mpidAlbum in
-								guard let lrAlbum = Librarian.album_with_uAlbum[UAlbum(bitPattern: mpidAlbum)]?.referencee else { return }
+							let num_all_songs: Int = list_state.uAlbums().reduce(into: 0) { uSongs_so_far, uAlbum in
+								guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
 								uSongs_so_far += lrAlbum.uSongs.count
 							}
 							return InterfaceText.NUMBER_songs(num_all_songs)
 						} else {
-							return InterfaceText.NUMBER_albums(list_state.album_mpids().count)
+							return InterfaceText.NUMBER_albums(list_state.uAlbums().count)
 						}
 					case .expanded:
 						return InterfaceText.NUMBER_songs(list_state.song_mpids().count)
@@ -583,22 +576,20 @@ final class AlbumTable: LRTableViewController {
 	
 	private func uSongs_focused() -> [USong] { // In display order.
 		switch list_state.select_mode {
-			case .select_albums(let ids_selected):
-				var result: [USong] = []
-				// 2do: WRONG ORDER
-				ids_selected.forEach {
-					guard let lrAlbum_selected = Librarian.album_with_uAlbum[UAlbum(bitPattern: $0)]?.referencee else { return }
-					result.append(contentsOf: lrAlbum_selected.uSongs)
+			case .select_albums(let uAs_selected):
+				let uAlbums_selected = list_state.uAlbums(with: uAs_selected) // Order matters.
+				let lrAlbums_selected = uAlbums_selected.compactMap {
+					Librarian.album_with_uAlbum[$0]?.referencee
 				}
-				return result
+				return lrAlbums_selected.flatMap { $0.uSongs }
 			case .select_songs(let ids_selected):
 				return list_state.song_mpids(with: ids_selected).map { USong(bitPattern: $0) }
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
 						var result: [USong] = []
-						list_state.album_mpids().forEach {
-							guard let lrAlbum = Librarian.album_with_uAlbum[UAlbum(bitPattern: $0)]?.referencee else { return }
+						list_state.uAlbums().forEach { uAlbum in
+							guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
 							result.append(contentsOf: lrAlbum.uSongs)
 						}
 						return result
@@ -625,20 +616,20 @@ final class AlbumTable: LRTableViewController {
 		}
 	}()
 	private func can_sort_albums(by album_order: AlbumOrder) -> Bool {
-		guard ids_albums_to_sort().count >= 2 else { return false }
+		let uAlbums = uAlbums_to_sort()
+		guard uAlbums.count >= 2 else { return false }
 		switch list_state.select_mode {
 			case .select_songs, .view: break
-			case .select_albums(let ids_selected):
-				let rs_selected = list_state.album_mpids().indices(where: {
-					mpidAlbum in
-					ids_selected.contains(mpidAlbum)
+			case .select_albums(let uAs_selected):
+				let rs_selected = list_state.uAlbums().indices(where: { uAlbum in
+					uAs_selected.contains(uAlbum)
 				})
 				guard rs_selected.ranges.count <= 1 else { return false }
 		}
 		switch album_order {
 			case .random, .reverse, .recently_added: return true
-			case .recently_released: return ids_albums_to_sort().contains {
-				nil != AppleLibrary.shared.albumInfo(uAlbum: UAlbum(bitPattern: $0))?._date_released
+			case .recently_released: return uAlbums.contains {
+				nil != AppleLibrary.shared.albumInfo(uAlbum: $0)?._date_released
 			}
 		}
 	}
@@ -669,8 +660,7 @@ final class AlbumTable: LRTableViewController {
 	
 	private func sort_albums(by albumOrder: AlbumOrder) {
 		Task {
-			let uAlbums_to_sort = Set(ids_albums_to_sort().map { UAlbum(bitPattern: $0) })
-			Librarian.sort_albums(uAlbums_to_sort, by: albumOrder)
+			Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -690,11 +680,11 @@ final class AlbumTable: LRTableViewController {
 		}
 	}
 	
-	private func ids_albums_to_sort() -> [MPIDAlbum] {
+	private func uAlbums_to_sort() -> Set<UAlbum> {
 		switch list_state.select_mode {
 			case .select_songs: return []
-			case .view: return list_state.album_mpids()
-			case .select_albums(let ids_selected): return list_state.album_mpids(with: ids_selected)
+			case .view: return Set(list_state.uAlbums())
+			case .select_albums(let uAs_selected): return uAs_selected
 		}
 	}
 	private func ids_songs_to_sort() -> [MPIDSong] {
@@ -709,9 +699,8 @@ final class AlbumTable: LRTableViewController {
 	
 	private func promote_albums() {
 		Task {
-			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
-			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
-			Librarian.promote_albums(uAlbums_selected, to_limit: false)
+			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			Librarian.promote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -736,9 +725,8 @@ final class AlbumTable: LRTableViewController {
 	
 	private func demote_albums() {
 		Task {
-			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
-			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
-			Librarian.demote_albums(uAlbums_selected, to_limit: false)
+			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			Librarian.demote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -765,9 +753,8 @@ final class AlbumTable: LRTableViewController {
 	
 	private func float_albums() {
 		Task {
-			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
-			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
-			Librarian.promote_albums(uAlbums_selected, to_limit: true)
+			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			Librarian.promote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
 			list_state.refresh_items()
@@ -792,9 +779,8 @@ final class AlbumTable: LRTableViewController {
 	
 	private func sink_albums() {
 		Task {
-			guard case let .select_albums(ids_selected) = list_state.select_mode else { return }
-			let uAlbums_selected = Set(ids_selected.map { UAlbum(bitPattern: $0) })
-			Librarian.demote_albums(uAlbums_selected, to_limit: true)
+			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			Librarian.demote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
 			list_state.refresh_items()

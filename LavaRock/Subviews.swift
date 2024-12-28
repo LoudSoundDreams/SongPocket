@@ -6,13 +6,13 @@ import MusicKit
 // MARK: - Album row
 
 @MainActor struct AlbumRow: View {
-	let id_album: MPIDAlbum
+	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
 	var body: some View {
 		ZStack(alignment: .bottomLeading) {
 			AlbumArt(
-				id_album: id_album,
+				uAlbum: uAlbum,
 				dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
 			)
 			.opacity(sel_opacity)
@@ -25,10 +25,9 @@ import MusicKit
 			ZStack {
 				switch list_state.expansion {
 					case .expanded: EmptyView()
-					case .collapsed: AlbumLabel(
-						id_album: id_album,
-						list_state: list_state
-					).accessibilitySortPriority(10)
+					case .collapsed:
+						AlbumLabel(uAlbum: uAlbum, list_state: list_state)
+							.accessibilitySortPriority(10)
 				}
 			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
 		}
@@ -42,7 +41,7 @@ import MusicKit
 	private var is_expanded: Bool {
 		switch list_state.expansion {
 			case .collapsed: return false
-			case .expanded(let id_expanded): return id_expanded == id_album
+			case .expanded(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
 	
@@ -55,7 +54,7 @@ import MusicKit
 	@ViewBuilder private var sel_highlight: some View {
 		let highlighting: Bool = { switch list_state.select_mode {
 			case .view, .select_songs: return false
-			case .select_albums(let ids_selected): return ids_selected.contains(id_album)
+			case .select_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
 		}}()
 		if highlighting {
 			Color.accentColor.opacity(.one_half)
@@ -64,8 +63,8 @@ import MusicKit
 	@ViewBuilder private var sel_border: some View {
 		switch list_state.select_mode {
 			case .view, .select_songs: EmptyView()
-			case .select_albums(let ids_selected):
-				if ids_selected.contains(id_album) {
+			case .select_albums(let uAs_selected):
+				if uAs_selected.contains(uAlbum) {
 					RectSelected()
 				} else { RectUnselected() }
 		}
@@ -77,18 +76,18 @@ import MusicKit
 			case .view:
 				switch list_state.expansion {
 					case .collapsed:
-						list_state.expansion = .expanded(id_album)
-					case .expanded(let id_expanded):
-						if id_expanded == id_album {
+						list_state.expansion = .expanded(uAlbum)
+					case .expanded(let uA_expanded):
+						if uA_expanded == uAlbum {
 							list_state.expansion = .collapsed
-						} else { list_state.expansion = .expanded(id_album) }
+						} else { list_state.expansion = .expanded(uAlbum) }
 				}
-			case .select_albums(let ids_selected):
-				var selected_new = ids_selected
-				if ids_selected.contains(id_album) {
-					selected_new.remove(id_album)
-				} else { selected_new.insert(id_album) }
-				list_state.select_mode = .select_albums(selected_new)
+			case .select_albums(let old_selected):
+				var new_selected = old_selected
+				if old_selected.contains(uAlbum) {
+					new_selected.remove(uAlbum)
+				} else { new_selected.insert(uAlbum) }
+				list_state.select_mode = .select_albums(new_selected)
 		}
 	}
 }
@@ -96,11 +95,11 @@ import MusicKit
 // MARK: Album art
 
 @MainActor private struct AlbumArt: View {
-	let id_album: MPIDAlbum
+	let uAlbum: UAlbum
 	let dim_limit: CGFloat
 	
 	private var artwork: MusicKit.Artwork? {
-		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(id_album))]?.artwork // 2do: Use unsigned?
+		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
 	}
 	var body: some View {
 		ZStack {
@@ -124,14 +123,14 @@ import MusicKit
 				}
 			}
 		}
-		.animation(nil, value: id_album) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
+		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
 	}
 }
 
 // MARK: Album label
 
 @MainActor private struct AlbumLabel: View {
-	let id_album: MPIDAlbum
+	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
 	private let apple_lib: AppleLibrary = .shared
@@ -146,7 +145,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: UAlbum(bitPattern: id_album))
+		let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""
 			else { return InterfaceText._tilde }
@@ -188,7 +187,7 @@ import MusicKit
 				case .view:
 					Button(InterfaceText.Select, systemImage: "checkmark.circle") {
 						withAnimation {
-							list_state.select_mode = .select_albums([id_album])
+							list_state.select_mode = .select_albums([uAlbum])
 						}
 					}.disabled(apple_lib.is_merging)
 					Divider()
@@ -210,11 +209,11 @@ import MusicKit
 			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
-			list_state.change_album_range(from: id_album, forward: false)
+			list_state.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
 			return (list_state.signal_albums_reordered && false) ||
 			apple_lib.is_merging ||
-			!list_state.has_album_range(from: id_album, forward: false)
+			!list_state.has_album_range(from: uAlbum, forward: false)
 		}())
 	}
 	private var b_below: some View {
@@ -222,17 +221,17 @@ import MusicKit
 			is_selected ? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
-			list_state.change_album_range(from: id_album, forward: true)
+			list_state.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
 			return (list_state.signal_albums_reordered && false) ||
 			apple_lib.is_merging ||
-			!list_state.has_album_range(from: id_album, forward: true)
+			!list_state.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
 	private var is_selected: Bool {
 		switch list_state.select_mode {
 			case .view, .select_songs: return false
-			case .select_albums(let ids_selected): return ids_selected.contains(id_album)
+			case .select_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
 		}
 	}
 }
@@ -242,7 +241,7 @@ import MusicKit
 @MainActor struct SongRow: View {
 	static let confirm_play_id_song = Notification.Name("LR_SongConfirmPlayWithID")
 	let id_song: MPIDSong
-	let id_album: MPIDAlbum
+	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
 	private let apple_lib: AppleLibrary = .shared
@@ -261,7 +260,7 @@ import MusicKit
 						_title: mkSong.title,
 						_artist: mkSong.artistName)
 				}()
-				let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: UAlbum(bitPattern: id_album))
+				let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
 				
 				stack_main(songInfo, albumInfo)
 				Spacer()

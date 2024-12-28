@@ -9,9 +9,7 @@ typealias MKSong = MusicKit.Song
 typealias UAlbum = MPMediaEntityPersistentID
 typealias USong = MPMediaEntityPersistentID
 
-// 2do: Replace.
-typealias MPIDAlbum = Int64
-typealias MPIDSong = Int64
+typealias MPIDSong = Int64 // 2do: Replace.
 
 @MainActor @Observable final class AppleLibrary {
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
