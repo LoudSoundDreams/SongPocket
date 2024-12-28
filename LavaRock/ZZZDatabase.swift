@@ -49,6 +49,7 @@ extension NSManagedObjectContext {
 		
 		let zAlbums = zCollections.flatMap { $0.zAlbums() }
 		let lrAlbums: [LRAlbum] = zAlbums.map {
+			// `MPMediaEntityPersistentID` is a type alias for `UInt64`, but when we stored them in Core Data, we converted them to `Int64`.
 			let uAlbum = UAlbum(bitPattern: $0.albumPersistentID)
 			let uSongs = $0.zSongs().map { zSong in
 				USong(bitPattern: zSong.persistentID)

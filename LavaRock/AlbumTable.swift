@@ -577,11 +577,12 @@ final class AlbumTable: LRTableViewController {
 	private func uSongs_focused() -> [USong] { // In display order.
 		switch list_state.select_mode {
 			case .select_albums(let uAs_selected):
-				let uAlbums_selected = list_state.uAlbums(with: uAs_selected) // Order matters.
-				let lrAlbums_selected = uAlbums_selected.compactMap {
-					Librarian.album_with_uAlbum[$0]?.referencee
+				var result: [USong] = []
+				list_state.uAlbums(with: uAs_selected).forEach { uAlbum in // Order matters.
+					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
+					result.append(contentsOf: lrAlbum.uSongs)
 				}
-				return lrAlbums_selected.flatMap { $0.uSongs }
+				return result
 			case .select_songs(let ids_selected):
 				return list_state.song_mpids(with: ids_selected).map { USong(bitPattern: $0) }
 			case .view:
@@ -603,8 +604,8 @@ final class AlbumTable: LRTableViewController {
 	
 	private lazy var menu_sections_album_sort: [UIMenu] = {
 		let groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
-		return groups.map { album_orders in
-			UIMenu(options: .displayInline, children: album_orders.map { order in
+		return groups.map { albumOrders in
+			UIMenu(options: .displayInline, children: albumOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] use in
 					// Runs each time the button presents the menu
 					guard let self else { return }
@@ -635,8 +636,8 @@ final class AlbumTable: LRTableViewController {
 	}
 	private lazy var menu_sections_song_sort: [UIMenu] = {
 		let groups: [[SongOrder]] = [[.track], [.reverse, .random]]
-		return groups.map { song_orders in
-			UIMenu(options: .displayInline, children: song_orders.map { order in
+		return groups.map { songOrders in
+			UIMenu(options: .displayInline, children: songOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
 					let action = order.action { [weak self] in self?.sort_songs(by: order) }
