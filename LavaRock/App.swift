@@ -3,6 +3,10 @@
 import SwiftUI
 import MusicKit
 
+enum WorkingOn {
+	static let bottom_bar = 10 == 1
+}
+
 @main struct LavaRock: App {
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
@@ -18,6 +22,9 @@ import MusicKit
 	var body: some Scene {
 		WindowGroup {
 			VCRMain()
+				.toolbar { if WorkingOn.bottom_bar {
+					ToolbarItemGroup(placement: .bottomBar) { TheBar() }
+				}}
 				.ignoresSafeArea()
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
@@ -44,9 +51,11 @@ private final class NCMain: UINavigationController {
 		)
 		let nav_bar = result.navigationBar
 		nav_bar.scrollEdgeAppearance = nav_bar.standardAppearance
-		let toolbar = result.toolbar!
-		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-		result.setToolbarHidden(false, animated: false)
+		if !WorkingOn.bottom_bar {
+			let toolbar = result.toolbar!
+			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+			result.setToolbarHidden(false, animated: false)
+		}
 		return result
 	}
 	override func viewIsAppearing(_ animated: Bool) {

@@ -30,6 +30,7 @@
 		07FF080128652A4C00EE4FD4 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* Sort.swift */; };
 		1500E98D2D13A9BB00CDF5E6 /* Librarian+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */; };
 		15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15048E612CF0FBA3005DC698 /* Subsubviews.swift */; };
+		15EF344A2D20946800F55744 /* TheBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EF34492D20946600F55744 /* TheBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		07FF080028652A4C00EE4FD4 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Librarian+.swift"; sourceTree = "<group>"; };
 		15048E612CF0FBA3005DC698 /* Subsubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subsubviews.swift; sourceTree = "<group>"; };
+		15EF34492D20946600F55744 /* TheBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				076830BE24B42E3E0033E3CC /* AlbumTable.swift */,
 				07755A57294821860056E90C /* Subviews.swift */,
 				15048E612CF0FBA3005DC698 /* Subsubviews.swift */,
+				15EF34492D20946600F55744 /* TheBar.swift */,
 				071B30932C88CD3400239BF3 /* Librarian.swift */,
 				1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */,
 				079B2C9424E227BF00A949FA /* AppleLibrary.swift */,
@@ -252,6 +255,7 @@
 			files = (
 				071B30942C88CD3400239BF3 /* Librarian.swift in Sources */,
 				070056912C8275C0006F1069 /* Disk.swift in Sources */,
+				15EF344A2D20946800F55744 /* TheBar.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Helpers.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
 				15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */,
