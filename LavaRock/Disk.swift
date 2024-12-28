@@ -14,7 +14,7 @@ enum Disk {
 		defer { signposter.endInterval("save", _save) }
 		
 		// Serialize
-		var stream: String = ""
+		var stream = ""
 		albums.forEach { album in
 			stream.append(
 				contentsOf: "\(album.uAlbum)\(line_break)"
@@ -37,18 +37,11 @@ enum Disk {
 		
 		// Read
 		guard let data = try? Data(contentsOf: file_albums)
-		else {
-			// Maybe the file doesn’t exist.
-			return []
-		}
+		else { return [] }
 		
 		// Parse
-		guard let stream: String = String(data: data, encoding: encoding_utf8)
-		else {
-			Print("Couldn’t decode albums file.")
-			return []
-		}
-		return Parser(stream).parse_albums()
+		let stream = String(data: data, encoding: encoding_utf8)!
+		return Parser(stream).parse_albums() // 2do: Remove duplicates.
 	}
 	
 	private static let folder_v1: URL = .applicationSupportDirectory.appending(path: "v1/")

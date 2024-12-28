@@ -11,8 +11,8 @@ import MusicKit
 			defaults.removeObject(forKey: key_existing)
 		}
 		
-		// Migrate persistent data (1), then show persistent data (2), then update persistent data (3), in that order.
-		ZZZDatabase.migrate() // (1) It’s simpler to migrate before running any UI code, so our UI can assume already-migrated data. But slow migrations ought to show UI while in progress.
+		// In order, (1) migrate persistent data, then (2) show persistent data, then (3) update persistent data.
+		ZZZDatabase.migrate() // (1) Migrate before running any UI code, so our UI can assume already-migrated data.
 		Librarian.load() // (2)
 	}
 	var body: some Scene {
