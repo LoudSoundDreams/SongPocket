@@ -73,7 +73,7 @@ import Combine
 				 `queue.currentEntry.item.id` doesn’t match either: “593338428”. (This stays the same each time the program runs.)
 				 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
 				 */
-				uSong == MPMusicPlayerController.uSong_current,
+				uSong == ApplicationMusicPlayer.uSong_current,
 				let state = _shared?.state
 			else { self = .not_playing; return }
 			switch state.playbackStatus {
@@ -93,12 +93,10 @@ import Combine
 			}
 		}
 	}
-}
-
-@MainActor extension MPMusicPlayerController {
-	static var uSong_current: USong? {
+	
+	@MainActor static var uSong_current: USong? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
-		return applicationQueuePlayer.nowPlayingItem?.persistentID
+		return MPMusicPlayerController.applicationQueuePlayer.nowPlayingItem?.persistentID
 	}
 }
 

@@ -3,7 +3,6 @@
 import UIKit
 import SwiftUI
 import MusicKit
-import MediaPlayer
 
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate var list_items: [AlbumListItem] = AlbumListState.uAlbums_fresh().map { .uAlbum($0) }
@@ -345,7 +344,7 @@ final class AlbumTable: LRTableViewController {
 	
 	func show_current() {
 		guard
-			let uSong_current = MPMusicPlayerController.uSong_current,
+			let uSong_current = ApplicationMusicPlayer.uSong_current,
 			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
 		else { return }
 		let uAlbum_target = album_target.uAlbum
