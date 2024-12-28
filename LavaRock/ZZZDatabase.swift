@@ -1,12 +1,18 @@
 // 2020-08-22
 
 import CoreData
+import os
 
 enum ZZZDatabase {
 	@MainActor static func migrate() {
+		let signposter = OSSignposter(subsystem: "core data", category: .pointsOfInterest)
+		
 		// Make it look like the app never used Core Data previously.
 		// Convert any useful data here and persist it in the modern places.
 		guard !Disk.has_data else { return }
+		
+		let _migrate = signposter.beginInterval("migrate")
+		defer { signposter.endInterval("migrate", _migrate) }
 		
 		let container = NSPersistentContainer(name: "LavaRock")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in

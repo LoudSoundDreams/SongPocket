@@ -2,6 +2,7 @@
 
 import SwiftUI
 import MusicKit
+import os
 
 enum WorkingOn {
 	static let bottom_bar = 10 == 1
@@ -9,6 +10,10 @@ enum WorkingOn {
 
 @main struct LavaRock: App {
 	init() {
+		let signposter = OSSignposter(subsystem: "startup", category: .pointsOfInterest)
+		let _init = signposter.beginInterval("init")
+		defer { signposter.endInterval("init", _init) }
+		
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
 		defaults.dictionaryRepresentation().forEach { (key_existing, _) in
