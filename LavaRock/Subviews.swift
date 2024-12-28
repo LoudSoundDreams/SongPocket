@@ -239,8 +239,8 @@ import MusicKit
 // MARK: - Song row
 
 @MainActor struct SongRow: View {
-	static let confirm_play_id_song = Notification.Name("LR_SongConfirmPlayWithID")
-	let id_song: MPIDSong
+	static let confirm_play_uSong = Notification.Name("LR_SongConfirmPlayWithMediaPlayerID")
+	let uSong: USong
 	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
@@ -249,7 +249,6 @@ import MusicKit
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let songInfo: SongInfo? = {
-					let uSong = USong(bitPattern: id_song)
 					guard let mkSong = apple_lib.mkSongs_cache[uSong] else {
 						Task { await apple_lib.cache_mkSong(uSong: uSong) } // SwiftUI redraws this view afterward because this view observes the cache.
 						return nil
@@ -285,7 +284,7 @@ import MusicKit
 				.foregroundStyle({
 					let _ = PlayerState.shared.signal
 					let _ = apple_lib.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
-					return ApplicationMusicPlayer.StatusNowPlaying(uSong: USong(bitPattern: id_song)).foreground_color
+					return ApplicationMusicPlayer.StatusNowPlaying(uSong: uSong).foreground_color
 				}())
 			if
 				let artist_song = songInfo?._artist,
@@ -306,15 +305,15 @@ import MusicKit
 	@ViewBuilder private var sel_highlight: some View {
 		let highlighting: Bool = { switch list_state.select_mode {
 			case .select_albums: return false
-			case .view(let id_activated): return id_activated == id_song
-			case .select_songs(let ids_selected): return ids_selected.contains(id_song)
+			case .view(let uS_activated): return uS_activated == uSong
+			case .select_songs(let uSs_selected): return uSs_selected.contains(uSong)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .one_half : .zero)
 			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
 				{ switch list_state.select_mode {
 					case .select_albums: return nil // Should never run
-					case .view(let id_activated): return (id_activated == nil) ? .default : nil
+					case .view(let uS_activated): return (uS_activated == nil) ? .default : nil
 					case .select_songs: return nil // It’d be nice to animate deselecting after arranging, floating, and sinking, but not manually selecting or deselecting.
 				}}(),
 				value: list_state.select_mode)
@@ -322,8 +321,8 @@ import MusicKit
 	@ViewBuilder private var sel_border: some View {
 		switch list_state.select_mode {
 			case .view, .select_albums: EmptyView()
-			case .select_songs(let ids_selected):
-				if ids_selected.contains(id_song) {
+			case .select_songs(let uSs_selected):
+				if uSs_selected.contains(uSong) {
 					RectSelected()
 				} else { RectUnselected() }
 		}
@@ -332,12 +331,12 @@ import MusicKit
 	private func tapped() {
 		switch list_state.select_mode {
 			case .select_albums: return
-			case .view: NotificationCenter.default.post(name: Self.confirm_play_id_song, object: id_song)
+			case .view: NotificationCenter.default.post(name: Self.confirm_play_uSong, object: uSong)
 			case .select_songs(let old_selected):
 				var new_selected = old_selected
-				if old_selected.contains(id_song) {
-					new_selected.remove(id_song)
-				} else { new_selected.insert(id_song) }
+				if old_selected.contains(uSong) {
+					new_selected.remove(uSong)
+				} else { new_selected.insert(uSong) }
 				list_state.select_mode = .select_songs(new_selected)
 		}
 	}
@@ -370,7 +369,7 @@ import MusicKit
 					case .view:
 						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
 							withAnimation {
-								list_state.select_mode = .select_songs([id_song])
+								list_state.select_mode = .select_songs([uSong])
 							}
 						}.disabled(apple_lib.is_merging)
 						Divider()
@@ -387,11 +386,11 @@ import MusicKit
 			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
-			list_state.change_song_range(from: id_song, forward: false)
+			list_state.change_song_range(from: uSong, forward: false)
 		}.disabled({
 			return (list_state.signal_songs_reordered && false) ||
 			apple_lib.is_merging ||
-			!list_state.has_song_range(from: id_song, forward: false)
+			!list_state.has_song_range(from: uSong, forward: false)
 		}())
 	}
 	private var b_below: some View {
@@ -399,17 +398,17 @@ import MusicKit
 			is_selected ? InterfaceText.Deselect_Down: InterfaceText.Select_Down,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
-			list_state.change_song_range(from: id_song, forward: true)
+			list_state.change_song_range(from: uSong, forward: true)
 		}.disabled({
 			return (list_state.signal_songs_reordered && false) ||
 			apple_lib.is_merging ||
-			!list_state.has_song_range(from: id_song, forward: true)
+			!list_state.has_song_range(from: uSong, forward: true)
 		}())
 	}
 	private var is_selected: Bool {
 		switch list_state.select_mode {
 			case .select_albums, .view: return false
-			case .select_songs(let ids_selected): return ids_selected.contains(id_song)
+			case .select_songs(let uSs_selected): return uSs_selected.contains(uSong)
 		}
 	}
 }
