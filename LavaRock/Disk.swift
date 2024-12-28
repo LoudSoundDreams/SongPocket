@@ -64,6 +64,8 @@ struct Parser {
 	func parse_albums() -> [LRAlbum] {
 		var result: [LRAlbum] = []
 		var i_line = 0
+		var uAlbums_seen: Set<UAlbum> = []
+		var uSongs_seen: Set<USong> = []
 		while i_line < lines.count {
 			let line = lines[i_line]
 			let content = String(line)
@@ -71,23 +73,27 @@ struct Parser {
 			
 			guard
 				is_album(at: i_line),
-				let uAlbum // 2do: Skip duplicates.
+				let uAlbum,
+				!uAlbums_seen.contains(uAlbum)
 			else {
 				// Not a valid album line.
 				i_line += 1
 				continue
 			}
+			uAlbums_seen.insert(uAlbum)
 			
 			i_line += 1
 			let (next_i_line, uSongs) = uSongs_until_outdent(from: i_line)
+			let uSongs_new = uSongs.filter { !uSongs_seen.contains($0) }
+			uSongs_seen.formUnion(uSongs_new)
 			
 			i_line = next_i_line
-			guard !uSongs.isEmpty else {
+			guard !uSongs_new.isEmpty else {
 				// No valid songs for this album. Disallow empty albums.
 				continue
 			}
 			result.append(
-				LRAlbum(uAlbum: uAlbum, uSongs: uSongs)
+				LRAlbum(uAlbum: uAlbum, uSongs: uSongs_new)
 			)
 		}
 		return result
@@ -109,7 +115,7 @@ struct Parser {
 			
 			guard
 				is_song(at: i_line),
-				let uSong // 2do: Skip duplicates.
+				let uSong
 			else {
 				// Not a valid song line.
 				i_line += 1
