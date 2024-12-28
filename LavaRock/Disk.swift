@@ -41,7 +41,7 @@ enum Disk {
 		
 		// Parse
 		let stream = String(data: data, encoding: encoding_utf8)!
-		return Parser(stream).parse_albums() // 2do: Remove duplicates.
+		return Parser(stream).parse_albums()
 	}
 	static var has_data: Bool {
 		let data = try? Data(contentsOf: file_albums)
@@ -71,7 +71,7 @@ struct Parser {
 			
 			guard
 				is_album(at: i_line),
-				let uAlbum
+				let uAlbum // 2do: Skip duplicates.
 			else {
 				// Not a valid album line.
 				i_line += 1
@@ -109,7 +109,7 @@ struct Parser {
 			
 			guard
 				is_song(at: i_line),
-				let uSong
+				let uSong // 2do: Skip duplicates.
 			else {
 				// Not a valid song line.
 				i_line += 1
