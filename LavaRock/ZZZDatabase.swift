@@ -4,6 +4,10 @@ import CoreData
 
 enum ZZZDatabase {
 	@MainActor static func migrate() {
+		// Make it look like the app never used Core Data previously.
+		// Convert any useful data here and persist it in the modern places.
+		guard !Disk.has_data else { return }
+		
 		let container = NSPersistentContainer(name: "LavaRock")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 			container.viewContext.automaticallyMergesChangesFromParent = true
@@ -19,9 +23,11 @@ enum ZZZDatabase {
 			}
 		})
 		
-		container.viewContext.migrate_to_disk()
+		// Determine how the user had arranged their albums and songs, and create the modern representation of that.
+		let lrAlbums = container.viewContext.converted_to_lrAlbums()
 		
-		// Destroy persistent stores.
+		// Move the data.
+		Disk.save_albums(lrAlbums)
 		let coordinator = container.persistentStoreCoordinator
 		coordinator.persistentStores.forEach { store in
 			try! coordinator.destroyPersistentStore(
@@ -32,11 +38,7 @@ enum ZZZDatabase {
 }
 
 extension NSManagedObjectContext {
-	fileprivate final func migrate_to_disk() {
-		/*
-		 Write data to persistent storage as if the app never used Core Data previously.
-		 Determine how the user had arranged their albums and songs. Create the modern representation of that, and save it.
-		 */
+	fileprivate final func converted_to_lrAlbums() -> [LRAlbum] {
 #if DEBUG
 		//		mock_zCollections()
 #endif
@@ -45,10 +47,10 @@ extension NSManagedObjectContext {
 			request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 			return fetch_please(request)
 		}()
-		guard !zCollections.isEmpty else { return }
+		guard !zCollections.isEmpty else { return [] }
 		
 		let zAlbums = zCollections.flatMap { $0.zAlbums() }
-		let lrAlbums: [LRAlbum] = zAlbums.map {
+		return zAlbums.map {
 			// `MPMediaEntityPersistentID` is a type alias for `UInt64`, but when we stored them in Core Data, we converted them to `Int64`.
 			let uAlbum = UAlbum(bitPattern: $0.albumPersistentID)
 			let uSongs = $0.zSongs().map { zSong in
@@ -56,7 +58,6 @@ extension NSManagedObjectContext {
 			}
 			return LRAlbum(uAlbum: uAlbum, uSongs: uSongs)
 		}
-		Disk.save_albums(lrAlbums)
 	}
 #if DEBUG
 	private func mock_zCollections() {

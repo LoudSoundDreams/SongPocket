@@ -43,6 +43,10 @@ enum Disk {
 		let stream = String(data: data, encoding: encoding_utf8)!
 		return Parser(stream).parse_albums() // 2do: Remove duplicates.
 	}
+	static var has_data: Bool {
+		let data = try? Data(contentsOf: file_albums)
+		return (nil != data)
+	}
 	
 	private static let folder_v1: URL = .applicationSupportDirectory.appending(path: "v1/")
 	private static let file_albums: URL = folder_v1.appending(path: "albums")
