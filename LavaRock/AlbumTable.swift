@@ -122,10 +122,14 @@ extension AlbumListState {
 	}
 	
 	func change_album_range(from uA_anchor: UAlbum, forward: Bool) {
-		guard
-			let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor }),
-			case let .select_albums(old_selected) = select_mode
+		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor })
 		else { return }
+		let old_selected: Set<UAlbum> = {
+			switch select_mode {
+				case .select_songs, .view: return []
+				case .select_albums(let uAs_selected): return uAs_selected
+			}
+		}()
 		let inserting: Bool = !old_selected.contains(uA_anchor)
 		let new_selected: Set<UAlbum> = {
 			var result = old_selected
@@ -156,10 +160,14 @@ extension AlbumListState {
 		}
 	}
 	func change_song_range(from uS_anchor: USong, forward: Bool) {
-		guard
-			let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor }),
-			case let .select_songs(old_selected) = select_mode
+		guard let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor })
 		else { return }
+		let old_selected: Set<USong> = {
+			switch select_mode {
+				case .select_albums, .view: return []
+				case .select_songs (let uAs_selected): return uAs_selected
+			}
+		}()
 		let inserting: Bool = !old_selected.contains(uS_anchor)
 		let new_selected: Set<USong> = {
 			var result = old_selected
