@@ -9,7 +9,7 @@ enum ZZZDatabase {
 		
 		// Make it look like the app never used Core Data previously.
 		// Convert any useful data here and persist it in the modern places.
-		guard !Disk.has_data else { return }
+		guard !Disk.has_data else { return } // 2do: If we migrate, then reinstall an older version of the app, that adds data to Core Data that we never clean up.
 		
 		let _migrate = signposter.beginInterval("migrate")
 		defer { signposter.endInterval("migrate", _migrate) }

@@ -88,7 +88,11 @@ extension Librarian {
 		for (lrAlbum, mpAlbum) in lrAlbums_and_mpAlbums {
 			await update_album(
 				lrAlbum,
-				to_match: mpAlbum.items.map { $0.persistentID }
+				to_match: {
+					let _fresh_ids = signposter.beginInterval("fresh IDs")
+					defer { signposter.endInterval("fresh IDs", _fresh_ids) }
+					return mpAlbum.items.map { $0.persistentID }
+				}()
 			)
 		}
 	}
