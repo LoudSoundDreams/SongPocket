@@ -32,7 +32,7 @@ extension Librarian {
 			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		the_albums.forEach { lrAlbum in // 2do: Iterate through fresh albums instead?
+		the_albums.forEach { lrAlbum in
 			let uAlbum = lrAlbum.uAlbum
 			if let mpAlbum_corresponding = mpAlbum_with_uAlbum[uAlbum] {
 				to_update.append((lrAlbum, mpAlbum_corresponding))
@@ -96,11 +96,8 @@ extension Librarian {
 		_ lrAlbum: LRAlbum,
 		to_match uSongs_fresh: [USong]
 	) async {
-		// 2do: We could get `MKSong` metadata via `AppleLibrary.shared.albumInfo`.
-		
 		let was_in_original_order: Bool = { // Deleting songs can change whether the remaining ones are in original order, so procrastinate on that.
-			// Some existing `USong`s might lack counterparts in the Apple Music library. If so, assume they were in original order.
-			// Unfortunately, that means if we have existing songs E, G, F; and G is no longer in the Apple Music library, we think the album was in original order.
+			// Some existing `USong`s might lack counterparts in the Apple Music library; if so, assume they were in original order. Unfortunately, that means if we have existing songs E, G, F; and G is no longer in the Apple Music library, we think the album was in original order.
 			let existing_to_keep: [USong] = {
 				let fresh_set = Set(uSongs_fresh)
 				return lrAlbum.uSongs.filter {
@@ -108,9 +105,9 @@ extension Librarian {
 				}
 			}()
 			
-			var i_to_keep = 0
+			var i_keep = 0
 			var i_fresh = 0 // `uSongs_fresh` has at least as many elements as `existing_to_keep`.
-			while i_to_keep < existing_to_keep.count {
+			while i_keep < existing_to_keep.count {
 				/*
 				 Every existing song here is also in `uSongs_fresh`.
 				 Iterate through both simultaneously: `existing_to_keep` is the checklist, and `uSongs_fresh` is the information source.
@@ -121,14 +118,14 @@ extension Librarian {
 				 If the two songs we’re pointing to are different, continue with the next fresh song.
 				 If we run out of fresh songs, then the existing songs weren’t in original order.
 				 */
-				let to_keep = existing_to_keep[i_to_keep]
+				let keep = existing_to_keep[i_keep]
 				while true {
 					guard i_fresh < uSongs_fresh.count else { return false }
 					let fresh = uSongs_fresh[i_fresh]
 					i_fresh += 1
-					if fresh == to_keep { break }
+					if fresh == keep { break }
 				}
-				i_to_keep += 1
+				i_keep += 1
 			}
 			return true
 		}()

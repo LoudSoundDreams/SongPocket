@@ -38,11 +38,11 @@ extension AppleLibrary {
 	@ObservationIgnored static let did_merge = Notification.Name("LR_MusicLibraryDidMerge")
 	
 	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
-		guard let mkAlbum = mkSections_cache[MusicItemID(String(uAlbum))] else { return nil }
-		let mkSongs = mkAlbum.items
+		guard let mkSection = mkSections_cache[MusicItemID(String(uAlbum))] else { return nil }
+		let mkSongs = mkSection.items
 		return AlbumInfo(
-			_title: mkAlbum.title,
-			_artist: mkAlbum.artistName,
+			_title: mkSection.title,
+			_artist: mkSection.artistName,
 			_date_first_added: {
 				/*
 				 As of iOS 17.6 developer beta 2, `MusicKit.Album.libraryAddedDate` reports the latest date you added one of its songs, not the earliest. That matches how the Apple Music app sorts its Library tab’s Recently Added section, but doesn’t match how it sorts playlists by “Recently Added”, which is actually by date created.
@@ -61,7 +61,7 @@ extension AppleLibrary {
 					}
 				}
 			}(),
-			_date_released: mkAlbum.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
+			_date_released: mkSection.releaseDate, // As of iOS 18.2 developer beta 2, this is sometimes wrong. `MusicKit.Album.releaseDate` nonsensically reports the date of its earliest-released song, not its latest; and we can’t even fix it with `reduce` because `MusicKit.Song.releaseDate` always returns `nil`.
 			_disc_max: {
 				return mkSongs.reduce(into: 1) { // Bad time complexity
 					highest_so_far, mkSong in
@@ -72,6 +72,7 @@ extension AppleLibrary {
 			}()
 		)
 	}
+	
 	func mkSong_fetched(uSong: USong) async -> MKSong? {
 		if let cached = mkSongs_cache[uSong] { return cached }
 		
