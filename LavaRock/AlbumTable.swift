@@ -202,14 +202,14 @@ extension AlbumListState {
 		case collapsed
 		case expanded(UAlbum)
 	}
-	static let expansion_changed = Notification.Name("LR_AlbumExpandingOrCollapsing")
+	@ObservationIgnored static let expansion_changed = Notification.Name("LR_AlbumExpandingOrCollapsing")
 	
 	enum SelectMode: Equatable {
 		case view(USong?)
 		case select_albums(Set<UAlbum>)
 		case select_songs(Set<USong>) // Should always be within the same album.
 	}
-	static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
+	@ObservationIgnored static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
 }
 
 // MARK: - View controller

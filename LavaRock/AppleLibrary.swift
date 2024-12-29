@@ -2,6 +2,7 @@
 
 import MusicKit
 import MediaPlayer
+import os
 
 typealias MKSection = MusicLibrarySection<MusicKit.Album, MKSong>
 typealias MKSong = MusicKit.Song
@@ -10,6 +11,7 @@ typealias UAlbum = MPMediaEntityPersistentID
 typealias USong = MPMediaEntityPersistentID
 
 @MainActor @Observable final class AppleLibrary {
+	@ObservationIgnored private let signposter = OSSignposter(subsystem: "apple library", category: .pointsOfInterest)
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs_cache: [USong: MKSong] = [:]
 	private(set) var is_merging = false { didSet {
@@ -20,14 +22,21 @@ typealias USong = MPMediaEntityPersistentID
 	private init() {}
 }
 extension AppleLibrary {
-	static let shared = AppleLibrary()
+	@ObservationIgnored static let shared = AppleLibrary()
+	
+	static func open_Apple_Music() {
+		guard let url = URL(string: "music://") else { return }
+		UIApplication.shared.open(url)
+	}
+	
 	func watch() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
 		NotificationCenter.default.add_observer_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
 		merge_changes()
 	}
-	static let did_merge = Notification.Name("LR_MusicLibraryDidMerge")
+	@ObservationIgnored static let did_merge = Notification.Name("LR_MusicLibraryDidMerge")
+	
 	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
 		guard let mkAlbum = mkSections_cache[MusicItemID(String(uAlbum))] else { return nil }
 		let mkSongs = mkAlbum.items
@@ -71,6 +80,9 @@ extension AppleLibrary {
 		return mkSongs_cache[uSong]
 	}
 	func cache_mkSong(uSong: USong) async { // Slow; 11ms in 2024.
+		let _cache = signposter.beginInterval("cache")
+		defer { signposter.endInterval("cache", _cache) }
+		
 		var request = MusicLibraryRequest<MKSong>()
 		request.filter(matching: \.id, equalTo: MusicItemID(String(uSong)))
 		guard
@@ -80,10 +92,6 @@ extension AppleLibrary {
 		else { return }
 		
 		mkSongs_cache[uSong] = mkSong
-	}
-	static func open_Apple_Music() {
-		guard let url = URL(string: "music://") else { return }
-		UIApplication.shared.open(url)
 	}
 	
 	@objc private func merge_changes() {

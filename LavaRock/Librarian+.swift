@@ -20,9 +20,7 @@ extension Librarian {
 		 When updating existing albums (by adding and removing songs), maintain the order of existing items.
 		 When adding songs to an existing album: if the existing songs are in default order, maintain default order after adding songs. Otherwise, add them on top, most-recently-added on top.
 		 
-		 Deleting songs can change whether the remaining songs are in default order; deleting an album makes its ID unfamiliar. So procrastinate on those operations.
 		 Delete `LRAlbum`s that now lack counterparts in the Apple Music library.
-		 Delete empty containers.
 		 */
 		
 		// Use MediaPlayer for album and song IDs.
@@ -34,7 +32,7 @@ extension Librarian {
 			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		the_albums.forEach { lrAlbum in
+		the_albums.forEach { lrAlbum in // 2do: Iterate through fresh albums instead?
 			let uAlbum = lrAlbum.uAlbum
 			if let mpAlbum_corresponding = mpAlbum_with_uAlbum[uAlbum] {
 				to_update.append((lrAlbum, mpAlbum_corresponding))
@@ -122,10 +120,11 @@ extension Librarian {
 		_ lrAlbum: LRAlbum,
 		to_match uSongs_fresh: Set<USong>
 	) {
-		let was_in_track_order: Bool = lrAlbum.uSongs.all_neighbors_satisfy {
-			each, next in
-			// Some `USong`s here might lack counterparts in the Apple Music library. If so, assume it was in track order.
-			// Unfortunately, that means if we have existing songs E, G, F; and G lacks a counterpart, we think the album was in track order.
+		// 2do: We could get `MKSong` metadata via `AppleLibrary.shared.albumInfo`.
+		
+		let was_in_original_order: Bool = { // Deleting songs can change whether the remaining ones are in original order, so procrastinate on that.
+			// Some existing `USong`s might lack counterparts in the Apple Music library. If so, assume they were in original order.
+			// Unfortunately, that means if we have existing songs E, G, F; and G is no longer in the Apple Music library, we think the album was in original order.
 			guard
 				let mk_left = AppleLibrary.shared.mkSongs_cache[each],
 				let mk_right = AppleLibrary.shared.mkSongs_cache[next]
@@ -133,7 +132,7 @@ extension Librarian {
 			return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
 		}
 		
-		// If we have existing songs A, E, C; and the fresh songs are D, C, B, we want to insert D, B; and remove A, E.
+		// If the fresh songs are B, C, D; and we have existing songs A, E, C, we want to add B, D; and delete A, E.
 		var uSongs_fresh = uSongs_fresh
 		lrAlbum.uSongs.indices.reversed().forEach { i_uSong in
 			let uSong = lrAlbum.uSongs[i_uSong]
@@ -147,7 +146,7 @@ extension Librarian {
 		// `uSongs_fresh` now contains only unfamiliar songs.
 		let to_add_unsorted = Array(uSongs_fresh)
 		
-		if was_in_track_order {
+		if was_in_original_order {
 			to_add_unsorted.reversed().forEach { uSong in
 				lrAlbum.uSongs.insert(uSong, at: 0)
 				register_uSong(uSong, with: lrAlbum)
