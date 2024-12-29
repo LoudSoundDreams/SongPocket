@@ -26,15 +26,22 @@ enum WorkingOn {
 	}
 	var body: some Scene {
 		WindowGroup {
-			VCRMain()
-				.toolbar { if WorkingOn.bottom_bar {
-					ToolbarItemGroup(placement: .bottomBar) { TheBar() }
-				}}
-				.ignoresSafeArea()
-				.task {
-					guard MusicAuthorization.currentStatus == .authorized else { return }
-					Self.integrate_Apple_Music()
+			let working_on_main_view = 10 == 1
+			ZStack {
+				if working_on_main_view {
+					MainView()
+				} else {
+					MainVCRep()
+						.toolbar { if WorkingOn.bottom_bar {
+							ToolbarItemGroup(placement: .bottomBar) { TheBar() }
+						}}
 				}
+			}
+			.ignoresSafeArea()
+			.task {
+				guard MusicAuthorization.currentStatus == .authorized else { return }
+				Self.integrate_Apple_Music()
+			}
 		}
 	}
 	
@@ -44,7 +51,26 @@ enum WorkingOn {
 	}
 }
 
-private struct VCRMain: UIViewControllerRepresentable {
+private struct MainView: View {
+	var body: some View {
+		ScrollView(.horizontal) {
+			LazyHStack {
+				MainVCRep()
+					.frame(width: .eight * 24)
+				MainVCRep()
+					.frame(width: .eight * 36)
+				List { ForEach(0 ..< 5) { _ in
+					Image(systemName: "hare.fill")
+				}}.frame(width: .eight * 24)
+				List { ForEach(0 ..< 5) { _ in
+					Image(systemName: "tortoise.fill")
+				}}.frame(width: .eight * 36)
+			}
+		}
+	}
+}
+
+private struct MainVCRep: UIViewControllerRepresentable {
 	typealias VCType = NCMain
 	func makeUIViewController(context: Context) -> VCType { NCMain.create() }
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}

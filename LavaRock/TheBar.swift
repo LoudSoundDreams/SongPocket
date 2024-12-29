@@ -23,7 +23,7 @@ struct TheBar: View {
 					Button("hop", systemImage: "hare") {
 					}
 				case .two:
-					Button("finish", systemImage: "flag.pattern.checkered.2.crossed") {
+					Button("finish", systemImage: "arrow.up.backward.and.arrow.down.forward.circle.fill") {
 					}
 			}
 		}.animation(.default, value: bar_state.mode)
