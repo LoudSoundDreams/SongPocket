@@ -1,31 +1,26 @@
 SongPocket is an immersive player for your Apple Music library on iOS.
 
-It’s on the [App Store](https://apps.apple.com/us/app/songpocket/id1538037231).
+Arrange your library manually! Put your favorite albums and songs on top, or reverse or shuffle them.
 
-# Non-goals
+[Get from the App Store.](https://apps.apple.com/us/app/songpocket/id1538037231)
 
-SongPocket won’t do everything for everyone, and generally, we should [remove](https://ignorethecode.net/blog/2010/02/02/removing-features) and [say no](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) to features more often.
+# Philosophy
 
-So SongPocket tentatively…
+SongPocket is focused and elegant.
 
-1. Won’t offer multiple ways to do the same action. [Monotonous design is better.](https://verbnounenter.net/monotony)
-2. Won’t replace iOS’s Music app, because [there’s no API](https://developer.apple.com/documentation/musickit/musiclibrary) for deleting songs from your library.
-3. Won’t show song durations, because [they’re spoilers](https://en.wikipedia.org/wiki/Hidden_track). If this were a music app for everyone, I would add a mode; but it’s not, and [modes are bad](https://spectrum.ieee.org/of-modes-and-men). (Settings are modes too.)
-4. Won’t include appearance options, because they distract. Focus means spending your full attention on what actually matters.
+**Focus** means judiciously [saying no to](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) and [removing](https://ignorethecode.net/blog/2010/02/02/removing-features) features.
 
-If you want to make different decisions, you can make your own version:
+- For example, only one way to do most given actions. You can’t swipe or touch-and-hold a song to play it later; you must use the buttons. That’s [monotony](https://verbnounenter.net/monotony).
+- No settings, because they distract. That actually lets you fearlessly delete and reinstall the app.
 
-# Permissions
+I like minimalism because it means everything there is important.
 
-You have a Creative Commons [Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0) 4.0 International license for this software.
+**Elegance** means simple yet powerful.
 
-That means you can adapt or share it, but when you do so, please…
+- For example, [select-range](https://verbnounenter.net/range-selection) lets you easily select multiple items at once.
+- Reorder, play-later, or shuffle-play only selected items.
 
-1. Mention _SongPocket by Loud Sound Dreams_.
-2. Don’t sell it.
-3. Apply these same rules to the resulting work.
-
-Be reasonable. [Contact me](mailto:linus@loudsounddreams.com) with any questions.
+Shockingly flexible is generally good.
 
 # Compiling
 
@@ -54,3 +49,15 @@ For help, see [Apple’s documentation](https://developer.apple.com/documentatio
 Fork this repo, make your changes in your fork, then open a pull request against my repo. For help, see [GitHub’s documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model).
 
 If you change the UI, include screenshots. (You were looking at it anyway, right?)
+
+# Permissions
+
+You have a Creative Commons [Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0) 4.0 International license for this software.
+
+That means you can adapt or share it, but when you do so, please…
+
+1. Mention _SongPocket by Loud Sound Dreams_.
+2. Don’t sell it.
+3. Apply these same rules to the resulting work.
+
+Be reasonable. [Contact me](mailto:linus@loudsounddreams.com) with any questions.
