@@ -45,22 +45,9 @@ extension Librarian {
 		// `mpAlbum_with_uAlbum` now contains only unfamiliar albums.
 		let to_add = Array(mpAlbum_with_uAlbum.values) // We’ll sort these later.
 		
-		let _fetch = signposter.beginInterval("fetch")
-		for mpAlbum in to_add {
-			for mpSong in mpAlbum.items {
-				// This repeatedly updates an `@Observable` property, but SwiftUI doesn’t redraw dependent views for every update; maybe only once per turn of the run loop.
-				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID)
-			}
-		}
-		for (_, mpAlbum) in to_update {
-			for mpSong in mpAlbum.items {
-				await AppleLibrary.shared.cache_mkSong(uSong: mpSong.persistentID)
-			}
-		}
-		signposter.endInterval("fetch", _fetch)
-		
 		add_albums(to_add)
-		update_albums(to_update)
+		await update_albums(to_update)
+		
 		delete_albums(to_delete)
 	}
 	
@@ -88,18 +75,7 @@ extension Librarian {
 		mpAlbums_sorted.reversed().forEach { mpAlbum in
 			let lrAlbum_new = LRAlbum(
 				uAlbum: mpAlbum.persistentID,
-				uSongs: { // Sort them by our own track order for consistency.
-					let uSongs_unsorted = mpAlbum.items.map { $0.persistentID }
-					return uSongs_unsorted.sorted { left, right in
-						let mk_left = AppleLibrary.shared.mkSongs_cache[left]
-						let mk_right = AppleLibrary.shared.mkSongs_cache[right]
-						if mk_left == nil && mk_right == nil { return false }
-						guard let mk_right else { return true }
-						guard let mk_left else { return false }
-						
-						return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
-					}
-				}()
+				uSongs: mpAlbum.items.map { $0.persistentID }
 			)
 			the_albums.insert(lrAlbum_new, at: 0)
 			register_album(lrAlbum_new)
@@ -108,60 +84,79 @@ extension Librarian {
 	
 	private static func update_albums(
 		_ lrAlbums_and_mpAlbums: [(LRAlbum, MPMediaItemCollection)]
-	) {
-		lrAlbums_and_mpAlbums.forEach { lrAlbum, mpAlbum in
-			update_album(
+	) async {
+		for (lrAlbum, mpAlbum) in lrAlbums_and_mpAlbums {
+			await update_album(
 				lrAlbum,
-				to_match: Set(mpAlbum.items.map { $0.persistentID })
+				to_match: mpAlbum.items.map { $0.persistentID }
 			)
 		}
 	}
 	private static func update_album(
 		_ lrAlbum: LRAlbum,
-		to_match uSongs_fresh: Set<USong>
-	) {
+		to_match uSongs_fresh: [USong]
+	) async {
 		// 2do: We could get `MKSong` metadata via `AppleLibrary.shared.albumInfo`.
 		
 		let was_in_original_order: Bool = { // Deleting songs can change whether the remaining ones are in original order, so procrastinate on that.
 			// Some existing `USong`s might lack counterparts in the Apple Music library. If so, assume they were in original order.
 			// Unfortunately, that means if we have existing songs E, G, F; and G is no longer in the Apple Music library, we think the album was in original order.
-			guard
-				let mk_left = AppleLibrary.shared.mkSongs_cache[each],
-				let mk_right = AppleLibrary.shared.mkSongs_cache[next]
-			else { return true }
-			return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
-		}
+			let existing_to_keep: [USong] = {
+				let fresh_set = Set(uSongs_fresh)
+				return lrAlbum.uSongs.filter {
+					fresh_set.contains($0)
+				}
+			}()
+			
+			var i_to_keep = 0
+			var i_fresh = 0 // `uSongs_fresh` has at least as many elements as `existing_to_keep`.
+			while i_to_keep < existing_to_keep.count {
+				/*
+				 Every existing song here is also in `uSongs_fresh`.
+				 Iterate through both simultaneously: `existing_to_keep` is the checklist, and `uSongs_fresh` is the information source.
+				 Pretend we have existing songs C, A; and fresh songs A, B, C, D.
+				 See when each existing song occurs among the fresh ones; we want to know whether they’re in the same order.
+				 If the two songs we’re pointing to are the same, advance both pointers.
+				 If we reach the end of the existing songs, then they were in original order.
+				 If the two songs we’re pointing to are different, continue with the next fresh song.
+				 If we run out of fresh songs, then the existing songs weren’t in original order.
+				 */
+				let to_keep = existing_to_keep[i_to_keep]
+				while true {
+					guard i_fresh < uSongs_fresh.count else { return false }
+					let fresh = uSongs_fresh[i_fresh]
+					i_fresh += 1
+					if fresh == to_keep { break }
+				}
+				i_to_keep += 1
+			}
+			return true
+		}()
 		
 		// If the fresh songs are B, C, D; and we have existing songs A, E, C, we want to add B, D; and delete A, E.
-		var uSongs_fresh = uSongs_fresh
-		lrAlbum.uSongs.indices.reversed().forEach { i_uSong in
-			let uSong = lrAlbum.uSongs[i_uSong]
-			if uSongs_fresh.contains(uSong) {
-				uSongs_fresh.remove(uSong)
+		var to_delete = Set(lrAlbum.uSongs) // Whittle down.
+		var to_add: [USong] = [] // If the existing songs were in original order, we won’t even need this.
+		uSongs_fresh.forEach { uSong_fresh in
+			if to_delete.contains(uSong_fresh) {
+				to_delete.remove(uSong_fresh)
 			} else {
-				lrAlbum.uSongs.remove(at: i_uSong)
-				deregister_uSong(uSong)
+				to_add.append(uSong_fresh)
 			}
 		}
-		// `uSongs_fresh` now contains only unfamiliar songs.
-		let to_add_unsorted = Array(uSongs_fresh)
+		to_delete.forEach {
+			deregister_uSong($0)
+		}
 		
 		if was_in_original_order {
-			to_add_unsorted.reversed().forEach { uSong in
-				lrAlbum.uSongs.insert(uSong, at: 0)
-				register_uSong(uSong, with: lrAlbum)
-			}
-			lrAlbum.uSongs.sort { left, right in
-				let mk_left = AppleLibrary.shared.mkSongs_cache[left]
-				let mk_right = AppleLibrary.shared.mkSongs_cache[right]
-				if mk_left == nil && mk_right == nil { return false }
-				guard let mk_right else { return true }
-				guard let mk_left else { return false }
-				
-				return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
+			lrAlbum.uSongs = uSongs_fresh
+			lrAlbum.uSongs.forEach {
+				register_uSong($0, with: lrAlbum)
 			}
 		} else {
-			let to_add = to_add_unsorted.sorted { left, right in
+			for uSong in to_add {
+				await AppleLibrary.shared.cache_mkSong(uSong: uSong) // This repeatedly updates an `@Observable` property, but SwiftUI doesn’t redraw dependent views for every update; maybe only once per turn of the run loop.
+			}
+			let to_add_sorted = to_add.sorted { left, right in
 				let mk_left = AppleLibrary.shared.mkSongs_cache[left]
 				let mk_right = AppleLibrary.shared.mkSongs_cache[right]
 				if mk_left == nil && mk_right == nil { return false }
@@ -170,14 +165,12 @@ extension Librarian {
 				
 				let date_left: Date? = mk_left.libraryAddedDate
 				let date_right: Date? = mk_right.libraryAddedDate
-				if date_left == date_right {
-					return SongOrder.is_increasing_by_track(same_every_time: true, mk_left, mk_right)
-				}
+				if date_left == date_right { return false }
 				guard let date_right else { return true }
 				guard let date_left else { return false }
 				return date_left > date_right
 			}
-			to_add.reversed().forEach { uSong in
+			to_add_sorted.reversed().forEach { uSong in
 				lrAlbum.uSongs.insert(uSong, at: 0)
 				register_uSong(uSong, with: lrAlbum)
 			}

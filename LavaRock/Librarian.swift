@@ -210,6 +210,7 @@ final class LRAlbum {
 				case .reverse: return uSongs_selected_unsorted.reversed()
 				case .random: return uSongs_selected_unsorted.in_any_other_order { $0 == $1 }
 				case .track:
+					// 2do: For consistency, get the song order from Apple Music the same way the merger does.
 					return uSongs_selected_unsorted.sorted { left, right in
 						let mk_left = AppleLibrary.shared.mkSongs_cache[left]
 						let mk_right = AppleLibrary.shared.mkSongs_cache[right]
