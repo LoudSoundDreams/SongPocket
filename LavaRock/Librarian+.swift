@@ -96,15 +96,10 @@ extension Librarian {
 		_ lrAlbum: LRAlbum,
 		to_match uSongs_fresh: [USong]
 	) async {
+		let fresh_set = Set(uSongs_fresh)
 		let was_in_original_order: Bool = { // Deleting songs can change whether the remaining ones are in original order, so procrastinate on that.
 			// Some existing `USong`s might lack counterparts in the Apple Music library; if so, assume they were in original order. Unfortunately, that means if we have existing songs E, G, F; and G is no longer in the Apple Music library, we think the album was in original order.
-			let existing_to_keep: [USong] = {
-				let fresh_set = Set(uSongs_fresh)
-				return lrAlbum.uSongs.filter {
-					fresh_set.contains($0)
-				}
-			}()
-			
+			let existing_to_keep = lrAlbum.uSongs.filter { fresh_set.contains($0) }
 			var i_keep = 0
 			var i_fresh = 0 // `uSongs_fresh` has at least as many elements as `existing_to_keep`.
 			while i_keep < existing_to_keep.count {
@@ -131,17 +126,15 @@ extension Librarian {
 		}()
 		
 		// If the fresh songs are B, C, D; and we have existing songs A, E, C, we want to add B, D; and delete A, E.
-		var to_delete = Set(lrAlbum.uSongs) // Whittle down.
-		var to_add: [USong] = [] // If the existing songs were in original order, we won’t even need this.
-		uSongs_fresh.forEach { uSong_fresh in
-			if to_delete.contains(uSong_fresh) {
-				to_delete.remove(uSong_fresh)
+		var to_add = fresh_set // Whittle down. If the existing songs were in original order, we won’t even need this.
+		lrAlbum.uSongs.indices.reversed().forEach { i_uSong in
+			let existing = lrAlbum.uSongs[i_uSong]
+			if to_add.contains(existing) {
+				to_add.remove(existing)
 			} else {
-				to_add.append(uSong_fresh)
+				lrAlbum.uSongs.remove(at: i_uSong)
+				deregister_uSong(existing)
 			}
-		}
-		to_delete.forEach {
-			deregister_uSong($0)
 		}
 		
 		if was_in_original_order {
@@ -162,7 +155,7 @@ extension Librarian {
 				
 				let date_left: Date? = mk_left.libraryAddedDate
 				let date_right: Date? = mk_right.libraryAddedDate
-				if date_left == date_right { return false }
+				if date_left == date_right { return false } // 2do: Unpredictable, because we scrambled them.
 				guard let date_right else { return true }
 				guard let date_left else { return false }
 				return date_left > date_right
