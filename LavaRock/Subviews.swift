@@ -221,7 +221,7 @@ import MusicKit
 	private var b_above: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
-			systemImage: is_selected ? "chevron.up.circle.fill" : "chevron.up.circle"
+			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: false)
 		}.disabled({
@@ -233,7 +233,7 @@ import MusicKit
 	private var b_below: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
-			systemImage: is_selected ? "chevron.down.circle.fill" : "chevron.down.circle"
+			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
 			list_state.change_album_range(from: id_album, forward: true)
 		}.disabled({
@@ -411,7 +411,7 @@ import MusicKit
 	private var b_above: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
-			systemImage: is_selected ? "chevron.up.circle.fill" : "chevron.up.circle"
+			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: false)
 		}.disabled({
@@ -423,7 +423,7 @@ import MusicKit
 	private var b_below: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Down: InterfaceText.Select_Down,
-			systemImage: is_selected ? "chevron.down.circle.fill" : "chevron.down.circle"
+			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
 			list_state.change_song_range(from: id_song, forward: true)
 		}.disabled({
