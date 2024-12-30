@@ -4,15 +4,14 @@ import CoreData
 import os
 
 enum ZZZDatabase {
+	fileprivate static let signposter = OSSignposter(subsystem: "core data", category: .pointsOfInterest)
+	
 	@MainActor static func migrate() {
-		let signposter = OSSignposter(subsystem: "core data", category: .pointsOfInterest)
+		let _migrate = Self.signposter.beginInterval("migrate")
+		defer { Self.signposter.endInterval("migrate", _migrate) }
 		
 		// Make it look like the app never used Core Data previously.
 		// Move any data here to the modern places.
-		guard !Disk.has_data else { return } // 2do: If we migrate, then reinstall an older version of the app, that adds data to Core Data that we never clean up.
-		
-		let _migrate = signposter.beginInterval("migrate")
-		defer { signposter.endInterval("migrate", _migrate) }
 		
 		let container = NSPersistentContainer(name: "LavaRock")
 		container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -32,7 +31,12 @@ enum ZZZDatabase {
 		// Create the modern representation of how the user had arranged their library.
 		let converted = container.viewContext.converted_to_lrAlbums()
 		
-		// Move the data.
+		// The conversion can have contents only if an older version of the app previously ran.
+		// Plain-text storage can have contents only if a modern version of the app previously ran.
+		// If the conversion has contents, use them to overwrite any plain-text storage.
+		// If the conversion is empty, leave any plain-text storage alone.
+		guard !converted.isEmpty else { return }
+		
 		Disk.save_albums(converted)
 		let coordinator = container.persistentStoreCoordinator
 		coordinator.persistentStores.forEach { store in
@@ -45,16 +49,19 @@ enum ZZZDatabase {
 
 extension NSManagedObjectContext {
 	fileprivate final func converted_to_lrAlbums() -> [LRAlbum] {
+		let signposter = ZZZDatabase.signposter
+		let _convert = signposter.beginInterval("convert")
+		defer { signposter.endInterval("convert", _convert) }
+		
 #if DEBUG
 		//		mock_zCollections()
 #endif
+		
 		let zCollections: [ZZZCollection] = {
 			let request = ZZZCollection.fetchRequest()
 			request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
 			return fetch_please(request)
 		}()
-		guard !zCollections.isEmpty else { return [] }
-		
 		let zAlbums = zCollections.flatMap { $0.zAlbums() }
 		return zAlbums.map {
 			// `MPMediaEntityPersistentID` is a type alias for `UInt64`, but when we stored them in Core Data, we converted them to `Int64`.

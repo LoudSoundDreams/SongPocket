@@ -22,7 +22,8 @@ enum WorkingOn {
 		
 		// In order, (1) migrate persistent data, then (2) show persistent data, then (3) update persistent data.
 		
-		ZZZDatabase.migrate() // (1) Migrate before running any UI code, so our UI can assume already-migrated data.
+		// (1) Migrate before running any UI code, so our UI can assume already-migrated data.
+		ZZZDatabase.migrate()
 		
 		// (2)
 		let loaded = Disk.load_albums()
