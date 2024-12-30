@@ -57,6 +57,38 @@ final class LRAlbum {
 		Disk.save_albums(the_albums)
 	}
 	
+	// Inspect
+	static func debug_Print() {
+		Print()
+		Print("albums:", the_albums.count)
+		the_albums.forEach { album in
+			Print("  \(album.uAlbum)")
+			album.uSongs.forEach { uSong in
+				Print("    \(uSong)")
+			}
+		}
+		
+		Print("album ID → album:", album_with_uAlbum.count)
+		album_with_uAlbum.forEach { (uAlbum, album_ref) in
+			var pointee_album = "nil"
+			if let album = album_ref.referencee {
+				pointee_album = "\(ObjectIdentifier(album))"
+			}
+			Print("\(uAlbum) → \(pointee_album)")
+		}
+		
+		Print("song IDs:", uSongs_known.count)
+		
+		Print("song ID → album:", album_containing_uSong.count)
+		album_containing_uSong.forEach { (uSong, album_ref) in
+			var about_album = "nil"
+			if let album = album_ref.referencee {
+				about_album = "\(album.uAlbum), \(ObjectIdentifier(album))"
+			}
+			Print("\(uSong) → \(about_album)")
+		}
+	}
+	
 	// Promote
 	static func promote_albums(
 		_ uAlbums_selected: Set<UAlbum>,
@@ -238,36 +270,5 @@ final class LRAlbum {
 			guard album.uAlbum == album_common?.uAlbum else { return nil }
 		}
 		return album_common
-	}
-	
-	static func debug_Print() {
-		Print()
-		Print("albums:", the_albums.count)
-		the_albums.forEach { album in
-			Print("  \(album.uAlbum)")
-			album.uSongs.forEach { uSong in
-				Print("    \(uSong)")
-			}
-		}
-		
-		Print("album ID → album:", album_with_uAlbum.count)
-		album_with_uAlbum.forEach { (uAlbum, album_ref) in
-			var pointee_album = "nil"
-			if let album = album_ref.referencee {
-				pointee_album = "\(ObjectIdentifier(album))"
-			}
-			Print("\(uAlbum) → \(pointee_album)")
-		}
-		
-		Print("song IDs:", uSongs_known.count)
-		
-		Print("song ID → album:", album_containing_uSong.count)
-		album_containing_uSong.forEach { (uSong, album_ref) in
-			var about_album = "nil"
-			if let album = album_ref.referencee {
-				about_album = "\(album.uAlbum), \(ObjectIdentifier(album))"
-			}
-			Print("\(uSong) → \(about_album)")
-		}
 	}
 }
