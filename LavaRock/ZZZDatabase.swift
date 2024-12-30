@@ -8,7 +8,7 @@ enum ZZZDatabase {
 		let signposter = OSSignposter(subsystem: "core data", category: .pointsOfInterest)
 		
 		// Make it look like the app never used Core Data previously.
-		// Convert any useful data here and persist it in the modern places.
+		// Move any data here to the modern places.
 		guard !Disk.has_data else { return } // 2do: If we migrate, then reinstall an older version of the app, that adds data to Core Data that we never clean up.
 		
 		let _migrate = signposter.beginInterval("migrate")
@@ -29,11 +29,11 @@ enum ZZZDatabase {
 			}
 		})
 		
-		// Determine how the user had arranged their albums and songs, and create the modern representation of that.
-		let lrAlbums = container.viewContext.converted_to_lrAlbums()
+		// Create the modern representation of how the user had arranged their library.
+		let converted = container.viewContext.converted_to_lrAlbums()
 		
 		// Move the data.
-		Disk.save_albums(lrAlbums)
+		Disk.save_albums(converted)
 		let coordinator = container.persistentStoreCoordinator
 		coordinator.persistentStores.forEach { store in
 			try! coordinator.destroyPersistentStore(

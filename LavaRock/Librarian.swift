@@ -56,12 +56,6 @@ final class LRAlbum {
 	static func save() {
 		Disk.save_albums(the_albums)
 	}
-	static func load() {
-		the_albums = Disk.load_albums()
-		the_albums.forEach {
-			register_album($0)
-		}
-	}
 	
 	// Promote
 	static func promote_albums(
