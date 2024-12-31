@@ -223,11 +223,9 @@ final class AlbumsTVC: LibraryTVC {
 		
 		view.backgroundColor = UIColor(Color.white_one_eighth)
 		tableView.separatorStyle = .none
-		reflect_selection()
 		b_sort.preferredMenuElementOrder = .fixed
-		b_sort.menu = menu_sort()
 		b_focused.preferredMenuElementOrder = .fixed
-		b_focused.menu = menu_focused()
+		reflect_selection()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
 		Remote.shared.weak_tvc_albums = self
@@ -474,7 +472,8 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private let b_sort = UIBarButtonItem(title: InterfaceText.Sort, image: UIImage(systemName: "arrow.up.arrow.down.circle.fill")?.applying_hierarchical_tint())
-	private let b_focused = UIBarButtonItem(title: InterfaceText.More, image: UIImage(systemName: "ellipsis.circle.fill")?.applying_hierarchical_tint())
+	private lazy var b_focused = UIBarButtonItem(title: InterfaceText.More, image: image_focused)
+	private let image_focused = UIImage(systemName: "ellipsis.circle.fill")?.applying_hierarchical_tint()
 	
 	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
 	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))
@@ -525,16 +524,21 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private func menu_sort() -> UIMenu? {
-		return UIMenu(title: title_focused(always_songs: false), children: {
-			switch list_state.expansion {
-				case .collapsed: return menu_sections_album_sort
-				case .expanded: return menu_sections_song_sort
-			}
-		}())
+		return UIMenu(
+			title: title_focused(always_songs: false),
+			children: {
+				switch list_state.expansion {
+					case .collapsed: return menu_sections_album_sort
+					case .expanded: return menu_sections_song_sort
+				}
+			}()
+		)
 	}
 	private func menu_focused() -> UIMenu {
-		let menu_sections: [UIMenu] = [
-			UIMenu(options: .displayInline, children: [
+		var submenus_inline: [UIMenu] = []
+		submenus_inline.append(UIMenu(
+			options: .displayInline,
+			children: [
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
 					let ids_songs = ids_songs_focused()
@@ -568,9 +572,11 @@ final class AlbumsTVC: LibraryTVC {
 					if ids_songs.count <= 1 { action.attributes.formUnion(.disabled) }
 					use([action])
 				},
-			]),
-		]
-		return UIMenu(title: title_focused(always_songs: true), children: menu_sections)
+			]
+		))
+		return UIMenu(
+			title: title_focused(always_songs: true),
+			children: submenus_inline)
 	}
 	
 	private func ids_songs_focused() -> [MPIDSong] { // In display order.
