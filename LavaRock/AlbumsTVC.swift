@@ -479,13 +479,13 @@ final class AlbumsTVC: LibraryTVC {
 	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
 	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))
 	
+	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_song_promote, menu: UIMenu(children: [a_song_float]))
+	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_song_demote, menu: UIMenu(children: [a_song_sink]))
+	
 	private lazy var a_album_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage.move_up.applying_hierarchical_tint()) { [weak self] _ in self?.promote_albums() }
 	private lazy var a_album_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage.move_down.applying_hierarchical_tint()) { [weak self] _ in self?.demote_albums() }
 	private lazy var a_album_float = UIAction(title: InterfaceText.To_Top, image: UIImage.to_top) { [weak self] _ in self?.float_albums() }
 	private lazy var a_album_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage.to_bottom) { [weak self] _ in self?.sink_albums() }
-	
-	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_song_promote, menu: UIMenu(children: [a_song_float]))
-	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_song_demote, menu: UIMenu(children: [a_song_sink]))
 	
 	private lazy var a_song_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage.move_up.applying_hierarchical_tint()) { [weak self] _ in self?.promote_songs() }
 	private lazy var a_song_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage.move_down.applying_hierarchical_tint()) { [weak self] _ in self?.demote_songs() }

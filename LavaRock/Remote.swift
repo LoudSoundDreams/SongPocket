@@ -62,13 +62,13 @@ extension PlayerState {
 #endif
 	}
 	private func show_play() {
-		b_remote.image = Self.i_play
+		b_remote.image = Self.image_play
 	}
 	private func show_pause() {
-		b_remote.image = Self.i_pause
+		b_remote.image = Self.image_pause
 	}
-	private static let i_play = UIImage(systemName: "play.circle.fill")?.applying_hierarchical_tint()
-	private static let i_pause = UIImage(systemName: "pause.circle.fill")?.applying_hierarchical_tint()
+	private static let image_play = UIImage(systemName: "play.circle.fill")?.applying_hierarchical_tint()
+	private static let image_pause = UIImage(systemName: "pause.circle.fill")?.applying_hierarchical_tint()
 	
 	private func title_menu() -> String {
 		guard MusicAuthorization.currentStatus == .authorized else {
