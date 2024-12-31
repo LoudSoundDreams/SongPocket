@@ -494,36 +494,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: Focused
 	
-	private func title_focused(always_songs: Bool) -> String {
-		switch list_state.select_mode {
-			case .select_albums(let ids_selected):
-				if always_songs {
-					let num_songs_selected: Int = list_state.albums(with: ids_selected).reduce(into: 0) { songs_so_far, selected_album in
-						songs_so_far += selected_album.songs(sorted: false).count
-					}
-					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
-				} else {
-					return InterfaceText.NUMBER_albums_selected(list_state.albums(with: ids_selected).count)
-				}
-			case .select_songs(let ids_selected):
-				return InterfaceText.NUMBER_songs_selected(list_state.zzzSongs(with: ids_selected).count)
-			case .view:
-				switch list_state.expansion {
-					case .collapsed:
-						if always_songs {
-							let num_all_songs: Int = list_state.albums().reduce(into: 0) { songs_so_far, album in
-								songs_so_far += album.songs(sorted: false).count
-							}
-							return InterfaceText.NUMBER_songs(num_all_songs)
-						} else {
-							return InterfaceText.NUMBER_albums(list_state.albums().count)
-						}
-					case .expanded:
-						return InterfaceText.NUMBER_songs(list_state.zzzSongs().count)
-				}
-		}
-	}
-	
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(
 			children: {
@@ -534,6 +504,7 @@ final class AlbumsTVC: LibraryTVC {
 			}()
 		)
 	}
+	
 	private func menu_focused() -> UIMenu {
 		var submenus_inline: [UIMenu] = []
 		switch list_state.select_mode {
@@ -584,11 +555,8 @@ final class AlbumsTVC: LibraryTVC {
 				},
 			]
 		))
-		return UIMenu(
-			title: title_focused(always_songs: false),
-			children: submenus_inline)
+		return UIMenu(children: submenus_inline)
 	}
-	
 	private func ids_songs_focused() -> [MPIDSong] { // In display order.
 		switch list_state.select_mode {
 			case .select_albums(let ids_selected):
