@@ -90,7 +90,6 @@ enum InterfaceText {
 		}
 		return "\(fNum) songs"
 	}
-	static func Track_VALUE(_ value: String) -> String { "Track \(value)" }
 	
 	// MARK: Playback
 	
