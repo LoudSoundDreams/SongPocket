@@ -397,27 +397,27 @@ final class AlbumsTVC: LibraryTVC {
 	@objc private func reflect_selection() {
 		switch list_state.select_mode {
 			case .view(let id_activated):
-				navigationItem.setRightBarButtonItems([], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
 				b_sort.menu = menu_sort()
 				b_focused.menu = menu_focused()
+				b_focused.image = image_focused
 				if id_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .select_albums(let ids_selected):
-				navigationItem.setRightBarButtonItems([b_done], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
 				b_album_promote.isEnabled = !ids_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
 				b_sort.menu = menu_sort() // In case it’s open.
 				b_focused.menu = menu_focused()
+				b_focused.image = image_focused_highlighted
 			case .select_songs(let ids_selected):
-				navigationItem.setRightBarButtonItems([b_done], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
 				b_song_promote.isEnabled = !ids_selected.isEmpty
 				b_song_demote.isEnabled = b_song_promote.isEnabled
 				b_sort.menu = menu_sort()
 				b_focused.menu = menu_focused()
+				b_focused.image = image_focused_highlighted
 		}
 	}
 	
@@ -464,7 +464,7 @@ final class AlbumsTVC: LibraryTVC {
 	
 	// MARK: Editing
 	
-	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() })
+	private lazy var a_end_selecting = UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() }
 	private func end_selecting_animated() {
 		withAnimation {
 			self.list_state.select_mode = .view(nil)
@@ -472,8 +472,9 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	
 	private let b_sort = UIBarButtonItem(title: InterfaceText.Sort, image: UIImage(systemName: "arrow.up.arrow.down.circle.fill")?.applying_hierarchical_tint())
-	private lazy var b_focused = UIBarButtonItem(title: InterfaceText.More, image: image_focused)
-	private let image_focused = UIImage(systemName: "ellipsis.circle.fill")?.applying_hierarchical_tint()
+	private lazy var b_focused = UIBarButtonItem(title: InterfaceText.More)
+	private lazy var image_focused = image_focused_highlighted?.applying_hierarchical_tint()
+	private let image_focused_highlighted = UIImage(systemName: "ellipsis.circle.fill")
 	
 	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
 	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))
@@ -525,7 +526,6 @@ final class AlbumsTVC: LibraryTVC {
 	
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(
-			title: title_focused(always_songs: false),
 			children: {
 				switch list_state.expansion {
 					case .collapsed: return menu_sections_album_sort
@@ -536,6 +536,16 @@ final class AlbumsTVC: LibraryTVC {
 	}
 	private func menu_focused() -> UIMenu {
 		var submenus_inline: [UIMenu] = []
+		switch list_state.select_mode {
+			case .view: break
+			case .select_albums, .select_songs:
+				submenus_inline.append(UIMenu(
+					options: .displayInline,
+					children: [
+						a_end_selecting,
+					]
+				))
+		}
 		submenus_inline.append(UIMenu(
 			options: .displayInline,
 			children: [
@@ -575,7 +585,7 @@ final class AlbumsTVC: LibraryTVC {
 			]
 		))
 		return UIMenu(
-			title: title_focused(always_songs: true),
+			title: title_focused(always_songs: false),
 			children: submenus_inline)
 	}
 	
