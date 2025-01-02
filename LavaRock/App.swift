@@ -37,9 +37,9 @@ enum WorkingOn {
 			let working_on_main_view = 10 == 1
 			ZStack {
 				if working_on_main_view {
-					MainView()
+					AlbumGallery()
 				} else {
-					MainVCRep()
+					RepNCAlbumTable()
 						.toolbar { if WorkingOn.bottom_bar {
 							ToolbarItemGroup(placement: .bottomBar) { TheBar() }
 						}}
@@ -59,26 +59,15 @@ enum WorkingOn {
 	}
 }
 
-private struct MainView: View {
+private struct AlbumGallery: View {
 	var body: some View {
-		ScrollView(.horizontal) {
-			LazyHStack {
-				MainVCRep()
-					.frame(width: .eight * 24)
-				MainVCRep()
-					.frame(width: .eight * 36)
-				List { ForEach(0 ..< 5) { _ in
-					Image(systemName: "hare.fill")
-				}}.frame(width: .eight * 24)
-				List { ForEach(0 ..< 5) { _ in
-					Image(systemName: "tortoise.fill")
-				}}.frame(width: .eight * 36)
-			}
-		}
+		TabView { ForEach(0 ..< 10) { _ in
+			RepNCAlbumTable().containerRelativeFrame(.horizontal)
+		}}.tabViewStyle(.page(indexDisplayMode: .never))
 	}
 }
 
-private struct MainVCRep: UIViewControllerRepresentable {
+private struct RepNCAlbumTable: UIViewControllerRepresentable {
 	typealias VCType = NCMain
 	func makeUIViewController(context: Context) -> VCType { NCMain.create() }
 	func updateUIViewController(_ uiViewController: VCType, context: Context) {}

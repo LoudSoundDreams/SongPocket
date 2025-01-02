@@ -2,11 +2,7 @@
 
 import SwiftUI
 
-struct AlbumShelf: View {
-	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray() { didSet {
-		FakeAlbum.renumber(albums)
-	}}
-	@State private var i_visible: Int? = 2
+struct AlbumFlow: View { // Experimental.
 	var body: some View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
@@ -18,8 +14,6 @@ struct AlbumShelf: View {
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
 			.scrollPosition(id: $i_visible)
-			.toolbar(.visible, for: .bottomBar)
-			.toolbarBackground(.visible, for: .bottomBar)
 			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
 				Button {
 				} label: { Image(systemName: "minus.circle") }
@@ -52,6 +46,10 @@ struct AlbumShelf: View {
 			}}
 		}
 	}
+	@State private var albums: [FakeAlbum] = FakeAlbum.demoArray() { didSet {
+		FakeAlbum.renumber(albums)
+	}}
+	@State private var i_visible: Int? = 2
 }
 
 struct FakeAlbumCover: View {
