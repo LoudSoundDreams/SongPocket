@@ -17,11 +17,22 @@ struct AlbumFlow: View { // Experimental.
 			
 			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
 				Button {
+					guard
+						let uuid_target,
+						let i_uuid_target = uuids.firstIndex(of: uuid_target)
+					else { return }
+					let _ = withAnimation {
+						uuids.remove(at: i_uuid_target)
+					}
 				} label: { Image(systemName: "minus.circle") }
 				Spacer()
 				ZStack {
-					Text("999").hidden()
-					Text("001")
+					Text("99999").hidden()
+					Text({ () -> String in
+						guard let uuid_target else { return "nil" }
+						let string = "\(uuid_target)"
+						return String(string.prefix(4))
+					}())
 				}.monospacedDigit()
 				Spacer()
 				Button {
