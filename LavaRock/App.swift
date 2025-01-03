@@ -63,7 +63,7 @@ private struct AlbumGallery: View {
 	var body: some View {
 		TabView(selection: $rando_spotlighted) {
 			ForEach(randos, id: \.self) { rando in
-				Text("\(rando)").frame(width: .eight * 32)
+				FakeAlbumCover(uuid: rando)
 					.onTapGesture {
 						guard let i_rando = randos.firstIndex(of: rando) else { return }
 						let new_rando_spotlighted: UUID? = {

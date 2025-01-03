@@ -14,32 +14,30 @@ struct AlbumFlow: View { // Experimental.
 			}
 			.scrollTargetBehavior(.viewAligned(limitBehavior: .never))
 			.scrollPosition(id: $uuid_target)
-			
-			.toolbar { ToolbarItemGroup(placement: .bottomBar) {
-				Button {
-					guard
-						let uuid_target,
-						let i_uuid_target = uuids.firstIndex(of: uuid_target)
-					else { return }
-					let _ = withAnimation {
-						uuids.remove(at: i_uuid_target)
-					}
-				} label: { Image(systemName: "minus.circle") }
-				Spacer()
-				ZStack {
-					Text("99999").hidden()
-					Text({ () -> String in
-						guard let uuid_target else { return "nil" }
-						let string = "\(uuid_target)"
-						return String(string.prefix(4))
-					}())
-				}.monospacedDigit()
-				Spacer()
-				Button {
-					uuids.append(UUID())
-				} label: { Image(systemName: "plus.circle") }
-			}}
-		}
+		}.toolbar { ToolbarItemGroup(placement: .bottomBar) {
+			Button {
+				guard
+					let uuid_target,
+					let i_uuid_target = uuids.firstIndex(of: uuid_target)
+				else { return }
+				let _ = withAnimation {
+					uuids.remove(at: i_uuid_target)
+				}
+			} label: { Image(systemName: "minus.circle") }
+			Spacer()
+			ZStack {
+				Text("99999").hidden()
+				Text({ () -> String in
+					guard let uuid_target else { return "nil" }
+					let string = "\(uuid_target)"
+					return String(string.prefix(4))
+				}())
+			}.monospacedDigit()
+			Spacer()
+			Button {
+				uuids.append(UUID())
+			} label: { Image(systemName: "plus.circle") }
+		}}
 	}
 	@State private var uuids: [UUID] = {
 		var result: [UUID] = []
@@ -73,11 +71,4 @@ struct FakeAlbumCover: View {
 		}
 	}
 	@State private var is_reordering = false
-}
-
-private extension String {
-	static func debug_random() -> Self {
-		let character = "abcdefghijklmnopqrstuvwxyz".randomElement()!
-		return String(character)
-	}
 }
