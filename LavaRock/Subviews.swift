@@ -126,7 +126,7 @@ import MusicKit
 					Color.white_one_fourth
 						.frame(width: dim_limit, height: dim_limit)
 					Image(systemName: "music.note")
-						.foregroundStyle(.secondary)
+						.foregroundStyle(Color(white: .one_half))
 						.font(.title)
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
