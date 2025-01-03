@@ -95,7 +95,7 @@ enum InterfaceText {
 	
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
-	static let Play_Later = "Play Later"
+	static let Add_to_Queue = "Add to Queue"
 	static func Randomize(for ids_lang: [String]) -> String {
 		return "Jumble"
 		/*
