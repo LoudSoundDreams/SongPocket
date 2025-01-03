@@ -63,26 +63,47 @@ private struct AlbumGallery: View {
 	var body: some View {
 		TabView(selection: $rando_spotlighted) {
 			ForEach(randos, id: \.self) { rando in
-				FakeAlbumCover(uuid: rando)
-					.onTapGesture {
-						guard let i_rando = randos.firstIndex(of: rando) else { return }
-						let new_rando_spotlighted: UUID? = {
-							guard randos.count >= 2 else { return nil }
-							let i_next_rando: Int = min(i_rando + 1, randos.count - 1)
-							let result = randos[i_next_rando]
-							return result
-						}()
-						let _ = withAnimation { // Unreliable; the first time after any swipe, SwiftUI crossfades the new tab into place rather than pushing it.
-							randos.remove(at: i_rando)
-							if let new_rando_spotlighted {
-								rando_spotlighted = new_rando_spotlighted
-							}
-						}
-					}
 				
 //				RepNCAlbumTable().containerRelativeFrame(.horizontal)
+				
+				GeometryReader { proxy in
+					if let uAlbum = Librarian.album_with_uAlbum.keys.randomElement()
+					{
+						VStack {
+							Spacer()
+							
+							let geo_width = proxy.size.width
+							AlbumArt(
+								uAlbum: uAlbum,
+								dim_limit: geo_width
+							)
+							.containerRelativeFrame(.horizontal)
+							.onTapGesture {
+								guard let i_rando = randos.firstIndex(of: rando) else { return }
+								let new_rando_spotlighted: UUID? = {
+									guard randos.count >= 2 else { return nil }
+									let i_next_rando: Int = min(i_rando + 1, randos.count - 1)
+									let result = randos[i_next_rando]
+									return result
+								}()
+								let _ = withAnimation { // Unreliable; the first time after any swipe, SwiftUI crossfades the new tab into place rather than pushing it.
+									randos.remove(at: i_rando)
+									if let new_rando_spotlighted {
+										rando_spotlighted = new_rando_spotlighted
+									}
+								}
+							}
+							
+							Spacer()
+						}
+					}
+				}.ignoresSafeArea()
+				
 			}
-		}.tabViewStyle(.page(indexDisplayMode: .never))
+		}
+		.tabViewStyle(.page(indexDisplayMode: .never))
+		.background { Color(white: .one_eighth) }
+		.persistentSystemOverlays(.hidden)
 	}
 	@State private var randos: [UUID] = {
 		var result: [UUID] = []

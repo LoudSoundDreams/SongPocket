@@ -94,7 +94,7 @@ import MusicKit
 
 // MARK: Album art
 
-@MainActor private struct AlbumArt: View {
+@MainActor struct AlbumArt: View {
 	let uAlbum: UAlbum
 	let dim_limit: CGFloat
 	
