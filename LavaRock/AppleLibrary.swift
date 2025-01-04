@@ -97,23 +97,18 @@ extension AppleLibrary {
 	
 	@objc private func merge_changes() {
 		Task {
-			guard let mpAlbums = MPMediaQuery.albums().collections
+			let mkRequest = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
+			guard
+				let array_mkSections: [MKSection] =  try? await mkRequest.response().sections,
+				let mpAlbums = MPMediaQuery.albums().collections
 			else { return }
-			
-			let array_mkSections: [MKSection]? = await {
-				let request = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
-				return try? await request.response().sections
-			}()
-			guard let array_mkSections else { return }
 			
 			let fresh_mkSections: [MusicItemID: MKSection] = {
 				let tuples = array_mkSections.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			
-			// Show new data immediately …
 			let union_mkSections = mkSections_cache.merging(fresh_mkSections) { old, new in new }
-			mkSections_cache = union_mkSections
+			mkSections_cache = union_mkSections // Show new data immediately …
 			
 			is_merging = true
 			await Librarian.merge_MediaPlayer_items(mpAlbums)
@@ -121,8 +116,7 @@ extension AppleLibrary {
 			Librarian.save()
 			is_merging = false
 			
-			// … but don’t hide deleted data before removing it from the screen anyway.
-			try? await Task.sleep(for: .seconds(3))
+			try? await Task.sleep(for: .seconds(3)) // … but don’t hide deleted data before removing it from the screen anyway.
 			
 			mkSections_cache = fresh_mkSections
 		}

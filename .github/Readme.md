@@ -2,20 +2,20 @@ SongPocket is an immersive player for your Apple Music library on iOS.
 
 Arrange your library manually! Put your favorite albums and songs on top, or reverse or shuffle them.
 
-[Get from the App Store.](https://apps.apple.com/us/app/songpocket/id1538037231)
+[Get it from the App Store.](https://apps.apple.com/us/app/songpocket/id1538037231)
 
 # Philosophy
 
 SongPocket is focused and elegant.
 
-**Focus** means judiciously [saying no to](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) and [removing](https://ignorethecode.net/blog/2010/02/02/removing-features) features.
+**Focused** means judiciously [saying no to](https://alexgaynor.net/2020/nov/30/why-software-ends-up-complex) and [removing](https://ignorethecode.net/blog/2010/02/02/removing-features) features.
 
 - For example, only one way to do most given actions. You can’t swipe or touch-and-hold a song to play it later; you must use the buttons. That’s [monotony](https://verbnounenter.net/monotony).
 - No settings, because they distract. That actually lets you fearlessly delete and reinstall the app.
 
 I like minimalism because it means everything there is important.
 
-**Elegance** means simple yet powerful.
+**Elegant** means simple yet powerful.
 
 - For example, [select-range](https://verbnounenter.net/range-selection) lets you easily select multiple items at once.
 - Reorder, play-later, or shuffle-play only selected items.

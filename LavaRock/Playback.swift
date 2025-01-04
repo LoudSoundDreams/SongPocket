@@ -101,8 +101,8 @@ import Combine
 }
 
 @MainActor @Observable final class PlayerState {
-	var signal = false { didSet { // Value is meaningless; we’re using this to tell SwiftUI to redraw views. As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.
-		Task { // We’re responding to `objectWillChange` events, which aren’t what we actually want. This might wait for the next turn of the run loop, when the value might actually have changed.
+	var signal = false { didSet {
+		Task {
 			NotificationCenter.default.post(name: Self.musicKit, object: nil)
 		}
 	}}
@@ -112,7 +112,7 @@ import Combine
 extension PlayerState {
 	@ObservationIgnored static let shared = PlayerState()
 	func watch() {
-		ApplicationMusicPlayer._shared?.state.objectWillChange
+		ApplicationMusicPlayer._shared?.state.objectWillChange // 2do: We’re using this wrong. Make SwiftUI views observe this with `@Observed`.
 			.sink { [weak self] in self?.signal.toggle() }
 			.store(in: &cancellables)
 		ApplicationMusicPlayer._shared?.queue.objectWillChange

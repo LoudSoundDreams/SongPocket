@@ -130,8 +130,8 @@ private final class NCMain: UINavigationController {
 		result.setNavigationBarHidden(true, animated: false)
 		if !WorkingOn.bottom_bar {
 			let toolbar = result.toolbar!
-			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 			result.setToolbarHidden(false, animated: false)
+			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		}
 		return result
 	}

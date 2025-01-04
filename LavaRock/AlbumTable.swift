@@ -12,7 +12,7 @@ import MusicKit
 	var select_mode: SelectMode = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
-	var signal_albums_reordered = false
+	var signal_albums_reordered = false // Value is meaningless; we’re using this to tell SwiftUI to redraw views. As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.
 	var signal_songs_reordered = false
 	var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
