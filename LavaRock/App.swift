@@ -41,11 +41,10 @@ private final class NCMain: UINavigationController {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumsTVC", bundle: nil).instantiateInitialViewController()!
 		)
-		let nav_bar = result.navigationBar
-		nav_bar.scrollEdgeAppearance = nav_bar.standardAppearance
+		result.setNavigationBarHidden(true, animated: false)
 		let toolbar = result.toolbar!
-		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		result.setToolbarHidden(false, animated: false)
+		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		return result
 	}
 	override func viewIsAppearing(_ animated: Bool) {

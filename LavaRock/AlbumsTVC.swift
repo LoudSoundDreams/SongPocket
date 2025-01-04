@@ -234,6 +234,17 @@ final class AlbumsTVC: LibraryTVC {
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
 	}
 	
+	override func viewIsAppearing(_ animated: Bool) {
+		super.viewIsAppearing(animated)
+		if let window = view.window {
+			let size_window  = window.frame.size
+			tableView.contentInset.top = 0 - view.safeAreaInsets.top // Now it’s 0.
+			+ (size_window.height / 2)
+			- (size_window.width / 2) // Half the height of a square fitting the window width.
+			- (view.safeAreaInsets.bottom / 2)
+		}
+	}
+	
 	// MARK: Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
