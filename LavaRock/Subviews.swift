@@ -117,7 +117,7 @@ import MusicKit
 					Color(white: .one_fourth)
 						.frame(width: dim_limit, height: dim_limit)
 					Image(systemName: "music.note")
-						.foregroundStyle(.secondary)
+						.foregroundStyle(Color(white: .one_half))
 						.font(.title)
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
@@ -347,7 +347,7 @@ import MusicKit
 	) -> some View {
 		Menu {
 			Section({ () -> String in
-				guard let songInfo, let albumInfo else { return "" }
+				guard let songInfo, let albumInfo else { return InterfaceText._octothorpe }
 				let numbers: String = {
 					let f_track: String = {
 						guard let track = songInfo._track else { return InterfaceText._octothorpe }
@@ -361,7 +361,7 @@ import MusicKit
 					}()
 					return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
 				}()
-				return InterfaceText.Track_VALUE(numbers)
+				return "\(InterfaceText._octothorpe) \(numbers)"
 			}()) {
 				switch list_state.select_mode {
 					case .select_albums, .select_songs: EmptyView()

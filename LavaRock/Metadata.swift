@@ -20,14 +20,22 @@ struct SongInfo {
 @MainActor final class Sim_MusicLibrary {
 	private static let demoAlbums: [DemoAlbum] = [
 		DemoAlbum(
-			title: "Hillside",
+			title: "Skyway",
 			artist: "Wanderer",
 			date_released: .strategy(iso8601_10char: "2024-05-31"),
-			image_file: "field",
+			image_file: "sky",
 			tracks: [
 				.init("Magic"),
 				.init("Robot"),
 				.init("Last"),
+			]),
+		DemoAlbum(
+			title: "Hillside",
+			artist: "Wanderer",
+			date_released: .strategy(iso8601_10char: "2024-02-29"),
+			image_file: "field",
+			tracks: [
+				.init(""),
 			]),
 		DemoAlbum(
 			title: "Dawn",
@@ -36,14 +44,6 @@ struct SongInfo {
 			image_file: "city",
 			tracks: [
 				.init("Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.", artist: "Tony Harnell"),
-			]),
-		DemoAlbum(
-			title: "Skyway",
-			artist: "Wanderer",
-			date_released: .strategy(iso8601_10char: "2024-02-29"),
-			image_file: "sky",
-			tracks: [
-				.init(""),
 			]),
 	]
 }

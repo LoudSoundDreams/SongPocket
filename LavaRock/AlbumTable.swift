@@ -222,17 +222,26 @@ final class AlbumTable: LRTableViewController {
 		
 		view.backgroundColor = UIColor(Color(white: .one_eighth))
 		tableView.separatorStyle = .none
-		reflect_selection()
 		b_sort.preferredMenuElementOrder = .fixed
-		b_sort.menu = menu_sort()
 		b_focused.preferredMenuElementOrder = .fixed
-		b_focused.menu = menu_focused()
+		reflect_selection()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
 		Remote.shared.weak_tvc_albums = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: AlbumListState.expansion_changed, object: list_state)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
+	}
+	
+	override func viewIsAppearing(_ animated: Bool) {
+		super.viewIsAppearing(animated)
+		if let window = view.window {
+			let size_window  = window.frame.size
+			tableView.contentInset.top = 0 - view.safeAreaInsets.top // Now it’s 0.
+			+ (size_window.height / 2)
+			- (size_window.width / 2) // Half the height of a square fitting the window width.
+			- (view.safeAreaInsets.bottom / 2)
+		}
 	}
 	
 	// MARK: Table view
@@ -396,27 +405,27 @@ final class AlbumTable: LRTableViewController {
 	@objc private func reflect_selection() {
 		switch list_state.select_mode {
 			case .view(let uS_activated):
-				navigationItem.setRightBarButtonItems([], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
 				b_sort.menu = menu_sort()
 				b_focused.menu = menu_focused()
+				b_focused.image = image_focused
 				if uS_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .select_albums(let uAs_selected):
-				navigationItem.setRightBarButtonItems([b_done], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
 				b_album_promote.isEnabled = !uAs_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
 				b_sort.menu = menu_sort() // In case it’s open.
 				b_focused.menu = menu_focused()
+				b_focused.image = image_focused_highlighted
 			case .select_songs(let uSs_selected):
-				navigationItem.setRightBarButtonItems([b_done], animated: true)
 				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
 				b_song_promote.isEnabled = !uSs_selected.isEmpty
 				b_song_demote.isEnabled = b_song_promote.isEnabled
 				b_sort.menu = menu_sort()
 				b_focused.menu = menu_focused()
+				b_focused.image = image_focused_highlighted
 		}
 	}
 	
@@ -458,7 +467,7 @@ final class AlbumTable: LRTableViewController {
 	
 	// MARK: Editing
 	
-	private lazy var b_done = UIBarButtonItem(primaryAction: UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() })
+	private lazy var a_end_selecting = UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() }
 	private func end_selecting_animated() {
 		withAnimation {
 			self.list_state.select_mode = .view(nil)
@@ -466,18 +475,20 @@ final class AlbumTable: LRTableViewController {
 	}
 	
 	private let b_sort = UIBarButtonItem(title: InterfaceText.Sort, image: UIImage(systemName: "arrow.up.arrow.down.circle.fill")?.applying_hierarchical_tint())
-	private let b_focused = UIBarButtonItem(title: InterfaceText.More, image: UIImage(systemName: "ellipsis.circle.fill")?.applying_hierarchical_tint())
+	private lazy var b_focused = UIBarButtonItem(title: InterfaceText.More)
+	private lazy var image_focused = image_focused_highlighted?.applying_hierarchical_tint()
+	private let image_focused_highlighted = UIImage(systemName: "ellipsis.circle.fill")
 	
 	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
 	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))
+	
+	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_song_promote, menu: UIMenu(children: [a_song_float]))
+	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_song_demote, menu: UIMenu(children: [a_song_sink]))
 	
 	private lazy var a_album_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage.move_up.applying_hierarchical_tint()) { [weak self] _ in self?.promote_albums() }
 	private lazy var a_album_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage.move_down.applying_hierarchical_tint()) { [weak self] _ in self?.demote_albums() }
 	private lazy var a_album_float = UIAction(title: InterfaceText.To_Top, image: UIImage.to_top) { [weak self] _ in self?.float_albums() }
 	private lazy var a_album_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage.to_bottom) { [weak self] _ in self?.sink_albums() }
-	
-	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_song_promote, menu: UIMenu(children: [a_song_float]))
-	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_song_demote, menu: UIMenu(children: [a_song_sink]))
 	
 	private lazy var a_song_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage.move_up.applying_hierarchical_tint()) { [weak self] _ in self?.promote_songs() }
 	private lazy var a_song_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage.move_down.applying_hierarchical_tint()) { [weak self] _ in self?.demote_songs() }
@@ -486,49 +497,32 @@ final class AlbumTable: LRTableViewController {
 	
 	// MARK: Focused
 	
-	private func title_focused(always_songs: Bool) -> String {
-		switch list_state.select_mode {
-			case .select_albums(let uAs_selected):
-				if always_songs {
-					let num_songs_selected: Int = uAs_selected.reduce(into: 0) { uSongs_so_far, uAlbum_selected in
-						guard let lrAlbum_selected = Librarian.album_with_uAlbum[uAlbum_selected]?.referencee else { return }
-						uSongs_so_far += lrAlbum_selected.uSongs.count
-					}
-					return InterfaceText.NUMBER_songs_selected(num_songs_selected)
-				} else {
-					return InterfaceText.NUMBER_albums_selected(uAs_selected.count)
-				}
-			case .select_songs(let uSs_selected):
-				return InterfaceText.NUMBER_songs_selected(uSs_selected.count)
-			case .view:
+	private func menu_sort() -> UIMenu? {
+		return UIMenu(
+			children: {
 				switch list_state.expansion {
-					case .collapsed:
-						if always_songs {
-							let num_all_songs: Int = list_state.uAlbums().reduce(into: 0) { uSongs_so_far, uAlbum in
-								guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
-								uSongs_so_far += lrAlbum.uSongs.count
-							}
-							return InterfaceText.NUMBER_songs(num_all_songs)
-						} else {
-							return InterfaceText.NUMBER_albums(list_state.uAlbums().count)
-						}
-					case .expanded:
-						return InterfaceText.NUMBER_songs(list_state.uSongs().count)
+					case .collapsed: return menu_sections_album_sort
+					case .expanded: return menu_sections_song_sort
 				}
-		}
+			}()
+		)
 	}
 	
-	private func menu_sort() -> UIMenu? {
-		return UIMenu(title: title_focused(always_songs: false), children: {
-			switch list_state.expansion {
-				case .collapsed: return menu_sections_album_sort
-				case .expanded: return menu_sections_song_sort
-			}
-		}())
-	}
 	private func menu_focused() -> UIMenu {
-		let menu_sections: [UIMenu] = [
-			UIMenu(options: .displayInline, children: [
+		var submenus_inline: [UIMenu] = []
+		switch list_state.select_mode {
+			case .view: break
+			case .select_albums, .select_songs:
+				submenus_inline.append(UIMenu(
+					options: .displayInline,
+					children: [
+						a_end_selecting,
+					]
+				))
+		}
+		submenus_inline.append(UIMenu(
+			options: .displayInline,
+			children: [
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
 					let uSongs = uSongs_focused()
@@ -537,19 +531,6 @@ final class AlbumTable: LRTableViewController {
 						end_selecting_animated()
 						Task {
 							await ApplicationMusicPlayer._shared?.play_now(uSongs)
-						}
-					}
-					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
-					use([action])
-				},
-				UIDeferredMenuElement.uncached { [weak self] use in
-					guard let self else { return }
-					let uSongs = uSongs_focused()
-					let action = UIAction(title: InterfaceText.Play_Later, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
-						guard let self else { return }
-						end_selecting_animated()
-						Task {
-							await ApplicationMusicPlayer._shared?.play_later(uSongs)
 						}
 					}
 					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
@@ -570,11 +551,23 @@ final class AlbumTable: LRTableViewController {
 					if uSongs.count <= 1 { action.attributes.formUnion(.disabled) }
 					use([action])
 				},
-			]),
-		]
-		return UIMenu(title: title_focused(always_songs: true), children: menu_sections)
+				UIDeferredMenuElement.uncached { [weak self] use in
+					guard let self else { return }
+					let uSongs = uSongs_focused()
+					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
+						guard let self else { return }
+						end_selecting_animated()
+						Task {
+							await ApplicationMusicPlayer._shared?.play_later(uSongs)
+						}
+					}
+					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
+					use([action])
+				},
+			]
+		))
+		return UIMenu(children: submenus_inline)
 	}
-	
 	private func uSongs_focused() -> [USong] { // In display order.
 		switch list_state.select_mode {
 			case .select_albums(let uAs_selected):

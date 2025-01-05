@@ -22,6 +22,13 @@ I like minimalism because it means everything there is important.
 
 Shockingly flexible is generally good.
 
+# Non-goals
+
+Things I explicitly don’t want. This list is incomplete, tentative, and hopefully helpful, not spiteful.
+
+- Listening history
+- Song durations
+
 # Compiling
 
 1. Install Xcode on your Mac.
@@ -48,7 +55,7 @@ For help, see [Apple’s documentation](https://developer.apple.com/documentatio
 
 Fork this repo, make your changes in your fork, then open a pull request against my repo. For help, see [GitHub’s documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model).
 
-If you change the UI, include screenshots. (You were looking at it anyway, right?)
+Include screenshots if you change the UI—you were looking at it anyway, right?
 
 # Permissions
 
