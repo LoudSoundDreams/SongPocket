@@ -245,6 +245,11 @@ final class AlbumsTVC: LibraryTVC {
 		}
 	}
 	
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		list_state.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+	}
+	
 	// MARK: Table view
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
@@ -347,11 +352,6 @@ final class AlbumsTVC: LibraryTVC {
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
 	
 	// MARK: Events
-	
-	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-		super.viewWillTransition(to: size, with: coordinator)
-		list_state.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
-	}
 	
 	@objc private func refresh_list_items() {
 		Task {
