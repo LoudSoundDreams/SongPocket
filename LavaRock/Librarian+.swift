@@ -10,34 +10,46 @@ extension Librarian {
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }
 		
-		/*
-		 For each `LRAlbum`, determine whether it still corresponds to an album in the Apple Music library.
-		 • If so, update its songs.
-		 • If not, delete it.
-		 Meanwhile, collect any Apple Music album we don’t have an `LRAlbum` for; we’ll add one.
-		 */
-		
 		// Use MediaPlayer for album and song IDs.
 		// Use MusicKit for all other metadata. `AppleLibrary.shared.mkSections_cache` should be ready by now.
 		
-		var to_update: [(LRAlbum, MPMediaItemCollection)] = [] // Order doesn’t matter.
-		var to_delete: Set<UAlbum> = []
-		var mpAlbum_with_uAlbum: [UAlbum: MPMediaItemCollection] = {
-			let tuples = mpAlbums_unsorted.map { ($0.persistentID, $0) }
+		// Group fresh songs by album, just in case.
+		let dict_fresh_by_track: [UAlbum: [USong]] = { // Scrambles `UAlbum`s, but we only care about their order when adding albums (which we’ll do by date first added).
+			var result: [UAlbum: [USong]] = [:]
+			mpSongs_by_album_then_track.forEach { mpSong in
+				let uAlbum = mpSong.albumPersistentID
+				var uSongs_fresh = result[uAlbum] ?? []
+				uSongs_fresh.append(mpSong.persistentID)
+				result[uAlbum] = uSongs_fresh
+			}
+			return result
+		}()
+		
+		/*
+		 For each fresh album, determine whether we have an existing `LRAlbum` corresponding to it.
+		 • If so, update its songs.
+		 • If not, add one.
+		 Meanwhile, collect `LRAlbum`s that no longer correspond to an album in the Apple Music library. Delete them.
+		 */
+		var lrAlbums_existing: [UAlbum: LRAlbum] = {
+			let tuples: [(UAlbum, LRAlbum)] = the_albums.map {( $0.uAlbum, $0 )}
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		the_albums.forEach { lrAlbum in
-			let uAlbum = lrAlbum.uAlbum
-			if let mpAlbum_corresponding = mpAlbum_with_uAlbum[uAlbum] {
-				to_update.append((lrAlbum, mpAlbum_corresponding))
+		var to_add: [LRAlbum] = [] // We’ll sort these later.
+		var to_update: [(existing: LRAlbum, uSongs_fresh: [USong])] = [] // Order of `USong`s matters. Order of albums doesn’t.
+		dict_fresh_by_track.forEach { (uAlbum, uSongs_fresh) in
+			if let existing = lrAlbums_existing[uAlbum] {
+				to_update.append((existing, uSongs_fresh))
 				
-				mpAlbum_with_uAlbum[uAlbum] = nil
+				lrAlbums_existing[uAlbum] = nil
 			} else {
-				to_delete.insert(lrAlbum.uAlbum)
+				to_add.append(
+					LRAlbum(uAlbum: uAlbum, uSongs: uSongs_fresh)
+				)
 			}
 		}
-		// `mpAlbum_with_uAlbum` now contains only unfamiliar albums.
-		let to_add = Array(mpAlbum_with_uAlbum.values) // We’ll sort these later.
+		// Now, `lrAlbums_existing` contains only albums no longer in the Apple Music library.
+		let to_delete = Set(lrAlbums_existing.keys) // Order doesn’t matter.
 		
 		add_albums(to_add)
 		await update_albums(to_update)
@@ -46,16 +58,15 @@ extension Librarian {
 	}
 	
 	private static func add_albums(
-		_ mpAlbums_unsorted: [MPMediaItemCollection]
+		_ lrAlbums_unsorted: [LRAlbum]
 	) {
 		/*
 		 Add albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger.
 		 Determine “date created” using the earliest “date added to library” among songs in the album.
 		 */
-		
-		let mpAlbums_sorted = mpAlbums_unsorted.sorted { left, right in
-			let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
-			let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.persistentID)
+		let lrAlbums_sorted = lrAlbums_unsorted.sorted { left, right in
+			let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)
+			let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)
 			if info_left == nil && info_right == nil { return false }
 			guard let info_right else { return true }
 			guard let info_left else { return false }
@@ -71,28 +82,17 @@ extension Librarian {
 			guard let date_left else { return false }
 			return date_left > date_right
 		}
-		mpAlbums_sorted.reversed().forEach { mpAlbum in
-			let lrAlbum_new = LRAlbum(
-				uAlbum: mpAlbum.persistentID,
-				uSongs: mpAlbum.items.map { $0.persistentID }
-			)
-			the_albums.insert(lrAlbum_new, at: 0)
-			register_album(lrAlbum_new)
+		lrAlbums_sorted.reversed().forEach { lrAlbum in
+			the_albums.insert(lrAlbum, at: 0)
+			register_album(lrAlbum)
 		}
 	}
 	
 	private static func update_albums(
-		_ lrAlbums_and_mpAlbums: [(LRAlbum, MPMediaItemCollection)]
+		_ tuples: [(existing: LRAlbum, uSongs_fresh: [USong])]
 	) async {
-		for (lrAlbum, mpAlbum) in lrAlbums_and_mpAlbums {
-			await update_album(
-				lrAlbum,
-				to_match: {
-					let _fresh_ids = signposter.beginInterval("fresh IDs")
-					defer { signposter.endInterval("fresh IDs", _fresh_ids) }
-					return mpAlbum.items.map { $0.persistentID }
-				}()
-			)
+		for (old, new) in tuples {
+			await update_album(old, to_match: new)
 		}
 	}
 	private static func update_album(
