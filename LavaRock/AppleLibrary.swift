@@ -98,9 +98,12 @@ extension AppleLibrary {
 	@objc private func merge_changes() {
 		Task {
 			let mkRequest = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
+			let mpQuery = MPMediaQuery.songs() // As of iOS 18.2, accessing `MPMediaItemCollection.items` is slow, so avoid it.
+			mpQuery.groupingType = .album // Sorts `items` by album title, then within each album cluster by track order. (Also makes `collections` an array of albums, but that’s not why we’re interested.)
 			guard
 				let array_mkSections: [MKSection] =  try? await mkRequest.response().sections,
-				let mpAlbums = MPMediaQuery.albums().collections
+				let mpSongs = mpQuery.items,
+				let __mpAlbums = MPMediaQuery.albums().collections
 			else { return }
 			
 			let fresh_mkSections: [MusicItemID: MKSection] = {
@@ -111,7 +114,7 @@ extension AppleLibrary {
 			mkSections_cache = union_mkSections // Show new data immediately …
 			
 			is_merging = true
-			await Librarian.merge_MediaPlayer_items(mpAlbums)
+			await Librarian.merge_MediaPlayer_items(mpSongs, __mpAlbums)
 			
 			Librarian.save()
 			is_merging = false

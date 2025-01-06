@@ -4,6 +4,7 @@ import MediaPlayer
 
 extension Librarian {
 	static func merge_MediaPlayer_items(
+		_ mpSongs_by_album_then_track: [MPMediaItem],
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
 	) async {
 		let _merge = signposter.beginInterval("merge")
@@ -14,13 +15,6 @@ extension Librarian {
 		 • If so, update its songs.
 		 • If not, delete it.
 		 Meanwhile, collect any Apple Music album we don’t have an `LRAlbum` for; we’ll add one.
-		 
-		 Add unfamiliar albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger. (Determine “date created” using the earliest “date added to library” among songs in the album.)
-		 
-		 When updating existing albums (by adding and removing songs), maintain the order of existing items.
-		 When adding songs to an existing album: if the existing songs are in default order, maintain default order after adding songs. Otherwise, add them on top, most-recently-added on top.
-		 
-		 Delete `LRAlbum`s that now lack counterparts in the Apple Music library.
 		 */
 		
 		// Use MediaPlayer for album and song IDs.
@@ -54,6 +48,11 @@ extension Librarian {
 	private static func add_albums(
 		_ mpAlbums_unsorted: [MPMediaItemCollection]
 	) {
+		/*
+		 Add albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger.
+		 Determine “date created” using the earliest “date added to library” among songs in the album.
+		 */
+		
 		let mpAlbums_sorted = mpAlbums_unsorted.sorted { left, right in
 			let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.persistentID)
 			let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.persistentID)
@@ -100,6 +99,12 @@ extension Librarian {
 		_ lrAlbum: LRAlbum,
 		to_match uSongs_fresh: [USong]
 	) async {
+		/*
+		 Give each `LRAlbum` the same songs as the fresh album.
+		 • If the existing songs are in default order, maintain default order after adding songs.
+		 • Otherwise, add songs on top, most-recently-added on top.
+		 */
+		
 		let fresh_set = Set(uSongs_fresh)
 		let was_in_original_order: Bool = { // Deleting songs can change whether the remaining ones are in original order, so procrastinate on that.
 			// Some existing `USong`s might lack counterparts in the Apple Music library; if so, assume they were in original order. Unfortunately, that means if we have existing songs E, G, F; and G is no longer in the Apple Music library, we think the album was in original order.
