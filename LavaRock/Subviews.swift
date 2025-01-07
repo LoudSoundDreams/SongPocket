@@ -31,9 +31,9 @@ import MusicKit
 				}
 			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
 		}
-		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilityHidden(true) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
