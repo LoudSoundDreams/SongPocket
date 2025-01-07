@@ -271,6 +271,8 @@ import MusicKit
 			Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
 		}
 		.overlay { sel_border }
+		.frame(maxWidth: list_state.size_viewport.height)
+		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
