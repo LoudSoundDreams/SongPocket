@@ -10,18 +10,18 @@ import MusicKit
 	let list_state: AlbumListState
 	
 	var body: some View {
-		ZStack(alignment: .bottomLeading) {
-			AlbumArt(
-				uAlbum: uAlbum,
-				dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
-			)
-			.opacity(sel_opacity)
-			.animation(.default, value: list_state.select_mode)
-			.overlay {
-				ZStack {
-					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-				}.animation(.linear(duration: .one_eighth), value: is_expanded)
-			}
+		AlbumArt(
+			uAlbum: uAlbum,
+			dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
+		)
+		.opacity(sel_opacity)
+		.animation(.default, value: list_state.select_mode)
+		.overlay {
+			ZStack {
+				if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
+			}.animation(.linear(duration: .one_eighth), value: is_expanded)
+		}
+		.overlay(alignment: .bottom) {
 			ZStack {
 				switch list_state.expansion {
 					case .expanded: EmptyView()

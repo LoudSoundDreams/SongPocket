@@ -235,13 +235,34 @@ final class AlbumTable: LRTableViewController {
 	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
-		if let window = view.window {
-			let size_window  = window.frame.size
-			tableView.contentInset.top = 0 - view.safeAreaInsets.top // Now it’s 0.
-			+ (size_window.height / 2)
-			- (size_window.width / 2) // Half the height of a square fitting the window width.
-			- (view.safeAreaInsets.bottom / 2)
-		}
+		tableView.contentInset.top = Self.top_inset(
+			size_view: view.frame.size,
+			safeAreaInsets: view.safeAreaInsets)
+	}
+	
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		list_state.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		tableView.contentInset.top = Self.top_inset(
+			size_view: size,
+			safeAreaInsets: view.safeAreaInsets) // Hopefully doesn’t change later.
+	}
+	
+	private static func top_inset(
+		size_view: CGSize,
+		safeAreaInsets: UIEdgeInsets
+	) -> CGFloat {
+		let length_square: CGFloat = min(
+			size_view.width,
+			(size_view.height - safeAreaInsets.bottom)
+		)
+		
+		let result: CGFloat = .zero
+		- safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it 0.
+		+ (size_view.height / 2)
+		- (length_square / 2) // Half the height of a square fitting the window width.
+		- (safeAreaInsets.bottom / 2)
+		return result
 	}
 	
 	// MARK: Table view
@@ -344,11 +365,6 @@ final class AlbumTable: LRTableViewController {
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
 	
 	// MARK: Events
-	
-	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-		super.viewWillTransition(to: size, with: coordinator)
-		list_state.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
-	}
 	
 	@objc private func refresh_list_items() {
 		Task {
