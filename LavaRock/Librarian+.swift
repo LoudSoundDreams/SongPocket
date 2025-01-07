@@ -13,12 +13,12 @@ extension Librarian {
 		// Ideally, use MusicKit for all other metadata.
 		
 		// Group fresh songs by album, just in case.
-		let dict_fresh: [UAlbum: [USong]] = { // Scrambles `UAlbum`s, but we only care about their order when adding albums (which we’ll do by date first added).
-			var result: [UAlbum: [USong]] = [:]
+		let dict_fresh: [UAlbum: [MPMediaItem]] = { // Scrambles `UAlbum`s, but we only care about their order when adding albums (which we’ll do by date first added).
+			var result: [UAlbum: [MPMediaItem]] = [:]
 			mpSongs_by_album_then_track.forEach { mpSong in
 				let uAlbum = mpSong.albumPersistentID
 				var uSongs_fresh = result[uAlbum] ?? []
-				uSongs_fresh.append(mpSong.persistentID)
+				uSongs_fresh.append(mpSong)
 				result[uAlbum] = uSongs_fresh
 			}
 			return result
@@ -34,17 +34,35 @@ extension Librarian {
 			let tuples: [(UAlbum, LRAlbum)] = the_albums.map {( $0.uAlbum, $0 )}
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
-		var to_add: [LRAlbum] = [] // We’ll sort these later.
+		var to_add: [(LRAlbum, date_created: Date?)] = [] // We’ll sort these later.
 		var to_update: [(LRAlbum, fresh: [USong])] = [] // Order of `USong`s matters. Order of albums doesn’t.
-		dict_fresh.forEach { (uAlbum, uSongs_fresh) in
+		dict_fresh.forEach { (uAlbum, mpSongs) in
 			if let existing = lrAlbums_existing[uAlbum] {
-				to_update.append((existing, uSongs_fresh))
+				to_update.append((
+					existing,
+					mpSongs.map { $0.persistentID }
+				))
 				
 				lrAlbums_existing[uAlbum] = nil
 			} else {
-				to_add.append(
-					LRAlbum(uAlbum: uAlbum, uSongs: uSongs_fresh)
-				)
+				let tuple: (LRAlbum, Date?) = {
+					let lrAlbum = LRAlbum(uAlbum: uAlbum, uSongs: [])
+					var date_created: Date? = nil
+					mpSongs.forEach { mpSong in
+						lrAlbum.uSongs.append(mpSong.persistentID)
+						
+						let date_added: Date = mpSong.dateAdded
+						guard let earliest_so_far = date_created else {
+							date_created = date_added
+							return
+						}
+						if date_added < earliest_so_far {
+							date_created = date_added
+						}
+					}
+					return (lrAlbum, date_created)
+				}()
+				to_add.append(tuple)
 			}
 		}
 		// Now, `lrAlbums_existing` contains only albums no longer in the Apple Music library.
@@ -57,31 +75,22 @@ extension Librarian {
 	}
 	
 	private static func add_albums(
-		_ lrAlbums_unsorted: [LRAlbum]
+		_ tuples_unsorted: [(LRAlbum, date_created: Date?)]
 	) {
 		/*
 		 Add albums on top, most-recently-created on top. That puts them in the same order no matter when we run this merger.
 		 Determine “date created” using the earliest “date added to library” among songs in the album.
 		 */
-		let lrAlbums_sorted = lrAlbums_unsorted.sorted { left, right in
-			let info_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)
-			let info_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)
-			if info_left == nil && info_right == nil { return false }
-			guard let info_right else { return true }
-			guard let info_left else { return false }
-			
-			let date_left = info_left._date_first_added
-			let date_right = info_right._date_first_added
-			guard date_left != date_right else {
-				let title_left = info_left._title
-				let title_right = info_right._title
-				return title_left.is_increasing_in_Finder(title_right)
-			}
-			guard let date_right else { return true }
-			guard let date_left else { return false }
+		let tuples_by_recently_created = tuples_unsorted.sorted { left, right in
+			let date_left = left.date_created
+			let date_right = right.date_created
+			if date_left == date_right { return false }
+			guard let date_right else { return false }
+			guard let date_left else { return true }
 			return date_left > date_right
 		}
-		lrAlbums_sorted.reversed().forEach { lrAlbum in
+		tuples_by_recently_created.reversed().forEach { tuple in
+			let lrAlbum = tuple.0
 			the_albums.insert(lrAlbum, at: 0)
 			register_album(lrAlbum)
 		}
