@@ -39,7 +39,7 @@ extension AppleLibrary {
 	
 	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
 		guard let mkSection = mkSections_cache[MusicItemID(String(uAlbum))] else { return nil }
-		let mkSongs = mkSection.items
+		let mkSongs = mkSection.items // Slow.
 		return AlbumInfo(
 			_title: mkSection.title,
 			_artist: mkSection.artistName,
@@ -101,27 +101,26 @@ extension AppleLibrary {
 			let mpQuery = MPMediaQuery.songs() // As of iOS 18.2, accessing `MPMediaItemCollection.items` is slow, so avoid it.
 			mpQuery.groupingType = .album // Sorts `items` by album title, then within each album cluster by track order. (Also makes `collections` an array of albums, but that’s not why we’re interested.)
 			guard
-				let array_mkSections: [MKSection] =  try? await mkRequest.response().sections,
-				let mpSongs = mpQuery.items,
-				let __mpAlbums = MPMediaQuery.albums().collections
+				let mk_array: [MKSection] =  try? await mkRequest.response().sections,
+				let mpSongs = mpQuery.items
 			else { return }
 			
-			let fresh_mkSections: [MusicItemID: MKSection] = {
-				let tuples = array_mkSections.map { section in (section.id, section) }
+			let mk_dict: [MusicItemID: MKSection] = {
+				let tuples = mk_array.map { section in (section.id, section) }
 				return Dictionary(uniqueKeysWithValues: tuples)
 			}()
-			let union_mkSections = mkSections_cache.merging(fresh_mkSections) { old, new in new }
-			mkSections_cache = union_mkSections // Show new data immediately …
+			let mk_union = mkSections_cache.merging(mk_dict) { old, new in new }
+			mkSections_cache = mk_union // Show new data immediately …
 			
 			is_merging = true
-			await Librarian.merge_MediaPlayer_items(mpSongs, __mpAlbums)
+			await Librarian.merge_MediaPlayer_items(mpSongs)
 			
 			Librarian.save()
 			is_merging = false
 			
 			try? await Task.sleep(for: .seconds(3)) // … but don’t hide deleted data before removing it from the screen anyway.
 			
-			mkSections_cache = fresh_mkSections
+			mkSections_cache = mk_dict
 		}
 	}
 }

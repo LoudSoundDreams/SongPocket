@@ -4,17 +4,16 @@ import MediaPlayer
 
 extension Librarian {
 	static func merge_MediaPlayer_items(
-		_ mpSongs_by_album_then_track: [MPMediaItem],
-		_ mpAlbums_unsorted: [MPMediaItemCollection]
+		_ mpSongs_by_album_then_track: [MPMediaItem]
 	) async {
 		let _merge = signposter.beginInterval("merge")
 		defer { signposter.endInterval("merge", _merge) }
 		
 		// Use MediaPlayer for album and song IDs.
-		// Use MusicKit for all other metadata. `AppleLibrary.shared.mkSections_cache` should be ready by now.
+		// Ideally, use MusicKit for all other metadata.
 		
 		// Group fresh songs by album, just in case.
-		let dict_fresh_by_track: [UAlbum: [USong]] = { // Scrambles `UAlbum`s, but we only care about their order when adding albums (which we’ll do by date first added).
+		let dict_fresh: [UAlbum: [USong]] = { // Scrambles `UAlbum`s, but we only care about their order when adding albums (which we’ll do by date first added).
 			var result: [UAlbum: [USong]] = [:]
 			mpSongs_by_album_then_track.forEach { mpSong in
 				let uAlbum = mpSong.albumPersistentID
@@ -36,8 +35,8 @@ extension Librarian {
 			return Dictionary(uniqueKeysWithValues: tuples)
 		}()
 		var to_add: [LRAlbum] = [] // We’ll sort these later.
-		var to_update: [(existing: LRAlbum, uSongs_fresh: [USong])] = [] // Order of `USong`s matters. Order of albums doesn’t.
-		dict_fresh_by_track.forEach { (uAlbum, uSongs_fresh) in
+		var to_update: [(LRAlbum, fresh: [USong])] = [] // Order of `USong`s matters. Order of albums doesn’t.
+		dict_fresh.forEach { (uAlbum, uSongs_fresh) in
 			if let existing = lrAlbums_existing[uAlbum] {
 				to_update.append((existing, uSongs_fresh))
 				
@@ -89,10 +88,10 @@ extension Librarian {
 	}
 	
 	private static func update_albums(
-		_ tuples: [(existing: LRAlbum, uSongs_fresh: [USong])]
+		_ tuples: [(LRAlbum, fresh: [USong])]
 	) async {
-		for (old, new) in tuples {
-			await update_album(old, to_match: new)
+		for (lrAlbum, uSongs) in tuples {
+			await update_album(lrAlbum, to_match: uSongs)
 		}
 	}
 	private static func update_album(
@@ -164,7 +163,7 @@ extension Librarian {
 				
 				let date_left: Date? = mk_left.libraryAddedDate
 				let date_right: Date? = mk_right.libraryAddedDate
-				if date_left == date_right { return false } // 2do: Unpredictable, because we scrambled them.
+				if date_left == date_right { return false }
 				guard let date_right else { return true }
 				guard let date_left else { return false }
 				return date_left > date_right

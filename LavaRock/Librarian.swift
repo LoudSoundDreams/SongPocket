@@ -196,7 +196,7 @@ final class LRAlbum {
 					return selected_unsorted.sorted { left, right in
 						let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_first_added
 						let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_first_added
-						guard date_left != date_right else { return false }
+						if date_left == date_right { return false }
 						guard let date_right else { return true }
 						guard let date_left else { return false }
 						return date_left > date_right
@@ -205,7 +205,7 @@ final class LRAlbum {
 					return selected_unsorted.sorted { left, right in
 						let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
 						let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
-						guard date_left != date_right else { return false }
+						if date_left == date_right { return false }
 						guard let date_right else { return true }
 						guard let date_left else { return false }
 						return date_left > date_right

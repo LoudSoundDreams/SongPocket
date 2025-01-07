@@ -31,10 +31,10 @@ import MusicKit
 				}
 			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
 		}
-		.frame(maxWidth: .infinity) // Horizontally centers artwork in wide viewport.
+		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilityHidden(true) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.contentShape(Rectangle())
+		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 	}
@@ -133,7 +133,7 @@ import MusicKit
 	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
-	private let apple_lib: AppleLibrary = .shared
+	private let appleLib: AppleLibrary = .shared
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
 			stack_text
@@ -145,7 +145,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
+		let albumInfo: AlbumInfo? = appleLib.albumInfo(uAlbum: uAlbum)
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""
 			else { return InterfaceText._tilde }
@@ -189,7 +189,7 @@ import MusicKit
 						withAnimation {
 							list_state.select_mode = .select_albums([uAlbum])
 						}
-					}.disabled(apple_lib.is_merging)
+					}.disabled(appleLib.is_merging)
 					Divider()
 			}
 			b_above
@@ -212,7 +212,7 @@ import MusicKit
 			list_state.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
 			return (list_state.signal_albums_reordered && false) ||
-			apple_lib.is_merging ||
+			appleLib.is_merging ||
 			!list_state.has_album_range(from: uAlbum, forward: false)
 		}())
 	}
@@ -224,7 +224,7 @@ import MusicKit
 			list_state.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
 			return (list_state.signal_albums_reordered && false) ||
-			apple_lib.is_merging ||
+			appleLib.is_merging ||
 			!list_state.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
@@ -244,13 +244,13 @@ import MusicKit
 	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
-	private let apple_lib: AppleLibrary = .shared
+	private let appleLib: AppleLibrary = .shared
 	var body: some View {
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let songInfo: SongInfo? = {
-					guard let mkSong = apple_lib.mkSongs_cache[uSong] else {
-						Task { await apple_lib.cache_mkSong(uSong: uSong) } // SwiftUI redraws this view afterward because this view observes the cache.
+					guard let mkSong = appleLib.mkSongs_cache[uSong] else {
+						Task { await appleLib.cache_mkSong(uSong: uSong) } // SwiftUI redraws this view afterward because this view observes the cache.
 						return nil
 					}
 					return SongInfo(
@@ -259,7 +259,7 @@ import MusicKit
 						_title: mkSong.title,
 						_artist: mkSong.artistName)
 				}()
-				let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
+				let albumInfo: AlbumInfo? = appleLib.albumInfo(uAlbum: uAlbum)
 				
 				stack_main(songInfo, albumInfo)
 				Spacer()
@@ -283,7 +283,7 @@ import MusicKit
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
 					let _ = PlayerState.shared.signal
-					let _ = apple_lib.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
+					let _ = appleLib.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 					return ApplicationMusicPlayer.StatusNowPlaying(uSong: uSong).foreground_color
 				}())
 			if
@@ -370,7 +370,7 @@ import MusicKit
 							withAnimation {
 								list_state.select_mode = .select_songs([uSong])
 							}
-						}.disabled(apple_lib.is_merging)
+						}.disabled(appleLib.is_merging)
 						Divider()
 				}
 				b_above
@@ -388,7 +388,7 @@ import MusicKit
 			list_state.change_song_range(from: uSong, forward: false)
 		}.disabled({
 			return (list_state.signal_songs_reordered && false) ||
-			apple_lib.is_merging ||
+			appleLib.is_merging ||
 			!list_state.has_song_range(from: uSong, forward: false)
 		}())
 	}
@@ -400,7 +400,7 @@ import MusicKit
 			list_state.change_song_range(from: uSong, forward: true)
 		}.disabled({
 			return (list_state.signal_songs_reordered && false) ||
-			apple_lib.is_merging ||
+			appleLib.is_merging ||
 			!list_state.has_song_range(from: uSong, forward: true)
 		}())
 	}

@@ -4,15 +4,10 @@ import Foundation
 import os
 
 enum Disk {
-	private static let signposter = OSSignposter(subsystem: "disk", category: .pointsOfInterest)
-	
 	fileprivate static let line_break = "\n"
 	fileprivate static let prefix_song = "_"
 	
 	static func save_albums(_ albums: [LRAlbum]) {
-		let _save = signposter.beginInterval("save")
-		defer { signposter.endInterval("save", _save) }
-		
 		// Serialize
 		var stream = ""
 		albums.forEach { album in
@@ -32,9 +27,6 @@ enum Disk {
 		try! data.write(to: file_albums)
 	}
 	static func load_albums() -> [LRAlbum] {
-		let _load = signposter.beginInterval("load")
-		defer { signposter.endInterval("load", _load) }
-		
 		// Read
 		guard let data = try? Data(contentsOf: file_albums)
 		else { return [] }

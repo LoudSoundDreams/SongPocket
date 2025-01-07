@@ -4,12 +4,7 @@ import CoreData
 import os
 
 enum ZZZDatabase {
-	fileprivate static let signposter = OSSignposter(subsystem: "core data", category: .pointsOfInterest)
-	
 	@MainActor static func migrate() {
-		let _migrate = Self.signposter.beginInterval("migrate")
-		defer { Self.signposter.endInterval("migrate", _migrate) }
-		
 		// Make it look like the app never used Core Data previously.
 		// Move any data here to the modern places.
 		
@@ -49,10 +44,6 @@ enum ZZZDatabase {
 
 extension NSManagedObjectContext {
 	fileprivate final func converted_to_lrAlbums() -> [LRAlbum] {
-		let signposter = ZZZDatabase.signposter
-		let _convert = signposter.beginInterval("convert")
-		defer { signposter.endInterval("convert", _convert) }
-		
 #if DEBUG
 		//		mock_zCollections()
 #endif
