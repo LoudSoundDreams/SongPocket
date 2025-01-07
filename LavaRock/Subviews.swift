@@ -352,13 +352,13 @@ import MusicKit
 				guard let songInfo, let albumInfo else { return InterfaceText._octothorpe }
 				let numbers: String = {
 					let f_track: String = {
-						guard let track = songInfo._track else { return InterfaceText._octothorpe }
+						guard let track = songInfo._track else { return InterfaceText._tilde }
 						return String(track)
 					}()
 					guard albumInfo._disc_max >= 2 else { return f_track }
 					
 					let f_disc: String = {
-						guard let disc = songInfo._disc else { return InterfaceText._octothorpe }
+						guard let disc = songInfo._disc else { return InterfaceText._tilde }
 						return String(disc)
 					}()
 					return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
