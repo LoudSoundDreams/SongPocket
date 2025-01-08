@@ -4,10 +4,6 @@ import SwiftUI
 import MusicKit
 import os
 
-enum WorkingOn {
-	static let bottom_bar = 10 == 1
-}
-
 @main struct LavaRock: App {
 	init() {
 		let signposter = OSSignposter(subsystem: "startup", category: .pointsOfInterest)
@@ -34,22 +30,16 @@ enum WorkingOn {
 	}
 	var body: some Scene {
 		WindowGroup {
-			let working_on_main_view = 10 == 1
-			ZStack {
-				if working_on_main_view {
-					AlbumGallery()
-				} else {
-					RepNCAlbumTable()
-						.toolbar { if WorkingOn.bottom_bar {
-							ToolbarItemGroup(placement: .bottomBar) { TheBar() }
-						}}
+//			AlbumGallery()
+			
+			RepVC()
+				.ignoresSafeArea()
+//				.toolbar { ToolbarItemGroup(placement: .bottomBar) { TheBar() } }
+			
+				.task {
+					guard MusicAuthorization.currentStatus == .authorized else { return }
+					Self.integrate_Apple_Music()
 				}
-			}
-			.ignoresSafeArea()
-			.task {
-				guard MusicAuthorization.currentStatus == .authorized else { return }
-				Self.integrate_Apple_Music()
-			}
 		}
 	}
 	
@@ -63,42 +53,7 @@ private struct AlbumGallery: View {
 	var body: some View {
 		TabView(selection: $rando_spotlighted) {
 			ForEach(randos, id: \.self) { rando in
-				
-//				RepNCAlbumTable().containerRelativeFrame(.horizontal)
-				
-				GeometryReader { proxy in
-					if let uAlbum = Librarian.album_with_uAlbum.keys.randomElement()
-					{
-						VStack {
-							Spacer()
-							
-							let geo_width = proxy.size.width
-							AlbumArt(
-								uAlbum: uAlbum,
-								dim_limit: geo_width
-							)
-							.containerRelativeFrame(.horizontal)
-							.onTapGesture {
-								guard let i_rando = randos.firstIndex(of: rando) else { return }
-								let new_rando_spotlighted: UUID? = {
-									guard randos.count >= 2 else { return nil }
-									let i_next_rando: Int = min(i_rando + 1, randos.count - 1)
-									let result = randos[i_next_rando]
-									return result
-								}()
-								let _ = withAnimation { // Unreliable; the first time after any swipe, SwiftUI crossfades the new tab into place rather than pushing it.
-									randos.remove(at: i_rando)
-									if let new_rando_spotlighted {
-										rando_spotlighted = new_rando_spotlighted
-									}
-								}
-							}
-							
-							Spacer()
-						}
-					}
-				}.ignoresSafeArea()
-				
+				RepVC()
 			}
 		}
 		.tabViewStyle(.page(indexDisplayMode: .never))
@@ -115,24 +70,39 @@ private struct AlbumGallery: View {
 	}()
 	@State private var rando_spotlighted: UUID = Self.rando_default // As of iOS 18.3 developer beta 1, this breaks if we use type `UUID?`; `TabView` always selects the first tab.
 	private static let rando_default = UUID()
+	
+	private func remove(_ rando: UUID) {
+		guard let i_rando = randos.firstIndex(of: rando) else { return }
+		let new_rando_spotlighted: UUID? = {
+			guard randos.count >= 2 else { return nil }
+			let i_next_rando: Int = min(i_rando + 1, randos.count - 1)
+			let result = randos[i_next_rando]
+			return result
+		}()
+		let _ = withAnimation { // Unreliable; the first time after any swipe, SwiftUI crossfades the new tab into place rather than pushing it.
+			randos.remove(at: i_rando)
+			if let new_rando_spotlighted {
+				rando_spotlighted = new_rando_spotlighted
+			}
+		}
+	}
 }
 
-private struct RepNCAlbumTable: UIViewControllerRepresentable {
+private struct RepVC: UIViewControllerRepresentable {
 	typealias VCType = NCMain
-	func makeUIViewController(context: Context) -> VCType { NCMain.create() }
-	func updateUIViewController(_ uiViewController: VCType, context: Context) {}
+	func makeUIViewController(context: Context) -> VCType { VCType.create() }
+	func updateUIViewController(_ vc: VCType, context: Context) {}
 }
+
 private final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let result = Self(
 			rootViewController: UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController()!
 		)
 		result.setNavigationBarHidden(true, animated: false)
-		if !WorkingOn.bottom_bar {
-			let toolbar = result.toolbar!
-			result.setToolbarHidden(false, animated: false)
-			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-		}
+		let toolbar = result.toolbar!
+		result.setToolbarHidden(false, animated: false)
+		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		return result
 	}
 	override func viewIsAppearing(_ animated: Bool) {
