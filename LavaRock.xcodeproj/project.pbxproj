@@ -30,6 +30,7 @@
 		07FF080128652A4C00EE4FD4 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* Sort.swift */; };
 		1500E98D2D13A9BB00CDF5E6 /* Librarian+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */; };
 		15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15048E612CF0FBA3005DC698 /* Subsubviews.swift */; };
+		159866282D30592900BC1CFA /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159866272D30592700BC1CFA /* Gallery.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		07FF080028652A4C00EE4FD4 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Librarian+.swift"; sourceTree = "<group>"; };
 		15048E612CF0FBA3005DC698 /* Subsubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subsubviews.swift; sourceTree = "<group>"; };
+		159866272D30592700BC1CFA /* Gallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallery.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				07E0BBDA276567760010117E /* Constants.swift */,
 				071A0B9D277E76510017F76D /* App.swift */,
 				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
+				159866272D30592700BC1CFA /* Gallery.swift */,
 				07934CF927CDBEB0002B2444 /* AlbumTable.storyboard */,
 				076830BE24B42E3E0033E3CC /* AlbumTable.swift */,
 				07755A57294821860056E90C /* Subviews.swift */,
@@ -260,6 +263,7 @@
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				07DF76E42828D8AB00B03103 /* Remote.swift in Sources */,
 				079B2C9524E227BF00A949FA /* AppleLibrary.swift in Sources */,
+				159866282D30592900BC1CFA /* Gallery.swift in Sources */,
 				076F1C0227E66DAA00220C2B /* Playback.swift in Sources */,
 				071A0B9E277E76510017F76D /* App.swift in Sources */,
 				07DF65D227766C95003B2EA3 /* Metadata.swift in Sources */,
