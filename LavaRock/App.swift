@@ -30,12 +30,9 @@ import os
 	}
 	var body: some Scene {
 		WindowGroup {
-//			AlbumGallery()
-			
 			RepNCMain()
 				.ignoresSafeArea()
 //				.toolbar { ToolbarItemGroup(placement: .bottomBar) { TheBar() } }
-			
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
 					Self.integrate_Apple_Music()
@@ -57,8 +54,8 @@ struct RepNCMain: UIViewControllerRepresentable {
 final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let vc_root: UIViewController
-//		= UIHostingController(rootView: AlbumGallery())
-		= UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController()!
+//		= UIHostingController(rootView: Gallery().ignoresSafeArea())
+		= AlbumTable.init_from_storyboard()
 		let result = Self(rootViewController: vc_root)
 		result.setNavigationBarHidden(true, animated: false)
 		let toolbar = result.toolbar!

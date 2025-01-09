@@ -30,15 +30,16 @@ struct TheBar: View {
 	}
 }
 
-struct AlbumGallery: View {
+struct Gallery: View {
 	var body: some View {
 		TabView(selection: $rando_spotlighted) {
 			ForEach(randos, id: \.self) { rando in
-				FakeAlbumCover(uuid: rando)
+				RepAlbumTable()
+					.ignoresSafeArea() // Fills the `TabView`.
 			}
 		}
 		.tabViewStyle(.page(indexDisplayMode: .never))
-		.background { Color(white: .one_eighth) }
+		.background { Color(red: .one_half, green: .zero, blue: .one_half) } // Should never appear, but influences layout.
 		.persistentSystemOverlays(.hidden)
 	}
 	@State private var randos: [UUID] = {
@@ -69,7 +70,15 @@ struct AlbumGallery: View {
 	}
 }
 
-struct AlbumFlow: View {
+private struct RepAlbumTable: UIViewControllerRepresentable {
+	typealias VCType = AlbumTable
+	func makeUIViewController(context: Context) -> AlbumTable {
+		return AlbumTable.init_from_storyboard()
+	}
+	func updateUIViewController(_ vc: AlbumTable, context: Context) {}
+}
+
+struct Flow: View {
 	var body: some View {
 		ScrollViewReader { proxy in
 			ScrollView(.horizontal) {
