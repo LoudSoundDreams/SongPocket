@@ -32,7 +32,7 @@ import os
 		WindowGroup {
 //			AlbumGallery()
 			
-			RepVC()
+			RepNCMain()
 				.ignoresSafeArea()
 //				.toolbar { ToolbarItemGroup(placement: .bottomBar) { TheBar() } }
 			
@@ -49,56 +49,17 @@ import os
 	}
 }
 
-private struct AlbumGallery: View {
-	var body: some View {
-		TabView(selection: $rando_spotlighted) {
-			ForEach(randos, id: \.self) { rando in
-				RepVC()
-			}
-		}
-		.tabViewStyle(.page(indexDisplayMode: .never))
-		.background { Color(white: .one_eighth) }
-		.persistentSystemOverlays(.hidden)
-	}
-	@State private var randos: [UUID] = {
-		var result: [UUID] = []
-		result.append(Self.rando_default)
-		(1 ... 9).forEach { _ in
-			result.append(UUID())
-		}
-		return result
-	}()
-	@State private var rando_spotlighted: UUID = Self.rando_default // As of iOS 18.3 developer beta 1, this breaks if we use type `UUID?`; `TabView` always selects the first tab.
-	private static let rando_default = UUID()
-	
-	private func remove(_ rando: UUID) {
-		guard let i_rando = randos.firstIndex(of: rando) else { return }
-		let new_rando_spotlighted: UUID? = {
-			guard randos.count >= 2 else { return nil }
-			let i_next_rando: Int = min(i_rando + 1, randos.count - 1)
-			let result = randos[i_next_rando]
-			return result
-		}()
-		let _ = withAnimation { // Unreliable; the first time after any swipe, SwiftUI crossfades the new tab into place rather than pushing it.
-			randos.remove(at: i_rando)
-			if let new_rando_spotlighted {
-				rando_spotlighted = new_rando_spotlighted
-			}
-		}
-	}
-}
-
-private struct RepVC: UIViewControllerRepresentable {
+struct RepNCMain: UIViewControllerRepresentable {
 	typealias VCType = NCMain
 	func makeUIViewController(context: Context) -> VCType { VCType.create() }
 	func updateUIViewController(_ vc: VCType, context: Context) {}
 }
-
-private final class NCMain: UINavigationController {
+final class NCMain: UINavigationController {
 	static func create() -> Self {
-		let result = Self(
-			rootViewController: UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController()!
-		)
+		let vc_root: UIViewController
+//		= UIHostingController(rootView: AlbumGallery())
+		= UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController()!
+		let result = Self(rootViewController: vc_root)
 		result.setNavigationBarHidden(true, animated: false)
 		let toolbar = result.toolbar!
 		result.setToolbarHidden(false, animated: false)

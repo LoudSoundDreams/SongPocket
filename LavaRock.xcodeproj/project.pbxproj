@@ -21,7 +21,7 @@
 		0799E7C02C858A5800CFD284 /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0799E7BF2C858A4C00CFD284 /* Parse.swift */; };
 		079B2C9524E227BF00A949FA /* AppleLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* AppleLibrary.swift */; };
 		07A8786B2BAE2A2900717BA7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */; };
-		07CBB6FF2BBEA9DE008B0BB5 /* AlbumFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CBB6FE2BBEA9DE008B0BB5 /* AlbumFlow.swift */; };
+		07CBB6FF2BBEA9DE008B0BB5 /* Experimental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */; };
 		07DF65D227766C95003B2EA3 /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF65D127766C95003B2EA3 /* Metadata.swift */; };
 		07DF76E42828D8AB00B03103 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DF76E32828D8AB00B03103 /* Remote.swift */; };
 		07E0BBDE276567760010117E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0BBDA276567760010117E /* Constants.swift */; };
@@ -30,7 +30,6 @@
 		07FF080128652A4C00EE4FD4 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF080028652A4C00EE4FD4 /* Sort.swift */; };
 		1500E98D2D13A9BB00CDF5E6 /* Librarian+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */; };
 		15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15048E612CF0FBA3005DC698 /* Subsubviews.swift */; };
-		15EF344A2D20946800F55744 /* TheBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EF34492D20946600F55744 /* TheBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +62,7 @@
 		07934CF927CDBEB0002B2444 /* AlbumTable.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlbumTable.storyboard; sourceTree = "<group>"; };
 		0799E7BF2C858A4C00CFD284 /* Parse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parse.swift; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* AppleLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLibrary.swift; sourceTree = "<group>"; };
-		07CBB6FE2BBEA9DE008B0BB5 /* AlbumFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumFlow.swift; sourceTree = "<group>"; };
+		07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experimental.swift; sourceTree = "<group>"; };
 		07DF65D127766C95003B2EA3 /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		07DF76E32828D8AB00B03103 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		07E0BBDA276567760010117E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -72,7 +71,6 @@
 		07FF080028652A4C00EE4FD4 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Librarian+.swift"; sourceTree = "<group>"; };
 		15048E612CF0FBA3005DC698 /* Subsubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subsubviews.swift; sourceTree = "<group>"; };
-		15EF34492D20946600F55744 /* TheBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,12 +115,11 @@
 			children = (
 				07E0BBDA276567760010117E /* Constants.swift */,
 				071A0B9D277E76510017F76D /* App.swift */,
-				07CBB6FE2BBEA9DE008B0BB5 /* AlbumFlow.swift */,
+				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
 				07934CF927CDBEB0002B2444 /* AlbumTable.storyboard */,
 				076830BE24B42E3E0033E3CC /* AlbumTable.swift */,
 				07755A57294821860056E90C /* Subviews.swift */,
 				15048E612CF0FBA3005DC698 /* Subsubviews.swift */,
-				15EF34492D20946600F55744 /* TheBar.swift */,
 				071B30932C88CD3400239BF3 /* Librarian.swift */,
 				1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */,
 				079B2C9424E227BF00A949FA /* AppleLibrary.swift */,
@@ -255,12 +252,11 @@
 			files = (
 				071B30942C88CD3400239BF3 /* Librarian.swift in Sources */,
 				070056912C8275C0006F1069 /* Disk.swift in Sources */,
-				15EF344A2D20946800F55744 /* TheBar.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Helpers.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
 				15048E622CF0FBA7005DC698 /* Subsubviews.swift in Sources */,
 				07755A58294821860056E90C /* Subviews.swift in Sources */,
-				07CBB6FF2BBEA9DE008B0BB5 /* AlbumFlow.swift in Sources */,
+				07CBB6FF2BBEA9DE008B0BB5 /* Experimental.swift in Sources */,
 				0768309324B42DEC0033E3CC /* LavaRock.xcdatamodeld in Sources */,
 				07DF76E42828D8AB00B03103 /* Remote.swift in Sources */,
 				079B2C9524E227BF00A949FA /* AppleLibrary.swift in Sources */,

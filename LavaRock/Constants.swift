@@ -13,14 +13,8 @@ extension CGFloat {
 }
 
 extension View {
-	// As of iOS 18.2 developer beta 4, Apple Music uses this for “Recently Added”.
-	func font_title2_semibold() -> some View { font(.title2).fontWeight(.semibold) }
-	
 	// As of iOS 18.2 developer beta 4, Apple Music uses this for album titles.
 	func font_title3_bold() -> some View { font(.title3).bold() }
-	
-	// As of iOS 16.6, Apple Music uses this for the current song title on the “now playing” screen.
-	func font_headline() -> some View { font(.headline) }
 	
 	/*
 	 As of iOS 16.6, Apple Music uses this for …
@@ -91,13 +85,14 @@ enum InterfaceText {
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
 	static let Add_to_Queue = "Add to Queue"
-	static func Randomize(for ids_lang: [String]) -> String {
+	static func Randomize(for_localeLanguageIdentifiers langIDs: [String]) -> String {
 		return "Jumble"
 		/*
 		 let en_US = "Randomize"
-		 for id_lang in ids_lang {
-		 let lang = Locale.Language(identifier: id_lang)
-		 guard let code_lang = lang.languageCode, code_lang == .english else { continue }
+		 for langID in langIDs { // Return early with the first match.
+		 let lang = Locale.Language(identifier: langID)
+		 guard lang.languageCode == Locale.LanguageCode.english
+		 else { continue }
 		 switch lang.region { // Don’t use `Locale.region`; that matches the Settings app → Language & Region → Region.
 		 case .unitedKingdom, .southAfrica, .australia, .singapore, .ireland, .newZealand: return "Randomise" // As of iOS 18.2 developer beta 2, Photos says “Customise” for these variants of English.
 		 case .india, .unitedStates, .canada: return en_US // As of iOS 18.2 developer beta 2, Photos says “Customize” for these variants of English.
@@ -140,7 +135,7 @@ enum InterfaceText {
 	static let To_Bottom = "To Bottom"
 }
 
-// MARK: UserDefaults
+// MARK: - UserDefaults
 
 /*
  "hasEverImportedFromMusic"

@@ -555,7 +555,7 @@ final class AlbumTable: LRTableViewController {
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
 					let uSongs = uSongs_focused()
-					let action = UIAction(title: InterfaceText.Randomize(for: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
+					let action = UIAction(title: InterfaceText.Randomize(for_localeLanguageIdentifiers: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
 						Task {
