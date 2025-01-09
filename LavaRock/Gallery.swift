@@ -2,6 +2,22 @@
 
 import SwiftUI
 
+@MainActor @Observable final class GalleryState {
+	var selection: Selection = .view(nil) { didSet {
+		NotificationCenter.default.post(name: Self.selection_changed, object: nil)
+	}}
+	private init() {}
+}
+extension GalleryState {
+	@ObservationIgnored static let shared = GalleryState()
+	enum Selection {
+		case view(USong?)
+		case mode_albums(Set<UAlbum>)
+		case mode_songs(Set<USong>) // Should always be within the same album.
+	}
+	@ObservationIgnored static let selection_changed = Notification.Name("LR_GallerySelectionChanged")
+}
+
 struct Gallery: View {
 	var body: some View {
 		TabView(selection: $rando_spotlighted) {
