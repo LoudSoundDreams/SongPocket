@@ -5,15 +5,18 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem] = AlbumListState.uAlbums_fresh().map { .uAlbum($0) }
+	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem]
+	= AlbumListState.uAlbums_fresh().map { .uAlbum($0) }
+	{ didSet {
+		signal_items_changed.toggle()
+	}}
+	private(set) var signal_items_changed = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
 	var expansion: Expansion = .collapsed { didSet {
 		NotificationCenter.default.post(name: Self.expansion_changed, object: self)
 	}}
 	var select_mode: SelectMode = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
-	fileprivate(set) var signal_albums_reordered = false // Value is meaningless; we’re using this to tell SwiftUI to redraw views. As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.
-	fileprivate(set) var signal_songs_reordered = false
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
 extension AlbumListState {
@@ -678,7 +681,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
@@ -688,7 +690,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
 	}
@@ -717,7 +718,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle() // Refresh “select range” commands.
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -729,7 +729,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -742,7 +741,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -754,7 +752,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -769,7 +766,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle()
 			list_state.select_mode = .select_albums([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -781,7 +777,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
 			list_state.select_mode = .select_songs([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -794,7 +789,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_albums_reordered.toggle()
 			list_state.select_mode = .select_albums([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}
@@ -806,7 +800,6 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.signal_songs_reordered.toggle()
 			list_state.select_mode = .select_songs([])
 			let _ = await apply_ids_rows(list_state.row_identifiers())
 		}

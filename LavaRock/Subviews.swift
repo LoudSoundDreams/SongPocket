@@ -211,7 +211,7 @@ import MusicKit
 		) {
 			list_state.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
-			return (list_state.signal_albums_reordered && false) ||
+			return (list_state.signal_items_changed && false ) ||
 			appleLib.is_merging ||
 			!list_state.has_album_range(from: uAlbum, forward: false)
 		}())
@@ -223,7 +223,7 @@ import MusicKit
 		) {
 			list_state.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
-			return (list_state.signal_albums_reordered && false) ||
+			return (list_state.signal_items_changed && false) ||
 			appleLib.is_merging ||
 			!list_state.has_album_range(from: uAlbum, forward: true)
 		}())
@@ -389,7 +389,7 @@ import MusicKit
 		) {
 			list_state.change_song_range(from: uSong, forward: false)
 		}.disabled({
-			return (list_state.signal_songs_reordered && false) ||
+			return (list_state.signal_items_changed && false) ||
 			appleLib.is_merging ||
 			!list_state.has_song_range(from: uSong, forward: false)
 		}())
@@ -401,7 +401,7 @@ import MusicKit
 		) {
 			list_state.change_song_range(from: uSong, forward: true)
 		}.disabled({
-			return (list_state.signal_songs_reordered && false) ||
+			return (list_state.signal_items_changed && false) ||
 			appleLib.is_merging ||
 			!list_state.has_song_range(from: uSong, forward: true)
 		}())
