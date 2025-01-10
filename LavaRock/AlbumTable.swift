@@ -5,16 +5,16 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate var list_items: [AlbumListItem] = AlbumListState.uAlbums_fresh().map { .uAlbum($0) }
+	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem] = AlbumListState.uAlbums_fresh().map { .uAlbum($0) }
 	var expansion: Expansion = .collapsed { didSet {
 		NotificationCenter.default.post(name: Self.expansion_changed, object: self)
 	}}
 	var select_mode: SelectMode = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
-	var signal_albums_reordered = false // Value is meaningless; we’re using this to tell SwiftUI to redraw views. As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.
-	var signal_songs_reordered = false
-	var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
+	fileprivate(set) var signal_albums_reordered = false // Value is meaningless; we’re using this to tell SwiftUI to redraw views. As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.
+	fileprivate(set) var signal_songs_reordered = false
+	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
 extension AlbumListState {
 	fileprivate enum AlbumListItem {
@@ -202,14 +202,14 @@ extension AlbumListState {
 		case collapsed
 		case expanded(UAlbum)
 	}
-	@ObservationIgnored static let expansion_changed = Notification.Name("LR_AlbumExpandingOrCollapsing")
+	@ObservationIgnored fileprivate static let expansion_changed = Notification.Name("LR_AlbumExpandingOrCollapsing")
 	
 	enum SelectMode: Equatable {
 		case view(USong?)
 		case select_albums(Set<UAlbum>)
 		case select_songs(Set<USong>) // Should always be within the same album.
 	}
-	@ObservationIgnored static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
+	@ObservationIgnored fileprivate static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
 }
 
 // MARK: - View controller
