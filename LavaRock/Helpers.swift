@@ -119,28 +119,28 @@ extension UIImage {
 // MARK: - Table view
 
 class LRTableViewController: UITableViewController {
-	final var ids_rows_onscreen: [AnyHashable] = []
+	final var rowIDs_current: [AnyHashable] = []
 	
 	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, table view animations are already in progress from an earlier call of this method, and callers could disrupt those animations by running further code.
 	// Returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
-	final func apply_ids_rows(
+	final func apply_rowIDs(
 		_ idsNew: [AnyHashable],
 		running_before_continuation: (() -> Void)? = nil
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
-			_apply_ids_rows(idsNew) { should_continue in
+			_apply_rowIDs(idsNew) { should_continue in
 				continuation.resume(returning: should_continue)
 			}
 			running_before_continuation?()
 		}
 	}
-	private func _apply_ids_rows(
+	private func _apply_rowIDs(
 		_ new_ids: [AnyHashable],
 		completion_if_should_run: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
 	) {
 		animations_in_progress += 1
-		let old_ids = ids_rows_onscreen
-		ids_rows_onscreen = new_ids
+		let old_ids = rowIDs_current
+		rowIDs_current = new_ids
 		tableView.perform_batch_updates_from_ids(old: old_ids, new: new_ids) {
 			// Completion handler
 			self.animations_in_progress -= 1

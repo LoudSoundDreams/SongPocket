@@ -19,11 +19,13 @@ import MusicKit
 	}}
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
+extension AlbumListState.AlbumListItem: Hashable {}
 extension AlbumListState {
 	fileprivate enum AlbumListItem {
 		case uAlbum(UAlbum)
 		case uSong(USong)
 	}
+	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { list_items }
 	fileprivate func refresh_items() {
 		list_items = {
 			let uAlbums = Self.uAlbums_fresh()
@@ -72,12 +74,6 @@ extension AlbumListState {
 		guard MusicAuthorization.currentStatus == .authorized
 		else { return [] } // Don’t show any albums; show a placeholder.
 		return Librarian.the_albums.map { $0.uAlbum }
-	}
-	fileprivate func row_identifiers() -> [AnyHashable] {
-		return list_items.map { switch $0 {
-			case .uAlbum(let uAlbum): return uAlbum
-			case .uSong(let uSong): return uSong
-		}}
 	}
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
@@ -320,13 +316,13 @@ final class AlbumTable: LRTableViewController {
 		}()
 	}
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if !has_set_ids_rows_onscreen {
-			has_set_ids_rows_onscreen = true
-			ids_rows_onscreen = list_state.row_identifiers()
+		if !initialized_rowIDs_current {
+			initialized_rowIDs_current = true
+			rowIDs_current = list_state.rowIDs
 		}
 		return list_state.list_items.count
 	}
-	private var has_set_ids_rows_onscreen = false
+	private var initialized_rowIDs_current = false
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch list_state.list_items[indexPath.row] {
@@ -378,7 +374,7 @@ final class AlbumTable: LRTableViewController {
 			list_state.refresh_items()
 			b_sort.menu = menu_sort()
 			b_focused.menu = menu_focused()
-			guard await apply_ids_rows(list_state.row_identifiers()) else { return }
+			guard await apply_rowIDs(list_state.rowIDs) else { return }
 		}
 	}
 	
@@ -406,7 +402,7 @@ final class AlbumTable: LRTableViewController {
 					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
 					b_focused.menu = menu_focused()
-					let _ = await apply_ids_rows(list_state.row_identifiers())
+					let _ = await apply_rowIDs(list_state.rowIDs)
 				}
 			case .expanded(let uA_to_expand):
 				Task {
@@ -414,7 +410,7 @@ final class AlbumTable: LRTableViewController {
 					list_state.refresh_items()
 					b_sort.menu = menu_sort()
 					b_focused.menu = menu_focused()
-					let _ = await apply_ids_rows(list_state.row_identifiers(), running_before_continuation: {
+					let _ = await apply_rowIDs(list_state.rowIDs, running_before_continuation: {
 						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
 							case .uSong: return false
 							case .uAlbum(let uAlbum): return uAlbum == uA_to_expand
@@ -681,7 +677,7 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func sort_songs(by songOrder: SongOrder) {
@@ -690,7 +686,7 @@ final class AlbumTable: LRTableViewController {
 			Librarian.save()
 			
 			list_state.refresh_items()
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	
@@ -719,7 +715,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func promote_songs() {
@@ -730,7 +726,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	
@@ -742,7 +738,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func demote_songs() {
@@ -753,7 +749,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	
@@ -767,7 +763,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			list_state.select_mode = .select_albums([])
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func float_songs() {
@@ -778,7 +774,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			list_state.select_mode = .select_songs([])
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	
@@ -790,7 +786,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			list_state.select_mode = .select_albums([])
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func sink_songs() {
@@ -801,7 +797,7 @@ final class AlbumTable: LRTableViewController {
 			
 			list_state.refresh_items()
 			list_state.select_mode = .select_songs([])
-			let _ = await apply_ids_rows(list_state.row_identifiers())
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 }
