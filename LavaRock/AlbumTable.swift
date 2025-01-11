@@ -214,10 +214,13 @@ extension AlbumListState {
 // MARK: - View controller
 
 final class AlbumTable: LRTableViewController {
-	static func init_from_storyboard() -> Self {
-		return UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController()!
+	static func init_please(_ exhibit: Exhibit) -> Self {
+		let result = UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController() as! Self
+		result.__exhibit = exhibit
+		return result
 	}
 	
+	private var __exhibit: Exhibit!
 	private let list_state = AlbumListState()
 	
 	override func viewDidLoad() {

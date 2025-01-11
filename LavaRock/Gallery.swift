@@ -3,6 +3,7 @@
 import SwiftUI
 
 @MainActor @Observable final class GalleryState {
+	private(set) var exhibits: [Exhibit] = [.all_albums, .all_albums]
 	var __selection: Selection = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: nil)
 	}}
@@ -18,11 +19,18 @@ extension GalleryState {
 	@ObservationIgnored static let selection_changed = Notification.Name("LR_GallerySelectionChanged")
 }
 
+enum Exhibit {
+	case all_albums
+	case one_album(UAlbum)
+}
+
 struct Gallery: View {
+	private let gallery_state: GalleryState = .shared
 	var body: some View {
-		TabView(selection: $rando_spotlighted) {
-			ForEach(randos, id: \.self) { rando in
-				RepAlbumTable()
+		TabView {
+			ForEach(gallery_state.exhibits.indices, id: \.self) { i_exhibit in
+				let exhibit = gallery_state.exhibits[i_exhibit]
+				RepAlbumTable(exhibit: exhibit)
 					.ignoresSafeArea() // Fills the `TabView`.
 			}
 		}
@@ -30,38 +38,14 @@ struct Gallery: View {
 		.background { Color(white: .one_eighth) }
 		.persistentSystemOverlays(.hidden)
 	}
-	@State private var randos: [UUID] = {
-		var result: [UUID] = []
-		result.append(Self.rando_default)
-		(1 ... 9).forEach { _ in
-			result.append(UUID())
-		}
-		return result
-	}()
-	@State private var rando_spotlighted: UUID = Self.rando_default // As of iOS 18.3 developer beta 1, this breaks if we use type `UUID?`; `TabView` always selects the first tab.
-	private static let rando_default = UUID()
-	
-	private func remove(_ rando: UUID) {
-		guard let i_rando = randos.firstIndex(of: rando) else { return }
-		let new_rando_spotlighted: UUID? = {
-			guard randos.count >= 2 else { return nil }
-			let i_next_rando: Int = min(i_rando + 1, randos.count - 1)
-			let result = randos[i_next_rando]
-			return result
-		}()
-		let _ = withAnimation { // Unreliable; the first time after any swipe, SwiftUI crossfades the new tab into place rather than pushing it.
-			randos.remove(at: i_rando)
-			if let new_rando_spotlighted {
-				rando_spotlighted = new_rando_spotlighted
-			}
-		}
-	}
 }
 
-private struct RepAlbumTable: UIViewControllerRepresentable {
-	typealias VCType = AlbumTable
+private struct RepAlbumTable {
+	let exhibit: Exhibit
+}
+extension RepAlbumTable: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> AlbumTable {
-		return AlbumTable.init_from_storyboard()
+		return AlbumTable.init_please(exhibit)
 	}
 	func updateUIViewController(_ vc: AlbumTable, context: Context) {}
 }

@@ -54,7 +54,7 @@ final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let vc_root: UIViewController
 //		= UIHostingController(rootView: Gallery().ignoresSafeArea())
-		= AlbumTable.init_from_storyboard()
+		= AlbumTable.init_please(.all_albums)
 		let result = Self(rootViewController: vc_root)
 		result.setNavigationBarHidden(true, animated: false)
 		let toolbar = result.toolbar!
