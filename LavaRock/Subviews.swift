@@ -18,34 +18,33 @@ import MusicKit
 		.animation(.default, value: list_state.select_mode)
 		.overlay {
 			if WorkingOn.gallery {
-				ZStack {
-					switch list_state.expansion {
-						case .collapsed: EmptyView()
-						case .expanded:
-							Rectangle().foregroundStyle(Material.thin)
-					}
-				}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
-			} else {
-				ZStack {
-					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-				}.animation(.linear(duration: .one_eighth), value: is_expanded)
-			}
-		}
-		.overlay(alignment: .bottom) {
-			if WorkingOn.gallery {
-				ZStack {
-					if is_expanded {
-						AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
-					}
-				}.animation(.linear(duration: .one_eighth), value: is_expanded)
-			} else {
-				ZStack {
-					switch list_state.expansion {
-						case .expanded: EmptyView()
-						case .collapsed:
+				ZStack(alignment: .bottom) {
+					ZStack {
+						switch list_state.expansion {
+							case .collapsed: EmptyView()
+							case .expanded:
+								Rectangle().foregroundStyle(Material.thin)
+						}
+					}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+					ZStack {
+						if is_expanded {
 							AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
-					}
-				}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+						}
+					}.animation(.linear(duration: .one_eighth), value: is_expanded)
+				}
+			} else {
+				ZStack(alignment: .bottom) {
+					ZStack {
+						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
+					}.animation(.linear(duration: .one_eighth), value: is_expanded)
+					ZStack {
+						switch list_state.expansion {
+							case .expanded: EmptyView()
+							case .collapsed:
+								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
+						}
+					}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+				}
 			}
 		}
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
