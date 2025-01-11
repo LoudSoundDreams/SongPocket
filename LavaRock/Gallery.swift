@@ -3,7 +3,7 @@
 import SwiftUI
 
 @MainActor @Observable final class GalleryState {
-	var selection: Selection = .view(nil) { didSet {
+	var __selection: Selection = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: nil)
 	}}
 	private init() {}
@@ -13,7 +13,7 @@ extension GalleryState {
 	enum Selection {
 		case view(USong?)
 		case mode_albums(Set<UAlbum>)
-		case mode_songs(Set<USong>) // Should always be within the same album.
+		case mode_songs(Set<USong>)
 	}
 	@ObservationIgnored static let selection_changed = Notification.Name("LR_GallerySelectionChanged")
 }
@@ -27,7 +27,7 @@ struct Gallery: View {
 			}
 		}
 		.tabViewStyle(.page(indexDisplayMode: .never))
-		.background { Color(red: .one_half, green: .zero, blue: .one_half) } // Should never appear, but influences layout.
+		.background { Color(white: .one_eighth) }
 		.persistentSystemOverlays(.hidden)
 	}
 	@State private var randos: [UUID] = {

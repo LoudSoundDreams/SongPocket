@@ -206,7 +206,7 @@ extension AlbumListState {
 	enum SelectMode: Equatable {
 		case view(USong?)
 		case select_albums(Set<UAlbum>)
-		case select_songs(Set<USong>) // Should always be within the same album.
+		case select_songs(Set<USong>)
 	}
 	@ObservationIgnored fileprivate static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
 }

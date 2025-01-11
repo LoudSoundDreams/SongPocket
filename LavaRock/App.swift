@@ -47,9 +47,8 @@ import os
 }
 
 struct RepNCMain: UIViewControllerRepresentable {
-	typealias VCType = NCMain
-	func makeUIViewController(context: Context) -> VCType { VCType.create() }
-	func updateUIViewController(_ vc: VCType, context: Context) {}
+	func makeUIViewController(context: Context) -> NCMain { NCMain.create() }
+	func updateUIViewController(_ vc: NCMain, context: Context) {}
 }
 final class NCMain: UINavigationController {
 	static func create() -> Self {
