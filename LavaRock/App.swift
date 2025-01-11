@@ -31,6 +31,7 @@ import os
 	var body: some Scene {
 		WindowGroup {
 			RepNCMain()
+				.background { Color(white: .one_eighth) }
 				.ignoresSafeArea()
 //				.toolbar { ToolbarItemGroup(placement: .bottomBar) { TheBar() } }
 				.task {
@@ -52,9 +53,14 @@ struct RepNCMain: UIViewControllerRepresentable {
 }
 final class NCMain: UINavigationController {
 	static func create() -> Self {
-		let vc_root: UIViewController
-//		= UIHostingController(rootView: Gallery().ignoresSafeArea())
-		= AlbumTable.init_please(.all_albums)
+		let working_on_gallery = 10 == 1
+		let vc_root: UIViewController = {
+			if working_on_gallery {
+				return UIHostingController(rootView: Gallery().ignoresSafeArea())
+			} else {
+				return AlbumTable.init_please(.all_albums)
+			}
+		}()
 		let result = Self(rootViewController: vc_root)
 		result.setNavigationBarHidden(true, animated: false)
 		let toolbar = result.toolbar!

@@ -226,7 +226,7 @@ final class AlbumTable: LRTableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = UIColor(Color(white: .one_eighth))
+		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
 		b_sort.preferredMenuElementOrder = .fixed
 		b_focused.preferredMenuElementOrder = .fixed

@@ -35,7 +35,7 @@ struct Gallery: View {
 			}
 		}
 		.tabViewStyle(.page(indexDisplayMode: .never))
-		.background { Color(white: .one_eighth) }
+		.background { Color(white: .one_eighth) } // As of iOS 18.3 developer beta 2, this influences layout; we need a non-clear color here, or `TabView` janks the scroll position while you move pages. Otherwise, I’d prefer no background here.
 		.persistentSystemOverlays(.hidden)
 	}
 }
