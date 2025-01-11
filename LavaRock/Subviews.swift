@@ -26,8 +26,7 @@ import MusicKit
 				switch list_state.expansion {
 					case .expanded: EmptyView()
 					case .collapsed:
-						AlbumLabel(uAlbum: uAlbum, list_state: list_state)
-							.accessibilitySortPriority(10)
+						AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
 				}
 			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
 		}
@@ -201,7 +200,8 @@ import MusicKit
 			switch list_state.expansion {
 				case .expanded: return true
 				case .collapsed: return false
-			}}())
+			}
+		}())
 		.animation(.default, value: list_state.expansion)
 	}
 	private var b_above: some View {

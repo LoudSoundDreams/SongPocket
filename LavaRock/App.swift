@@ -4,6 +4,10 @@ import SwiftUI
 import MusicKit
 import os
 
+enum WorkingOn {
+	static let gallery = 10 == 1
+}
+
 @main struct LavaRock: App {
 	init() {
 		let signposter = OSSignposter(subsystem: "startup", category: .pointsOfInterest)
@@ -53,9 +57,8 @@ struct RepNCMain: UIViewControllerRepresentable {
 }
 final class NCMain: UINavigationController {
 	static func create() -> Self {
-		let working_on_gallery = 10 == 1
 		let vc_root: UIViewController = {
-			if working_on_gallery {
+			if WorkingOn.gallery {
 				return UIHostingController(rootView: Gallery().ignoresSafeArea())
 			} else {
 				return AlbumTable.init_please(.all_albums)
