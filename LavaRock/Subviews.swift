@@ -18,20 +18,16 @@ import MusicKit
 		.animation(.default, value: list_state.select_mode)
 		.overlay {
 			if WorkingOn.gallery {
-				ZStack(alignment: .bottom) {
-					ZStack {
-						switch list_state.expansion {
-							case .collapsed: EmptyView()
-							case .expanded:
+				ZStack {
+					switch list_state.expansion {
+						case .collapsed: EmptyView()
+						case .expanded:
+							ZStack(alignment: .bottom) {
 								Rectangle().foregroundStyle(Material.thin)
-						}
-					}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
-					ZStack {
-						if is_expanded {
-							AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
-						}
-					}.animation(.linear(duration: .one_eighth), value: is_expanded)
-				}
+								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
+							}
+					}
+				}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
 			} else {
 				ZStack(alignment: .bottom) {
 					ZStack {
