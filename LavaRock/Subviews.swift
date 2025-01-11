@@ -17,18 +17,36 @@ import MusicKit
 		.opacity(sel_opacity)
 		.animation(.default, value: list_state.select_mode)
 		.overlay {
-			ZStack {
-				if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-			}.animation(.linear(duration: .one_eighth), value: is_expanded)
+			if WorkingOn.gallery {
+				ZStack {
+					switch list_state.expansion {
+						case .collapsed: EmptyView()
+						case .expanded:
+							Rectangle().foregroundStyle(Material.thin)
+					}
+				}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+			} else {
+				ZStack {
+					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
+				}.animation(.linear(duration: .one_eighth), value: is_expanded)
+			}
 		}
 		.overlay(alignment: .bottom) {
-			ZStack {
-				switch list_state.expansion {
-					case .expanded: EmptyView()
-					case .collapsed:
+			if WorkingOn.gallery {
+				ZStack {
+					if is_expanded {
 						AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
-				}
-			}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+					}
+				}.animation(.linear(duration: .one_eighth), value: is_expanded)
+			} else {
+				ZStack {
+					switch list_state.expansion {
+						case .expanded: EmptyView()
+						case .collapsed:
+							AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
+					}
+				}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+			}
 		}
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilityHidden(true) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -197,9 +215,13 @@ import MusicKit
 			if is_selected { IconSelected() } else { IconUnselected() }
 		}
 		.disabled({
-			switch list_state.expansion {
-				case .expanded: return true
-				case .collapsed: return false
+			if WorkingOn.gallery {
+				return false
+			} else {
+				switch list_state.expansion {
+					case .expanded: return true
+					case .collapsed: return false
+				}
 			}
 		}())
 		.animation(.default, value: list_state.expansion)
