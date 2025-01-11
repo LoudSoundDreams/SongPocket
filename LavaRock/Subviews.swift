@@ -90,9 +90,13 @@ import MusicKit
 					case .collapsed:
 						list_state.expansion = .expanded(uAlbum)
 					case .expanded(let uA_expanded):
-						if uA_expanded == uAlbum {
+						if WorkingOn.gallery {
 							list_state.expansion = .collapsed
-						} else { list_state.expansion = .expanded(uAlbum) }
+						} else {
+							if uA_expanded == uAlbum {
+								list_state.expansion = .collapsed
+							} else { list_state.expansion = .expanded(uAlbum) }
+						}
 				}
 			case .select_albums(let old_selected):
 				var new_selected = old_selected

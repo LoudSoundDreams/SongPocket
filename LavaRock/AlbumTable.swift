@@ -41,10 +41,19 @@ extension AlbumListState {
 						return uAlbums.map { .uAlbum($0) }
 					}
 					
-					let uSongs_inline: [AlbumListItem] = lrAlbum.uSongs.map { .uSong($0) }
-					var result: [AlbumListItem] = uAlbums.map { .uAlbum($0) }
-					result.insert(contentsOf: uSongs_inline, at: i_expanded + 1)
-					return result
+					if WorkingOn.gallery {
+						var result: [AlbumListItem] = []
+						Librarian.the_albums.forEach { lrAlbum in
+							result.append(.uAlbum(lrAlbum.uAlbum))
+							result.append(contentsOf: lrAlbum.uSongs.map { .uSong($0) })
+						}
+						return result
+					} else {
+						let uSongs_inline: [AlbumListItem] = lrAlbum.uSongs.map { .uSong($0) }
+						var result: [AlbumListItem] = uAlbums.map { .uAlbum($0) }
+						result.insert(contentsOf: uSongs_inline, at: i_expanded + 1)
+						return result
+					}
 			}
 		}()
 		
