@@ -9,6 +9,7 @@ import MusicKit
 	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
+	private let gallery_state: GalleryState = .shared
 	var body: some View {
 		AlbumArt(
 			uAlbum: uAlbum,
@@ -19,7 +20,7 @@ import MusicKit
 		.overlay {
 			if WorkingOn.gallery {
 				ZStack {
-					switch list_state.expansion {
+					switch gallery_state.expansion {
 						case .collapsed: EmptyView()
 						case .expanded:
 							ZStack(alignment: .bottom) {
@@ -27,19 +28,19 @@ import MusicKit
 								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
 							}
 					}
-				}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+				}.animation(.linear(duration: .one_eighth), value: gallery_state.expansion)
 			} else {
 				ZStack(alignment: .bottom) {
 					ZStack {
 						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
 					}.animation(.linear(duration: .one_eighth), value: is_expanded)
 					ZStack {
-						switch list_state.expansion {
+						switch gallery_state.expansion {
 							case .expanded: EmptyView()
 							case .collapsed:
 								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
 						}
-					}.animation(.linear(duration: .one_eighth), value: list_state.expansion)
+					}.animation(.linear(duration: .one_eighth), value: gallery_state.expansion)
 				}
 			}
 		}
@@ -51,7 +52,7 @@ import MusicKit
 		.accessibilityAddTraits(.isButton)
 	}
 	private var is_expanded: Bool {
-		switch list_state.expansion {
+		switch gallery_state.expansion {
 			case .collapsed: return false
 			case .expanded(let uA_expanded): return uA_expanded == uAlbum
 		}
@@ -86,16 +87,16 @@ import MusicKit
 		switch list_state.select_mode {
 			case .select_songs: return
 			case .view:
-				switch list_state.expansion {
+				switch gallery_state.expansion {
 					case .collapsed:
-						list_state.expansion = .expanded(uAlbum)
+						gallery_state.expansion = .expanded(uAlbum)
 					case .expanded(let uA_expanded):
 						if WorkingOn.gallery {
-							list_state.expansion = .collapsed
+							gallery_state.expansion = .collapsed
 						} else {
 							if uA_expanded == uAlbum {
-								list_state.expansion = .collapsed
-							} else { list_state.expansion = .expanded(uAlbum) }
+								gallery_state.expansion = .collapsed
+							} else { gallery_state.expansion = .expanded(uAlbum) }
 						}
 				}
 			case .select_albums(let old_selected):
@@ -150,6 +151,7 @@ import MusicKit
 	let list_state: AlbumListState
 	
 	private let appleLib: AppleLibrary = .shared
+	private let gallery_state: GalleryState = .shared
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
 			stack_text
@@ -217,13 +219,13 @@ import MusicKit
 			if WorkingOn.gallery {
 				return false
 			} else {
-				switch list_state.expansion {
+				switch gallery_state.expansion {
 					case .expanded: return true
 					case .collapsed: return false
 				}
 			}
 		}())
-		.animation(.default, value: list_state.expansion)
+		.animation(.default, value: gallery_state.expansion)
 	}
 	private var b_above: some View {
 		Button(

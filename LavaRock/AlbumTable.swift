@@ -14,9 +14,6 @@ import MusicKit
 		signal_items_changed.toggle()
 	}}
 	private(set) var signal_items_changed = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
-	var expansion: Expansion = .collapsed { didSet {
-		NotificationCenter.default.post(name: Self.expansion_changed, object: self)
-	}}
 	var select_mode: SelectMode = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
@@ -33,19 +30,34 @@ extension AlbumListState {
 	fileprivate func refresh_items() {
 		list_items = {
 			let uAlbums = Self.uAlbums_fresh(exhibit)
-			switch expansion {
+			switch GalleryState.shared.expansion {
 				case .collapsed: return uAlbums.map { .uAlbum($0) }
 				case .expanded(let uA_expanded):
+					if WorkingOn.gallery {
+						guard !Librarian.the_albums.isEmpty else {
+							GalleryState.shared.expansion = .collapsed
+							return []
+						}
+						
+						// We don’t care which album is expanded. Expand them all.
+						var result: [AlbumListItem] = []
+						uAlbums.forEach { uAlbum in
+							guard let album = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
+							result.append(.uAlbum(uAlbum))
+							result.append(contentsOf: album.uSongs.map { .uSong($0) })
+						}
+						return result
+					}
 					// If we removed the expanded album, go to collapsed mode.
 					guard
 						let i_expanded = uAlbums.firstIndex(where: { $0 == uA_expanded }),
-						let lrAlbum = Librarian.album_with_uAlbum[uA_expanded]?.referencee
+						let album_expanded = Librarian.album_with_uAlbum[uA_expanded]?.referencee
 					else {
-						expansion = .collapsed
+						GalleryState.shared.expansion = .collapsed
 						return uAlbums.map { .uAlbum($0) }
 					}
 					
-					let uSongs_inline: [AlbumListItem] = lrAlbum.uSongs.map { .uSong($0) }
+					let uSongs_inline: [AlbumListItem] = album_expanded.uSongs.map { .uSong($0) }
 					var result: [AlbumListItem] = uAlbums.map { .uAlbum($0) }
 					result.insert(contentsOf: uSongs_inline, at: i_expanded + 1)
 					return result
@@ -206,12 +218,6 @@ extension AlbumListState {
 		}
 	}
 	
-	enum Expansion: Equatable {
-		case collapsed
-		case expanded(UAlbum)
-	}
-	@ObservationIgnored fileprivate static let expansion_changed = Notification.Name("LR_AlbumExpandingOrCollapsing")
-	
 	enum SelectMode: Equatable {
 		case view(USong?)
 		case select_albums(Set<UAlbum>)
@@ -241,7 +247,7 @@ final class AlbumTable: LRTableViewController {
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
 		Remote.shared.weak_tvc_albums = self
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: AlbumListState.expansion_changed, object: list_state)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: GalleryState.expansion_changed, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
 	}
@@ -353,7 +359,7 @@ final class AlbumTable: LRTableViewController {
 				}.margins(.all, .zero)
 				return cell
 			case .uSong(let uSong):
-				switch list_state.expansion {
+				switch GalleryState.shared.expansion {
 					case .collapsed: return UITableViewCell() // Should never run
 					case .expanded(let uAlbum_expanded):
 						// The cell in the storyboard is completely default except for the reuse identifier.
@@ -401,12 +407,12 @@ final class AlbumTable: LRTableViewController {
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.list_state.expansion = .expanded(uAlbum_target)
+			GalleryState.shared.expansion = .expanded(uAlbum_target)
 		}
 	}
 	
 	@objc private func reflect_expansion() {
-		switch list_state.expansion {
+		switch GalleryState.shared.expansion {
 			case .collapsed:
 				Task {
 					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
@@ -416,16 +422,18 @@ final class AlbumTable: LRTableViewController {
 				}
 			case .expanded(let uA_to_expand):
 				Task {
-					guard list_state.uAlbums().contains(where: { $0 == uA_to_expand }) else { return }
 					list_state.refresh_items()
 					b_sort.menu = menu_sort()
 					b_focused.menu = menu_focused()
 					let _ = await apply_rowIDs(list_state.rowIDs, running_before_continuation: {
-						let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
-							case .uSong: return false
-							case .uAlbum(let uAlbum): return uAlbum == uA_to_expand
-						}})!
-						self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
+						if
+							let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
+								case .uSong: return false
+								case .uAlbum(let uAlbum): return uAlbum == uA_to_expand
+							}}) // Can be `nil` if `WorkingOn.gallery`.
+						{
+							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
+						}
 					})
 				}
 		}
@@ -529,7 +537,7 @@ final class AlbumTable: LRTableViewController {
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(
 			children: {
-				switch list_state.expansion {
+				switch GalleryState.shared.expansion {
 					case .collapsed: return menu_sections_album_sort
 					case .expanded: return menu_sections_song_sort
 				}
@@ -609,7 +617,7 @@ final class AlbumTable: LRTableViewController {
 			case .select_songs(let uSs_selected):
 				return list_state.uSongs(with: uSs_selected)
 			case .view:
-				switch list_state.expansion {
+				switch GalleryState.shared.expansion {
 					case .collapsed:
 						var result: [USong] = []
 						list_state.uAlbums().forEach { uAlbum in
