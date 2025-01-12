@@ -10,8 +10,8 @@ import SwiftUI
 			return [.all_albums]
 		}
 	}()
-	var expansion: Expansion = .collapsed { didSet {
-		NotificationCenter.default.post(name: Self.expansion_changed, object: nil)
+	var focus: Focus = .cover { didSet {
+		NotificationCenter.default.post(name: Self.focus_changed, object: nil)
 	}}
 	var __selection: Selection = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: nil)
@@ -20,11 +20,13 @@ import SwiftUI
 }
 extension GalleryState {
 	@ObservationIgnored static let shared = GalleryState()
-	enum Expansion {
-		case collapsed
-		case expanded(UAlbum) // `UAlbum` is only necessary when `!WorkingOn.gallery`.
+	
+	enum Focus {
+		case cover
+		case tracklist(UAlbum) // `UAlbum` is only necessary when `!WorkingOn.gallery`.
 	}
-	@ObservationIgnored static let expansion_changed = Notification.Name("LR_GalleryExpansion")
+	@ObservationIgnored static let focus_changed = Notification.Name("LR_GalleryFocus")
+	
 	enum Selection {
 		case view(USong?)
 		case mode_albums(Set<UAlbum>)
@@ -32,7 +34,7 @@ extension GalleryState {
 	}
 	@ObservationIgnored static let selection_changed = Notification.Name("LR_GallerySelection")
 }
-extension GalleryState.Expansion: Equatable {}
+extension GalleryState.Focus: Equatable {}
 
 enum Exhibit {
 	case all_albums

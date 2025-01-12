@@ -20,27 +20,27 @@ import MusicKit
 		.overlay {
 			if WorkingOn.gallery {
 				ZStack {
-					switch gallery_state.expansion {
-						case .collapsed: EmptyView()
-						case .expanded:
+					switch gallery_state.focus {
+						case .cover: EmptyView()
+						case .tracklist:
 							ZStack(alignment: .bottom) {
 								Rectangle().foregroundStyle(Material.thin)
 								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
 							}
 					}
-				}.animation(.linear(duration: .one_eighth), value: gallery_state.expansion)
+				}.animation(.linear(duration: .one_eighth), value: gallery_state.focus)
 			} else {
 				ZStack(alignment: .bottom) {
 					ZStack {
 						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
 					}.animation(.linear(duration: .one_eighth), value: is_expanded)
 					ZStack {
-						switch gallery_state.expansion {
-							case .expanded: EmptyView()
-							case .collapsed:
+						switch gallery_state.focus {
+							case .tracklist: EmptyView()
+							case .cover:
 								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
 						}
-					}.animation(.linear(duration: .one_eighth), value: gallery_state.expansion)
+					}.animation(.linear(duration: .one_eighth), value: gallery_state.focus)
 				}
 			}
 		}
@@ -52,9 +52,9 @@ import MusicKit
 		.accessibilityAddTraits(.isButton)
 	}
 	private var is_expanded: Bool {
-		switch gallery_state.expansion {
-			case .collapsed: return false
-			case .expanded(let uA_expanded): return uA_expanded == uAlbum
+		switch gallery_state.focus {
+			case .cover: return false
+			case .tracklist(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
 	
@@ -87,16 +87,16 @@ import MusicKit
 		switch list_state.select_mode {
 			case .select_songs: return
 			case .view:
-				switch gallery_state.expansion {
-					case .collapsed:
-						gallery_state.expansion = .expanded(uAlbum)
-					case .expanded(let uA_expanded):
+				switch gallery_state.focus {
+					case .cover:
+						gallery_state.focus = .tracklist(uAlbum)
+					case .tracklist(let uA_expanded):
 						if WorkingOn.gallery {
-							gallery_state.expansion = .collapsed
+							gallery_state.focus = .cover
 						} else {
 							if uA_expanded == uAlbum {
-								gallery_state.expansion = .collapsed
-							} else { gallery_state.expansion = .expanded(uAlbum) }
+								gallery_state.focus = .cover
+							} else { gallery_state.focus = .tracklist(uAlbum) }
 						}
 				}
 			case .select_albums(let old_selected):
@@ -219,13 +219,13 @@ import MusicKit
 			if WorkingOn.gallery {
 				return false
 			} else {
-				switch gallery_state.expansion {
-					case .expanded: return true
-					case .collapsed: return false
+				switch gallery_state.focus {
+					case .tracklist: return true
+					case .cover: return false
 				}
 			}
 		}())
-		.animation(.default, value: gallery_state.expansion)
+		.animation(.default, value: gallery_state.focus)
 	}
 	private var b_above: some View {
 		Button(

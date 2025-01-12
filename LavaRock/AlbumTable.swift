@@ -30,30 +30,25 @@ extension AlbumListState {
 	fileprivate func refresh_items() {
 		list_items = {
 			let uAlbums = Self.uAlbums_fresh(exhibit)
-			switch GalleryState.shared.expansion {
-				case .collapsed: return uAlbums.map { .uAlbum($0) }
-				case .expanded(let uA_expanded):
+			switch GalleryState.shared.focus {
+				case .cover: return uAlbums.map { .uAlbum($0) }
+				case .tracklist(let uA_expanded):
 					if WorkingOn.gallery {
-						guard !Librarian.the_albums.isEmpty else {
-							GalleryState.shared.expansion = .collapsed
-							return []
-						}
-						
-						// We don’t care which album is expanded. Expand them all.
+						// We don’t care which tracklist has focus. Show them all.
 						var result: [AlbumListItem] = []
-						uAlbums.forEach { uAlbum in
+						uAlbums.forEach { uAlbum in // There should be exactly one.
 							guard let album = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
 							result.append(.uAlbum(uAlbum))
 							result.append(contentsOf: album.uSongs.map { .uSong($0) })
 						}
 						return result
 					}
-					// If we removed the expanded album, go to collapsed mode.
+					// If we removed the focused tracklist, go to cover-focus mode.
 					guard
 						let i_expanded = uAlbums.firstIndex(where: { $0 == uA_expanded }),
 						let album_expanded = Librarian.album_with_uAlbum[uA_expanded]?.referencee
 					else {
-						GalleryState.shared.expansion = .collapsed
+						GalleryState.shared.focus = .cover
 						return uAlbums.map { .uAlbum($0) }
 					}
 					
@@ -247,7 +242,7 @@ final class AlbumTable: LRTableViewController {
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
 		Remote.shared.weak_tvc_albums = self
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_expansion), name: GalleryState.expansion_changed, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: GalleryState.focus_changed, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
 	}
@@ -359,9 +354,9 @@ final class AlbumTable: LRTableViewController {
 				}.margins(.all, .zero)
 				return cell
 			case .uSong(let uSong):
-				switch GalleryState.shared.expansion {
-					case .collapsed: return UITableViewCell() // Should never run
-					case .expanded(let uAlbum_expanded):
+				switch GalleryState.shared.focus {
+					case .cover: return UITableViewCell() // Should never run
+					case .tracklist(let uAlbum_expanded):
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
 						cell.backgroundColor = .clear
@@ -390,7 +385,7 @@ final class AlbumTable: LRTableViewController {
 			list_state.refresh_items()
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
-			guard await apply_rowIDs(list_state.rowIDs) else { return }
+			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	
@@ -407,20 +402,20 @@ final class AlbumTable: LRTableViewController {
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			GalleryState.shared.expansion = .expanded(uAlbum_target)
+			GalleryState.shared.focus = .tracklist(uAlbum_target)
 		}
 	}
 	
-	@objc private func reflect_expansion() {
-		switch GalleryState.shared.expansion {
-			case .collapsed:
+	@objc private func reflect_focus() {
+		switch GalleryState.shared.focus {
+			case .cover:
 				Task {
 					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
 					let _ = await apply_rowIDs(list_state.rowIDs)
 				}
-			case .expanded(let uA_to_expand):
+			case .tracklist(let uA_to_expand):
 				Task {
 					list_state.refresh_items()
 					b_sort.menu = menu_sort()
@@ -537,9 +532,9 @@ final class AlbumTable: LRTableViewController {
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(
 			children: {
-				switch GalleryState.shared.expansion {
-					case .collapsed: return menu_sections_album_sort
-					case .expanded: return menu_sections_song_sort
+				switch GalleryState.shared.focus {
+					case .cover: return menu_sections_album_sort
+					case .tracklist: return menu_sections_song_sort
 				}
 			}()
 		)
@@ -617,15 +612,15 @@ final class AlbumTable: LRTableViewController {
 			case .select_songs(let uSs_selected):
 				return list_state.uSongs(with: uSs_selected)
 			case .view:
-				switch GalleryState.shared.expansion {
-					case .collapsed:
+				switch GalleryState.shared.focus {
+					case .cover:
 						var result: [USong] = []
 						list_state.uAlbums().forEach { uAlbum in
 							guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
 							result.append(contentsOf: lrAlbum.uSongs)
 						}
 						return result
-					case .expanded:
+					case .tracklist:
 						return list_state.uSongs()
 				}
 		}
