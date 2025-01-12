@@ -32,7 +32,7 @@ extension AlbumListState {
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { list_items }
 	fileprivate func refresh_items() {
 		list_items = {
-			let uAlbums = Self.uAlbums_fresh()
+			let uAlbums = Self.uAlbums_fresh(exhibit)
 			switch expansion {
 				case .collapsed: return uAlbums.map { .uAlbum($0) }
 				case .expanded(let uA_expanded):
@@ -45,19 +45,10 @@ extension AlbumListState {
 						return uAlbums.map { .uAlbum($0) }
 					}
 					
-					if WorkingOn.gallery {
-						var result: [AlbumListItem] = []
-						Librarian.the_albums.forEach { lrAlbum in
-							result.append(.uAlbum(lrAlbum.uAlbum))
-							result.append(contentsOf: lrAlbum.uSongs.map { .uSong($0) })
-						}
-						return result
-					} else {
-						let uSongs_inline: [AlbumListItem] = lrAlbum.uSongs.map { .uSong($0) }
-						var result: [AlbumListItem] = uAlbums.map { .uAlbum($0) }
-						result.insert(contentsOf: uSongs_inline, at: i_expanded + 1)
-						return result
-					}
+					let uSongs_inline: [AlbumListItem] = lrAlbum.uSongs.map { .uSong($0) }
+					var result: [AlbumListItem] = uAlbums.map { .uAlbum($0) }
+					result.insert(contentsOf: uSongs_inline, at: i_expanded + 1)
+					return result
 			}
 		}()
 		
@@ -83,10 +74,15 @@ extension AlbumListState {
 				}
 		}
 	}
-	private static func uAlbums_fresh() -> [UAlbum] {
+	private static func uAlbums_fresh(_ exhibit: Exhibit) -> [UAlbum] {
 		guard MusicAuthorization.currentStatus == .authorized
 		else { return [] } // Don’t show any albums; show a placeholder.
-		return Librarian.the_albums.map { $0.uAlbum }
+		switch exhibit {
+			case .all_albums:
+				return Librarian.the_albums.map { $0.uAlbum }
+			case .one_album(let uAlbum):
+				return [uAlbum]
+		}
 	}
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
