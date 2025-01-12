@@ -242,7 +242,7 @@ final class AlbumTable: LRTableViewController {
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
 		b_sort.preferredMenuElementOrder = .fixed
-		b_focused.preferredMenuElementOrder = .fixed
+		b_scope.preferredMenuElementOrder = .fixed
 		reflect_selection()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
@@ -389,7 +389,7 @@ final class AlbumTable: LRTableViewController {
 		Task {
 			list_state.refresh_items()
 			b_sort.menu = menu_sort()
-			b_focused.menu = menu_focused()
+			b_scope.menu = menu_scope()
 			guard await apply_rowIDs(list_state.rowIDs) else { return }
 		}
 	}
@@ -417,14 +417,14 @@ final class AlbumTable: LRTableViewController {
 				Task {
 					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
-					b_focused.menu = menu_focused()
+					b_scope.menu = menu_scope()
 					let _ = await apply_rowIDs(list_state.rowIDs)
 				}
 			case .expanded(let uA_to_expand):
 				Task {
 					list_state.refresh_items()
 					b_sort.menu = menu_sort()
-					b_focused.menu = menu_focused()
+					b_scope.menu = menu_scope()
 					let _ = await apply_rowIDs(list_state.rowIDs, running_before_continuation: {
 						if
 							let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
@@ -442,27 +442,27 @@ final class AlbumTable: LRTableViewController {
 	@objc private func reflect_selection() {
 		switch list_state.select_mode {
 			case .view(let uS_activated):
-				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_focused], animated: true)
+				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_scope], animated: true)
 				b_sort.menu = menu_sort()
-				b_focused.menu = menu_focused()
-				b_focused.image = image_focused
+				b_scope.menu = menu_scope()
+				b_scope.image = image_scope
 				if uS_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
 			case .select_albums(let uAs_selected):
-				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_focused], animated: true)
+				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_scope], animated: true)
 				b_album_promote.isEnabled = !uAs_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
 				b_sort.menu = menu_sort() // In case it’s open.
-				b_focused.menu = menu_focused()
-				b_focused.image = image_focused_highlighted
+				b_scope.menu = menu_scope()
+				b_scope.image = image_scope_highlighted
 			case .select_songs(let uSs_selected):
-				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_focused], animated: true)
+				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_scope], animated: true)
 				b_song_promote.isEnabled = !uSs_selected.isEmpty
 				b_song_demote.isEnabled = b_song_promote.isEnabled
 				b_sort.menu = menu_sort()
-				b_focused.menu = menu_focused()
-				b_focused.image = image_focused_highlighted
+				b_scope.menu = menu_scope()
+				b_scope.image = image_scope_highlighted
 		}
 	}
 	
@@ -512,9 +512,9 @@ final class AlbumTable: LRTableViewController {
 	}
 	
 	private let b_sort = UIBarButtonItem(title: InterfaceText.Sort, image: UIImage(systemName: "arrow.up.arrow.down.circle.fill")?.applying_hierarchical_tint())
-	private lazy var b_focused = UIBarButtonItem(title: InterfaceText.More)
-	private lazy var image_focused = image_focused_highlighted?.applying_hierarchical_tint()
-	private let image_focused_highlighted = UIImage(systemName: "ellipsis.circle.fill")
+	private lazy var b_scope = UIBarButtonItem(title: InterfaceText.More)
+	private lazy var image_scope = image_scope_highlighted?.applying_hierarchical_tint()
+	private let image_scope_highlighted = UIImage(systemName: "ellipsis.circle.fill")
 	
 	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
 	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))
@@ -532,7 +532,7 @@ final class AlbumTable: LRTableViewController {
 	private lazy var a_song_float = UIAction(title: InterfaceText.To_Top, image: UIImage.to_top) { [weak self] _ in self?.float_songs() }
 	private lazy var a_song_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage.to_bottom) { [weak self] _ in self?.sink_songs() }
 	
-	// MARK: Focused
+	// MARK: Scope
 	
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(
@@ -545,7 +545,7 @@ final class AlbumTable: LRTableViewController {
 		)
 	}
 	
-	private func menu_focused() -> UIMenu {
+	private func menu_scope() -> UIMenu {
 		var submenus_inline: [UIMenu] = []
 		switch list_state.select_mode {
 			case .view: break
@@ -562,7 +562,7 @@ final class AlbumTable: LRTableViewController {
 			children: [
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let uSongs = uSongs_focused()
+					let uSongs = uSongs_scope()
 					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
@@ -575,7 +575,7 @@ final class AlbumTable: LRTableViewController {
 				},
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let uSongs = uSongs_focused()
+					let uSongs = uSongs_scope()
 					let action = UIAction(title: InterfaceText.Randomize(for_localeLanguageIdentifiers: Locale.preferredLanguages), image: UIImage.random_die()) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
@@ -590,7 +590,7 @@ final class AlbumTable: LRTableViewController {
 				},
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let uSongs = uSongs_focused()
+					let uSongs = uSongs_scope()
 					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
@@ -605,7 +605,7 @@ final class AlbumTable: LRTableViewController {
 		))
 		return UIMenu(children: submenus_inline)
 	}
-	private func uSongs_focused() -> [USong] { // In display order.
+	private func uSongs_scope() -> [USong] { // In display order.
 		switch list_state.select_mode {
 			case .select_albums(let uAs_selected):
 				var result: [USong] = []
