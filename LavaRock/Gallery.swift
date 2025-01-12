@@ -22,7 +22,7 @@ extension GalleryState {
 		case mode_albums(Set<UAlbum>)
 		case mode_songs(Set<USong>)
 	}
-	@ObservationIgnored static let selection_changed = Notification.Name("LR_GallerySelectionChanged")
+	@ObservationIgnored static let selection_changed = Notification.Name("LR_GallerySelection")
 }
 
 enum Exhibit {

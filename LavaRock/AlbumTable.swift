@@ -5,9 +5,12 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class AlbumListState {
+	init(_ exhibit: Exhibit) {
+		self.exhibit = exhibit
+		refresh_items()
+	}
 	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem]
-	= AlbumListState.uAlbums_fresh().map { .uAlbum($0) }
-	{ didSet {
+	= [] { didSet {
 		signal_items_changed.toggle()
 	}}
 	private(set) var signal_items_changed = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
@@ -18,6 +21,7 @@ import MusicKit
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
+	@ObservationIgnored private let exhibit: Exhibit
 }
 extension AlbumListState.AlbumListItem: Hashable {}
 extension AlbumListState {
@@ -225,12 +229,10 @@ extension AlbumListState {
 final class AlbumTable: LRTableViewController {
 	static func init_please(_ exhibit: Exhibit) -> Self {
 		let result = UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController() as! Self
-		result.__exhibit = exhibit
+		result.list_state = AlbumListState(exhibit)
 		return result
 	}
-	
-	private var __exhibit: Exhibit!
-	private let list_state = AlbumListState()
+	private var list_state: AlbumListState!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
