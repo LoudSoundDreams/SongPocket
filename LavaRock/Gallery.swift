@@ -11,10 +11,10 @@ import SwiftUI
 		}
 	}()
 	var focus: Focus = .cover { didSet {
-		NotificationCenter.default.post(name: Self.focus_changed, object: nil)
+		NotificationCenter.default.post(name: Self.changed_focus, object: nil)
 	}}
 	var __selection: Selection = .view(nil) { didSet {
-		NotificationCenter.default.post(name: Self.selection_changed, object: nil)
+		NotificationCenter.default.post(name: Self.changed_selection, object: nil)
 	}}
 	private init() {}
 }
@@ -25,14 +25,14 @@ extension GalleryState {
 		case cover
 		case tracklist(UAlbum) // `UAlbum` is only necessary when `!WorkingOn.gallery`.
 	}
-	@ObservationIgnored static let focus_changed = Notification.Name("LR_GalleryFocus")
+	@ObservationIgnored static let changed_focus = Notification.Name("LR_GalleryFocus")
 	
 	enum Selection {
 		case view(USong?)
 		case mode_albums(Set<UAlbum>)
 		case mode_songs(Set<USong>)
 	}
-	@ObservationIgnored static let selection_changed = Notification.Name("LR_GallerySelection")
+	@ObservationIgnored static let changed_selection = Notification.Name("LR_GallerySelection")
 }
 extension GalleryState.Focus: Equatable {}
 

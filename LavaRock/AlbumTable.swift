@@ -11,9 +11,9 @@ import MusicKit
 	}
 	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem]
 	= [] { didSet {
-		signal_items_changed.toggle()
+		signal_items.toggle()
 	}}
-	private(set) var signal_items_changed = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
+	private(set) var signal_items = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
 	var select_mode: SelectMode = .view(nil) { didSet {
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
@@ -242,7 +242,7 @@ final class AlbumTable: LRTableViewController {
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
 		Remote.shared.weak_tvc_albums = self
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: GalleryState.focus_changed, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: GalleryState.changed_focus, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
 	}
