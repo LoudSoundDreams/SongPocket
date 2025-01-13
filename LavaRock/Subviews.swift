@@ -18,18 +18,6 @@ import MusicKit
 		.opacity(sel_opacity)
 		.animation(.default, value: list_state.select_mode)
 		.overlay {
-			if WorkingOn.gallery {
-				ZStack {
-					switch gallery_state.focus {
-						case .cover: EmptyView()
-						case .tracklist:
-							ZStack(alignment: .bottom) {
-								Rectangle().foregroundStyle(Material.thin)
-								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
-							}
-					}
-				}.animation(.linear(duration: .one_eighth), value: gallery_state.focus)
-			} else {
 				ZStack(alignment: .bottom) {
 					ZStack {
 						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
@@ -42,7 +30,6 @@ import MusicKit
 						}
 					}.animation(.linear(duration: .one_eighth), value: gallery_state.focus)
 				}
-			}
 		}
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilityHidden(true) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -91,13 +78,9 @@ import MusicKit
 					case .cover:
 						gallery_state.focus = .tracklist(uAlbum)
 					case .tracklist(let uA_expanded):
-						if WorkingOn.gallery {
-							gallery_state.focus = .cover
-						} else {
 							if uA_expanded == uAlbum {
 								gallery_state.focus = .cover
 							} else { gallery_state.focus = .tracklist(uAlbum) }
-						}
 				}
 			case .select_albums(let old_selected):
 				var new_selected = old_selected
@@ -239,14 +222,10 @@ import MusicKit
 			if is_selected { IconSelected() } else { IconUnselected() }
 		}
 		.disabled({
-			if WorkingOn.gallery {
-				return false
-			} else {
 				switch gallery_state.focus {
 					case .tracklist: return true
 					case .cover: return false
 				}
-			}
 		}())
 		.animation(.default, value: gallery_state.focus)
 	}

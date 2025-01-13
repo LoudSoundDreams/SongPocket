@@ -4,10 +4,6 @@ import SwiftUI
 import MusicKit
 import os
 
-enum WorkingOn {
-	static let gallery = 10 == 1
-}
-
 @main struct LavaRock: App {
 	init() {
 		let signposter = OSSignposter(subsystem: "startup", category: .pointsOfInterest)
@@ -57,14 +53,7 @@ struct RepNCMain: UIViewControllerRepresentable {
 }
 final class NCMain: UINavigationController {
 	static func create() -> Self {
-		let vc_root: UIViewController = {
-			if WorkingOn.gallery {
-				return UIHostingController(rootView: Gallery().ignoresSafeArea())
-			} else {
-				return AlbumTable.init_please(.all_albums)
-			}
-		}()
-		let result = Self(rootViewController: vc_root)
+		let result = Self(rootViewController: AlbumTable.init_please())
 		result.setNavigationBarHidden(true, animated: false)
 		let toolbar = result.toolbar!
 		result.setToolbarHidden(false, animated: false)

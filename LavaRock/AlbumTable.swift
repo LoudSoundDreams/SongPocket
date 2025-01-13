@@ -5,12 +5,8 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class AlbumListState {
-	init(_ exhibit: Exhibit) {
-		self.exhibit = exhibit
-		refresh_items()
-	}
 	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem]
-	= [] { didSet {
+	= AlbumListState.uAlbums_fresh().map { .uAlbum($0) } { didSet {
 		signal_items.toggle()
 	}}
 	private(set) var signal_items = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
@@ -18,7 +14,6 @@ import MusicKit
 		NotificationCenter.default.post(name: Self.selection_changed, object: self)
 	}}
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
-	@ObservationIgnored private let exhibit: Exhibit
 }
 extension AlbumListState.AlbumListItem: Hashable {}
 extension AlbumListState {
@@ -29,20 +24,10 @@ extension AlbumListState {
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { list_items }
 	fileprivate func refresh_items() {
 		list_items = {
-			let uAlbums = Self.uAlbums_fresh(exhibit)
+			let uAlbums = Self.uAlbums_fresh()
 			switch GalleryState.shared.focus {
 				case .cover: return uAlbums.map { .uAlbum($0) }
 				case .tracklist(let uA_expanded):
-					if WorkingOn.gallery {
-						// We don’t care which tracklist has focus. Show them all.
-						var result: [AlbumListItem] = []
-						uAlbums.forEach { uAlbum in // There should be exactly one.
-							guard let album = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
-							result.append(.uAlbum(uAlbum))
-							result.append(contentsOf: album.uSongs.map { .uSong($0) })
-						}
-						return result
-					}
 					// If we removed the focused tracklist, go to cover-focus mode.
 					guard
 						let i_expanded = uAlbums.firstIndex(where: { $0 == uA_expanded }),
@@ -81,15 +66,10 @@ extension AlbumListState {
 				}
 		}
 	}
-	private static func uAlbums_fresh(_ exhibit: Exhibit) -> [UAlbum] {
+	private static func uAlbums_fresh() -> [UAlbum] {
 		guard MusicAuthorization.currentStatus == .authorized
 		else { return [] } // Don’t show any albums; show a placeholder.
-		switch exhibit {
-			case .all_albums:
-				return Librarian.the_albums.map { $0.uAlbum }
-			case .one_album(let uAlbum):
-				return [uAlbum]
-		}
+		return Librarian.the_albums.map { $0.uAlbum }
 	}
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
 		return list_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
@@ -224,12 +204,10 @@ extension AlbumListState {
 // MARK: - View controller
 
 final class AlbumTable: LRTableViewController {
-	static func init_please(_ exhibit: Exhibit) -> Self {
-		let result = UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController() as! Self
-		result.list_state = AlbumListState(exhibit)
-		return result
+	static func init_please() -> Self {
+		return UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController() as! Self
 	}
-	private var list_state: AlbumListState!
+	private let list_state = AlbumListState()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -425,7 +403,7 @@ final class AlbumTable: LRTableViewController {
 							let row_target: Int = self.list_state.list_items.firstIndex(where: { switch $0 {
 								case .uSong: return false
 								case .uAlbum(let uAlbum): return uAlbum == uA_to_expand
-							}}) // Can be `nil` if `WorkingOn.gallery`.
+							}})
 						{
 							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 						}
