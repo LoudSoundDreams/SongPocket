@@ -11,6 +11,7 @@ typealias UAlbum = MPMediaEntityPersistentID
 typealias USong = MPMediaEntityPersistentID
 
 @MainActor @Observable final class AppleLibrary {
+	private init() {}
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs_cache: [USong: MKSong] = [:]
 	private(set) var is_merging = false { didSet {
@@ -18,7 +19,6 @@ typealias USong = MPMediaEntityPersistentID
 			NotificationCenter.default.post(name: Self.did_merge, object: nil)
 		}
 	}}
-	private init() {}
 }
 extension AppleLibrary {
 	@ObservationIgnored static let shared = AppleLibrary()

@@ -101,12 +101,12 @@ import Combine
 }
 
 @MainActor @Observable final class PlayerState {
+	private init() {}
 	var signal = false { didSet {
 		Task {
 			NotificationCenter.default.post(name: Self.musicKit, object: nil)
 		}
 	}}
-	private init() {}
 	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
 }
 extension PlayerState {

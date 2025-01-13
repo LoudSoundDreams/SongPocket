@@ -3,8 +3,8 @@
 import SwiftUI
 
 @MainActor @Observable final class TheBarState {
-	var mode: TheBarMode = .zero
 	private init() {}
+	var mode: TheBarMode = .zero
 }
 extension TheBarState {
 	@ObservationIgnored static let shared = TheBarState()

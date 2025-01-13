@@ -18,18 +18,18 @@ import MusicKit
 		.opacity(sel_opacity)
 		.animation(.default, value: list_state.select_mode)
 		.overlay {
-				ZStack(alignment: .bottom) {
-					ZStack {
-						if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-					}.animation(.linear(duration: .one_eighth), value: is_expanded)
-					ZStack {
-						switch gallery_state.focus {
-							case .tracklist: EmptyView()
-							case .cover:
-								AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
-						}
-					}.animation(.linear(duration: .one_eighth), value: gallery_state.focus)
-				}
+			ZStack(alignment: .bottom) {
+				ZStack {
+					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
+				}.animation(.linear(duration: .one_eighth), value: is_expanded)
+				ZStack {
+					switch gallery_state.focus {
+						case .tracklist: EmptyView()
+						case .cover:
+							AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
+					}
+				}.animation(.linear(duration: .one_eighth), value: gallery_state.focus)
+			}
 		}
 		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
 		.overlay { sel_border.accessibilityHidden(true) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
@@ -78,9 +78,9 @@ import MusicKit
 					case .cover:
 						gallery_state.focus = .tracklist(uAlbum)
 					case .tracklist(let uA_expanded):
-							if uA_expanded == uAlbum {
-								gallery_state.focus = .cover
-							} else { gallery_state.focus = .tracklist(uAlbum) }
+						if uA_expanded == uAlbum {
+							gallery_state.focus = .cover
+						} else { gallery_state.focus = .tracklist(uAlbum) }
 				}
 			case .select_albums(let old_selected):
 				var new_selected = old_selected
@@ -222,10 +222,10 @@ import MusicKit
 			if is_selected { IconSelected() } else { IconUnselected() }
 		}
 		.disabled({
-				switch gallery_state.focus {
-					case .tracklist: return true
-					case .cover: return false
-				}
+			switch gallery_state.focus {
+				case .tracklist: return true
+				case .cover: return false
+			}
 		}())
 		.animation(.default, value: gallery_state.focus)
 	}
