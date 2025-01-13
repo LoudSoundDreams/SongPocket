@@ -156,6 +156,7 @@ import MusicKit
 		HStack(alignment: .lastTextBaseline) {
 			stack_text
 			Spacer()
+//			b_tracklist
 			menu_select
 		}
 		.padding()
@@ -195,6 +196,28 @@ import MusicKit
 		switch list_state.select_mode {
 			case .view, .select_albums: return false
 			case .select_songs: return true
+		}
+	}
+	
+	private var b_tracklist: some View {
+		Button {
+			if is_expanded {
+				gallery_state.focus = .cover
+			} else {
+				gallery_state.focus = .tracklist(uAlbum)
+			}
+		} label: {
+			Image(systemName: is_expanded ? "chevron.down.circle.fill" : "chevron.forward.circle.fill")
+				.accessibilityLabel(is_expanded ? "Hide songs" : "Show songs")
+				.font_body_dynamicType_up_to_xxxLarge()
+				.symbolRenderingMode(.hierarchical)
+				.animation(.default, value: is_expanded)
+		}
+	}
+	private var is_expanded: Bool {
+		switch gallery_state.focus {
+			case .cover: return false
+			case .tracklist(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
 	
