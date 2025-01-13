@@ -150,7 +150,7 @@ import MusicKit
 	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
-	private let appleLib: AppleLibrary = .shared
+	private let apple_lib: AppleLibrary = .shared
 	private let gallery_state: GalleryState = .shared
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
@@ -163,7 +163,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_text: some View {
-		let albumInfo: AlbumInfo? = appleLib.albumInfo(uAlbum: uAlbum)
+		let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""
 			else { return InterfaceText._tilde }
@@ -207,7 +207,7 @@ import MusicKit
 						withAnimation {
 							list_state.select_mode = .select_albums([uAlbum])
 						}
-					}.disabled(appleLib.is_merging)
+					}.disabled(apple_lib.is_merging)
 					Divider()
 			}
 			b_above
@@ -235,7 +235,7 @@ import MusicKit
 			list_state.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
 			return (list_state.signal_items_changed && false ) ||
-			appleLib.is_merging ||
+			apple_lib.is_merging ||
 			!list_state.has_album_range(from: uAlbum, forward: false)
 		}())
 	}
@@ -247,7 +247,7 @@ import MusicKit
 			list_state.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
 			return (list_state.signal_items_changed && false) ||
-			appleLib.is_merging ||
+			apple_lib.is_merging ||
 			!list_state.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
@@ -267,13 +267,13 @@ import MusicKit
 	let uAlbum: UAlbum
 	let list_state: AlbumListState
 	
-	private let appleLib: AppleLibrary = .shared
+	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let songInfo: SongInfo? = {
-					guard let mkSong = appleLib.mkSongs_cache[uSong] else {
-						Task { await appleLib.cache_mkSong(uSong: uSong) } // SwiftUI redraws this view afterward because this view observes the cache.
+					guard let mkSong = apple_lib.mkSongs_cache[uSong] else {
+						Task { await apple_lib.cache_mkSong(uSong: uSong) } // SwiftUI redraws this view afterward because this view observes the cache.
 						return nil
 					}
 					return SongInfo(
@@ -282,7 +282,7 @@ import MusicKit
 						_title: mkSong.title,
 						_artist: mkSong.artistName)
 				}()
-				let albumInfo: AlbumInfo? = appleLib.albumInfo(uAlbum: uAlbum)
+				let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
 				
 				stack_main(songInfo, albumInfo)
 				Spacer()
@@ -308,7 +308,7 @@ import MusicKit
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
 					let _ = PlayerState.shared.signal
-					let _ = appleLib.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
+					let _ = apple_lib.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 					return ApplicationMusicPlayer.StatusNowPlaying(uSong: uSong).foreground_color
 				}())
 			if
@@ -395,7 +395,7 @@ import MusicKit
 							withAnimation {
 								list_state.select_mode = .select_songs([uSong])
 							}
-						}.disabled(appleLib.is_merging)
+						}.disabled(apple_lib.is_merging)
 						Divider()
 				}
 				b_above
@@ -413,7 +413,7 @@ import MusicKit
 			list_state.change_song_range(from: uSong, forward: false)
 		}.disabled({
 			return (list_state.signal_items_changed && false) ||
-			appleLib.is_merging ||
+			apple_lib.is_merging ||
 			!list_state.has_song_range(from: uSong, forward: false)
 		}())
 	}
@@ -425,7 +425,7 @@ import MusicKit
 			list_state.change_song_range(from: uSong, forward: true)
 		}.disabled({
 			return (list_state.signal_items_changed && false) ||
-			appleLib.is_merging ||
+			apple_lib.is_merging ||
 			!list_state.has_song_range(from: uSong, forward: true)
 		}())
 	}
