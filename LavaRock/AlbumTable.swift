@@ -4,6 +4,33 @@ import UIKit
 import SwiftUI
 import MusicKit
 
+@MainActor @Observable final class GalleryState {
+	private init() {}
+	var focus: Focus = .cover { didSet {
+		NotificationCenter.default.post(name: Self.changed_focus, object: nil)
+	}}
+	var __selection: Selection = .view(nil) { didSet {
+		NotificationCenter.default.post(name: Self.changed_selection, object: nil)
+	}}
+}
+extension GalleryState {
+	@ObservationIgnored static let shared = GalleryState()
+	
+	enum Focus {
+		case cover
+		case tracklist(UAlbum)
+	}
+	@ObservationIgnored static let changed_focus = Notification.Name("LR_Focus")
+	
+	enum Selection {
+		case view(USong?)
+		case mode_albums(Set<UAlbum>)
+		case mode_songs(Set<USong>)
+	}
+	@ObservationIgnored static let changed_selection = Notification.Name("LR_Selection")
+}
+extension GalleryState.Focus: Equatable {}
+
 @MainActor @Observable final class AlbumListState {
 	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem]
 	= AlbumListState.uAlbums_fresh().map { .uAlbum($0) } { didSet {
@@ -198,7 +225,7 @@ extension AlbumListState {
 		case select_albums(Set<UAlbum>)
 		case select_songs(Set<USong>)
 	}
-	@ObservationIgnored fileprivate static let selection_changed = Notification.Name("LR_SelectModeOrSelectionChanged")
+	@ObservationIgnored fileprivate static let selection_changed = Notification.Name("LR_Selection")
 }
 
 // MARK: - View controller
@@ -218,7 +245,7 @@ final class AlbumTable: LRTableViewController {
 		b_scope.preferredMenuElementOrder = .fixed
 		reflect_selection()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.did_merge, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.merged, object: nil)
 		Remote.shared.weak_tvc_albums = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: GalleryState.changed_focus, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
