@@ -4,17 +4,31 @@ import UIKit
 import SwiftUI
 import MusicKit
 
-@MainActor @Observable final class GalleryState {
-	private init() {}
+@MainActor @Observable final class AlbumListState {
+	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem]
+	= AlbumListState.uAlbums_fresh().map { .uAlbum($0) } { didSet {
+		signal_items.toggle()
+	}}
+	private(set) var signal_items = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
+	
 	var focus: Focus = .cover { didSet {
-		NotificationCenter.default.post(name: Self.changed_focus, object: nil)
+		NotificationCenter.default.post(name: Self.changed_focus, object: self)
 	}}
-	var __selection: Selection = .view(nil) { didSet {
-		NotificationCenter.default.post(name: Self.changed_selection, object: nil)
+	
+	var selection: Selection = .view(nil) { didSet {
+		NotificationCenter.default.post(name: Self.changed_selection, object: self)
 	}}
+	
+	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
-extension GalleryState {
-	@ObservationIgnored static let shared = GalleryState()
+extension AlbumListState.AlbumListItem: Hashable {}
+extension AlbumListState.Focus: Equatable {}
+extension AlbumListState.Selection: Equatable {}
+extension AlbumListState {
+	fileprivate enum AlbumListItem {
+		case uAlbum(UAlbum)
+		case uSong(USong)
+	}
 	
 	enum Focus {
 		case cover
@@ -28,31 +42,12 @@ extension GalleryState {
 		case mode_songs(Set<USong>)
 	}
 	@ObservationIgnored static let changed_selection = Notification.Name("LR_Selection")
-}
-extension GalleryState.Focus: Equatable {}
-
-@MainActor @Observable final class AlbumListState {
-	@ObservationIgnored fileprivate private(set) var list_items: [AlbumListItem]
-	= AlbumListState.uAlbums_fresh().map { .uAlbum($0) } { didSet {
-		signal_items.toggle()
-	}}
-	private(set) var signal_items = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
-	var select_mode: SelectMode = .view(nil) { didSet {
-		NotificationCenter.default.post(name: Self.selection_changed, object: self)
-	}}
-	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
-}
-extension AlbumListState.AlbumListItem: Hashable {}
-extension AlbumListState {
-	fileprivate enum AlbumListItem {
-		case uAlbum(UAlbum)
-		case uSong(USong)
-	}
+	
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { list_items }
 	fileprivate func refresh_items() {
 		list_items = {
 			let uAlbums = Self.uAlbums_fresh()
-			switch GalleryState.shared.focus {
+			switch focus {
 				case .cover: return uAlbums.map { .uAlbum($0) }
 				case .tracklist(let uA_expanded):
 					// If we removed the focused tracklist, go to cover-focus mode.
@@ -60,7 +55,7 @@ extension AlbumListState {
 						let i_expanded = uAlbums.firstIndex(where: { $0 == uA_expanded }),
 						let album_expanded = Librarian.album_with_uAlbum[uA_expanded]?.referencee
 					else {
-						GalleryState.shared.focus = .cover
+						focus = .cover
 						return uAlbums.map { .uAlbum($0) }
 					}
 					
@@ -72,24 +67,24 @@ extension AlbumListState {
 		}()
 		
 		// In case we removed items the user was doing something with.
-		switch select_mode {
+		switch selection {
 			case .view(let uS_activated):
 				if let uS_activated, uSongs(with: [uS_activated]).isEmpty {
-					select_mode = .view(nil)
+					selection = .view(nil)
 				}
-			case .select_albums(let old_selected):
+			case .mode_albums(let old_selected):
 				let selectable = Set(uAlbums(with: old_selected))
 				if old_selected != selectable {
-					select_mode = .select_albums(selectable)
+					selection = .mode_albums(selectable)
 				}
-			case .select_songs(let old_selected):
+			case .mode_songs(let old_selected):
 				guard !uSongs().isEmpty else {
-					select_mode = .view(nil)
+					selection = .view(nil)
 					break
 				}
 				let selectable = Set(uSongs(with: old_selected))
 				if old_selected != selectable{
-					select_mode = .select_songs(selectable)
+					selection = .mode_songs(selectable)
 				}
 		}
 	}
@@ -121,9 +116,9 @@ extension AlbumListState {
 		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor }) else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
 		guard uAlbums().indices.contains(i_neighbor) else { return false }
-		switch select_mode {
-			case .select_songs, .view: return true
-			case .select_albums(let uAs_selected):
+		switch selection {
+			case .mode_songs, .view: return true
+			case .mode_albums(let uAs_selected):
 				let anchor_is_selected = uAs_selected.contains(uA_anchor)
 				let neighbor_is_selected = uAs_selected.contains(uAlbums()[i_neighbor])
 				return anchor_is_selected == neighbor_is_selected
@@ -133,10 +128,10 @@ extension AlbumListState {
 		guard let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor }) else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
 		guard uSongs().indices.contains(i_neighbor) else { return false }
-		switch select_mode {
-			case .select_albums: return false
+		switch selection {
+			case .mode_albums: return false
 			case .view: return true
-			case .select_songs(let uSs_selected):
+			case .mode_songs(let uSs_selected):
 				let anchor_is_selected = uSs_selected.contains(uS_anchor)
 				let neighbor_is_selected = uSs_selected.contains(uSongs()[i_neighbor])
 				return anchor_is_selected == neighbor_is_selected
@@ -147,9 +142,9 @@ extension AlbumListState {
 		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor })
 		else { return }
 		let old_selected: Set<UAlbum> = {
-			switch select_mode {
-				case .select_songs, .view: return []
-				case .select_albums(let uAs_selected): return uAs_selected
+			switch selection {
+				case .mode_songs, .view: return []
+				case .mode_albums(let uAs_selected): return uAs_selected
 			}
 		}()
 		let inserting: Bool = !old_selected.contains(uA_anchor)
@@ -171,23 +166,23 @@ extension AlbumListState {
 			}
 			return result
 		}()
-		switch select_mode {
-			case .select_songs: break
+		switch selection {
+			case .mode_songs: break
 			case .view:
 				withAnimation {
-					select_mode = .select_albums(new_selected)
+					selection = .mode_albums(new_selected)
 				}
-			case .select_albums:
-				select_mode = .select_albums(new_selected)
+			case .mode_albums:
+				selection = .mode_albums(new_selected)
 		}
 	}
 	func change_song_range(from uS_anchor: USong, forward: Bool) {
 		guard let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor })
 		else { return }
 		let old_selected: Set<USong> = {
-			switch select_mode {
-				case .select_albums, .view: return []
-				case .select_songs (let uAs_selected): return uAs_selected
+			switch selection {
+				case .mode_albums, .view: return []
+				case .mode_songs(let uAs_selected): return uAs_selected
 			}
 		}()
 		let inserting: Bool = !old_selected.contains(uS_anchor)
@@ -209,23 +204,16 @@ extension AlbumListState {
 			}
 			return result
 		}()
-		switch select_mode {
-			case .select_albums: break
+		switch selection {
+			case .mode_albums: break
 			case .view:
 				withAnimation {
-					select_mode = .select_songs(new_selected)
+					selection = .mode_songs(new_selected)
 				}
-			case .select_songs:
-				select_mode = .select_songs(new_selected)
+			case .mode_songs:
+				selection = .mode_songs(new_selected)
 		}
 	}
-	
-	enum SelectMode: Equatable {
-		case view(USong?)
-		case select_albums(Set<UAlbum>)
-		case select_songs(Set<USong>)
-	}
-	@ObservationIgnored fileprivate static let selection_changed = Notification.Name("LR_Selection")
 }
 
 // MARK: - View controller
@@ -247,9 +235,9 @@ final class AlbumTable: LRTableViewController {
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.merged, object: nil)
 		Remote.shared.weak_tvc_albums = self
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: GalleryState.changed_focus, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: AlbumListState.changed_focus, object: list_state)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.selection_changed, object: list_state)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: AlbumListState.changed_selection, object: list_state)
 	}
 	
 	override func viewIsAppearing(_ animated: Bool) {
@@ -359,7 +347,7 @@ final class AlbumTable: LRTableViewController {
 				}.margins(.all, .zero)
 				return cell
 			case .uSong(let uSong):
-				switch GalleryState.shared.focus {
+				switch list_state.focus {
 					case .cover: return UITableViewCell() // Should never run
 					case .tracklist(let uAlbum_expanded):
 						// The cell in the storyboard is completely default except for the reuse identifier.
@@ -407,12 +395,12 @@ final class AlbumTable: LRTableViewController {
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			GalleryState.shared.focus = .tracklist(uAlbum_target)
+			self.list_state.focus = .tracklist(uAlbum_target)
 		}
 	}
 	
 	@objc private func reflect_focus() {
-		switch GalleryState.shared.focus {
+		switch list_state.focus {
 			case .cover:
 				Task {
 					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
@@ -440,7 +428,7 @@ final class AlbumTable: LRTableViewController {
 	}
 	
 	@objc private func reflect_selection() {
-		switch list_state.select_mode {
+		switch list_state.selection {
 			case .view(let uS_activated):
 				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_scope], animated: true)
 				b_sort.menu = menu_sort()
@@ -449,14 +437,14 @@ final class AlbumTable: LRTableViewController {
 				if uS_activated == nil {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented.
 				}
-			case .select_albums(let uAs_selected):
+			case .mode_albums(let uAs_selected):
 				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_scope], animated: true)
 				b_album_promote.isEnabled = !uAs_selected.isEmpty
 				b_album_demote.isEnabled = b_album_promote.isEnabled
 				b_sort.menu = menu_sort() // In case it’s open.
 				b_scope.menu = menu_scope()
 				b_scope.image = image_scope_highlighted
-			case .select_songs(let uSs_selected):
+			case .mode_songs(let uSs_selected):
 				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_scope], animated: true)
 				b_song_promote.isEnabled = !uSs_selected.isEmpty
 				b_song_demote.isEnabled = b_song_promote.isEnabled
@@ -478,13 +466,13 @@ final class AlbumTable: LRTableViewController {
 			}()
 		else { return }
 		
-		list_state.select_mode = .view(uSong_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		list_state.selection = .view(uSong_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
 		let action_sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		action_sheet.popoverPresentationController?.sourceView = view_popover_anchor
 		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
-				self.list_state.select_mode = .view(nil)
+				self.list_state.selection = .view(nil)
 				Task {
 					guard let album_chosen = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
 					await ApplicationMusicPlayer._shared?.play_now(
@@ -496,7 +484,7 @@ final class AlbumTable: LRTableViewController {
 		)
 		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
-				self.list_state.select_mode = .view(nil)
+				self.list_state.selection = .view(nil)
 			}
 		)
 		present(action_sheet, animated: true)
@@ -507,7 +495,7 @@ final class AlbumTable: LRTableViewController {
 	private lazy var a_end_selecting = UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() }
 	private func end_selecting_animated() {
 		withAnimation {
-			self.list_state.select_mode = .view(nil)
+			self.list_state.selection = .view(nil)
 		}
 	}
 	
@@ -537,7 +525,7 @@ final class AlbumTable: LRTableViewController {
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(
 			children: {
-				switch GalleryState.shared.focus {
+				switch list_state.focus {
 					case .cover: return menu_sections_album_sort
 					case .tracklist: return menu_sections_song_sort
 				}
@@ -547,9 +535,9 @@ final class AlbumTable: LRTableViewController {
 	
 	private func menu_scope() -> UIMenu {
 		var submenus_inline: [UIMenu] = []
-		switch list_state.select_mode {
+		switch list_state.selection {
 			case .view: break
-			case .select_albums, .select_songs:
+			case .mode_albums, .mode_songs:
 				submenus_inline.append(UIMenu(
 					options: .displayInline,
 					children: [
@@ -606,18 +594,18 @@ final class AlbumTable: LRTableViewController {
 		return UIMenu(children: submenus_inline)
 	}
 	private func uSongs_scope() -> [USong] { // In display order.
-		switch list_state.select_mode {
-			case .select_albums(let uAs_selected):
+		switch list_state.selection {
+			case .mode_albums(let uAs_selected):
 				var result: [USong] = []
 				list_state.uAlbums(with: uAs_selected).forEach { uAlbum in // Order matters.
 					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
 					result.append(contentsOf: lrAlbum.uSongs)
 				}
 				return result
-			case .select_songs(let uSs_selected):
+			case .mode_songs(let uSs_selected):
 				return list_state.uSongs(with: uSs_selected)
 			case .view:
-				switch GalleryState.shared.focus {
+				switch list_state.focus {
 					case .cover:
 						var result: [USong] = []
 						list_state.uAlbums().forEach { uAlbum in
@@ -650,9 +638,9 @@ final class AlbumTable: LRTableViewController {
 	private func can_sort_albums(by album_order: AlbumOrder) -> Bool {
 		let uAlbums = uAlbums_to_sort()
 		guard uAlbums.count >= 2 else { return false }
-		switch list_state.select_mode {
-			case .select_songs, .view: break
-			case .select_albums(let uAs_selected):
+		switch list_state.selection {
+			case .mode_songs, .view: break
+			case .mode_albums(let uAs_selected):
 				let rs_selected = list_state.uAlbums().indices(where: { uAlbum in
 					uAs_selected.contains(uAlbum)
 				})
@@ -674,9 +662,9 @@ final class AlbumTable: LRTableViewController {
 					let action = order.action { [weak self] in self?.sort_songs(by: order) }
 					var enabling = true
 					if uSongs_to_sort().count <= 1 { enabling = false }
-					switch list_state.select_mode {
-						case .select_albums, .view: break
-						case .select_songs(let uSs_selected):
+					switch list_state.selection {
+						case .mode_albums, .view: break
+						case .mode_songs(let uSs_selected):
 							let rs_selected = list_state.uSongs().indices(where: { uSong in
 								uSs_selected.contains(uSong)
 							})
@@ -709,17 +697,17 @@ final class AlbumTable: LRTableViewController {
 	}
 	
 	private func uAlbums_to_sort() -> Set<UAlbum> {
-		switch list_state.select_mode {
-			case .select_songs: return []
+		switch list_state.selection {
+			case .mode_songs: return []
 			case .view: return Set(list_state.uAlbums())
-			case .select_albums(let uAs_selected): return uAs_selected
+			case .mode_albums(let uAs_selected): return uAs_selected
 		}
 	}
 	private func uSongs_to_sort() -> Set<USong> {
-		switch list_state.select_mode {
-			case .select_albums: return []
+		switch list_state.selection {
+			case .mode_albums: return []
 			case .view: return Set(list_state.uSongs())
-			case .select_songs(let uSs_selected): return uSs_selected
+			case .mode_songs(let uSs_selected): return uSs_selected
 		}
 	}
 	
@@ -727,46 +715,46 @@ final class AlbumTable: LRTableViewController {
 	
 	private func promote_albums() {
 		Task {
-			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
 			Librarian.promote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			NotificationCenter.default.post(name: AlbumListState.changed_selection, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func promote_songs() {
 		Task {
-			guard case let .select_songs(uSs_selected) = list_state.select_mode else { return }
+			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
 			Librarian.promote_songs(uSs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			NotificationCenter.default.post(name: AlbumListState.changed_selection, object: list_state)
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	
 	private func demote_albums() {
 		Task {
-			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
 			Librarian.demote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			NotificationCenter.default.post(name: AlbumListState.changed_selection, object: list_state)
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func demote_songs() {
 		Task {
-			guard case let .select_songs(uSs_selected) = list_state.select_mode else { return }
+			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
 			Librarian.demote_songs(uSs_selected, to_limit: false)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			NotificationCenter.default.post(name: AlbumListState.selection_changed, object: list_state)
+			NotificationCenter.default.post(name: AlbumListState.changed_selection, object: list_state)
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
@@ -775,46 +763,46 @@ final class AlbumTable: LRTableViewController {
 	
 	private func float_albums() {
 		Task {
-			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
 			Librarian.promote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.select_mode = .select_albums([])
+			list_state.selection = .mode_albums([])
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func float_songs() {
 		Task {
-			guard case let .select_songs(uSs_selected) = list_state.select_mode else { return }
+			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
 			Librarian.promote_songs(uSs_selected, to_limit: true)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.select_mode = .select_songs([])
+			list_state.selection = .mode_songs([])
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	
 	private func sink_albums() {
 		Task {
-			guard case let .select_albums(uAs_selected) = list_state.select_mode else { return }
+			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
 			Librarian.demote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.select_mode = .select_albums([])
+			list_state.selection = .mode_albums([])
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
 	private func sink_songs() {
 		Task {
-			guard case let .select_songs(uSs_selected) = list_state.select_mode else { return }
+			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
 			Librarian.demote_songs(uSs_selected, to_limit: true)
 			Librarian.save()
 			
 			list_state.refresh_items()
-			list_state.select_mode = .select_songs([])
+			list_state.selection = .mode_songs([])
 			let _ = await apply_rowIDs(list_state.rowIDs)
 		}
 	}
