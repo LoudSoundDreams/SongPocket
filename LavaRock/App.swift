@@ -47,6 +47,13 @@ import os
 	}
 }
 
+@MainActor @Observable final class GlobalState {
+	private init() {}
+}
+extension GlobalState {
+	@ObservationIgnored static let shared = GlobalState()
+}
+
 struct RepNCMain: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> NCMain { NCMain.create() }
 	func updateUIViewController(_ vc: NCMain, context: Context) {}
@@ -54,10 +61,13 @@ struct RepNCMain: UIViewControllerRepresentable {
 final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let result = Self(rootViewController: AlbumTable.init_please())
+		
 		result.setNavigationBarHidden(true, animated: false)
+		
 		let toolbar = result.toolbar!
 		result.setToolbarHidden(false, animated: false)
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		
 		return result
 	}
 	override func viewIsAppearing(_ animated: Bool) {

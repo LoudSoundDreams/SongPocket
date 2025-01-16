@@ -2,30 +2,10 @@
 
 import SwiftUI
 
-@MainActor @Observable final class TheBarState {
-	private init() {}
-	var mode: TheBarMode = .zero
-}
-extension TheBarState {
-	@ObservationIgnored static let shared = TheBarState()
-}
-enum TheBarMode {
-	case zero, one, two
-}
-
 struct TheBar: View {
-	private let bar_state: TheBarState = .shared
+	private let global: GlobalState = .shared
 	var body: some View {
-		switch bar_state.mode {
-			case .zero:
-				Button("crawl", systemImage: "tortoise") {
-				}
-			case .one:
-				Button("hop", systemImage: "hare") {
-				}
-			case .two:
-				Button("finish", systemImage: "arrow.up.backward.and.arrow.down.forward.circle.fill") {
-				}
+		Button("hop", systemImage: "hare") {
 		}
 	}
 }
@@ -45,8 +25,8 @@ struct ButtonPanel: View {
 				.opacity(opacity_tap)
 				.onLongPressGesture(minimumDuration: .zero, perform: {
 					Print(Date())
-				}, onPressingChanged: { is_pressing in
-					if is_pressing {
+				}, onPressingChanged: { pressing in
+					if pressing {
 						opacity_tap = .one_half
 					} else {
 						withAnimation {
@@ -153,8 +133,8 @@ private struct FakeAlbumCover: View {
 			withAnimation {
 				is_reordering = true
 			}
-		} onPressingChanged: { is_pressing in
-			if !is_pressing {
+		} onPressingChanged: { pressing in
+			if !pressing {
 				withAnimation {
 					is_reordering = false
 				}

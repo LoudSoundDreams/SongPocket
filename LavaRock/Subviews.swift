@@ -14,7 +14,12 @@ import MusicKit
 			uAlbum: uAlbum,
 			dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
 		)
-		.opacity(sel_opacity)
+		.opacity({
+			switch list_state.selection {
+				case .view: return 1
+				case .mode_albums, .mode_songs: return .one_fourth
+			}
+		}())
 		.animation(.default, value: list_state.selection)
 		.overlay {
 			ZStack(alignment: .bottom) {
@@ -44,12 +49,6 @@ import MusicKit
 		}
 	}
 	
-	private var sel_opacity: Double {
-		switch list_state.selection {
-			case .view: return 1
-			case .mode_albums, .mode_songs: return .one_fourth
-		}
-	}
 	@ViewBuilder private var sel_highlight: some View {
 		let highlighting: Bool = { switch list_state.selection {
 			case .view, .mode_songs: return false

@@ -267,7 +267,7 @@ final class AlbumTable: LRTableViewController {
 		let result: CGFloat = .zero
 		- safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it 0.
 		+ (size_view.height / 2)
-		- (length_square / 2) // Half the height of a square fitting the window width.
+		- (length_square / 2) // Half the height of a square fitting the viewport.
 		- (safeAreaInsets.bottom / 2)
 		return result
 	}

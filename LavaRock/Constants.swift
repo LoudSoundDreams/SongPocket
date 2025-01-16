@@ -1,6 +1,9 @@
 // For consistency throughout the app.
 
 import SwiftUI
+import UIKit
+
+// MARK: - Numbers
 
 extension Double {
 	static var one_eighth: Self { 1/8 }
@@ -11,6 +14,8 @@ extension CGFloat {
 	static var one_half: Self { 1/2 }
 	static var eight: Self { 8 }
 }
+
+// MARK: - Styles
 
 extension View {
 	// As of iOS 18.2 developer beta 4, Apple Music uses this for album titles.
@@ -30,6 +35,74 @@ extension View {
 		font(.body).dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 	}
 }
+
+extension UIImage {
+	static var reverse: Self { sf("arrow.uturn.up") }
+	static var shuffle: Self { sf("shuffle") }
+	static var move_up: Self { sf("arrow.up.circle.fill") }
+	static var move_down: Self { sf("arrow.down.circle.fill") }
+	static var to_top: Self { sf("arrow.up.to.line") }
+	static var to_bottom: Self { sf("arrow.down.to.line") }
+	static func random_die() -> Self {
+		return sf({
+			switch Int.random(in: 1...6) {
+				case 1: return "die.face.1"
+				case 2: return "die.face.2"
+				case 3: return "die.face.3"
+				case 4: return "die.face.4"
+				case 5: return "die.face.5"
+				default: return "die.face.6"
+			}
+		}())
+	}
+	
+	private static func sf(_ symbol_name: String) -> Self {
+		return Self(systemName: symbol_name)!
+	}
+}
+
+// MARK: - Persistence
+
+/*
+ "hasEverImportedFromMusic"
+ Values: Bool
+ Used in versions ? through 2.7.1
+ 
+ "nowPlayingIcon"
+ Values: String
+ Used in versions 1.8 through 1.13.3:
+ • "Speaker"
+ • "Fish"
+ Used in versions 1.12 through 1.13.3:
+ • "Paw"
+ • "Luxo"
+ Used in versions 1.8 through 1.11.2:
+ • "Bird"
+ • "Sailboat"
+ • "Beach umbrella"
+ 
+ "accentColorName"
+ Values: String
+ Used in versions 1.0 through 1.13.3
+ • "Blueberry"
+ • "Grape"
+ • "Strawberry"
+ • "Tangerine"
+ • "Lime"
+ 
+ "appearance"
+ Values: Int
+ Used in versions 1.6 through 1.13
+ • `0` for “match system”
+ • `1` for “always light”
+ • `2` for “always dark”
+ 
+ "shouldExplainQueueAction"
+ Values: Bool
+ Used in versions ? through 1.7
+ */
+
+// MARK: - UI text
 
 enum InterfaceText {
 	static let Cancel = "Cancel"
@@ -134,44 +207,3 @@ enum InterfaceText {
 	static let To_Top = "To Top"
 	static let To_Bottom = "To Bottom"
 }
-
-// MARK: - UserDefaults
-
-/*
- "hasEverImportedFromMusic"
- Values: Bool
- Used in versions ? through 2.7.1
- 
- "nowPlayingIcon"
- Values: String
- Used in versions 1.8 through 1.13.3:
- • "Speaker"
- • "Fish"
- Used in versions 1.12 through 1.13.3:
- • "Paw"
- • "Luxo"
- Used in versions 1.8 through 1.11.2:
- • "Bird"
- • "Sailboat"
- • "Beach umbrella"
- 
- "accentColorName"
- Values: String
- Used in versions 1.0 through 1.13.3
- • "Blueberry"
- • "Grape"
- • "Strawberry"
- • "Tangerine"
- • "Lime"
- 
- "appearance"
- Values: Int
- Used in versions 1.6 through 1.13
- • `0` for “match system”
- • `1` for “always light”
- • `2` for “always dark”
- 
- "shouldExplainQueueAction"
- Values: Bool
- Used in versions ? through 1.7
- */
