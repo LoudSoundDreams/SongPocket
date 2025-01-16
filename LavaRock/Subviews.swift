@@ -31,18 +31,17 @@ import MusicKit
 			ZStack(alignment: .bottom) {
 				ZStack {
 					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-				}.animation(.linear(duration: .one_eighth), value: is_expanded)
+				}.animation(.linear_quick(), value: is_expanded)
 				ZStack {
 					switch list_state.focus {
 						case .tracklist: EmptyView()
 						case .cover:
 							AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
 					}
-				}.animation(.linear(duration: .one_eighth), value: list_state.focus)
+				}.animation(.linear_quick(), value: list_state.focus)
 			}
 		}
-		.background { sel_highlight } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
-		.overlay { sel_border.accessibilityHidden(true) } // `withAnimation` animates this when toggling select mode, but not when selecting or deselecting.
+		.background { sel_background }.overlay { sel_border.accessibilityHidden(true) } // Use `withAnimation` to animate these when entering or exiting select mode, but not when staying in select mode.
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
@@ -60,14 +59,13 @@ import MusicKit
 	}
 	@State private var pressing = false
 	
-	@ViewBuilder private var sel_highlight: some View {
+	@ViewBuilder private var sel_background: some View {
 		let highlighting: Bool = { switch list_state.selection {
 			case .view, .mode_songs: return false
 			case .mode_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
 		}}()
-		if highlighting {
-			Color.accentColor.opacity(.one_half)
-		} else { EmptyView() }
+		Color.accentColor
+			.opacity(highlighting ? .one_half : .zero)
 	}
 	@ViewBuilder private var sel_border: some View {
 		switch list_state.selection {
@@ -125,9 +123,7 @@ import MusicKit
 				ZStack {
 					Color(white: .one_fourth)
 						.frame(width: dim_limit, height: dim_limit)
-					Image(systemName: "music.note")
-						.foregroundStyle(Color(white: .one_half))
-						.font(.title)
+					PlaceholderMusicNote()
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
 			}
@@ -300,10 +296,9 @@ import MusicKit
 			}
 			.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
-			.background { sel_highlight }
 			Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
 		}
-		.overlay { sel_border }
+		.background { sel_background }.overlay { sel_border }
 		.frame(maxWidth: list_state.size_viewport.height)
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
@@ -337,7 +332,7 @@ import MusicKit
 		.accessibilityAddTraits(.isButton)
 	}
 	
-	@ViewBuilder private var sel_highlight: some View {
+	@ViewBuilder private var sel_background: some View {
 		let highlighting: Bool = { switch list_state.selection {
 			case .mode_albums: return false
 			case .view(let uS_activated): return uS_activated == uSong

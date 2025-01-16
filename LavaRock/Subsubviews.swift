@@ -11,13 +11,6 @@ struct Separator: View {
 	@Environment(\.pixelLength) private var points_per_pixel
 }
 
-struct RectSelected: View {
-	var body: some View {
-		Rectangle()
-			.strokeBorder(lineWidth: .eight)
-			.foregroundStyle(.tint.opacity(.one_half))
-	}
-}
 struct RectUnselected: View {
 	var body: some View {
 		Rectangle()
@@ -25,14 +18,14 @@ struct RectUnselected: View {
 			.foregroundStyle(Material.ultraThin)
 	}
 }
-
-struct IconSelected: View {
+struct RectSelected: View {
 	var body: some View {
-		Image(systemName: "ellipsis.circle.fill")
-			.font_body_dynamicType_up_to_xxxLarge()
-			.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.2 developer beta 3, VoiceOver automatically adds “Selected” because of the SF Symbol.
+		Rectangle()
+			.strokeBorder(lineWidth: .eight)
+			.foregroundStyle(.tint.opacity(.one_half))
 	}
 }
+
 struct IconUnselected: View {
 	var body: some View {
 		Image(systemName: "ellipsis.circle.fill")
@@ -40,5 +33,20 @@ struct IconUnselected: View {
 			.symbolRenderingMode(.hierarchical)
 			.accessibilityLabel(InterfaceText.Select)
 			.accessibilityRemoveTraits(.isSelected)
+	}
+}
+struct IconSelected: View {
+	var body: some View {
+		Image(systemName: "ellipsis.circle.fill")
+			.font_body_dynamicType_up_to_xxxLarge()
+			.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.2 developer beta 3, VoiceOver automatically adds “Selected” because of the SF Symbol.
+	}
+}
+
+struct PlaceholderMusicNote: View {
+	var body: some View {
+		Image(systemName: "music.note")
+			.foregroundStyle(Color(white: .one_half))
+			.font(.title)
 	}
 }

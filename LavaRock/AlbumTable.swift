@@ -309,9 +309,7 @@ final class AlbumTable: LRTableViewController {
 			}
 			if list_state.list_items.isEmpty {
 				return UIHostingConfiguration {
-					Image(systemName: "music.note")
-						.foregroundStyle(Color(white: .one_half))
-						.font(.title)
+					PlaceholderMusicNote()
 						.accessibilityLabel(InterfaceText.No_music)
 						.accessibilityRemoveTraits(.isImage)
 				}.margins(.all, .zero)

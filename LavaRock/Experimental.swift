@@ -128,7 +128,7 @@ private struct FakeAlbumCover: View {
 		.aspectRatio(1, contentMode: .fit)
 		.scaleEffect(is_reordering ? (1 + 1 / CGFloat.eight) : 1)
 		.opacity(is_reordering ? Double.one_half : 1)
-		.animation(.linear(duration: .one_eighth), value: is_reordering)
+		.animation(.linear_quick(), value: is_reordering)
 		.onLongPressGesture(minimumDuration: .one_fourth) {
 			withAnimation {
 				is_reordering = true

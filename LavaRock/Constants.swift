@@ -6,13 +6,13 @@ import UIKit
 // MARK: - Numbers
 
 extension Double {
-	static var one_eighth: Self { 1/8 }
-	static var one_fourth: Self { 1/4 }
 	static var one_half: Self { 1/2 }
+	static var one_fourth: Self { 1/4 }
+	static var one_eighth: Self { 1/8 }
 }
 extension CGFloat {
-	static var one_half: Self { 1/2 }
 	static var eight: Self { 8 }
+	static var one_half: Self { 1/2 }
 }
 
 // MARK: - Styles
