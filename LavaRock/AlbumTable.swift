@@ -347,11 +347,7 @@ final class AlbumTable: LRTableViewController {
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
 						cell.backgroundColor = .clear
-						cell.selectedBackgroundView = {
-							let result = UIView()
-							result.backgroundColor = .tintColor.withAlphaComponent(.one_half)
-							return result
-						}()
+						cell.selectionStyle = .none
 						cell.contentConfiguration = UIHostingConfiguration {
 							SongRow(
 								uSong: uSong,

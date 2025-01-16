@@ -11,7 +11,6 @@ extension Double {
 }
 extension CGFloat {
 	static var eight: Self { 8 }
-	static var one_half: Self { 1/2 }
 }
 
 // MARK: - Styles

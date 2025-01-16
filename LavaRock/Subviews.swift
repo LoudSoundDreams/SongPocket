@@ -272,6 +272,10 @@ import MusicKit
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
+		.onLongPressGesture(
+			minimumDuration: .zero,
+			perform: {},
+			onPressingChanged: { pressing = $0 })
 	}
 	@ViewBuilder private func stack_main(
 		_ songInfo: SongInfo?,
@@ -300,12 +304,16 @@ import MusicKit
 		.accessibilityInputLabels([title].compactMap { $0 })
 		.accessibilityAddTraits(.isButton)
 	}
+	@State private var pressing = false
 	
 	@ViewBuilder private var highlight: some View {
-		let highlighting: Bool = { switch list_state.selection {
-			case .mode_albums, .mode_songs: return false
-			case .view(let uS_activated): return uS_activated == uSong
-		}}()
+		let highlighting: Bool = {
+			if pressing { return true }
+			switch list_state.selection {
+				case .mode_albums, .mode_songs: return false
+				case .view(let uS_activated): return uS_activated == uSong
+			}
+		}()
 		Color.accentColor
 			.opacity(highlighting ? .one_half : .zero)
 			.animation(highlighting ? nil : .default, value: list_state.selection)
