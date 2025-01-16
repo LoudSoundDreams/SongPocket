@@ -17,6 +17,12 @@ extension CGFloat {
 
 // MARK: - Styles
 
+extension Animation {
+	static func linear_quick() -> Self {
+		linear(duration: .one_eighth)
+	}
+}
+
 extension View {
 	// As of iOS 18.2 developer beta 4, Apple Music uses this for album titles.
 	func font_title3_bold() -> some View { font(.title3).bold() }

@@ -334,11 +334,7 @@ final class AlbumTable: LRTableViewController {
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 				cell.backgroundColor = .clear
-				cell.selectedBackgroundView = {
-					let result = UIView()
-					result.backgroundColor = .tintColor.withAlphaComponent(.one_half)
-					return result
-				}()
+				cell.selectionStyle = .none // Prevents highlighting.
 				list_state.size_viewport = (
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)

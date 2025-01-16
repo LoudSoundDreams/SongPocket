@@ -22,6 +22,12 @@ import MusicKit
 		}())
 		.animation(.default, value: list_state.selection)
 		.overlay {
+			Rectangle()
+				.foregroundStyle(Color(white: .zero))
+				.opacity(pressing ? .one_half : .zero)
+				.animation(pressing ? nil : .linear_quick(), value: pressing)
+		}
+		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
 					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
@@ -40,6 +46,10 @@ import MusicKit
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
+		.onLongPressGesture(
+			minimumDuration: .zero,
+			perform: {},
+			onPressingChanged: { pressing = $0 })
 		.accessibilityAddTraits(.isButton)
 	}
 	private var is_expanded: Bool {
@@ -48,6 +58,7 @@ import MusicKit
 			case .tracklist(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
+	@State private var pressing = false
 	
 	@ViewBuilder private var sel_highlight: some View {
 		let highlighting: Bool = { switch list_state.selection {
