@@ -14,13 +14,8 @@ import MusicKit
 			uAlbum: uAlbum,
 			dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
 		)
-		.opacity({
-			switch list_state.selection {
-				case .view: return 1
-				case .mode_albums, .mode_songs: return .one_fourth
-			}
-		}())
-		.animation(.default, value: list_state.selection)
+		.opacity(is_dimmed ? .one_half : 1)
+		.animation(.default, value: is_dimmed)
 		.overlay {
 			Rectangle()
 				.foregroundStyle(Color(white: .zero))
@@ -50,6 +45,12 @@ import MusicKit
 			perform: {},
 			onPressingChanged: { pressing = $0 })
 		.accessibilityAddTraits(.isButton)
+	}
+	private var is_dimmed: Bool {
+		switch list_state.selection {
+			case .view, .mode_albums: return false
+			case .mode_songs: return true
+		}
 	}
 	private var is_expanded: Bool {
 		switch list_state.focus {
@@ -153,25 +154,25 @@ import MusicKit
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
 					.font(.caption2).monospacedDigit()
-					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
+					.foregroundStyle(is_dimmed ? .tertiary : .secondary)
 					.accessibilitySortPriority(10)
 			}
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
-					.foregroundStyle(sel_dimmed ? .tertiary : .secondary)
+					.foregroundStyle(is_dimmed ? .tertiary : .secondary)
 					.accessibilitySortPriority(20)
 			}
 			Text(title_and_input_label)
 				.font_title3_bold()
-				.foregroundStyle(sel_dimmed ? .secondary : .primary)
+				.foregroundStyle(is_dimmed ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Higher means sooner.
 		}
-		.animation(.default, value: sel_dimmed)
+		.animation(.default, value: is_dimmed)
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
 	}
-	private var sel_dimmed: Bool {
+	private var is_dimmed: Bool {
 		switch list_state.selection {
 			case .view, .mode_albums: return false
 			case .mode_songs: return true
