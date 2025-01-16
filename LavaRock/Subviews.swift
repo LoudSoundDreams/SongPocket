@@ -41,7 +41,7 @@ import MusicKit
 				}.animation(.linear_quick(), value: list_state.focus)
 			}
 		}
-		.background { sel_background }.overlay { sel_border.accessibilityHidden(true) } // Use `withAnimation` to animate these when entering or exiting select mode, but not when staying in select mode.
+		.overlay { border.accessibilityHidden(true) } // Use `withAnimation` to animate this when entering or exiting select mode, but not when staying in select mode.
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
@@ -59,15 +59,7 @@ import MusicKit
 	}
 	@State private var pressing = false
 	
-	@ViewBuilder private var sel_background: some View {
-		let highlighting: Bool = { switch list_state.selection {
-			case .view, .mode_songs: return false
-			case .mode_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
-		}}()
-		Color.accentColor
-			.opacity(highlighting ? .one_half : .zero)
-	}
-	@ViewBuilder private var sel_border: some View {
+	@ViewBuilder private var border: some View {
 		switch list_state.selection {
 			case .view, .mode_songs: EmptyView()
 			case .mode_albums(let uAs_selected):
@@ -298,7 +290,8 @@ import MusicKit
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
 		}
-		.background { sel_background }.overlay { sel_border }
+		.background { highlight }
+		.overlay { border }
 		.frame(maxWidth: list_state.size_viewport.height)
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
@@ -332,23 +325,17 @@ import MusicKit
 		.accessibilityAddTraits(.isButton)
 	}
 	
-	@ViewBuilder private var sel_background: some View {
+	@ViewBuilder private var highlight: some View {
 		let highlighting: Bool = { switch list_state.selection {
-			case .mode_albums: return false
+			case .mode_albums, .mode_songs: return false
 			case .view(let uS_activated): return uS_activated == uSong
-			case .mode_songs(let uSs_selected): return uSs_selected.contains(uSong)
 		}}()
 		Color.accentColor
 			.opacity(highlighting ? .one_half : .zero)
-			.animation( // Animates when entering vanilla mode. Doesn’t animate when entering or staying in select mode, or activating song in view mode.
-				{ switch list_state.selection {
-					case .mode_albums: return nil // Should never run
-					case .view(let uS_activated): return (uS_activated == nil) ? .default : nil
-					case .mode_songs: return nil // It’d be nice to animate deselecting after arranging, floating, and sinking, but not manually selecting or deselecting.
-				}}(),
-				value: list_state.selection)
+			.animation(highlighting ? nil : .default, value: list_state.selection)
 	}
-	@ViewBuilder private var sel_border: some View {
+	
+	@ViewBuilder private var border: some View {
 		switch list_state.selection {
 			case .view, .mode_albums: EmptyView()
 			case .mode_songs(let uSs_selected):
