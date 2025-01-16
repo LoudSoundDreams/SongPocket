@@ -14,11 +14,9 @@ import MusicKit
 			uAlbum: uAlbum,
 			dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
 		)
-		.opacity(is_dimmed ? .one_half : 1)
-		.animation(.default, value: is_dimmed)
+		.opacity(is_dimmed ? .one_half : 1).animation(.default, value: is_dimmed)
 		.overlay {
-			Rectangle()
-				.foregroundStyle(Color(white: .zero))
+			Color(white: .zero)
 				.opacity(pressing ? .one_half : .zero)
 				.animation(pressing ? nil : .linear_quick(), value: pressing)
 		}
@@ -65,8 +63,8 @@ import MusicKit
 			case .view, .mode_songs: EmptyView()
 			case .mode_albums(let uAs_selected):
 				if uAs_selected.contains(uAlbum) {
-					RectSelected()
-				} else { RectUnselected() }
+					BorderSelected()
+				} else { BorderUnselected() }
 		}
 	}
 	
@@ -136,7 +134,6 @@ import MusicKit
 		HStack(alignment: .lastTextBaseline) {
 			stack_text
 			Spacer()
-//			b_tracklist
 			menu_select
 		}
 		.padding()
@@ -176,28 +173,6 @@ import MusicKit
 		switch list_state.selection {
 			case .view, .mode_albums: return false
 			case .mode_songs: return true
-		}
-	}
-	
-	private var b_tracklist: some View {
-		Button {
-			if is_expanded {
-				list_state.focus = .cover
-			} else {
-				list_state.focus = .tracklist(uAlbum)
-			}
-		} label: {
-			Image(systemName: is_expanded ? "chevron.down.circle.fill" : "chevron.forward.circle.fill")
-				.accessibilityLabel(is_expanded ? "Hide songs" : "Show songs")
-				.font_body_dynamicType_up_to_xxxLarge()
-				.symbolRenderingMode(.hierarchical)
-				.animation(.default, value: is_expanded)
-		}
-	}
-	private var is_expanded: Bool {
-		switch list_state.focus {
-			case .cover: return false
-			case .tracklist(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
 	
@@ -341,8 +316,8 @@ import MusicKit
 			case .view, .mode_albums: EmptyView()
 			case .mode_songs(let uSs_selected):
 				if uSs_selected.contains(uSong) {
-					RectSelected()
-				} else { RectUnselected() }
+					BorderSelected()
+				} else { BorderUnselected() }
 		}
 	}
 	

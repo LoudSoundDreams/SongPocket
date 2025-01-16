@@ -1,7 +1,6 @@
 // For consistency throughout the app.
 
 import SwiftUI
-import UIKit
 
 // MARK: - Numbers
 
@@ -39,31 +38,6 @@ extension View {
 	
 	func font_body_dynamicType_up_to_xxxLarge() -> some View {
 		font(.body).dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-	}
-}
-
-extension UIImage {
-	static var reverse: Self { sf("arrow.uturn.up") }
-	static var shuffle: Self { sf("shuffle") }
-	static var move_up: Self { sf("arrow.up.circle.fill") }
-	static var move_down: Self { sf("arrow.down.circle.fill") }
-	static var to_top: Self { sf("arrow.up.to.line") }
-	static var to_bottom: Self { sf("arrow.down.to.line") }
-	static func random_die() -> Self {
-		return sf({
-			switch Int.random(in: 1...6) {
-				case 1: return "die.face.1"
-				case 2: return "die.face.2"
-				case 3: return "die.face.3"
-				case 4: return "die.face.4"
-				case 5: return "die.face.5"
-				default: return "die.face.6"
-			}
-		}())
-	}
-	
-	private static func sf(_ symbol_name: String) -> Self {
-		return Self(systemName: symbol_name)!
 	}
 }
 
