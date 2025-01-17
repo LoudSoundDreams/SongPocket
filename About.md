@@ -1,6 +1,6 @@
-SongPocket is an immersive player for your Apple Music library on iOS.
+An immersive Apple Music library player for iOS.
 
-Arrange your library manually! Put your favorite albums and songs on top, or reverse or shuffle them.
+Arrange your library your way! Reorder songs and albums manually. Put your favorites on top.
 
 [Get it from the App Store.](https://apps.apple.com/us/app/songpocket/id1538037231)
 
