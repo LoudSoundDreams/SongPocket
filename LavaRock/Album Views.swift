@@ -5,7 +5,7 @@ import MusicKit
 
 @MainActor struct AlbumRow: View {
 	let uAlbum: UAlbum
-	let list_state: AlbumListState
+	let list_state: ExhibitState
 	
 	var body: some View {
 		let length_square: CGFloat = min(
@@ -27,8 +27,8 @@ import MusicKit
 				}.animation(.linear_quick(), value: is_focused)
 				ZStack {
 					switch list_state.focus {
-						case .tracklist: EmptyView()
-						case .cover:
+						case .expanded: EmptyView()
+						case .covers:
 							AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
 					}
 				}.animation(.linear_quick(), value: list_state.focus)
@@ -57,8 +57,8 @@ import MusicKit
 	@State private var is_pressing = false
 	private var is_focused: Bool {
 		switch list_state.focus {
-			case .cover: return false
-			case .tracklist(let uA_focused): return uA_focused == uAlbum
+			case .covers: return false
+			case .expanded(let uA_focused): return uA_focused == uAlbum
 		}
 	}
 	private var is_dimmed: Bool {
@@ -73,12 +73,12 @@ import MusicKit
 			case .mode_songs: return
 			case .view:
 				switch list_state.focus {
-					case .cover:
-						list_state.focus = .tracklist(uAlbum)
-					case .tracklist(let uA_focused):
+					case .covers:
+						list_state.focus = .expanded(uAlbum)
+					case .expanded(let uA_focused):
 						if uA_focused == uAlbum {
-							list_state.focus = .cover
-						} else { list_state.focus = .tracklist(uAlbum) }
+							list_state.focus = .covers
+						} else { list_state.focus = .expanded(uAlbum) }
 				}
 			case .mode_albums(let old_selected):
 				var new_selected = old_selected
@@ -94,7 +94,7 @@ import MusicKit
 
 @MainActor private struct AlbumLabel: View {
 	let uAlbum: UAlbum
-	let list_state: AlbumListState
+	let list_state: ExhibitState
 	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
@@ -155,8 +155,8 @@ import MusicKit
 		}
 		.disabled({
 			switch list_state.focus {
-				case .tracklist: return true
-				case .cover: return false
+				case .expanded: return true
+				case .covers: return false
 			}
 		}())
 		.animation(.default, value: list_state.focus)

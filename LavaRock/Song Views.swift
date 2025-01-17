@@ -6,7 +6,7 @@ import MusicKit
 @MainActor struct SongRow: View {
 	let uSong: USong
 	let uAlbum: UAlbum
-	let list_state: AlbumListState
+	let list_state: ExhibitState
 	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
