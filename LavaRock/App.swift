@@ -47,13 +47,6 @@ import os
 	}
 }
 
-@MainActor @Observable final class GlobalState {
-	private init() {}
-}
-extension GlobalState {
-	@ObservationIgnored static let shared = GlobalState()
-}
-
 struct RepNCMain: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> NCMain { NCMain.create() }
 	func updateUIViewController(_ vc: NCMain, context: Context) {}
@@ -70,6 +63,7 @@ final class NCMain: UINavigationController {
 		
 		return result
 	}
+	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
 		if !Self.has_appeared {
