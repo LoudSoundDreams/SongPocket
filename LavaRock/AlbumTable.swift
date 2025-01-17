@@ -264,11 +264,12 @@ final class AlbumTable: LRTableViewController {
 			(size_view.height - safeAreaInsets.bottom)
 		)
 		
-		let result: CGFloat = .zero
-		- safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it 0.
-		+ (size_view.height / 2)
-		- (length_square / 2) // Half the height of a square fitting the viewport.
-		- (safeAreaInsets.bottom / 2)
+		var result: CGFloat = .zero
+		result -= safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it 0.
+		result += (size_view.height / 2)
+		result -= (length_square / 2) // Half the height of a square fitting the viewport.
+		result -= (safeAreaInsets.bottom / 2)
+		result = result.rounded(.down) // As of iOS 18.3 developer beta 3, a non-integer value prevents you from rapidly expanding and collapsing albums.
 		return result
 	}
 	
