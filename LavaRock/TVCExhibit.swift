@@ -4,9 +4,9 @@ import UIKit
 import SwiftUI
 import MusicKit
 
-@MainActor @Observable final class ExhibitState {
+@MainActor @Observable final class Exhibit {
 	@ObservationIgnored fileprivate private(set) var row_items: [RowKind]
-	= ExhibitState.uAlbums_fresh().map { .row_album($0) } { didSet {
+	= Exhibit.uAlbums_fresh().map { .row_album($0) } { didSet {
 		signal_items.toggle()
 	}}
 	private(set) var signal_items = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
@@ -21,10 +21,10 @@ import MusicKit
 	
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
-extension ExhibitState.RowKind: Hashable {}
-extension ExhibitState.Focus: Equatable {}
-extension ExhibitState.Selection: Equatable {}
-extension ExhibitState {
+extension Exhibit.RowKind: Hashable {}
+extension Exhibit.Focus: Equatable {}
+extension Exhibit.Selection: Equatable {}
+extension Exhibit {
 	fileprivate enum RowKind {
 		case row_album(UAlbum)
 		case row_song(USong)
@@ -222,7 +222,7 @@ final class TVCExhibit: LRTableViewController {
 	static func init_please() -> Self {
 		return UIStoryboard(name: "TVCExhibit", bundle: nil).instantiateInitialViewController() as! Self
 	}
-	private let list_state = ExhibitState()
+	private let exhibit = Exhibit()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -233,11 +233,11 @@ final class TVCExhibit: LRTableViewController {
 		b_scope.preferredMenuElementOrder = .fixed
 		reflect_selection()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_list_items), name: AppleLibrary.merged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_row_items), name: AppleLibrary.merged, object: nil)
 		Remote.shared.weak_tvc_albums = self
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: ExhibitState.changed_focus, object: list_state)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: exhibit)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: ExhibitState.changed_selection, object: list_state)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: Exhibit.changed_selection, object: exhibit)
 	}
 	
 	override func viewIsAppearing(_ animated: Bool) {
@@ -249,7 +249,7 @@ final class TVCExhibit: LRTableViewController {
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		list_state.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		exhibit.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 		tableView.contentInset.top = Self.top_inset(
 			size_view: size,
 			safeAreaInsets: view.safeAreaInsets) // Hopefully doesn’t change later.
@@ -308,7 +308,7 @@ final class TVCExhibit: LRTableViewController {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if list_state.row_items.isEmpty {
+			if exhibit.row_items.isEmpty {
 				return UIHostingConfiguration {
 					PlaceholderMusicNote()
 						.accessibilityLabel(InterfaceText.No_music)
@@ -321,28 +321,28 @@ final class TVCExhibit: LRTableViewController {
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if !initialized_rowIDs_current {
 			initialized_rowIDs_current = true
-			rowIDs_current = list_state.rowIDs
+			rowIDs_current = exhibit.rowIDs
 		}
-		return list_state.row_items.count
+		return exhibit.row_items.count
 	}
 	private var initialized_rowIDs_current = false
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch list_state.row_items[indexPath.row] {
+		switch exhibit.row_items[indexPath.row] {
 			case .row_album(let uAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 				cell.backgroundColor = .clear
 				cell.selectionStyle = .none // Prevents highlighting.
-				list_state.size_viewport = (
+				exhibit.size_viewport = (
 					width: view.frame.width,
 					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
-					AlbumRow(uAlbum: uAlbum, list_state: list_state)
+					AlbumRow(uAlbum: uAlbum, exhibit: exhibit)
 				}.margins(.all, .zero)
 				return cell
 			case .row_song(let uSong):
-				switch list_state.focus {
+				switch exhibit.focus {
 					case .covers: return UITableViewCell() // Should never run
 					case .expanded(let uAlbum):
 						// The cell in the storyboard is completely default except for the reuse identifier.
@@ -353,7 +353,7 @@ final class TVCExhibit: LRTableViewController {
 							SongRow(
 								uSong: uSong,
 								uAlbum: uAlbum,
-								list_state: list_state)
+								exhibit: exhibit)
 						}.margins(.all, .zero)
 						return cell
 				}
@@ -364,12 +364,12 @@ final class TVCExhibit: LRTableViewController {
 	
 	// MARK: Events
 	
-	@objc private func refresh_list_items() {
+	@objc private func refresh_row_items() {
 		Task {
-			list_state.refresh_items()
+			exhibit.refresh_items()
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
@@ -379,34 +379,34 @@ final class TVCExhibit: LRTableViewController {
 			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
 		else { return }
 		let uAlbum_target = album_target.uAlbum
-		guard let row_target = list_state.row_items.firstIndex(where: { switch $0 {
+		guard let row_target = exhibit.row_items.firstIndex(where: { switch $0 {
 			case .row_song: return false
 			case .row_album(let uAlbum): return uAlbum == uAlbum_target
 		}}) else { return }
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.list_state.focus = .expanded(uAlbum_target)
+			self.exhibit.focus = .expanded(uAlbum_target)
 		}
 	}
 	
 	@objc private func reflect_focus() {
-		switch list_state.focus {
+		switch exhibit.focus {
 			case .covers:
 				Task {
-					list_state.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+					exhibit.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
-					let _ = await apply_rowIDs(list_state.rowIDs)
+					let _ = await apply_rowIDs(exhibit.rowIDs)
 				}
 			case .expanded(let uA_to_expand):
 				Task {
-					list_state.refresh_items()
+					exhibit.refresh_items()
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
-					let _ = await apply_rowIDs(list_state.rowIDs, running_before_continuation: {
+					let _ = await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
 						if
-							let row_target: Int = self.list_state.row_items.firstIndex(where: { switch $0 {
+							let row_target: Int = self.exhibit.row_items.firstIndex(where: { switch $0 {
 								case .row_song: return false
 								case .row_album(let uAlbum): return uAlbum == uA_to_expand
 							}})
@@ -419,7 +419,7 @@ final class TVCExhibit: LRTableViewController {
 	}
 	
 	@objc private func reflect_selection() {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .view(let uS_activated):
 				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_scope], animated: true)
 				b_sort.menu = menu_sort()
@@ -449,7 +449,7 @@ final class TVCExhibit: LRTableViewController {
 		guard
 			let uSong_activated = notification.object as? USong,
 			let view_popover_anchor: UIView = { () -> UITableViewCell? in
-				guard let row_activated = list_state.row_items.firstIndex(where: { switch $0 {
+				guard let row_activated = exhibit.row_items.firstIndex(where: { switch $0 {
 					case .row_album: return false
 					case .row_song(let uSong): return uSong == uSong_activated
 				}}) else { return nil }
@@ -457,13 +457,13 @@ final class TVCExhibit: LRTableViewController {
 			}()
 		else { return }
 		
-		list_state.selection = .view(uSong_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		exhibit.selection = .view(uSong_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
 		let action_sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		action_sheet.popoverPresentationController?.sourceView = view_popover_anchor
 		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
-				self.list_state.selection = .view(nil)
+				self.exhibit.selection = .view(nil)
 				Task {
 					guard let album_chosen = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
 					await ApplicationMusicPlayer._shared?.play_now(
@@ -475,7 +475,7 @@ final class TVCExhibit: LRTableViewController {
 		)
 		action_sheet.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
-				self.list_state.selection = .view(nil)
+				self.exhibit.selection = .view(nil)
 			}
 		)
 		present(action_sheet, animated: true)
@@ -486,7 +486,7 @@ final class TVCExhibit: LRTableViewController {
 	private lazy var a_end_selecting = UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() }
 	private func end_selecting_animated() {
 		withAnimation {
-			self.list_state.selection = .view(nil)
+			self.exhibit.selection = .view(nil)
 		}
 	}
 	
@@ -516,7 +516,7 @@ final class TVCExhibit: LRTableViewController {
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(
 			children: {
-				switch list_state.focus {
+				switch exhibit.focus {
 					case .covers: return menu_sections_album_sort
 					case .expanded: return menu_sections_song_sort
 				}
@@ -526,7 +526,7 @@ final class TVCExhibit: LRTableViewController {
 	
 	private func menu_scope() -> UIMenu {
 		var submenus_inline: [UIMenu] = []
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .view: break
 			case .mode_albums, .mode_songs:
 				submenus_inline.append(UIMenu(
@@ -585,27 +585,27 @@ final class TVCExhibit: LRTableViewController {
 		return UIMenu(children: submenus_inline)
 	}
 	private func uSongs_scope() -> [USong] { // In display order.
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .mode_albums(let uAs_selected):
 				var result: [USong] = []
-				list_state.uAlbums(with: uAs_selected).forEach { uAlbum in // Order matters.
+				exhibit.uAlbums(with: uAs_selected).forEach { uAlbum in // Order matters.
 					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
 					result.append(contentsOf: lrAlbum.uSongs)
 				}
 				return result
 			case .mode_songs(let uSs_selected):
-				return list_state.uSongs(with: uSs_selected)
+				return exhibit.uSongs(with: uSs_selected)
 			case .view:
-				switch list_state.focus {
+				switch exhibit.focus {
 					case .covers:
 						var result: [USong] = []
-						list_state.uAlbums().forEach { uAlbum in
+						exhibit.uAlbums().forEach { uAlbum in
 							guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
 							result.append(contentsOf: lrAlbum.uSongs)
 						}
 						return result
 					case .expanded:
-						return list_state.uSongs()
+						return exhibit.uSongs()
 				}
 		}
 	}
@@ -629,10 +629,10 @@ final class TVCExhibit: LRTableViewController {
 	private func can_sort_albums(by album_order: AlbumOrder) -> Bool {
 		let uAlbums = uAlbums_to_sort()
 		guard uAlbums.count >= 2 else { return false }
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .mode_songs, .view: break
 			case .mode_albums(let uAs_selected):
-				let rs_selected = list_state.uAlbums().indices(where: { uAlbum in
+				let rs_selected = exhibit.uAlbums().indices(where: { uAlbum in
 					uAs_selected.contains(uAlbum)
 				})
 				guard rs_selected.ranges.count <= 1 else { return false }
@@ -653,10 +653,10 @@ final class TVCExhibit: LRTableViewController {
 					let action = order.action { [weak self] in self?.sort_songs(by: order) }
 					var enabling = true
 					if uSongs_to_sort().count <= 1 { enabling = false }
-					switch list_state.selection {
+					switch exhibit.selection {
 						case .mode_albums, .view: break
 						case .mode_songs(let uSs_selected):
-							let rs_selected = list_state.uSongs().indices(where: { uSong in
+							let rs_selected = exhibit.uSongs().indices(where: { uSong in
 								uSs_selected.contains(uSong)
 							})
 							if rs_selected.ranges.count >= 2 { enabling = false }
@@ -673,8 +673,8 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func sort_songs(by songOrder: SongOrder) {
@@ -682,22 +682,22 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
 	private func uAlbums_to_sort() -> Set<UAlbum> {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .mode_songs: return []
-			case .view: return Set(list_state.uAlbums())
+			case .view: return Set(exhibit.uAlbums())
 			case .mode_albums(let uAs_selected): return uAs_selected
 		}
 	}
 	private func uSongs_to_sort() -> Set<USong> {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .mode_albums: return []
-			case .view: return Set(list_state.uSongs())
+			case .view: return Set(exhibit.uSongs())
 			case .mode_songs(let uSs_selected): return uSs_selected
 		}
 	}
@@ -706,47 +706,47 @@ final class TVCExhibit: LRTableViewController {
 	
 	private func promote_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
+			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
 			Librarian.promote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			NotificationCenter.default.post(name: ExhibitState.changed_selection, object: list_state) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func promote_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
+			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
 			Librarian.promote_songs(uSs_selected, to_limit: false)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			NotificationCenter.default.post(name: ExhibitState.changed_selection, object: list_state)
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
 	private func demote_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
+			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
 			Librarian.demote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			NotificationCenter.default.post(name: ExhibitState.changed_selection, object: list_state)
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func demote_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
+			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
 			Librarian.demote_songs(uSs_selected, to_limit: false)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			NotificationCenter.default.post(name: ExhibitState.changed_selection, object: list_state)
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
@@ -754,47 +754,47 @@ final class TVCExhibit: LRTableViewController {
 	
 	private func float_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
+			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
 			Librarian.promote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			list_state.selection = .mode_albums([])
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			exhibit.selection = .mode_albums([])
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func float_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
+			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
 			Librarian.promote_songs(uSs_selected, to_limit: true)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			list_state.selection = .mode_songs([])
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			exhibit.selection = .mode_songs([])
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
 	private func sink_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = list_state.selection else { return }
+			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
 			Librarian.demote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			list_state.selection = .mode_albums([])
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			exhibit.selection = .mode_albums([])
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func sink_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = list_state.selection else { return }
+			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
 			Librarian.demote_songs(uSs_selected, to_limit: true)
 			Librarian.save()
 			
-			list_state.refresh_items()
-			list_state.selection = .mode_songs([])
-			let _ = await apply_rowIDs(list_state.rowIDs)
+			exhibit.refresh_items()
+			exhibit.selection = .mode_songs([])
+			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 }

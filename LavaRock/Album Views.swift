@@ -5,12 +5,12 @@ import MusicKit
 
 @MainActor struct AlbumRow: View {
 	let uAlbum: UAlbum
-	let list_state: ExhibitState
+	let exhibit: Exhibit
 	
 	var body: some View {
 		let length_square: CGFloat = min(
-			list_state.size_viewport.width,
-			list_state.size_viewport.height)
+			exhibit.size_viewport.width,
+			exhibit.size_viewport.height)
 		AlbumArt(
 			uAlbum: uAlbum,
 			dim_limit: length_square)
@@ -26,12 +26,12 @@ import MusicKit
 					if !is_focused { Rectangle().foregroundStyle(Material.thin) }
 				}.animation(.linear_quick(), value: is_focused)
 				ZStack {
-					switch list_state.focus {
+					switch exhibit.focus {
 						case .expanded: EmptyView()
 						case .covers:
-							AlbumLabel(uAlbum: uAlbum, list_state: list_state).accessibilitySortPriority(10)
+							AlbumLabel(uAlbum: uAlbum, exhibit: exhibit).accessibilitySortPriority(10)
 					}
-				}.animation(.linear_quick(), value: list_state.focus)
+				}.animation(.linear_quick(), value: exhibit.focus)
 			}
 		}
 		.overlay { border.accessibilityHidden(true) } // Use `withAnimation` to animate this when entering or exiting select mode, but not when staying in select mode.
@@ -45,7 +45,7 @@ import MusicKit
 		.accessibilityAddTraits(.isButton)
 	}
 	@ViewBuilder private var border: some View {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .view, .mode_songs: EmptyView()
 			case .mode_albums(let uAs_selected):
 				if uAs_selected.contains(uAlbum) {
@@ -56,36 +56,36 @@ import MusicKit
 	
 	@State private var is_pressing = false
 	private var is_focused: Bool {
-		switch list_state.focus {
+		switch exhibit.focus {
 			case .covers: return false
 			case .expanded(let uA_focused): return uA_focused == uAlbum
 		}
 	}
 	private var is_dimmed: Bool {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .view, .mode_albums: return false
 			case .mode_songs: return true
 		}
 	}
 	
 	private func tapped() {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .mode_songs: return
 			case .view:
-				switch list_state.focus {
+				switch exhibit.focus {
 					case .covers:
-						list_state.focus = .expanded(uAlbum)
+						exhibit.focus = .expanded(uAlbum)
 					case .expanded(let uA_focused):
 						if uA_focused == uAlbum {
-							list_state.focus = .covers
-						} else { list_state.focus = .expanded(uAlbum) }
+							exhibit.focus = .covers
+						} else { exhibit.focus = .expanded(uAlbum) }
 				}
 			case .mode_albums(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uAlbum) {
 					new_selected.remove(uAlbum)
 				} else { new_selected.insert(uAlbum) }
-				list_state.selection = .mode_albums(new_selected)
+				exhibit.selection = .mode_albums(new_selected)
 		}
 	}
 }
@@ -94,7 +94,7 @@ import MusicKit
 
 @MainActor private struct AlbumLabel: View {
 	let uAlbum: UAlbum
-	let list_state: ExhibitState
+	let exhibit: Exhibit
 	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
@@ -138,12 +138,12 @@ import MusicKit
 	}
 	private var menu_select: some View {
 		Menu {
-			switch list_state.selection {
+			switch exhibit.selection {
 				case .mode_songs, .mode_albums: EmptyView()
 				case .view:
 					Button(InterfaceText.Select, systemImage: "checkmark.circle") {
 						withAnimation {
-							list_state.selection = .mode_albums([uAlbum])
+							exhibit.selection = .mode_albums([uAlbum])
 						}
 					}.disabled(apple_lib.is_merging)
 					Divider()
@@ -154,23 +154,23 @@ import MusicKit
 			if is_selected { IconSelected() } else { IconUnselected() }
 		}
 		.disabled({
-			switch list_state.focus {
+			switch exhibit.focus {
 				case .expanded: return true
 				case .covers: return false
 			}
 		}())
-		.animation(.default, value: list_state.focus)
+		.animation(.default, value: exhibit.focus)
 	}
 	private var b_above: some View {
 		Button(
 			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
-			list_state.change_album_range(from: uAlbum, forward: false)
+			exhibit.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
-			return (list_state.signal_items && false ) ||
+			return (exhibit.signal_items && false ) ||
 			apple_lib.is_merging ||
-			!list_state.has_album_range(from: uAlbum, forward: false)
+			!exhibit.has_album_range(from: uAlbum, forward: false)
 		}())
 	}
 	private var b_below: some View {
@@ -178,22 +178,22 @@ import MusicKit
 			is_selected ? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
-			list_state.change_album_range(from: uAlbum, forward: true)
+			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
-			return (list_state.signal_items && false) ||
+			return (exhibit.signal_items && false) ||
 			apple_lib.is_merging ||
-			!list_state.has_album_range(from: uAlbum, forward: true)
+			!exhibit.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
 	
 	private var is_selected: Bool {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .view, .mode_songs: return false
 			case .mode_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
 		}
 	}
 	private var is_dimmed: Bool {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .view, .mode_albums: return false
 			case .mode_songs: return true
 		}

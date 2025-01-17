@@ -6,7 +6,7 @@ import MusicKit
 @MainActor struct SongRow: View {
 	let uSong: USong
 	let uAlbum: UAlbum
-	let list_state: ExhibitState
+	let exhibit: Exhibit
 	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
@@ -35,7 +35,7 @@ import MusicKit
 		}
 		.background { highlight }
 		.overlay { border }
-		.frame(maxWidth: list_state.size_viewport.height)
+		.frame(maxWidth: exhibit.size_viewport.height)
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
@@ -45,7 +45,7 @@ import MusicKit
 		}
 	}
 	@ViewBuilder private var border: some View {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .view, .mode_albums: EmptyView()
 			case .mode_songs(let uSs_selected):
 				if uSs_selected.contains(uSong) {
@@ -56,14 +56,14 @@ import MusicKit
 	@ViewBuilder private var highlight: some View {
 		let highlighting: Bool = {
 			if is_pressing { return true }
-			switch list_state.selection {
+			switch exhibit.selection {
 				case .mode_albums, .mode_songs: return false
 				case .view(let uS_activated): return uS_activated == uSong
 			}
 		}()
 		Color.accentColor
 			.opacity(highlighting ? .one_half : .zero)
-			.animation(highlighting ? nil : .default, value: list_state.selection)
+			.animation(highlighting ? nil : .default, value: exhibit.selection)
 	}
 	
 	@ViewBuilder private func stack_info(
@@ -115,12 +115,12 @@ import MusicKit
 				}()
 				return "\(InterfaceText._octothorpe) \(numbers)"
 			}()) {
-				switch list_state.selection {
+				switch exhibit.selection {
 					case .mode_albums, .mode_songs: EmptyView()
 					case .view:
 						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
 							withAnimation {
-								list_state.selection = .mode_songs([uSong])
+								exhibit.selection = .mode_songs([uSong])
 							}
 						}.disabled(apple_lib.is_merging)
 						Divider()
@@ -137,11 +137,11 @@ import MusicKit
 			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
 		) {
-			list_state.change_song_range(from: uSong, forward: false)
+			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
-			return (list_state.signal_items && false) ||
+			return (exhibit.signal_items && false) ||
 			apple_lib.is_merging ||
-			!list_state.has_song_range(from: uSong, forward: false)
+			!exhibit.has_song_range(from: uSong, forward: false)
 		}())
 	}
 	private var b_below: some View {
@@ -149,24 +149,24 @@ import MusicKit
 			is_selected ? InterfaceText.Deselect_Down: InterfaceText.Select_Down,
 			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
 		) {
-			list_state.change_song_range(from: uSong, forward: true)
+			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({
-			return (list_state.signal_items && false) ||
+			return (exhibit.signal_items && false) ||
 			apple_lib.is_merging ||
-			!list_state.has_song_range(from: uSong, forward: true)
+			!exhibit.has_song_range(from: uSong, forward: true)
 		}())
 	}
 	
 	@State private var is_pressing = false
 	private var is_selected: Bool {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .mode_albums, .view: return false
 			case .mode_songs(let uSs_selected): return uSs_selected.contains(uSong)
 		}
 	}
 	
 	private func tapped() {
-		switch list_state.selection {
+		switch exhibit.selection {
 			case .mode_albums: return
 			case .view: NotificationCenter.default.post(name: Self.confirm_play_uSong, object: uSong)
 			case .mode_songs(let old_selected):
@@ -174,7 +174,7 @@ import MusicKit
 				if old_selected.contains(uSong) {
 					new_selected.remove(uSong)
 				} else { new_selected.insert(uSong) }
-				list_state.selection = .mode_songs(new_selected)
+				exhibit.selection = .mode_songs(new_selected)
 		}
 	}
 	static let confirm_play_uSong = Notification.Name("LR_ConfirmPlay")
