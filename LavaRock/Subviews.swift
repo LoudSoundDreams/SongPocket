@@ -19,10 +19,10 @@ struct BorderUnselected: View {
 }
 struct BorderSelected: View {
 	var body: some View {
-		Border().foregroundStyle(.tint.opacity(.one_half))
+		Border().foregroundStyle(Color.accentColor.opacity(.one_half))
 	}
 }
-private struct Border: View {
+struct Border: View {
 	var body: some View {
 		Rectangle().strokeBorder(lineWidth: .eight)
 	}

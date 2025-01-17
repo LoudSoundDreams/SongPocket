@@ -2,14 +2,9 @@
 
 import SwiftUI
 import MusicKit
-import os
 
 @main struct LavaRock: App {
 	init() {
-		let signposter = OSSignposter(subsystem: "startup", category: .pointsOfInterest)
-		let _init = signposter.beginInterval("init")
-		defer { signposter.endInterval("init", _init) }
-		
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
 		defaults.dictionaryRepresentation().forEach { (key_existing, _) in
@@ -47,11 +42,11 @@ import os
 	}
 }
 
-struct RepNCMain: UIViewControllerRepresentable {
+private struct RepNCMain: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> NCMain { NCMain.create() }
 	func updateUIViewController(_ vc: NCMain, context: Context) {}
 }
-final class NCMain: UINavigationController {
+private final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let result = Self(rootViewController: ExhibitTVC.init_please())
 		

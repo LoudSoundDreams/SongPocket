@@ -117,12 +117,12 @@
 			children = (
 				07E0BBDA276567760010117E /* Constants.swift */,
 				071A0B9D277E76510017F76D /* App.swift */,
-				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
 				076830BE24B42E3E0033E3CC /* Exhibit.swift */,
 				07934CF927CDBEB0002B2444 /* ExhibitTVC.storyboard */,
 				07755A57294821860056E90C /* Album Views.swift */,
 				158BACCC2D3A47F7002A4025 /* Song Views.swift */,
 				15048E612CF0FBA3005DC698 /* Subviews.swift */,
+				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
 				071B30932C88CD3400239BF3 /* Librarian.swift */,
 				1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */,
 				079B2C9424E227BF00A949FA /* AppleLibrary.swift */,

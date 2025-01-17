@@ -6,9 +6,6 @@ extension Librarian {
 	static func merge_MediaPlayer_items(
 		_ mpSongs_by_album_then_track: [MPMediaItem]
 	) async {
-		let _merge = signposter.beginInterval("merge")
-		defer { signposter.endInterval("merge", _merge) }
-		
 		// Use MediaPlayer for album and song IDs.
 		// Ideally, use MusicKit for all other metadata.
 		

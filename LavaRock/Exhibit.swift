@@ -21,9 +21,6 @@ import MusicKit
 	
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
-extension Exhibit.Artifact: Hashable {}
-extension Exhibit.Focus: Equatable {}
-extension Exhibit.Selection: Equatable {}
 extension Exhibit {
 	fileprivate enum Artifact {
 		case row_album(UAlbum)
@@ -93,6 +90,7 @@ extension Exhibit {
 		else { return [] } // Don’t show any albums; show a placeholder.
 		return Librarian.the_albums.map { $0.uAlbum }
 	}
+	
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
 		return artifacts.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
 			case .row_song: return nil
@@ -215,6 +213,9 @@ extension Exhibit {
 		}
 	}
 }
+extension Exhibit.Artifact: Hashable {}
+extension Exhibit.Focus: Equatable {}
+extension Exhibit.Selection: Equatable {}
 
 // MARK: - View controller
 

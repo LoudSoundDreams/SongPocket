@@ -12,8 +12,6 @@ final class LRAlbum {
 }
 
 @MainActor struct Librarian {
-	static let signposter = OSSignposter(subsystem: "librarian", category: .pointsOfInterest)
-	
 	// Browse
 	static var the_albums: [LRAlbum] = []
 	
