@@ -218,9 +218,9 @@ extension Exhibit {
 
 // MARK: - View controller
 
-final class TVCExhibit: LRTableViewController {
+final class ExhibitTVC: LRTableViewController {
 	static func init_please() -> Self {
-		return UIStoryboard(name: "TVCExhibit", bundle: nil).instantiateInitialViewController() as! Self
+		return UIStoryboard(name: "ExhibitTVC", bundle: nil).instantiateInitialViewController() as! Self
 	}
 	private let exhibit = Exhibit()
 	
@@ -234,7 +234,7 @@ final class TVCExhibit: LRTableViewController {
 		reflect_selection()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: AppleLibrary.merged, object: nil)
-		Remote.shared.weak_tvcExhibit = self
+		Remote.shared.weak_exhibitTVC = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: exhibit)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: Exhibit.changed_selection, object: exhibit)

@@ -17,7 +17,7 @@
 		076F1C0227E66DAA00220C2B /* Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F1C0127E66DAA00220C2B /* Playback.swift */; };
 		07755A58294821860056E90C /* Album Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07755A57294821860056E90C /* Album Views.swift */; };
 		078FDD0F2638872100779AF2 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FDD0E2638872100779AF2 /* Helpers.swift */; };
-		07934CFA27CDBEB0002B2444 /* TVCExhibit.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF927CDBEB0002B2444 /* TVCExhibit.storyboard */; };
+		07934CFA27CDBEB0002B2444 /* ExhibitTVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07934CF927CDBEB0002B2444 /* ExhibitTVC.storyboard */; };
 		0799E7C02C858A5800CFD284 /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0799E7BF2C858A4C00CFD284 /* Parse.swift */; };
 		079B2C9524E227BF00A949FA /* AppleLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079B2C9424E227BF00A949FA /* AppleLibrary.swift */; };
 		07A8786B2BAE2A2900717BA7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */; };
@@ -60,7 +60,7 @@
 		076F1C0127E66DAA00220C2B /* Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playback.swift; sourceTree = "<group>"; };
 		07755A57294821860056E90C /* Album Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Album Views.swift"; sourceTree = "<group>"; };
 		078FDD0E2638872100779AF2 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		07934CF927CDBEB0002B2444 /* TVCExhibit.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TVCExhibit.storyboard; sourceTree = "<group>"; };
+		07934CF927CDBEB0002B2444 /* ExhibitTVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ExhibitTVC.storyboard; sourceTree = "<group>"; };
 		0799E7BF2C858A4C00CFD284 /* Parse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parse.swift; sourceTree = "<group>"; };
 		079B2C9424E227BF00A949FA /* AppleLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLibrary.swift; sourceTree = "<group>"; };
 		07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experimental.swift; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 				071A0B9D277E76510017F76D /* App.swift */,
 				07CBB6FE2BBEA9DE008B0BB5 /* Experimental.swift */,
 				076830BE24B42E3E0033E3CC /* Exhibit.swift */,
-				07934CF927CDBEB0002B2444 /* TVCExhibit.storyboard */,
+				07934CF927CDBEB0002B2444 /* ExhibitTVC.storyboard */,
 				07755A57294821860056E90C /* Album Views.swift */,
 				158BACCC2D3A47F7002A4025 /* Song Views.swift */,
 				15048E612CF0FBA3005DC698 /* Subviews.swift */,
@@ -235,7 +235,7 @@
 				07A8786B2BAE2A2900717BA7 /* PrivacyInfo.xcprivacy in Resources */,
 				076830D024B42E520033E3CC /* Assets.xcassets in Resources */,
 				075FC9042B46765D00219146 /* Demo.xcassets in Resources */,
-				07934CFA27CDBEB0002B2444 /* TVCExhibit.storyboard in Resources */,
+				07934CFA27CDBEB0002B2444 /* ExhibitTVC.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

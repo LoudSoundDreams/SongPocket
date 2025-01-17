@@ -53,7 +53,7 @@ struct RepNCMain: UIViewControllerRepresentable {
 }
 final class NCMain: UINavigationController {
 	static func create() -> Self {
-		let result = Self(rootViewController: TVCExhibit.init_please())
+		let result = Self(rootViewController: ExhibitTVC.init_please())
 		
 		result.setNavigationBarHidden(true, animated: false)
 		
