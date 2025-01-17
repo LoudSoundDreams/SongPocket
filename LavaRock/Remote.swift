@@ -7,7 +7,7 @@ import UIKit
 @MainActor final class Remote {
 	static let shared = Remote()
 	let b_remote = UIBarButtonItem()
-	weak var weak_tvc_albums: AlbumTable?
+	weak var weak_tvc_albums: TVCExhibit?
 	
 	private init() {
 		refresh()

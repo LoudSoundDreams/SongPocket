@@ -218,9 +218,9 @@ extension AlbumListState {
 
 // MARK: - View controller
 
-final class AlbumTable: LRTableViewController {
+final class TVCExhibit: LRTableViewController {
 	static func init_please() -> Self {
-		return UIStoryboard(name: "AlbumTable", bundle: nil).instantiateInitialViewController() as! Self
+		return UIStoryboard(name: "TVCExhibit", bundle: nil).instantiateInitialViewController() as! Self
 	}
 	private let list_state = AlbumListState()
 	
