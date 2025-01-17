@@ -344,7 +344,7 @@ final class AlbumTable: LRTableViewController {
 			case .uSong(let uSong):
 				switch list_state.focus {
 					case .cover: return UITableViewCell() // Should never run
-					case .tracklist(let uAlbum_expanded):
+					case .tracklist(let uAlbum):
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
 						cell.backgroundColor = .clear
@@ -352,7 +352,7 @@ final class AlbumTable: LRTableViewController {
 						cell.contentConfiguration = UIHostingConfiguration {
 							SongRow(
 								uSong: uSong,
-								uAlbum: uAlbum_expanded,
+								uAlbum: uAlbum,
 								list_state: list_state)
 						}.margins(.all, .zero)
 						return cell

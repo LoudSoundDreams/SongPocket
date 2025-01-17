@@ -19,14 +19,14 @@ import MusicKit
 		.opacity(is_dimmed ? .one_half : 1).animation(.default, value: is_dimmed)
 		.overlay {
 			Color(white: .zero)
-				.opacity(pressing ? .one_half : .zero)
-				.animation(pressing ? nil : .linear_quick(), value: pressing)
+				.opacity(is_pressing ? .one_half : .zero)
+				.animation(is_pressing ? nil : .linear_quick(), value: is_pressing)
 		}
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
-					if !is_expanded { Rectangle().foregroundStyle(Material.thin) }
-				}.animation(.linear_quick(), value: is_expanded)
+					if !is_focused { Rectangle().foregroundStyle(Material.thin) }
+				}.animation(.linear_quick(), value: is_focused)
 				ZStack {
 					switch list_state.focus {
 						case .tracklist: EmptyView()
@@ -40,25 +40,12 @@ import MusicKit
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
-		.onLongPressGesture(
-			minimumDuration: .zero,
-			perform: {},
-			onPressingChanged: { pressing = $0 })
+		.onLongPressGesture(minimumDuration: .zero) {
+		} onPressingChanged: {
+			is_pressing = $0
+		}
 		.accessibilityAddTraits(.isButton)
 	}
-	private var is_dimmed: Bool {
-		switch list_state.selection {
-			case .view, .mode_albums: return false
-			case .mode_songs: return true
-		}
-	}
-	private var is_expanded: Bool {
-		switch list_state.focus {
-			case .cover: return false
-			case .tracklist(let uA_expanded): return uA_expanded == uAlbum
-		}
-	}
-	@State private var pressing = false
 	
 	@ViewBuilder private var border: some View {
 		switch list_state.selection {
@@ -77,8 +64,8 @@ import MusicKit
 				switch list_state.focus {
 					case .cover:
 						list_state.focus = .tracklist(uAlbum)
-					case .tracklist(let uA_expanded):
-						if uA_expanded == uAlbum {
+					case .tracklist(let uA_focused):
+						if uA_focused == uAlbum {
 							list_state.focus = .cover
 						} else { list_state.focus = .tracklist(uAlbum) }
 				}
@@ -88,6 +75,20 @@ import MusicKit
 					new_selected.remove(uAlbum)
 				} else { new_selected.insert(uAlbum) }
 				list_state.selection = .mode_albums(new_selected)
+		}
+	}
+	
+	private var is_dimmed: Bool {
+		switch list_state.selection {
+			case .view, .mode_albums: return false
+			case .mode_songs: return true
+		}
+	}
+	@State private var is_pressing = false
+	private var is_focused: Bool {
+		switch list_state.focus {
+			case .cover: return false
+			case .tracklist(let uA_focused): return uA_focused == uAlbum
 		}
 	}
 }
@@ -171,12 +172,6 @@ import MusicKit
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
 	}
-	private var is_dimmed: Bool {
-		switch list_state.selection {
-			case .view, .mode_albums: return false
-			case .mode_songs: return true
-		}
-	}
 	
 	private var menu_select: some View {
 		Menu {
@@ -227,6 +222,13 @@ import MusicKit
 			!list_state.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
+	
+	private var is_dimmed: Bool {
+		switch list_state.selection {
+			case .view, .mode_albums: return false
+			case .mode_songs: return true
+		}
+	}
 	private var is_selected: Bool {
 		switch list_state.selection {
 			case .view, .mode_songs: return false
@@ -274,10 +276,10 @@ import MusicKit
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
-		.onLongPressGesture(
-			minimumDuration: .zero,
-			perform: {},
-			onPressingChanged: { pressing = $0 })
+		.onLongPressGesture(minimumDuration: .zero) {
+		} onPressingChanged: {
+			is_pressing = $0
+		}
 	}
 	@ViewBuilder private func stack_main(
 		_ songInfo: SongInfo?,
@@ -306,11 +308,10 @@ import MusicKit
 		.accessibilityInputLabels([title].compactMap { $0 })
 		.accessibilityAddTraits(.isButton)
 	}
-	@State private var pressing = false
 	
 	@ViewBuilder private var highlight: some View {
 		let highlighting: Bool = {
-			if pressing { return true }
+			if is_pressing { return true }
 			switch list_state.selection {
 				case .mode_albums, .mode_songs: return false
 				case .view(let uS_activated): return uS_activated == uSong
@@ -407,6 +408,8 @@ import MusicKit
 			!list_state.has_song_range(from: uSong, forward: true)
 		}())
 	}
+	
+	@State private var is_pressing = false
 	private var is_selected: Bool {
 		switch list_state.selection {
 			case .mode_albums, .view: return false
