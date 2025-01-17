@@ -10,10 +10,12 @@ import MusicKit
 	let list_state: AlbumListState
 	
 	var body: some View {
+		let length_square: CGFloat = min(
+			list_state.size_viewport.width,
+			list_state.size_viewport.height)
 		AlbumArt(
 			uAlbum: uAlbum,
-			dim_limit: min(list_state.size_viewport.width, list_state.size_viewport.height)
-		)
+			dim_limit: length_square)
 		.opacity(is_dimmed ? .one_half : 1).animation(.default, value: is_dimmed)
 		.overlay {
 			Color(white: .zero)
