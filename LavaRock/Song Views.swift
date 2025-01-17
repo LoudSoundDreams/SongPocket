@@ -139,7 +139,7 @@ import MusicKit
 		) {
 			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
-			return (exhibit.signal_items && false) ||
+			return (exhibit.signal_artifacts && false) ||
 			apple_lib.is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: false)
 		}())
@@ -151,7 +151,7 @@ import MusicKit
 		) {
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({
-			return (exhibit.signal_items && false) ||
+			return (exhibit.signal_artifacts && false) ||
 			apple_lib.is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: true)
 		}())

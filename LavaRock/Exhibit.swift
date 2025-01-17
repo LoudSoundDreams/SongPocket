@@ -5,11 +5,11 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class Exhibit {
-	@ObservationIgnored fileprivate private(set) var row_items: [RowKind]
+	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact]
 	= Exhibit.uAlbums_fresh().map { .row_album($0) } { didSet {
-		signal_items.toggle()
+		signal_artifacts.toggle()
 	}}
-	private(set) var signal_items = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
+	private(set) var signal_artifacts = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
 	
 	var focus: Focus = .covers { didSet {
 		NotificationCenter.default.post(name: Self.changed_focus, object: self)
@@ -21,11 +21,11 @@ import MusicKit
 	
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
 }
-extension Exhibit.RowKind: Hashable {}
+extension Exhibit.Artifact: Hashable {}
 extension Exhibit.Focus: Equatable {}
 extension Exhibit.Selection: Equatable {}
 extension Exhibit {
-	fileprivate enum RowKind {
+	fileprivate enum Artifact {
 		case row_album(UAlbum)
 		case row_song(USong)
 	}
@@ -43,9 +43,9 @@ extension Exhibit {
 	}
 	@ObservationIgnored static let changed_selection = Notification.Name("LR_Selection")
 	
-	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { row_items }
-	fileprivate func refresh_items() {
-		row_items = {
+	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
+	fileprivate func refresh_artifacts() {
+		artifacts = {
 			let uAlbums = Self.uAlbums_fresh()
 			switch focus {
 				case .covers: return uAlbums.map { .row_album($0) }
@@ -59,8 +59,8 @@ extension Exhibit {
 						return uAlbums.map { .row_album($0) }
 					}
 					
-					let uSongs_inline: [RowKind] = album_expanded.uSongs.map { .row_song($0) }
-					var result: [RowKind] = uAlbums.map { .row_album($0) }
+					let uSongs_inline: [Artifact] = album_expanded.uSongs.map { .row_song($0) }
+					var result: [Artifact] = uAlbums.map { .row_album($0) }
 					result.insert(contentsOf: uSongs_inline, at: i_expanded + 1)
 					return result
 			}
@@ -94,7 +94,7 @@ extension Exhibit {
 		return Librarian.the_albums.map { $0.uAlbum }
 	}
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
-		return row_items.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
+		return artifacts.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
 			case .row_song: return nil
 			case .row_album(let uAlbum):
 				guard let chosen else { return uAlbum }
@@ -103,7 +103,7 @@ extension Exhibit {
 		}}
 	}
 	fileprivate func uSongs(with chosen: Set<USong>? = nil) -> [USong] {
-		return row_items.compactMap { switch $0 {
+		return artifacts.compactMap { switch $0 {
 			case .row_album: return nil
 			case .row_song(let uSong):
 				guard let chosen else { return uSong }
@@ -233,7 +233,7 @@ final class TVCExhibit: LRTableViewController {
 		b_scope.preferredMenuElementOrder = .fixed
 		reflect_selection()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_row_items), name: AppleLibrary.merged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: AppleLibrary.merged, object: nil)
 		Remote.shared.weak_tvcExhibit = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: exhibit)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
@@ -308,7 +308,7 @@ final class TVCExhibit: LRTableViewController {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if exhibit.row_items.isEmpty {
+			if exhibit.artifacts.isEmpty {
 				return UIHostingConfiguration {
 					PlaceholderMusicNote()
 						.accessibilityLabel(InterfaceText.No_music)
@@ -323,12 +323,12 @@ final class TVCExhibit: LRTableViewController {
 			initialized_rowIDs_current = true
 			rowIDs_current = exhibit.rowIDs
 		}
-		return exhibit.row_items.count
+		return exhibit.artifacts.count
 	}
 	private var initialized_rowIDs_current = false
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		switch exhibit.row_items[indexPath.row] {
+		switch exhibit.artifacts[indexPath.row] {
 			case .row_album(let uAlbum):
 				// The cell in the storyboard is completely default except for the reuse identifier.
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
@@ -364,9 +364,9 @@ final class TVCExhibit: LRTableViewController {
 	
 	// MARK: Events
 	
-	@objc private func refresh_row_items() {
+	@objc private func refresh_rows() {
 		Task {
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
 			let _ = await apply_rowIDs(exhibit.rowIDs)
@@ -379,7 +379,7 @@ final class TVCExhibit: LRTableViewController {
 			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
 		else { return }
 		let uAlbum_target = album_target.uAlbum
-		guard let row_target = exhibit.row_items.firstIndex(where: { switch $0 {
+		guard let row_target = exhibit.artifacts.firstIndex(where: { switch $0 {
 			case .row_song: return false
 			case .row_album(let uAlbum): return uAlbum == uAlbum_target
 		}}) else { return }
@@ -394,19 +394,19 @@ final class TVCExhibit: LRTableViewController {
 		switch exhibit.focus {
 			case .covers:
 				Task {
-					exhibit.refresh_items() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
+					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
 					let _ = await apply_rowIDs(exhibit.rowIDs)
 				}
 			case .expanded(let uA_to_expand):
 				Task {
-					exhibit.refresh_items()
+					exhibit.refresh_artifacts()
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
 					let _ = await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
 						if
-							let row_target: Int = self.exhibit.row_items.firstIndex(where: { switch $0 {
+							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
 								case .row_song: return false
 								case .row_album(let uAlbum): return uAlbum == uA_to_expand
 							}})
@@ -449,7 +449,7 @@ final class TVCExhibit: LRTableViewController {
 		guard
 			let uSong_activated = notification.object as? USong,
 			let view_popover_anchor: UIView = { () -> UITableViewCell? in
-				guard let row_activated = exhibit.row_items.firstIndex(where: { switch $0 {
+				guard let row_activated = exhibit.artifacts.firstIndex(where: { switch $0 {
 					case .row_album: return false
 					case .row_song(let uSong): return uSong == uSong_activated
 				}}) else { return nil }
@@ -673,7 +673,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -682,7 +682,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -710,7 +710,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.promote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
@@ -721,7 +721,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.promote_songs(uSs_selected, to_limit: false)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
@@ -733,7 +733,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.demote_albums(uAs_selected, to_limit: false)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
@@ -744,7 +744,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.demote_songs(uSs_selected, to_limit: false)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
@@ -758,7 +758,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.promote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_albums([])
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
@@ -769,7 +769,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.promote_songs(uSs_selected, to_limit: true)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_songs([])
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
@@ -781,7 +781,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.demote_albums(uAs_selected, to_limit: true)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_albums([])
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
@@ -792,7 +792,7 @@ final class TVCExhibit: LRTableViewController {
 			Librarian.demote_songs(uSs_selected, to_limit: true)
 			Librarian.save()
 			
-			exhibit.refresh_items()
+			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_songs([])
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}

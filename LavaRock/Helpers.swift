@@ -101,24 +101,24 @@ class LRTableViewController: UITableViewController {
 	// Returns a boolean indicating whether it’s safe for the caller to continue running code. If it’s `false`, table view animations are already in progress from an earlier call of this method, and callers could disrupt those animations by running further code.
 	// Returns after completing the animations for moving rows, and also deselects all rows and refreshes editing buttons.
 	final func apply_rowIDs(
-		_ idsNew: [AnyHashable],
+		_ rowIDs: [AnyHashable],
 		running_before_continuation: (() -> Void)? = nil
 	) async -> Bool {
 		await withCheckedContinuation { continuation in
-			_apply_rowIDs(idsNew) { should_continue in
+			_apply_rowIDs(rowIDs) { should_continue in
 				continuation.resume(returning: should_continue)
 			}
 			running_before_continuation?()
 		}
 	}
 	private func _apply_rowIDs(
-		_ new_ids: [AnyHashable],
+		_ rowIDs: [AnyHashable],
 		completion_if_should_run: @escaping (Bool) -> Void // We used to sometimes not run this completion handler, but if you wrapped this method in `withCheckedContinuation` and resumed the continuation during that handler, that leaked `CheckedContinuation`. Hence, this method always runs the completion handler, and callers should pass a completion handler that returns immediately if the parameter is `false`.
 	) {
 		animations_in_progress += 1
-		let old_ids = rowIDs_current
-		rowIDs_current = new_ids
-		tableView.perform_batch_updates_from_ids(old: old_ids, new: new_ids) {
+		let old_rowIDs = rowIDs_current
+		rowIDs_current = rowIDs
+		tableView.performBatchUpdates_from_rowIDs(old: old_rowIDs, new: rowIDs) {
 			// Completion handler
 			self.animations_in_progress -= 1
 			if self.animations_in_progress == 0 { // If we call `performBatchUpdates` multiple times quickly, executions after the first one can beat the first one to the completion closure, because they don’t have to animate any rows. Here, we wait for the animations to finish before we run the completion closure (once).
@@ -132,23 +132,7 @@ class LRTableViewController: UITableViewController {
 }
 
 extension UITableView {
-	final func indexPaths_all() -> [IndexPath] {
-		return Array(0 ..< numberOfSections).flatMap { section in
-			indexPaths_for_rows(section: section, row_first: 0)
-		}
-	}
-	private func indexPaths_for_rows(section: Int, row_first: Int) -> [IndexPath] {
-		let row_last = numberOfRows(inSection: section) - 1
-		guard row_last >= 0 else {
-			// The section has 0 rows.
-			return []
-		}
-		return (row_first...row_last).map { row in
-			IndexPath(row: row, section: section)
-		}
-	}
-	
-	final func perform_batch_updates_from_ids<Identifier: Hashable>(
+	final func performBatchUpdates_from_rowIDs<Identifier: Hashable>(
 		old: [Identifier], new: [Identifier],
 		completion: @escaping () -> Void
 	) {

@@ -168,7 +168,7 @@ import MusicKit
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
-			return (exhibit.signal_items && false ) ||
+			return (exhibit.signal_artifacts && false ) ||
 			apple_lib.is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: false)
 		}())
@@ -180,7 +180,7 @@ import MusicKit
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
-			return (exhibit.signal_items && false) ||
+			return (exhibit.signal_artifacts && false) ||
 			apple_lib.is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: true)
 		}())
