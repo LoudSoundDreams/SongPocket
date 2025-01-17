@@ -44,7 +44,6 @@ import MusicKit
 		}
 		.accessibilityAddTraits(.isButton)
 	}
-	
 	@ViewBuilder private var border: some View {
 		switch list_state.selection {
 			case .view, .mode_songs: EmptyView()
@@ -52,6 +51,20 @@ import MusicKit
 				if uAs_selected.contains(uAlbum) {
 					BorderSelected()
 				} else { BorderUnselected() }
+		}
+	}
+	
+	@State private var is_pressing = false
+	private var is_focused: Bool {
+		switch list_state.focus {
+			case .cover: return false
+			case .tracklist(let uA_focused): return uA_focused == uAlbum
+		}
+	}
+	private var is_dimmed: Bool {
+		switch list_state.selection {
+			case .view, .mode_albums: return false
+			case .mode_songs: return true
 		}
 	}
 	
@@ -75,53 +88,6 @@ import MusicKit
 				list_state.selection = .mode_albums(new_selected)
 		}
 	}
-	
-	private var is_dimmed: Bool {
-		switch list_state.selection {
-			case .view, .mode_albums: return false
-			case .mode_songs: return true
-		}
-	}
-	@State private var is_pressing = false
-	private var is_focused: Bool {
-		switch list_state.focus {
-			case .cover: return false
-			case .tracklist(let uA_focused): return uA_focused == uAlbum
-		}
-	}
-}
-
-// MARK: Art
-
-@MainActor struct AlbumArt: View {
-	let uAlbum: UAlbum
-	let dim_limit: CGFloat
-	
-	private var artwork: MusicKit.Artwork? {
-		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
-	}
-	var body: some View {
-		ZStack {
-			if let artwork {
-				/*
-				 As of iOS 17.5.1:
-				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
-				 • If you pass only width or only height, the view will always be square.
-				 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
-				 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
-				 */
-				ArtworkImage(artwork, width: dim_limit)
-			} else {
-				ZStack {
-					Color(white: .one_fourth)
-						.frame(width: dim_limit, height: dim_limit)
-					PlaceholderMusicNote()
-						.accessibilityLabel(InterfaceText.No_artwork)
-				}
-			}
-		}
-		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
-	}
 }
 
 // MARK: Label
@@ -133,7 +99,7 @@ import MusicKit
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
 		HStack(alignment: .lastTextBaseline) {
-			stack_text
+			stack_info
 			Spacer()
 			menu_select
 		}
@@ -141,7 +107,7 @@ import MusicKit
 		.padding(.leading, .eight * 1/2) // Align with `SongRow`.
 	}
 	
-	@ViewBuilder private var stack_text: some View {
+	@ViewBuilder private var stack_info: some View {
 		let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""
@@ -170,7 +136,6 @@ import MusicKit
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
 	}
-	
 	private var menu_select: some View {
 		Menu {
 			switch list_state.selection {
@@ -221,16 +186,49 @@ import MusicKit
 		}())
 	}
 	
+	private var is_selected: Bool {
+		switch list_state.selection {
+			case .view, .mode_songs: return false
+			case .mode_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
+		}
+	}
 	private var is_dimmed: Bool {
 		switch list_state.selection {
 			case .view, .mode_albums: return false
 			case .mode_songs: return true
 		}
 	}
-	private var is_selected: Bool {
-		switch list_state.selection {
-			case .view, .mode_songs: return false
-			case .mode_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
+}
+
+// MARK: Art
+
+@MainActor struct AlbumArt: View {
+	let uAlbum: UAlbum
+	let dim_limit: CGFloat
+	
+	private var artwork: MusicKit.Artwork? {
+		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
+	}
+	var body: some View {
+		ZStack {
+			if let artwork {
+				/*
+				 As of iOS 17.5.1:
+				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
+				 • If you pass only width or only height, the view will always be square.
+				 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
+				 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
+				 */
+				ArtworkImage(artwork, width: dim_limit)
+			} else {
+				ZStack {
+					Color(white: .one_fourth)
+						.frame(width: dim_limit, height: dim_limit)
+					PlaceholderMusicNote()
+						.accessibilityLabel(InterfaceText.No_artwork)
+				}
+			}
 		}
+		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
 	}
 }

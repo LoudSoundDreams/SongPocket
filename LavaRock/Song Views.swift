@@ -4,7 +4,6 @@ import SwiftUI
 import MusicKit
 
 @MainActor struct SongRow: View {
-	static let confirm_play_uSong = Notification.Name("LR_ConfirmPlay")
 	let uSong: USong
 	let uAlbum: UAlbum
 	let list_state: AlbumListState
@@ -26,7 +25,7 @@ import MusicKit
 				}()
 				let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
 				
-				stack_main(songInfo, albumInfo)
+				stack_info(songInfo, albumInfo)
 				Spacer()
 				menu_select(songInfo, albumInfo)
 			}
@@ -45,7 +44,29 @@ import MusicKit
 			is_pressing = $0
 		}
 	}
-	@ViewBuilder private func stack_main(
+	@ViewBuilder private var border: some View {
+		switch list_state.selection {
+			case .view, .mode_albums: EmptyView()
+			case .mode_songs(let uSs_selected):
+				if uSs_selected.contains(uSong) {
+					BorderSelected()
+				} else { BorderUnselected() }
+		}
+	}
+	@ViewBuilder private var highlight: some View {
+		let highlighting: Bool = {
+			if is_pressing { return true }
+			switch list_state.selection {
+				case .mode_albums, .mode_songs: return false
+				case .view(let uS_activated): return uS_activated == uSong
+			}
+		}()
+		Color.accentColor
+			.opacity(highlighting ? .one_half : .zero)
+			.animation(highlighting ? nil : .default, value: list_state.selection)
+	}
+	
+	@ViewBuilder private func stack_info(
 		_ songInfo: SongInfo?,
 		_ albumInfo: AlbumInfo?
 	) -> some View {
@@ -72,43 +93,6 @@ import MusicKit
 		.accessibilityInputLabels([title].compactMap { $0 })
 		.accessibilityAddTraits(.isButton)
 	}
-	
-	@ViewBuilder private var highlight: some View {
-		let highlighting: Bool = {
-			if is_pressing { return true }
-			switch list_state.selection {
-				case .mode_albums, .mode_songs: return false
-				case .view(let uS_activated): return uS_activated == uSong
-			}
-		}()
-		Color.accentColor
-			.opacity(highlighting ? .one_half : .zero)
-			.animation(highlighting ? nil : .default, value: list_state.selection)
-	}
-	
-	@ViewBuilder private var border: some View {
-		switch list_state.selection {
-			case .view, .mode_albums: EmptyView()
-			case .mode_songs(let uSs_selected):
-				if uSs_selected.contains(uSong) {
-					BorderSelected()
-				} else { BorderUnselected() }
-		}
-	}
-	
-	private func tapped() {
-		switch list_state.selection {
-			case .mode_albums: return
-			case .view: NotificationCenter.default.post(name: Self.confirm_play_uSong, object: uSong)
-			case .mode_songs(let old_selected):
-				var new_selected = old_selected
-				if old_selected.contains(uSong) {
-					new_selected.remove(uSong)
-				} else { new_selected.insert(uSong) }
-				list_state.selection = .mode_songs(new_selected)
-		}
-	}
-	
 	private func menu_select(
 		_ songInfo: SongInfo?,
 		_ albumInfo: AlbumInfo?
@@ -180,4 +164,18 @@ import MusicKit
 			case .mode_songs(let uSs_selected): return uSs_selected.contains(uSong)
 		}
 	}
+	
+	private func tapped() {
+		switch list_state.selection {
+			case .mode_albums: return
+			case .view: NotificationCenter.default.post(name: Self.confirm_play_uSong, object: uSong)
+			case .mode_songs(let old_selected):
+				var new_selected = old_selected
+				if old_selected.contains(uSong) {
+					new_selected.remove(uSong)
+				} else { new_selected.insert(uSong) }
+				list_state.selection = .mode_songs(new_selected)
+		}
+	}
+	static let confirm_play_uSong = Notification.Name("LR_ConfirmPlay")
 }
