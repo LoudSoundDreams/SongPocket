@@ -16,11 +16,6 @@ import MusicKit
 			dim_limit: length_square)
 		.opacity(is_dimmed ? .one_half : 1).animation(.default, value: is_dimmed)
 		.overlay {
-			Color(white: .zero)
-				.opacity(is_pressing ? .one_half : .zero)
-				.animation(is_pressing ? nil : .linear_quick(), value: is_pressing)
-		}
-		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
 					if !is_focused { Rectangle().foregroundStyle(Material.thin) }
@@ -38,10 +33,6 @@ import MusicKit
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
-		.onLongPressGesture(minimumDuration: .zero) {
-		} onPressingChanged: {
-			is_pressing = $0
-		}
 		.accessibilityAddTraits(.isButton)
 	}
 	@ViewBuilder private var border: some View {
@@ -54,7 +45,6 @@ import MusicKit
 		}
 	}
 	
-	@State private var is_pressing = false
 	private var is_focused: Bool {
 		switch exhibit.focus {
 			case .covers: return false
