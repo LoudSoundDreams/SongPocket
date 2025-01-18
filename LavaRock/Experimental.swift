@@ -21,18 +21,19 @@ struct ButtonPanel: View {
 						.aspectRatio(1, contentMode: .fit)
 					Image(systemName: "chevron.forward")
 				}
-				.opacity(opacity_tap)
-				.onLongPressGesture(minimumDuration: .zero, perform: {
+				.onTapGesture {
 					Print(Date())
-				}, onPressingChanged: { pressing in
-					if pressing {
-						opacity_tap = .one_half
-					} else {
-						withAnimation {
-							opacity_tap = 1
-						}
-					}
-				})
+				}
+				.opacity(is_touching ? .one_half : 1)
+				.animation({
+					if is_touching {
+						return nil
+					} else { return .linear_quick() }
+				}(), value: is_touching)
+				.onLongPressGesture(minimumDuration: .zero) {
+				} onPressingChanged: {
+					is_touching = $0
+				}
 			}
 			
 			VStack(spacing: .zero) {
@@ -61,5 +62,5 @@ struct ButtonPanel: View {
 			}
 		}
 	}
-	@State private var opacity_tap: Double = 1
+	@State private var is_touching = false
 }
