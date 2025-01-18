@@ -99,6 +99,7 @@ import MusicKit
 			stack_info
 			Spacer()
 			menu_select
+				.font_body_dynamicType_up_to_xxxLarge()
 		}
 		.padding()
 		.padding(.leading, .eight * 1/2) // Align with `SongRow`.

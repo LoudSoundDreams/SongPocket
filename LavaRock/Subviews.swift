@@ -42,10 +42,9 @@ struct IconSelected: View {
 			.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.2 developer beta 3, VoiceOver automatically adds “Selected” because of the SF Symbol.
 	}
 }
-private struct Ellipsis: View {
+struct Ellipsis: View {
 	var body: some View {
 		Image(systemName: "ellipsis.circle.fill")
-			.font_body_dynamicType_up_to_xxxLarge()
 	}
 }
 

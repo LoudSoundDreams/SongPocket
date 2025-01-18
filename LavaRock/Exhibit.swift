@@ -427,7 +427,7 @@ final class ExhibitTVC: LRTableViewController {
 				b_scope.menu = menu_scope()
 				b_scope.image = image_scope
 				if uS_activated == nil {
-					dismiss(animated: true) // In case “confirm play” action sheet is presented.
+					dismiss(animated: true) // In case “confirm play” action sheet is presented. 2do: Replace with SwiftUI.
 				}
 			case .mode_albums(let uAs_selected):
 				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_scope], animated: true)

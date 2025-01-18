@@ -28,8 +28,10 @@ import MusicKit
 				stack_info(songInfo, albumInfo)
 				Spacer()
 				menu_select(songInfo, albumInfo)
+					.font_body_dynamicType_up_to_xxxLarge()
 			}
-			.padding(.horizontal).padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
+			.padding(.horizontal)
+			.padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
 		}
@@ -74,7 +76,7 @@ import MusicKit
 		_ albumInfo: AlbumInfo?
 	) -> some View {
 		let title: String? = songInfo?._title
-		VStack(alignment: .leading, spacing: .eight * 1/2) { // Align with `AlbumLabel`.
+		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
 					let _ = PlayerState.shared.signal

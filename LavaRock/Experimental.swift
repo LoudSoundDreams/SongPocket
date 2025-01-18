@@ -18,6 +18,12 @@ extension View {
 			respond($0)
 		}
 	}
+	
+	func opacity_reacting(_ active: Bool) -> some View {
+		return self
+			.opacity(active ? .one_half : 1)
+			.animation(active ? nil : .linear_quick(), value: active)
+	}
 }
 
 struct ButtonPanel: View {
@@ -35,13 +41,8 @@ struct ButtonPanel: View {
 				.onTapGesture {
 					Print(Date())
 				}
-				.opacity(is_touching ? .one_half : 1)
-				.animation({
-					if is_touching {
-						return nil
-					} else { return .linear_quick() }
-				}(), value: is_touching)
-				.on_touching_changed { is_touching = $0 }
+				.opacity_reacting(is_touching_detail)
+				.on_touching_changed { is_touching_detail = $0 }
 			}
 			
 			VStack(spacing: .zero) {
@@ -52,6 +53,8 @@ struct ButtonPanel: View {
 							.aspectRatio(1, contentMode: .fill)
 						Image(systemName: "checkmark")
 					}
+					.opacity_reacting(is_touching_select)
+					.on_touching_changed { is_touching_select = $0 }
 				}
 				Button {} label: {
 					ZStack {
@@ -70,5 +73,6 @@ struct ButtonPanel: View {
 			}
 		}
 	}
-	@State private var is_touching = false
+	@State private var is_touching_detail = false
+	@State private var is_touching_select = false
 }
