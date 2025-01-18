@@ -22,11 +22,6 @@ struct BorderSelected: View {
 		Border().foregroundStyle(Color.accentColor.opacity(.one_half))
 	}
 }
-struct BorderActive: View {
-	var body: some View {
-		Border().foregroundStyle(Color.accentColor)
-	}
-}
 struct Border: View {
 	var body: some View {
 		Rectangle().strokeBorder(lineWidth: .eight)

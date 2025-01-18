@@ -43,9 +43,9 @@ import MusicKit
 		switch exhibit.selection {
 			case .view, .mode_songs: EmptyView()
 			case .mode_albums(let uAs_selected):
-				if is_pressing {
-					BorderActive()
-				} else if uAs_selected.contains(uAlbum) {
+				let is_selected = uAs_selected.contains(uAlbum)
+				let is_bright = is_selected != is_pressing
+				if is_bright {
 					BorderSelected()
 				} else { BorderUnselected() }
 		}
