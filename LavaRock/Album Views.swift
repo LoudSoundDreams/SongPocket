@@ -33,18 +33,25 @@ import MusicKit
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
+		.onLongPressGesture(minimumDuration: .zero) {
+		} onPressingChanged: {
+			is_pressing = $0
+		}
 		.accessibilityAddTraits(.isButton)
 	}
 	@ViewBuilder private var border: some View {
 		switch exhibit.selection {
 			case .view, .mode_songs: EmptyView()
 			case .mode_albums(let uAs_selected):
-				if uAs_selected.contains(uAlbum) {
+				if is_pressing {
+					BorderActive()
+				} else if uAs_selected.contains(uAlbum) {
 					BorderSelected()
 				} else { BorderUnselected() }
 		}
 	}
 	
+	@State private var is_pressing = false
 	private var is_focused: Bool {
 		switch exhibit.focus {
 			case .covers: return false

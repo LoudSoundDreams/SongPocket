@@ -48,17 +48,20 @@ import MusicKit
 		switch exhibit.selection {
 			case .view, .mode_albums: EmptyView()
 			case .mode_songs(let uSs_selected):
-				if uSs_selected.contains(uSong) {
+				if is_pressing {
+					BorderActive()
+				} else if uSs_selected.contains(uSong) {
 					BorderSelected()
 				} else { BorderUnselected() }
 		}
 	}
 	@ViewBuilder private var highlight: some View {
 		let highlighting: Bool = {
-			if is_pressing { return true }
 			switch exhibit.selection {
 				case .mode_albums, .mode_songs: return false
-				case .view(let uS_activated): return uS_activated == uSong
+				case .view(let uS_activated):
+					if is_pressing { return true }
+					return uS_activated == uSong
 			}
 		}()
 		Color.accentColor
