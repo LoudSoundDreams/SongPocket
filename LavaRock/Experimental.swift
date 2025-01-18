@@ -9,6 +9,17 @@ struct TheBar: View {
 	}
 }
 
+extension View {
+	func on_touching_changed(
+		respond: @escaping (_ is_touching: Bool) -> Void
+	) -> some View {
+		onLongPressGesture(minimumDuration: .zero) {
+		} onPressingChanged: {
+			respond($0)
+		}
+	}
+}
+
 struct ButtonPanel: View {
 	var body: some View {
 		HStack(spacing: .zero) {
@@ -30,10 +41,7 @@ struct ButtonPanel: View {
 						return nil
 					} else { return .linear_quick() }
 				}(), value: is_touching)
-				.onLongPressGesture(minimumDuration: .zero) {
-				} onPressingChanged: {
-					is_touching = $0
-				}
+				.on_touching_changed { is_touching = $0 }
 			}
 			
 			VStack(spacing: .zero) {
