@@ -124,6 +124,7 @@ import MusicKit
 					return Angle.zero
 				}())
 				.animation(.linear_quick(), value: is_expanded)
+				.disabled(is_dimmed)
 				Spacer()
 				menu_select
 			}
