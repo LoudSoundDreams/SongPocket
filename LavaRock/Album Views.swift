@@ -18,8 +18,10 @@ import MusicKit
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
-					if !is_focused { Rectangle().foregroundStyle(Material.thin) }
-				}.animation(.linear_quick(), value: is_focused)
+					if !is_expanded {
+						Rectangle().foregroundStyle(Material.thin)
+					}
+				}.animation(.linear_quick(), value: is_expanded)
 				ZStack {
 					switch exhibit.focus {
 						case .expanded: EmptyView()
@@ -52,10 +54,10 @@ import MusicKit
 	}
 	
 	@State private var is_pressing = false
-	private var is_focused: Bool {
+	private var is_expanded: Bool {
 		switch exhibit.focus {
 			case .covers: return false
-			case .expanded(let uA_focused): return uA_focused == uAlbum
+			case .expanded(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
 	private var is_dimmed: Bool {
@@ -72,8 +74,8 @@ import MusicKit
 				switch exhibit.focus {
 					case .covers:
 						exhibit.focus = .expanded(uAlbum)
-					case .expanded(let uA_focused):
-						if uA_focused == uAlbum {
+					case .expanded(let uA_expanded):
+						if uA_expanded == uAlbum {
 							exhibit.focus = .covers
 						} else { exhibit.focus = .expanded(uAlbum) }
 				}
