@@ -29,6 +29,7 @@ extension Exhibit {
 	
 	enum Focus {
 		case covers
+		case spotlight(UAlbum)
 		case expanded(UAlbum)
 	}
 	@ObservationIgnored static let changed_focus = Notification.Name("LR_Focus")
@@ -45,7 +46,7 @@ extension Exhibit {
 		artifacts = {
 			let uAlbums = Self.uAlbums_fresh()
 			switch focus {
-				case .covers: return uAlbums.map { .row_album($0) }
+				case .covers, .spotlight: return uAlbums.map { .row_album($0) }
 				case .expanded(let uA_expanded):
 					// If we removed the expanded album, change focus to covers.
 					guard
@@ -343,7 +344,7 @@ final class ExhibitTVC: LRTableViewController {
 				return cell
 			case .row_song(let uSong):
 				switch exhibit.focus {
-					case .covers: return UITableViewCell() // Should never run
+					case .covers, .spotlight: return UITableViewCell() // Should never run
 					case .expanded(let uAlbum):
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
@@ -386,20 +387,20 @@ final class ExhibitTVC: LRTableViewController {
 		tableView.performBatchUpdates {
 			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 		} completion: { _ in
-			self.exhibit.focus = .expanded(uAlbum_target)
+			self.exhibit.focus = .spotlight(uAlbum_target)
 		}
 	}
 	
 	@objc private func reflect_focus() {
 		switch exhibit.focus {
-			case .covers:
+			case .covers, .expanded:
 				Task {
 					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
 					let _ = await apply_rowIDs(exhibit.rowIDs)
 				}
-			case .expanded(let uA_to_expand):
+			case .spotlight(let uA_to_spotlight):
 				Task {
 					exhibit.refresh_artifacts()
 					b_sort.menu = menu_sort()
@@ -408,7 +409,7 @@ final class ExhibitTVC: LRTableViewController {
 						if
 							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
 								case .row_song: return false
-								case .row_album(let uAlbum): return uAlbum == uA_to_expand
+								case .row_album(let uAlbum): return uAlbum == uA_to_spotlight
 							}})
 						{
 							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
@@ -517,6 +518,7 @@ final class ExhibitTVC: LRTableViewController {
 		return UIMenu(
 			children: {
 				switch exhibit.focus {
+					case .spotlight: return []
 					case .covers: return menu_sections_album_sort
 					case .expanded: return menu_sections_song_sort
 				}
@@ -597,6 +599,7 @@ final class ExhibitTVC: LRTableViewController {
 				return exhibit.uSongs(with: uSs_selected)
 			case .view:
 				switch exhibit.focus {
+					case .spotlight: return []
 					case .covers:
 						var result: [USong] = []
 						exhibit.uAlbums().forEach { uAlbum in

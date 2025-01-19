@@ -18,17 +18,15 @@ import MusicKit
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
-					if !is_expanded {
+					if !is_spotlighted {
 						Rectangle().foregroundStyle(Material.thin)
 					}
-				}.animation(.linear_quick(), value: is_expanded)
+				}.animation(.linear_quick(), value: is_spotlighted)
 				ZStack {
-					switch exhibit.focus {
-						case .expanded: EmptyView()
-						case .covers:
-							AlbumLabel(uAlbum: uAlbum, exhibit: exhibit).accessibilitySortPriority(10)
+					if !any_is_spotlighted {
+						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit).accessibilitySortPriority(10)
 					}
-				}.animation(.linear_quick(), value: exhibit.focus)
+				}.animation(.linear_quick(), value: any_is_spotlighted)
 			}
 		}
 		.overlay { border.accessibilityHidden(true) } // Use `withAnimation` to animate this when entering or exiting select mode, but not when staying in select mode.
@@ -54,10 +52,16 @@ import MusicKit
 	}
 	
 	@State private var is_pressing = false
-	private var is_expanded: Bool {
+	private var any_is_spotlighted: Bool {
 		switch exhibit.focus {
-			case .covers: return false
-			case .expanded(let uA_expanded): return uA_expanded == uAlbum
+			case .covers, .expanded: return false
+			case .spotlight: return true
+		}
+	}
+	private var is_spotlighted: Bool {
+		switch exhibit.focus {
+			case .covers, .expanded: return false
+			case .spotlight(let uA_spotlighted): return uA_spotlighted == uAlbum
 		}
 	}
 	private var is_dimmed: Bool {
@@ -72,12 +76,12 @@ import MusicKit
 			case .mode_songs: return
 			case .view:
 				switch exhibit.focus {
-					case .covers:
-						exhibit.focus = .expanded(uAlbum)
-					case .expanded(let uA_expanded):
-						if uA_expanded == uAlbum {
+					case .covers, .expanded:
+						exhibit.focus = .spotlight(uAlbum)
+					case .spotlight(let uA_spotlighted):
+						if uA_spotlighted == uAlbum {
 							exhibit.focus = .covers
-						} else { exhibit.focus = .expanded(uAlbum) }
+						} else { exhibit.focus = .spotlight(uAlbum) }
 				}
 			case .mode_albums(let old_selected):
 				var new_selected = old_selected
@@ -103,6 +107,7 @@ import MusicKit
 			HStack(alignment: .bottom) {
 				Button {
 					switch exhibit.focus {
+						case .spotlight: return
 						case .covers:
 							exhibit.focus = .expanded(uAlbum)
 						case .expanded(let uA_expanded):
@@ -136,22 +141,21 @@ import MusicKit
 			return title_album
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
-			if let date = albumInfo?._date_released {
-				Text(date.formatted(date: .numeric, time: .omitted))
-					.font(.caption2).monospacedDigit()
-					.foregroundStyle(is_dimmed ? .tertiary : .secondary)
-					.accessibilitySortPriority(10)
-			}
+			Text(title_and_input_label)
+				.font_title3_bold()
+				.foregroundStyle(is_dimmed ? .secondary : .primary)
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
 					.foregroundStyle(is_dimmed ? .tertiary : .secondary)
-					.accessibilitySortPriority(20)
+				
 			}
-			Text(title_and_input_label)
-				.font_title3_bold()
-				.foregroundStyle(is_dimmed ? .secondary : .primary)
-				.accessibilitySortPriority(30) // Higher means sooner.
+			if let date = albumInfo?._date_released {
+				Text(date.formatted(date: .numeric, time: .omitted))
+					.font(.caption2).monospacedDigit()
+					.foregroundStyle(is_dimmed ? .tertiary : .secondary)
+				
+			}
 		}
 		.animation(.default, value: is_dimmed)
 		.accessibilityElement(children: .combine)
@@ -177,7 +181,7 @@ import MusicKit
 		.disabled({
 			switch exhibit.focus {
 				case .expanded: return true
-				case .covers: return false
+				case .covers, .spotlight: return false
 			}
 		}())
 		.animation(.default, value: exhibit.focus)
@@ -209,7 +213,7 @@ import MusicKit
 	
 	private var is_expanded: Bool {
 		switch exhibit.focus {
-			case .covers: return false
+			case .covers, .spotlight: return false
 			case .expanded(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
