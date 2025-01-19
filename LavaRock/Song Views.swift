@@ -71,6 +71,7 @@ import MusicKit
 			.opacity(highlighting ? .one_half : .zero)
 			.animation(highlighting ? nil : .default, value: exhibit.selection)
 	}
+	@State private var is_pressing = false
 	
 	@ViewBuilder private func stack_info(
 		_ songInfo: SongInfo?,
@@ -135,15 +136,17 @@ import MusicKit
 				b_below
 			}
 		} label: {
-			if is_selected { IconSelected() } else { IconUnselected() }
+			if exhibit.has_selected_song(uSong)
+			{ IconSelected() }
+			else { IconUnselected() }
 		}
 	}
 	private var b_above: some View {
 		Button(
-			is_selected
+			exhibit.has_selected_song(uSong)
 			? InterfaceText.Deselect_Up
 			: InterfaceText.Select_Up,
-			systemImage: is_selected
+			systemImage: exhibit.has_selected_song(uSong)
 			? "arrowtriangle.up.circle.fill"
 			: "arrowtriangle.up.circle"
 		) {
@@ -156,10 +159,10 @@ import MusicKit
 	}
 	private var b_below: some View {
 		Button(
-			is_selected
+			exhibit.has_selected_song(uSong)
 			? InterfaceText.Deselect_Down
 			: InterfaceText.Select_Down,
-			systemImage: is_selected
+			systemImage: exhibit.has_selected_song(uSong)
 			? "arrowtriangle.down.circle.fill"
 			: "arrowtriangle.down.circle"
 		) {
@@ -169,14 +172,6 @@ import MusicKit
 			apple_lib.is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: true)
 		}())
-	}
-	
-	@State private var is_pressing = false
-	private var is_selected: Bool {
-		switch exhibit.selection {
-			case .mode_albums, .view: return false
-			case .mode_songs(let uSs_selected): return uSs_selected.contains(uSong)
-		}
 	}
 	
 	private func tapped() {

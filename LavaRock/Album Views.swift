@@ -14,20 +14,20 @@ import MusicKit
 		AlbumArt(
 			uAlbum: uAlbum,
 			dim_limit: length_square)
-		.opacity(is_dimmed ? .one_half : 1)
-		.animation(.default, value: is_dimmed)
+		.opacity(exhibit.has_selected_song() ? .one_half : 1)
+		.animation(.default, value: exhibit.has_selected_song())
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
-					if !is_spotlighted {
+					if !exhibit.is_spotlighting(uAlbum) {
 						Rectangle().foregroundStyle(Material.thin)
 					}
-				}.animation(.linear_quick(), value: is_spotlighted)
+				}.animation(.linear_quick(), value: exhibit.is_spotlighting(uAlbum))
 				ZStack {
-					if !any_is_spotlighted {
+					if !exhibit.is_spotlighting() {
 						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit).accessibilitySortPriority(10)
 					}
-				}.animation(.linear_quick(), value: any_is_spotlighted)
+				}.animation(.linear_quick(), value: exhibit.is_spotlighting())
 			}
 		}
 		.overlay { border.accessibilityHidden(true) } // Use `withAnimation` to animate this when entering or exiting select mode, but not when staying in select mode.
@@ -51,26 +51,7 @@ import MusicKit
 				} else { BorderUnselected() }
 		}
 	}
-	
 	@State private var is_pressing = false
-	private var any_is_spotlighted: Bool {
-		switch exhibit.focus {
-			case .covers, .expanded: return false
-			case .spotlight: return true
-		}
-	}
-	private var is_spotlighted: Bool {
-		switch exhibit.focus {
-			case .covers, .expanded: return false
-			case .spotlight(let uA_spotlighted): return uA_spotlighted == uAlbum
-		}
-	}
-	private var is_dimmed: Bool {
-		switch exhibit.selection {
-			case .view, .mode_albums: return false
-			case .mode_songs: return true
-		}
-	}
 	
 	private func tapped() {
 		switch exhibit.selection {
@@ -121,11 +102,12 @@ import MusicKit
 						.symbolRenderingMode(.hierarchical)
 				}
 				.rotationEffect({ // Positive is clockwise.
-					if is_expanded { return Angle.degrees(90) }
+					if exhibit.is_expanded(uAlbum)
+					{ return Angle.degrees(90) }
 					return Angle.zero
 				}())
-				.animation(.linear_quick(), value: is_expanded)
-				.disabled(is_dimmed)
+				.animation(.linear_quick(), value: exhibit.is_expanded(uAlbum))
+				.disabled(exhibit.has_selected_song())
 				Spacer()
 				menu_select
 			}
@@ -145,21 +127,21 @@ import MusicKit
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title_and_input_label)
 				.font_title3_bold()
-				.foregroundStyle(is_dimmed ? .secondary : .primary)
+				.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary)
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
-					.foregroundStyle(is_dimmed ? .tertiary : .secondary)
+					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
 				
 			}
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
 					.font(.caption2).monospacedDigit()
-					.foregroundStyle(is_dimmed ? .tertiary : .secondary)
+					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
 				
 			}
 		}
-		.animation(.default, value: is_dimmed)
+		.animation(.default, value: exhibit.has_selected_song())
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
 	}
@@ -178,22 +160,19 @@ import MusicKit
 			b_above
 			b_below
 		} label: {
-			if is_selected { IconSelected() } else { IconUnselected() }
+			if exhibit.has_selected_album(uAlbum)
+			{ IconSelected() }
+			else { IconUnselected() }
 		}
-		.disabled({
-			switch exhibit.focus {
-				case .expanded: return true
-				case .covers, .spotlight: return false
-			}
-		}())
-		.animation(.default, value: exhibit.focus)
+		.disabled(exhibit.is_expanded())
+		.animation(.default, value: exhibit.is_expanded())
 	}
 	private var b_above: some View {
 		Button(
-			is_selected
+			exhibit.has_selected_album(uAlbum)
 			? InterfaceText.Deselect_Up
 			: InterfaceText.Select_Up,
-			systemImage: is_selected
+			systemImage: exhibit.has_selected_album(uAlbum)
 			? "arrowtriangle.up.circle.fill"
 			: "arrowtriangle.up.circle"
 		) {
@@ -206,10 +185,10 @@ import MusicKit
 	}
 	private var b_below: some View {
 		Button(
-			is_selected
+			exhibit.has_selected_album(uAlbum)
 			? InterfaceText.Deselect_Down
 			: InterfaceText.Select_Down,
-			systemImage: is_selected
+			systemImage: exhibit.has_selected_album(uAlbum)
 			? "arrowtriangle.down.circle.fill"
 			: "arrowtriangle.down.circle"
 		) {
@@ -221,24 +200,6 @@ import MusicKit
 		}())
 	}
 	
-	private var is_expanded: Bool {
-		switch exhibit.focus {
-			case .covers, .spotlight: return false
-			case .expanded(let uA_expanded): return uA_expanded == uAlbum
-		}
-	}
-	private var is_selected: Bool {
-		switch exhibit.selection {
-			case .view, .mode_songs: return false
-			case .mode_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
-		}
-	}
-	private var is_dimmed: Bool {
-		switch exhibit.selection {
-			case .view, .mode_albums: return false
-			case .mode_songs: return true
-		}
-	}
 }
 
 // MARK: Art

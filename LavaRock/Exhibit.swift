@@ -33,6 +33,22 @@ extension Exhibit {
 		case expanded(UAlbum)
 	}
 	@ObservationIgnored static let changed_focus = Notification.Name("LR_Focus")
+	func is_spotlighting(_ uAlbum: UAlbum? = nil) -> Bool {
+		switch focus {
+			case .covers, .expanded: return false
+			case .spotlight(let uA_spotlighted):
+				guard let uAlbum else { return true }
+				return uA_spotlighted == uAlbum
+		}
+	}
+	func is_expanded(_ uAlbum: UAlbum? = nil) -> Bool {
+		switch focus {
+			case .covers, .spotlight: return false
+			case .expanded(let uA_expanded):
+				guard let uAlbum else { return true }
+				return uA_expanded == uAlbum
+		}
+	}
 	
 	enum Selection {
 		case view(USong?)
@@ -40,6 +56,21 @@ extension Exhibit {
 		case mode_songs(Set<USong>)
 	}
 	@ObservationIgnored static let changed_selection = Notification.Name("LR_Selection")
+	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
+		switch selection {
+			case .view, .mode_songs: return false
+			case .mode_albums(let uAs_selected):
+				return uAs_selected.contains(uAlbum)
+		}
+	}
+	func has_selected_song(_ uSong: USong? = nil) -> Bool {
+		switch selection {
+			case .view, .mode_albums: return false
+			case .mode_songs(let uSs_selected):
+				guard let uSong else { return true }
+				return uSs_selected.contains(uSong)
+		}
+	}
 	
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
 	fileprivate func refresh_artifacts() {
