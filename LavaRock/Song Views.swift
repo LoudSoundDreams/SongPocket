@@ -28,7 +28,8 @@ import MusicKit
 				stack_info(songInfo, albumInfo)
 				Spacer()
 				menu_select(songInfo, albumInfo)
-					.font_body_dynamicType_up_to_xxxLarge()
+					.dynamicType_default_to_max()
+					.imageScale(.large)
 			}
 			.padding(.horizontal)
 			.padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
