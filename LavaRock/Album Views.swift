@@ -95,15 +95,35 @@ import MusicKit
 	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
-		HStack(alignment: .lastTextBaseline) {
+		VStack(alignment: .leading) {
 			stack_info
-			Spacer()
-			menu_select
-				.dynamicType_default_to_max()
-				.imageScale(.large)
+				.padding(.leading, .eight * 1/2) // Align with `SongRow`.
+			HStack(alignment: .bottom) {
+				Button {
+					switch exhibit.focus {
+						case .covers:
+							exhibit.focus = .expanded(uAlbum)
+						case .expanded(let uA_expanded):
+							if uA_expanded == uAlbum {
+								exhibit.focus = .covers
+							} else { exhibit.focus = .expanded(uAlbum) }
+					}
+				} label: {
+					Image(systemName: "chevron.forward.circle.fill") // 2do: Accessibility.
+						.symbolRenderingMode(.hierarchical)
+				}
+				.rotationEffect({ // Positive is clockwise.
+					if is_expanded { return Angle.degrees(90) }
+					return Angle.zero
+				}())
+				.animation(.linear_quick(), value: is_expanded)
+				Spacer()
+				menu_select
+			}
+			.dynamicType_default_to_max()
+			.imageScale(.large)
 		}
 		.padding()
-		.padding(.leading, .eight * 1/2) // Align with `SongRow`.
 	}
 	
 	@ViewBuilder private var stack_info: some View {
@@ -185,6 +205,12 @@ import MusicKit
 		}())
 	}
 	
+	private var is_expanded: Bool {
+		switch exhibit.focus {
+			case .covers: return false
+			case .expanded(let uA_expanded): return uA_expanded == uAlbum
+		}
+	}
 	private var is_selected: Bool {
 		switch exhibit.selection {
 			case .view, .mode_songs: return false
