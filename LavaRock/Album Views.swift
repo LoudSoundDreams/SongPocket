@@ -140,7 +140,7 @@ import MusicKit
 			Image(systemName: "chevron.forward.circle.fill") // 2do: Accessibility.
 				.symbolRenderingMode(.hierarchical)
 		}
-		.rotationEffect({ // Positive is clockwise.
+		.rotationEffect({
 			if exhibit.is_expanded(uAlbum)
 			{ return Angle.degrees(90) }
 			return Angle.zero

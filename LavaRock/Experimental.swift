@@ -6,45 +6,45 @@ struct ButtonPanel: View {
 	var body: some View {
 		HStack(spacing: .zero) {
 			ZStack {
-				Color.yellow.opacity(.one_half)
+				Rectangle().foregroundStyle(Material.ultraThin)
 				Image(systemName: "chevron.forward")
 			}
 			.onTapGesture {
 				Print(Date(), "expand")
 			}
-			.opacity_reacting(is_touching_detail)
+			.reacting(is_touching_detail)
 			.touching($is_touching_detail)
 			
 			VStack(spacing: .zero) {
 				ZStack {
-					Color.green.opacity(.one_half)
+					Rectangle().foregroundStyle(Material.ultraThin)
 					Image(systemName: "checkmark")
 				}
 				.onTapGesture {
 					Print(Date(), "select")
 				}
-				.opacity_reacting(is_touching_select)
+				.reacting(is_touching_select)
 				.touching($is_touching_select)
 				
 				HStack(spacing: .zero) {
 					ZStack {
-						Color.blue.opacity(.one_half)
+						Rectangle().foregroundStyle(Material.ultraThin)
 						Image(systemName: "arrowtriangle.up")
 					}
 					.onTapGesture {
 						Print(Date(), "up")
 					}
-					.opacity_reacting(is_touching_up)
+					.reacting(is_touching_up)
 					.touching($is_touching_up)
 					
 					ZStack {
-						Color.purple.opacity(.one_half)
+						Rectangle().foregroundStyle(Material.ultraThin)
 						Image(systemName: "arrowtriangle.down")
 					}
 					.onTapGesture {
 						Print(Date(), "down")
 					}
-					.opacity_reacting(is_touching_down)
+					.reacting(is_touching_down)
 					.touching($is_touching_down)
 				}
 			}
@@ -57,7 +57,7 @@ struct ButtonPanel: View {
 }
 
 extension View {
-	func opacity_reacting(_ active: Bool) -> some View {
+	func reacting(_ active: Bool) -> some View {
 		return self
 			.opacity(active ? .one_half : 1)
 			.animation(active ? nil : .linear_quick(), value: active)
