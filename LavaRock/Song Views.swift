@@ -140,8 +140,12 @@ import MusicKit
 	}
 	private var b_above: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
-			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
+			is_selected
+			? InterfaceText.Deselect_Up
+			: InterfaceText.Select_Up,
+			systemImage: is_selected
+			? "arrowtriangle.up.circle.fill"
+			: "arrowtriangle.up.circle"
 		) {
 			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
@@ -152,8 +156,12 @@ import MusicKit
 	}
 	private var b_below: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Down: InterfaceText.Select_Down,
-			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
+			is_selected
+			? InterfaceText.Deselect_Down
+			: InterfaceText.Select_Down,
+			systemImage: is_selected
+			? "arrowtriangle.down.circle.fill"
+			: "arrowtriangle.down.circle"
 		) {
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({

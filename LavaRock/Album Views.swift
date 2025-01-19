@@ -14,7 +14,8 @@ import MusicKit
 		AlbumArt(
 			uAlbum: uAlbum,
 			dim_limit: length_square)
-		.opacity(is_dimmed ? .one_half : 1).animation(.default, value: is_dimmed)
+		.opacity(is_dimmed ? .one_half : 1)
+		.animation(.default, value: is_dimmed)
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
@@ -189,8 +190,12 @@ import MusicKit
 	}
 	private var b_above: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
-			systemImage: is_selected ? "arrowtriangle.up.circle.fill" : "arrowtriangle.up.circle"
+			is_selected
+			? InterfaceText.Deselect_Up
+			: InterfaceText.Select_Up,
+			systemImage: is_selected
+			? "arrowtriangle.up.circle.fill"
+			: "arrowtriangle.up.circle"
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
@@ -201,8 +206,12 @@ import MusicKit
 	}
 	private var b_below: some View {
 		Button(
-			is_selected ? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
-			systemImage: is_selected ? "arrowtriangle.down.circle.fill" : "arrowtriangle.down.circle"
+			is_selected
+			? InterfaceText.Deselect_Down
+			: InterfaceText.Select_Down,
+			systemImage: is_selected
+			? "arrowtriangle.down.circle.fill"
+			: "arrowtriangle.down.circle"
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
