@@ -29,45 +29,37 @@ extension View {
 struct ButtonPanel: View {
 	var body: some View {
 		HStack(spacing: .zero) {
-			VStack(spacing: .zero) {
-				Spacer()
-				
-				ZStack {
-					Rectangle()
-						.foregroundStyle(Color.yellow.opacity(.one_half))
-						.aspectRatio(1, contentMode: .fit)
-					Image(systemName: "chevron.forward")
-				}
-				.onTapGesture {
-					Print(Date())
-				}
-				.opacity_reacting(is_touching_detail)
-				.on_touching_changed { is_touching_detail = $0 }
+			ZStack {
+				Color.yellow.opacity(.one_half)
+				Image(systemName: "chevron.forward")
 			}
+			.onTapGesture {
+				Print(Date())
+			}
+			.opacity_reacting(is_touching_detail)
+			.on_touching_changed { is_touching_detail = $0 }
 			
 			VStack(spacing: .zero) {
 				Button {} label: {
 					ZStack {
-						Rectangle()
-							.foregroundStyle(Color.green.opacity(.one_half))
-							.aspectRatio(1, contentMode: .fill)
+						Color.green.opacity(.one_half)
 						Image(systemName: "checkmark")
 					}
 					.opacity_reacting(is_touching_select)
 					.on_touching_changed { is_touching_select = $0 }
 				}
-				Button {} label: {
-					ZStack {
-						Rectangle()
-							.foregroundStyle(Color.blue.opacity(.one_half))
-						Image(systemName: "arrowtriangle.up")
+				HStack(spacing: .zero) {
+					Button {} label: {
+						ZStack {
+							Color.blue.opacity(.one_half)
+							Image(systemName: "arrowtriangle.up")
+						}
 					}
-				}
-				Button {} label: {
-					ZStack {
-						Rectangle()
-							.foregroundStyle(Color.purple.opacity(.one_half))
-						Image(systemName: "arrowtriangle.down")
+					Button {} label: {
+						ZStack {
+							Color.purple.opacity(.one_half)
+							Image(systemName: "arrowtriangle.down")
+						}
 					}
 				}
 			}

@@ -87,27 +87,7 @@ import MusicKit
 			stack_info
 				.padding(.leading, .eight * 1/2) // Align with `SongRow`.
 			HStack(alignment: .bottom) {
-				Button {
-					switch exhibit.focus {
-						case .spotlight: return
-						case .covers:
-							exhibit.focus = .expanded(uAlbum)
-						case .expanded(let uA_expanded):
-							if uA_expanded == uAlbum {
-								exhibit.focus = .covers
-							} else { exhibit.focus = .expanded(uAlbum) }
-					}
-				} label: {
-					Image(systemName: "chevron.forward.circle.fill") // 2do: Accessibility.
-						.symbolRenderingMode(.hierarchical)
-				}
-				.rotationEffect({ // Positive is clockwise.
-					if exhibit.is_expanded(uAlbum)
-					{ return Angle.degrees(90) }
-					return Angle.zero
-				}())
-				.animation(.linear_quick(), value: exhibit.is_expanded(uAlbum))
-				.disabled(exhibit.has_selected_song())
+				b_expand
 				Spacer()
 				menu_select
 			}
@@ -144,6 +124,29 @@ import MusicKit
 		.animation(.default, value: exhibit.has_selected_song())
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
+	}
+	private var b_expand: some View {
+		Button {
+			switch exhibit.focus {
+				case .spotlight: return
+				case .covers:
+					exhibit.focus = .expanded(uAlbum)
+				case .expanded(let uA_expanded):
+					if uA_expanded == uAlbum {
+						exhibit.focus = .covers
+					} else { exhibit.focus = .expanded(uAlbum) }
+			}
+		} label: {
+			Image(systemName: "chevron.forward.circle.fill") // 2do: Accessibility.
+				.symbolRenderingMode(.hierarchical)
+		}
+		.rotationEffect({ // Positive is clockwise.
+			if exhibit.is_expanded(uAlbum)
+			{ return Angle.degrees(90) }
+			return Angle.zero
+		}())
+		.animation(.linear_quick(), value: exhibit.is_expanded(uAlbum))
+		.disabled(exhibit.has_selected_song())
 	}
 	private var menu_select: some View {
 		Menu {
