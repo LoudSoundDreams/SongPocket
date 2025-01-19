@@ -32,37 +32,42 @@ struct ButtonPanel: View {
 				Image(systemName: "chevron.forward")
 			}
 			.onTapGesture {
-				Print(Date())
+				Print(Date(), "expand")
 			}
 			.opacity_reacting(is_touching_detail)
 			.touching($is_touching_detail)
 			
 			VStack(spacing: .zero) {
-				Button {} label: {
-					ZStack {
-						Color.green.opacity(.one_half)
-						Image(systemName: "checkmark")
-					}
-					.opacity_reacting(is_touching_select)
-					.touching($is_touching_select)
+				ZStack {
+					Color.green.opacity(.one_half)
+					Image(systemName: "checkmark")
 				}
+				.onTapGesture {
+					Print(Date(), "select")
+				}
+				.opacity_reacting(is_touching_select)
+				.touching($is_touching_select)
+				
 				HStack(spacing: .zero) {
-					Button {} label: {
-						ZStack {
-							Color.blue.opacity(.one_half)
-							Image(systemName: "arrowtriangle.up")
-						}
-						.opacity_reacting(is_touching_up)
-						.touching($is_touching_up)
+					ZStack {
+						Color.blue.opacity(.one_half)
+						Image(systemName: "arrowtriangle.up")
 					}
-					Button {} label: {
-						ZStack {
-							Color.purple.opacity(.one_half)
-							Image(systemName: "arrowtriangle.down")
-						}
-						.opacity_reacting(is_touching_down)
-						.touching($is_touching_down)
+					.onTapGesture {
+						Print(Date(), "up")
 					}
+					.opacity_reacting(is_touching_up)
+					.touching($is_touching_up)
+					
+					ZStack {
+						Color.purple.opacity(.one_half)
+						Image(systemName: "arrowtriangle.down")
+					}
+					.onTapGesture {
+						Print(Date(), "down")
+					}
+					.opacity_reacting(is_touching_down)
+					.touching($is_touching_down)
 				}
 			}
 		}
