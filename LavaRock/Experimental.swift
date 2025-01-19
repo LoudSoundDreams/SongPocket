@@ -2,28 +2,6 @@
 
 import SwiftUI
 
-struct TheBar: View {
-	var body: some View {
-		Button("hop", systemImage: "hare") {
-		}
-	}
-}
-
-extension View {
-	func opacity_reacting(_ active: Bool) -> some View {
-		return self
-			.opacity(active ? .one_half : 1)
-			.animation(active ? nil : .linear_quick(), value: active)
-	}
-	
-	func touching(_ variable: Binding<Bool>) -> some View {
-		onLongPressGesture(minimumDuration: .zero) {
-		} onPressingChanged: {
-			variable.wrappedValue = $0
-		}
-	}
-}
-
 struct ButtonPanel: View {
 	var body: some View {
 		HStack(spacing: .zero) {
@@ -76,4 +54,26 @@ struct ButtonPanel: View {
 	@State private var is_touching_select = false
 	@State private var is_touching_up = false
 	@State private var is_touching_down = false
+}
+
+extension View {
+	func opacity_reacting(_ active: Bool) -> some View {
+		return self
+			.opacity(active ? .one_half : 1)
+			.animation(active ? nil : .linear_quick(), value: active)
+	}
+	
+	func touching(_ variable: Binding<Bool>) -> some View {
+		onLongPressGesture(minimumDuration: .zero) {
+		} onPressingChanged: {
+			variable.wrappedValue = $0
+		}
+	}
+}
+
+struct TheBar: View {
+	var body: some View {
+		Button("hop", systemImage: "hare") {
+		}
+	}
 }
