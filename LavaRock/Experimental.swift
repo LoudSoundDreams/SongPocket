@@ -10,19 +10,17 @@ struct TheBar: View {
 }
 
 extension View {
-	func on_touching_changed(
-		respond: @escaping (_ is_touching: Bool) -> Void
-	) -> some View {
-		onLongPressGesture(minimumDuration: .zero) {
-		} onPressingChanged: {
-			respond($0)
-		}
-	}
-	
 	func opacity_reacting(_ active: Bool) -> some View {
 		return self
 			.opacity(active ? .one_half : 1)
 			.animation(active ? nil : .linear_quick(), value: active)
+	}
+	
+	func touching(_ variable: Binding<Bool>) -> some View {
+		onLongPressGesture(minimumDuration: .zero) {
+		} onPressingChanged: {
+			variable.wrappedValue = $0
+		}
 	}
 }
 
@@ -37,7 +35,7 @@ struct ButtonPanel: View {
 				Print(Date())
 			}
 			.opacity_reacting(is_touching_detail)
-			.on_touching_changed { is_touching_detail = $0 }
+			.touching($is_touching_detail)
 			
 			VStack(spacing: .zero) {
 				Button {} label: {
@@ -46,7 +44,7 @@ struct ButtonPanel: View {
 						Image(systemName: "checkmark")
 					}
 					.opacity_reacting(is_touching_select)
-					.on_touching_changed { is_touching_select = $0 }
+					.touching($is_touching_select)
 				}
 				HStack(spacing: .zero) {
 					Button {} label: {
@@ -54,12 +52,16 @@ struct ButtonPanel: View {
 							Color.blue.opacity(.one_half)
 							Image(systemName: "arrowtriangle.up")
 						}
+						.opacity_reacting(is_touching_up)
+						.touching($is_touching_up)
 					}
 					Button {} label: {
 						ZStack {
 							Color.purple.opacity(.one_half)
 							Image(systemName: "arrowtriangle.down")
 						}
+						.opacity_reacting(is_touching_down)
+						.touching($is_touching_down)
 					}
 				}
 			}
@@ -67,4 +69,6 @@ struct ButtonPanel: View {
 	}
 	@State private var is_touching_detail = false
 	@State private var is_touching_select = false
+	@State private var is_touching_up = false
+	@State private var is_touching_down = false
 }
