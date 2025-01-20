@@ -162,7 +162,7 @@ import MusicKit
 			return Angle.zero
 		}())
 		.animation(.linear_quick(), value: exhibit.is_expanded(uAlbum))
-		.disabled(exhibit.has_selected_song())
+		.disabled(!exhibit.is_viewing)
 	}
 	private var menu_select: some View {
 		Menu {

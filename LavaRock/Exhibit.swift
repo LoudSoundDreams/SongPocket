@@ -56,6 +56,12 @@ extension Exhibit {
 		case mode_songs(Set<USong>)
 	}
 	@ObservationIgnored static let changed_selection = Notification.Name("LR_Selection")
+	var is_viewing: Bool {
+		switch selection {
+			case .view: return true
+			case .mode_albums, .mode_songs: return false
+		}
+	}
 	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
 		switch selection {
 			case .view, .mode_songs: return false

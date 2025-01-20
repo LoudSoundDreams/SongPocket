@@ -65,7 +65,7 @@ struct ButtonPanel: View {
 			}
 			.reacting(is_touching_down)
 			.touching($is_touching_down)
-		}.disabled(exhibit.has_selected_song())
+		}.disabled(!exhibit.is_viewing)
 	}
 	@State private var is_touching_detail = false
 	@State private var is_touching_select = false
