@@ -521,7 +521,7 @@ final class ExhibitTVC: LRTableViewController {
 	
 	// MARK: Editing
 	
-	private lazy var a_end_selecting = UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() }
+	private lazy var a_done = UIAction(title: InterfaceText.Done, image: UIImage(systemName: "checkmark.circle.fill")) { [weak self] _ in self?.end_selecting_animated() }
 	private func end_selecting_animated() {
 		withAnimation {
 			self.exhibit.selection = .view(nil)
@@ -551,31 +551,19 @@ final class ExhibitTVC: LRTableViewController {
 	
 	// MARK: Scope
 	
-	private func menu_sort() -> UIMenu? {
-		return UIMenu(
-			children: {
-				switch exhibit.focus {
-					case .spotlight: return []
-					case .covers: return menu_sections_album_sort
-					case .expanded: return menu_sections_song_sort
-				}
-			}()
-		)
-	}
-	
 	private func menu_scope() -> UIMenu {
-		var submenus_inline: [UIMenu] = []
+		var menu_children: [UIMenu] = []
 		switch exhibit.selection {
 			case .view: break
 			case .mode_albums, .mode_songs:
-				submenus_inline.append(UIMenu(
+				menu_children.append(UIMenu(
 					options: .displayInline,
 					children: [
-						a_end_selecting,
+						a_done,
 					]
 				))
 		}
-		submenus_inline.append(UIMenu(
+		menu_children.append(UIMenu(
 			options: .displayInline,
 			children: [
 				UIDeferredMenuElement.uncached { [weak self] use in
@@ -621,7 +609,7 @@ final class ExhibitTVC: LRTableViewController {
 				},
 			]
 		))
-		return UIMenu(children: submenus_inline)
+		return UIMenu(children: menu_children)
 	}
 	private func uSongs_scope() -> [USong] { // In display order.
 		switch exhibit.selection {
@@ -652,6 +640,23 @@ final class ExhibitTVC: LRTableViewController {
 	
 	// MARK: Sorting
 	
+	// Including sort commands depends on the type to sort: albums or songs.
+	// Enabling sort commands depends on the items to sort:
+	// • 2 or more
+	// • Contiguous
+	// • With useful data
+	private func menu_sort() -> UIMenu? {
+		return UIMenu(
+			children: {
+				switch exhibit.focus {
+					case .spotlight: return []
+					case .covers: return menu_sections_album_sort
+					case .expanded: return menu_sections_song_sort
+				}
+			}()
+		)
+	}
+	
 	private lazy var menu_sections_album_sort: [UIMenu] = {
 		let groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
 		return groups.map { albumOrders in
@@ -669,6 +674,7 @@ final class ExhibitTVC: LRTableViewController {
 	private func can_sort_albums(by album_order: AlbumOrder) -> Bool {
 		let uAlbums = uAlbums_to_sort()
 		guard uAlbums.count >= 2 else { return false }
+		
 		switch exhibit.selection {
 			case .mode_songs, .view: break
 			case .mode_albums(let uAs_selected):
@@ -677,6 +683,7 @@ final class ExhibitTVC: LRTableViewController {
 				})
 				guard rs_selected.ranges.count <= 1 else { return false }
 		}
+		
 		switch album_order {
 			case .random, .reverse, .recently_added: return true
 			case .recently_released: return uAlbums.contains {
@@ -684,6 +691,7 @@ final class ExhibitTVC: LRTableViewController {
 			}
 		}
 	}
+	
 	private lazy var menu_sections_song_sort: [UIMenu] = {
 		let groups: [[SongOrder]] = [[.track], [.reverse, .random]]
 		return groups.map { songOrders in
@@ -692,7 +700,9 @@ final class ExhibitTVC: LRTableViewController {
 					guard let self else { return }
 					let action = order.action { [weak self] in self?.sort_songs(by: order) }
 					var enabling = true
+					
 					if uSongs_to_sort().count <= 1 { enabling = false }
+					
 					switch exhibit.selection {
 						case .mode_albums, .view: break
 						case .mode_songs(let uSs_selected):
@@ -701,6 +711,7 @@ final class ExhibitTVC: LRTableViewController {
 							})
 							if rs_selected.ranges.count >= 2 { enabling = false }
 					}
+					
 					if !enabling { action.attributes.formUnion(.disabled) }
 					use([action])
 				}
