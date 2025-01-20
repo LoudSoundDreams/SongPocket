@@ -9,7 +9,7 @@ struct ButtonPanel: View {
 	var body: some View {
 		HStack(spacing: .zero) {
 			ZStack {
-				Rectangle().foregroundStyle(Material.ultraThin)
+				Color.black.opacity(.one_eighth)
 				Image(systemName: "chevron.forward")
 					.rotationEffect({
 						if exhibit.is_expanded(uAlbum)
@@ -34,7 +34,7 @@ struct ButtonPanel: View {
 			.touching($is_touching_detail)
 			
 			ZStack {
-				Rectangle().foregroundStyle(Material.ultraThin)
+				Color.black.opacity(.one_eighth)
 				Image(systemName: "checkmark")
 					.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary)
 			}
@@ -45,7 +45,7 @@ struct ButtonPanel: View {
 			.touching($is_touching_select)
 			
 			ZStack {
-				Rectangle().foregroundStyle(Material.ultraThin)
+				Color.black.opacity(.one_eighth)
 				Image(systemName: "arrowtriangle.up")
 					.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary)
 			}
@@ -56,7 +56,7 @@ struct ButtonPanel: View {
 			.touching($is_touching_up)
 			
 			ZStack {
-				Rectangle().foregroundStyle(Material.ultraThin)
+				Color.black.opacity(.one_eighth)
 				Image(systemName: "arrowtriangle.down")
 					.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary)
 			}
