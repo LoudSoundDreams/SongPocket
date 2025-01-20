@@ -83,18 +83,34 @@ import MusicKit
 	
 	private let apple_lib: AppleLibrary = .shared
 	var body: some View {
-		VStack(alignment: .leading) {
-			stack_info
-				.padding(.leading, .eight * 1/2) // Align with `SongRow`.
-			HStack(alignment: .bottom) {
-				b_expand
-				Spacer()
-				menu_select
+		let working_on_panel_buttons = 10 == 1
+		if working_on_panel_buttons {
+			VStack(alignment: .leading, spacing: .zero) {
+				stack_info
+					.padding()
+					.padding(.leading, .eight * 1/2) // Align with `SongRow`.
+				ButtonPanel(uAlbum: uAlbum, exhibit: exhibit)
+					.containerRelativeFrame(.vertical) { length, axis in
+						switch axis {
+							case .horizontal: return length
+							case .vertical: return length / 4
+						}
+					}
 			}
-			.dynamicType_default_to_max()
-			.imageScale(.large)
+		} else {
+			VStack(alignment: .leading) {
+				stack_info
+					.padding(.leading, .eight * 1/2) // Align with `SongRow`.
+				HStack(alignment: .bottom) {
+					b_expand
+					Spacer()
+					menu_select
+				}
+				.dynamicType_default_to_max()
+				.imageScale(.large)
+			}
+			.padding()
 		}
-		.padding()
 	}
 	
 	@ViewBuilder private var stack_info: some View {
