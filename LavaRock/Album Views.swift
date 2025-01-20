@@ -106,8 +106,8 @@ import MusicKit
 					Spacer()
 					menu_select
 				}
+				.font(.title)
 				.dynamicType_default_to_max()
-				.imageScale(.large)
 			}
 			.padding()
 		}
