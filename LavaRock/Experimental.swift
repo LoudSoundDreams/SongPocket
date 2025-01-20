@@ -43,34 +43,10 @@ struct ButtonPanel: View {
 			}
 			.reacting(is_touching_select)
 			.touching($is_touching_select)
-			
-			ZStack {
-				Color.black.opacity(.one_eighth)
-				Image(systemName: "arrowtriangle.up")
-					.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary)
-			}
-			.onTapGesture {
-				Print(Date(), "up")
-			}
-			.reacting(is_touching_up)
-			.touching($is_touching_up)
-			
-			ZStack {
-				Color.black.opacity(.one_eighth)
-				Image(systemName: "arrowtriangle.down")
-					.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary)
-			}
-			.onTapGesture {
-				Print(Date(), "down")
-			}
-			.reacting(is_touching_down)
-			.touching($is_touching_down)
 		}.disabled(!exhibit.is_viewing)
 	}
 	@State private var is_touching_detail = false
 	@State private var is_touching_select = false
-	@State private var is_touching_up = false
-	@State private var is_touching_down = false
 }
 
 extension View {

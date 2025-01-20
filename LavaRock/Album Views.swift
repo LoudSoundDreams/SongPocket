@@ -93,7 +93,7 @@ import MusicKit
 					.containerRelativeFrame(.vertical) { length, axis in
 						switch axis {
 							case .horizontal: return length
-							case .vertical: return length / 4
+							case .vertical: return length * .one_fourth
 						}
 					}
 			}
