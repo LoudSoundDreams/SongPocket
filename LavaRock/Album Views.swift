@@ -15,7 +15,6 @@ import MusicKit
 			uAlbum: uAlbum,
 			dim_limit: length_square)
 		.opacity(exhibit.has_selected_song() ? .one_half : 1)
-		.animation(.default, value: exhibit.has_selected_song())
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
@@ -137,7 +136,6 @@ import MusicKit
 				
 			}
 		}
-		.animation(.default, value: exhibit.has_selected_song())
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
 	}
