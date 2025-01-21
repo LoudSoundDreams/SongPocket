@@ -56,7 +56,7 @@ import UIKit
 	private func menu() -> UIMenu {
 		return UIMenu(title: title_menu(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				dme_go_now_playing,
+				dme_go_to_album,
 				Self.dme_toggle_repeat,
 				Self.action_go_Apple_Music,
 			]),
@@ -73,7 +73,7 @@ import UIKit
 		])
 	}
 	
-	private lazy var dme_go_now_playing = UIDeferredMenuElement.uncached { use in use([
+	private lazy var dme_go_to_album = UIDeferredMenuElement.uncached { use in use([
 		UIAction(title: InterfaceText.Go_to_Album, image: UIImage(systemName: "square.stack"), attributes: {
 #if targetEnvironment(simulator)
 			return []
@@ -84,7 +84,7 @@ import UIKit
 			else { return .disabled }
 			return []
 #endif
-		}()) { [weak self] _ in self?.weak_exhibitTVC?.show_current() }
+		}()) { [weak self] _ in self?.weak_exhibitTVC?.go_to_album() }
 	])}
 	private static let action_go_Apple_Music = UIAction(title: InterfaceText.Open_Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
 	

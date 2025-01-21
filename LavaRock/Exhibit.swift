@@ -288,7 +288,9 @@ final class ExhibitTVC: LRTableViewController {
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		exhibit.size_viewport = (width: size.width, height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		exhibit.size_viewport = (
+			width: size.width,
+			height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 		tableView.contentInset.top = Self.top_inset(
 			size_view: size,
 			safeAreaInsets: view.safeAreaInsets) // Hopefully doesn’t change later.
@@ -411,7 +413,7 @@ final class ExhibitTVC: LRTableViewController {
 		}
 	}
 	
-	func show_current() {
+	func go_to_album() {
 		guard
 			let uSong_current = ApplicationMusicPlayer.uSong_current,
 			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
