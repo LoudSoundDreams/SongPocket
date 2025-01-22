@@ -433,7 +433,7 @@ final class ExhibitTVC: LRTableViewController {
 			let uSong_current = ApplicationMusicPlayer.uSong_current,
 			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
 		else { return }
-		self.exhibit.focus = .spotlight(album_target.uAlbum)
+		exhibit.focus = .spotlight(album_target.uAlbum)
 	}
 	
 	@objc private func reflect_focus() {

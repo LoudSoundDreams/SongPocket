@@ -29,7 +29,7 @@ import MusicKit
 				.background { Color(white: .one_eighth) }
 				.ignoresSafeArea()
 //				.toolbar { ToolbarItemGroup(placement: .bottomBar) { TheBar() } }
-				.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic)
+				.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic) // As of iOS 18.3 RC, iOS shows the Home indicator whenever we change which artwork is focused, even if we hard-code this to `.hidden`.
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
 					Self.integrate_Apple_Music()
