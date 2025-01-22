@@ -320,6 +320,8 @@ final class ExhibitTVC: LRTableViewController {
 			(size_view.height - safeAreaInsets.bottom)
 		)
 		
+		// `adjustedContentInset` is what matters because it determines the scrolling limits, but we can’t set it directly. We can set `contentInset`, but UIKit adds safe area insets to that.
+		// As of iOS 18.3 RC, don’t use `contentInsetAdjustmentBehavior = .never`, because it breaks row sizing.
 		var result: CGFloat = .zero
 		result -= safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it 0.
 		result += (size_view.height / 2)

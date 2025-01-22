@@ -58,7 +58,7 @@ import UIKit
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				dme_go_to_album,
 				Self.dme_toggle_repeat,
-				Self.action_go_Apple_Music,
+				Self.action_open_Apple_Music,
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				Self.dme_jump_backward,
@@ -86,7 +86,7 @@ import UIKit
 #endif
 		}()) { [weak self] _ in self?.weak_exhibitTVC?.go_to_album() }
 	])}
-	private static let action_go_Apple_Music = UIAction(title: InterfaceText.Open_Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
+	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Open_Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
 	
 	private static let dme_toggle_playing = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)
