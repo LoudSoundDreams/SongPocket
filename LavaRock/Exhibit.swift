@@ -299,9 +299,7 @@ final class ExhibitTVC: LRTableViewController {
 		exhibit.length_artwork = Self.length_square_fitting(
 			size_frame: view.frame.size,
 			safeAreaInsets: view.safeAreaInsets)
-		tableView.contentInset.top = Self.top_inset(
-			size_view: view.frame.size,
-			safeAreaInsets: view.safeAreaInsets)
+		refresh_contentInset(size_frame: view.frame.size)
 	}
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -310,9 +308,7 @@ final class ExhibitTVC: LRTableViewController {
 		exhibit.length_artwork = Self.length_square_fitting(
 			size_frame: size,
 			safeAreaInsets: view.safeAreaInsets)
-		tableView.contentInset.top = Self.top_inset(
-			size_view: size,
-			safeAreaInsets: view.safeAreaInsets) // Hopefully doesn’t change later.
+		refresh_contentInset(size_frame: size)
 	}
 	
 	private static func length_square_fitting(
@@ -321,25 +317,21 @@ final class ExhibitTVC: LRTableViewController {
 	) -> CGFloat {
 		return min(
 			size_frame.width,
-			size_frame.height - safeAreaInsets.top - safeAreaInsets.bottom)
+			size_frame.height - safeAreaInsets.bottom)
 	}
-	private static func top_inset(
-		size_view: CGSize,
-		safeAreaInsets: UIEdgeInsets
-	) -> CGFloat {
-		let length_square: CGFloat = min(
-			size_view.width,
-			(size_view.height - safeAreaInsets.bottom)
-		)
-		
-		// `adjustedContentInset` is what matters because it determines the scrolling limits, but we can’t set it directly. We can set `contentInset`, but UIKit adds safe area insets to that.
-		// As of iOS 18.3 RC, don’t use `contentInsetAdjustmentBehavior = .never`, because it breaks row sizing.
-		var result: CGFloat = .zero
-		result -= safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it 0.
-		result += (size_view.height / 2)
-		result -= (length_square / 2) // Half the height of a square fitting the viewport.
-		result = result.rounded(.down) // As of iOS 18.3 developer beta 3, a non-integer value prevents you from rapidly expanding and collapsing albums.
-		return result
+	
+	private func refresh_contentInset(size_frame: CGSize) {
+		tableView.contentInset = {
+			// `adjustedContentInset` is what matters because it determines the scrolling limits, but we can’t set it directly. We can set `contentInset`, but UIKit adds safe area insets to that.
+			// As of iOS 18.3 RC, don’t use `contentInsetAdjustmentBehavior = .never`, because it breaks row sizing.
+			var moat: CGFloat = .zero
+			moat -= view.safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it effectively zero.
+			moat += (size_frame.height / 2)
+			moat -= (exhibit.length_artwork / 2)
+			
+			let top = moat.rounded(.down) // As of iOS 18.3 developer beta 3, a non-integer value prevents you from rapidly expanding and collapsing albums.
+			return UIEdgeInsets(top: top, left: .zero, bottom: .zero, right: .zero)
+		}()
 	}
 	
 	// MARK: Table view
