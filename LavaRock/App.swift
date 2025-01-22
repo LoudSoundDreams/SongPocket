@@ -29,7 +29,7 @@ import MusicKit
 				.background { Color(white: .one_eighth) }
 				.ignoresSafeArea()
 //				.toolbar { ToolbarItemGroup(placement: .bottomBar) { TheBar() } }
-				.persistentSystemOverlays(Global.shared.shows_handlebar ? .automatic : .hidden)
+				.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic)
 				.task {
 					guard MusicAuthorization.currentStatus == .authorized else { return }
 					Self.integrate_Apple_Music()
@@ -45,7 +45,7 @@ import MusicKit
 
 @MainActor @Observable final class Global {
 	private init() {}
-	fileprivate(set) var shows_handlebar = true
+	var focus_is_spotlight = false
 }
 extension Global {
 	@ObservationIgnored static let shared = Global()
@@ -84,10 +84,8 @@ private final class NCMain: UINavigationController {
 		switch exhibit.focus {
 			case .spotlight:
 				setToolbarHidden(true, animated: true)
-				Global.shared.shows_handlebar = false
 			case .covers, .expanded:
 				setToolbarHidden(false, animated: true)
-				Global.shared.shows_handlebar = true
 		}
 	}
 }
