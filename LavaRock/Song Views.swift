@@ -38,7 +38,7 @@ import MusicKit
 		}
 		.background { highlight }
 		.overlay { border }
-		.frame(maxWidth: exhibit.size_viewport.height) // Matches artwork width.
+		.frame(maxWidth: exhibit.length_artwork)
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }

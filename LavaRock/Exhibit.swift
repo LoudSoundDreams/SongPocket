@@ -25,7 +25,7 @@ import MusicKit
 		NotificationCenter.default.post(name: Self.changed_selection, object: nil)
 	}}
 	
-	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
+	fileprivate(set) var length_artwork: CGFloat!
 }
 extension Exhibit {
 	fileprivate enum Artifact {
@@ -296,6 +296,9 @@ final class ExhibitTVC: LRTableViewController {
 	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
+		exhibit.length_artwork = Self.length_square_fitting(
+			size_frame: view.frame.size,
+			safeAreaInsets: view.safeAreaInsets)
 		tableView.contentInset.top = Self.top_inset(
 			size_view: view.frame.size,
 			safeAreaInsets: view.safeAreaInsets)
@@ -303,14 +306,23 @@ final class ExhibitTVC: LRTableViewController {
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		exhibit.size_viewport = (
-			width: size.width,
-			height: size.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
+		// The `size` parameter will later become `view.frame.size`, not `view.bounds.size`.
+		exhibit.length_artwork = Self.length_square_fitting(
+			size_frame: size,
+			safeAreaInsets: view.safeAreaInsets)
 		tableView.contentInset.top = Self.top_inset(
 			size_view: size,
 			safeAreaInsets: view.safeAreaInsets) // Hopefully doesn’t change later.
 	}
 	
+	private static func length_square_fitting(
+		size_frame: CGSize,
+		safeAreaInsets: UIEdgeInsets
+	) -> CGFloat {
+		return min(
+			size_frame.width,
+			size_frame.height - safeAreaInsets.top - safeAreaInsets.bottom)
+	}
 	private static func top_inset(
 		size_view: CGSize,
 		safeAreaInsets: UIEdgeInsets
@@ -391,9 +403,6 @@ final class ExhibitTVC: LRTableViewController {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "Album Card", for: indexPath)
 				cell.backgroundColor = .clear
 				cell.selectionStyle = .none // Prevents highlighting.
-				exhibit.size_viewport = (
-					width: view.frame.width,
-					height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
 				cell.contentConfiguration = UIHostingConfiguration {
 					AlbumRow(uAlbum: uAlbum, exhibit: exhibit)
 				}.margins(.all, .zero)

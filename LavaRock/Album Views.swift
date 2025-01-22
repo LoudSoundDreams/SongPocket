@@ -8,12 +8,9 @@ import MusicKit
 	let exhibit: Exhibit
 	
 	var body: some View {
-		let length_square: CGFloat = min(
-			exhibit.size_viewport.width,
-			exhibit.size_viewport.height)
 		AlbumArt(
 			uAlbum: uAlbum,
-			dim_limit: length_square)
+			length_max: exhibit.length_artwork)
 		.opacity(exhibit.has_selected_song() ? .one_half : 1)
 		.overlay {
 			ZStack(alignment: .bottom) {
@@ -223,7 +220,7 @@ import MusicKit
 
 @MainActor struct AlbumArt: View {
 	let uAlbum: UAlbum
-	let dim_limit: CGFloat
+	let length_max: CGFloat
 	
 	private var artwork: MusicKit.Artwork? {
 		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
@@ -238,11 +235,11 @@ import MusicKit
 				 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
 				 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
 				 */
-				ArtworkImage(artwork, width: dim_limit)
+				ArtworkImage(artwork, width: length_max)
 			} else {
 				ZStack {
 					Color(white: .one_fourth)
-						.frame(width: dim_limit, height: dim_limit)
+						.frame(width: length_max, height: length_max)
 					PlaceholderMusicNote()
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
