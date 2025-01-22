@@ -65,8 +65,6 @@ private final class NCMain: UINavigationController {
 		result.setToolbarHidden(false, animated: false)
 		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
 		
-		NotificationCenter.default.addObserver(result, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: nil)
-		
 		return result
 	}
 	
@@ -78,14 +76,4 @@ private final class NCMain: UINavigationController {
 		}
 	}
 	private static var has_appeared = false
-	
-	@objc private func reflect_focus(notification: Notification) {
-		guard let exhibit = notification.object as? Exhibit else { return }
-		switch exhibit.focus {
-			case .spotlight:
-				setToolbarHidden(true, animated: true)
-			case .covers, .expanded:
-				setToolbarHidden(false, animated: true)
-		}
-	}
 }
