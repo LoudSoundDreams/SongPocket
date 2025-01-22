@@ -16,7 +16,7 @@ import MusicKit
 	}}
 	
 	var selection: Selection = .view(nil) { didSet {
-		NotificationCenter.default.post(name: Self.changed_selection, object: self)
+		NotificationCenter.default.post(name: Self.changed_selection, object: nil)
 	}}
 	
 	fileprivate(set) var size_viewport: (width: CGFloat, height: CGFloat) = (.zero, .zero)
@@ -276,7 +276,7 @@ final class ExhibitTVC: LRTableViewController {
 		Remote.shared.weak_exhibitTVC = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: exhibit)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: Exhibit.changed_selection, object: exhibit)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: Exhibit.changed_selection, object: nil)
 	}
 	
 	override func viewIsAppearing(_ animated: Bool) {
@@ -755,7 +755,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -766,7 +766,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -778,7 +778,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -789,7 +789,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: exhibit)
+			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
