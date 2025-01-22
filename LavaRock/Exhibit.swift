@@ -61,7 +61,7 @@ extension Exhibit {
 		case mode_albums(Set<UAlbum>)
 		case mode_songs(Set<USong>)
 	}
-	@ObservationIgnored static let changed_selection = Notification.Name("LR_Selection")
+	@ObservationIgnored fileprivate static let changed_selection = Notification.Name("LR_Selection")
 	var is_viewing: Bool {
 		switch selection {
 			case .view: return true
