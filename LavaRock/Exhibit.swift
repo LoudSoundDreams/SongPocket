@@ -89,7 +89,16 @@ extension Exhibit {
 		artifacts = {
 			let uAlbums = Self.uAlbums_fresh()
 			switch focus {
-				case .covers, .spotlight: return uAlbums.map { .row_album($0) }
+				case .covers:
+					return uAlbums.map { .row_album($0) }
+					
+				case .spotlight(let uA_spotlighted):
+					// If we removed the spotlighted album, change focus to covers.
+					if nil == uAlbums.firstIndex(where: { $0 == uA_spotlighted }) {
+						focus = .covers
+					}
+					return uAlbums.map { .row_album($0) }
+					
 				case .expanded(let uA_expanded):
 					// If we removed the expanded album, change focus to covers.
 					guard
