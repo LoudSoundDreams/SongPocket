@@ -418,16 +418,7 @@ final class ExhibitTVC: LRTableViewController {
 			let uSong_current = ApplicationMusicPlayer.uSong_current,
 			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
 		else { return }
-		let uAlbum_target = album_target.uAlbum
-		guard let row_target = exhibit.artifacts.firstIndex(where: { switch $0 {
-			case .row_song: return false
-			case .row_album(let uAlbum): return uAlbum == uAlbum_target
-		}}) else { return }
-		tableView.performBatchUpdates {
-			tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
-		} completion: { _ in
-			self.exhibit.focus = .spotlight(uAlbum_target)
-		}
+		self.exhibit.focus = .spotlight(album_target.uAlbum)
 	}
 	
 	@objc private func reflect_focus() {
