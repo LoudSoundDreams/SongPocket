@@ -103,7 +103,7 @@ import MusicKit
 					menu_select
 				}
 				.font(.largeTitle)
-				.dynamicType_default_to_max()
+				.dynamicType_default_to_plus_3()
 			}
 			.padding()
 		}

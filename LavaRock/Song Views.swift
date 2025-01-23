@@ -28,7 +28,7 @@ import MusicKit
 				stack_info(songInfo, albumInfo)
 				Spacer()
 				menu_select(songInfo, albumInfo)
-					.dynamicType_default_to_max()
+					.dynamicType_default_to_plus_3()
 					.imageScale(.large)
 			}
 			.padding(.horizontal)
