@@ -80,20 +80,30 @@ extension NotificationCenter {
 	}
 }
 
+// MARK: SwiftUI
+
 extension Color {
 	static func debug_random() -> Self {
 		return Color(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1))
 			.opacity(.one_half)
 	}
 }
+extension View {
+	func touching(_ variable: Binding<Bool>) -> some View {
+		onLongPressGesture(minimumDuration: .zero) {
+		} onPressingChanged: {
+			variable.wrappedValue = $0
+		}
+	}
+}
+
+// MARK: UIKit
 
 extension UIImage {
 	func applying_hierarchical_tint() -> UIImage? {
 		return applyingSymbolConfiguration(Self.SymbolConfiguration(hierarchicalColor: .tintColor))
 	}
 }
-
-// MARK: - Table view
 
 class LRTableViewController: UITableViewController {
 	final var rowIDs_current: [AnyHashable] = []
@@ -130,7 +140,6 @@ class LRTableViewController: UITableViewController {
 	}
 	private var animations_in_progress = 0
 }
-
 extension UITableView {
 	final func performBatchUpdates_from_rowIDs<Identifier: Hashable>(
 		old: [Identifier], new: [Identifier],

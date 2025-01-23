@@ -42,18 +42,13 @@ import MusicKit
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
-		.onLongPressGesture(minimumDuration: .zero) {
-		} onPressingChanged: {
-			is_pressing = $0
-		}
+		.touching($is_pressing)
 	}
 	@ViewBuilder private var border: some View {
 		switch exhibit.selection {
 			case .view, .mode_albums: EmptyView()
 			case .mode_songs(let uSs_selected):
-				let is_selected = uSs_selected.contains(uSong)
-				let is_bright = is_selected != is_pressing
-				if is_bright {
+				if uSs_selected.contains(uSong) {
 					BorderSelected()
 				} else { BorderUnselected() }
 		}

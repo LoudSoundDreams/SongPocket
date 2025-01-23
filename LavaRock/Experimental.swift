@@ -49,20 +49,13 @@ struct ButtonPanel: View {
 	@State private var is_touching_select = false
 }
 
-extension View {
+private extension View {
 	func reacting(_ active: Bool) -> some View {
 		return self
 			.overlay {
 				Color.black.opacity(active ? .one_fourth : .zero)
 			}
 			.animation(active ? nil : .linear_quick(), value: active)
-	}
-	
-	func touching(_ variable: Binding<Bool>) -> some View {
-		onLongPressGesture(minimumDuration: .zero) {
-		} onPressingChanged: {
-			variable.wrappedValue = $0
-		}
 	}
 }
 
