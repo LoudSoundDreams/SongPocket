@@ -53,14 +53,7 @@ import MusicKit
 		switch exhibit.selection {
 			case .mode_songs: return
 			case .view:
-				switch exhibit.focus {
-					case .covers, .expanded:
-						exhibit.focus = .spotlight(uAlbum)
-					case .spotlight(let uA_spotlighted):
-						if uA_spotlighted == uAlbum {
-							exhibit.focus = .covers
-						} else { exhibit.focus = .spotlight(uAlbum) }
-				}
+				exhibit.toggle_spotlight(uAlbum)
 			case .mode_albums(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uAlbum) {
@@ -138,15 +131,7 @@ import MusicKit
 	}
 	private var b_expand: some View {
 		Button {
-			switch exhibit.focus {
-				case .spotlight: return
-				case .covers:
-					exhibit.focus = .expanded(uAlbum)
-				case .expanded(let uA_expanded):
-					if uA_expanded == uAlbum {
-						exhibit.focus = .covers
-					} else { exhibit.focus = .expanded(uAlbum) }
-			}
+			exhibit.toggle_expand(uAlbum)
 		} label: {
 			Image(systemName: "chevron.forward.circle.fill") // 2do: Accessibility.
 				.symbolRenderingMode(.hierarchical)
