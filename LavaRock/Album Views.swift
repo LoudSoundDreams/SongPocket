@@ -16,7 +16,7 @@ import MusicKit
 			ZStack(alignment: .bottom) {
 				ZStack {
 					if !exhibit.is_spotlighting(uAlbum) {
-						Rectangle().foregroundStyle(Material.thin)
+						Rectangle().foregroundStyle(Material.regular)
 					}
 				}.animation(.linear_quick(), value: exhibit.is_spotlighting(uAlbum))
 				ZStack {

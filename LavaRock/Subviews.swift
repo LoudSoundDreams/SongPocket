@@ -14,7 +14,7 @@ struct Separator: View {
 
 struct BorderUnselected: View {
 	var body: some View {
-		Border().foregroundStyle(Material.ultraThin)
+		Border().foregroundStyle(Material.regular)
 	}
 }
 struct BorderSelected: View {
