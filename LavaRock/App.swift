@@ -26,7 +26,7 @@ import MusicKit
 	var body: some Scene {
 		WindowGroup {
 			RepNCMain()
-				.background { Color(white: .one_eighth) }
+				.background { Color(white: .one_eighth / 2) }
 				.ignoresSafeArea()
 //				.toolbar { ToolbarItemGroup(placement: .bottomBar) { TheBar() } }
 				.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic) // As of iOS 18.3 RC, iOS shows the Home indicator whenever we change which artwork is focused, even if we hard-code this to `.hidden`.
