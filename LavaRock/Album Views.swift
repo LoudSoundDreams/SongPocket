@@ -69,8 +69,10 @@ import MusicKit
 			stack_info
 				.padding(.leading, .eight * 1/2) // Align with `SongRow`.
 			HStack(alignment: .bottom) {
+//				b_spotlight
 				b_expand
 				Spacer()
+//				b_select
 				menu_select
 			}
 			.font(.largeTitle)
@@ -106,6 +108,21 @@ import MusicKit
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
 	}
+	
+	private var b_spotlight: some View {
+		Button {
+		} label: {
+			Image(systemName: "photo.circle.fill") // 2do: Accessibility.
+				.symbolRenderingMode(.hierarchical)
+		}
+	}
+	private var b_select: some View {
+		Button {
+		} label: {
+			Image(systemName: "checkmark.circle.fill") // 2do: Accessibility.
+				.symbolRenderingMode(.hierarchical)
+		}
+	}
 	private var b_expand: some View {
 		Button {
 			exhibit.toggle_expand(uAlbum)
@@ -121,6 +138,7 @@ import MusicKit
 		.animation(.linear_quick(), value: exhibit.is_expanded(uAlbum))
 		.disabled(!exhibit.is_viewing)
 	}
+	
 	private var menu_select: some View {
 		Menu {
 			switch exhibit.selection {

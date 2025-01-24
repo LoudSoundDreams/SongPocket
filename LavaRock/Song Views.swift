@@ -27,9 +27,12 @@ import MusicKit
 				
 				stack_info(songInfo, albumInfo)
 				Spacer()
-				menu_select(songInfo, albumInfo)
-					.dynamicType_default_to_plus_3()
-					.imageScale(.large)
+				Group {
+//					b_select
+					menu_select(songInfo, albumInfo)
+				}
+				.dynamicType_default_to_plus_3()
+				.imageScale(.large)
 			}
 			.padding(.horizontal)
 			.padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
@@ -95,6 +98,15 @@ import MusicKit
 		.accessibilityInputLabels([title].compactMap { $0 })
 		.accessibilityAddTraits(.isButton)
 	}
+	
+	private var b_select: some View {
+		Button {
+		} label: {
+			Image(systemName: "checkmark.circle.fill") // 2do: Accessibility.
+				.symbolRenderingMode(.hierarchical)
+		}
+	}
+	
 	private func menu_select(
 		_ songInfo: SongInfo?,
 		_ albumInfo: AlbumInfo?
