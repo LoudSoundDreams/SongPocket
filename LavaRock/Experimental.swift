@@ -2,6 +2,28 @@
 
 import SwiftUI
 
+struct BubbleBar: View {
+	var body: some View {
+		HStack(alignment: .bottom) {
+			Menu {
+			} label: {
+				Image(systemName: "play.circle.fill")
+					.symbolRenderingMode(.hierarchical)
+			}
+			Spacer()
+			Menu {
+			} label: {
+				Image(systemName: "ellipsis.circle.fill")
+					.symbolRenderingMode(.hierarchical)
+			}
+		}
+		.font(.largeTitle)
+		.dynamicType_default_to_plus_3()
+		.padding()
+		.background(Material.bar)
+	}
+}
+
 struct ButtonPanel: View {
 	let uAlbum: UAlbum
 	let exhibit: Exhibit

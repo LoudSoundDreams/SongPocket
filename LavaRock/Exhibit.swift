@@ -464,7 +464,9 @@ final class ExhibitTVC: LRTableViewController {
 		switch exhibit.focus {
 			case .covers, .expanded:
 				Task {
-					navigationController?.setToolbarHidden(false, animated: true)
+					if !WorkingOn.toolbar {
+						navigationController?.setToolbarHidden(false, animated: true)
+					}
 					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
@@ -472,7 +474,9 @@ final class ExhibitTVC: LRTableViewController {
 				}
 			case .spotlight(let uA_to_spotlight):
 				Task {
-					navigationController?.setToolbarHidden(true, animated: true)
+					if !WorkingOn.toolbar {
+						navigationController?.setToolbarHidden(true, animated: true)
+					}
 					exhibit.refresh_artifacts()
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()

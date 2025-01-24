@@ -3,6 +3,10 @@
 import SwiftUI
 import MusicKit
 
+enum WorkingOn {
+	static let toolbar = 10 == 1
+}
+
 @main struct LavaRock: App {
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
@@ -25,14 +29,19 @@ import MusicKit
 	}
 	var body: some Scene {
 		WindowGroup {
-			RepNCMain()
-				.background { Color(white: .one_eighth / 2) }
-				.ignoresSafeArea()
-				.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
-				.task {
-					guard MusicAuthorization.currentStatus == .authorized else { return }
-					Self.integrate_Apple_Music()
+			ZStack(alignment: .bottom) {
+				RepNCMain()
+					.background { Color(white: .one_eighth / 2) }
+					.ignoresSafeArea()
+				if WorkingOn.toolbar {
+					BubbleBar()
 				}
+			}
+			.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
+			.task {
+				guard MusicAuthorization.currentStatus == .authorized else { return }
+				Self.integrate_Apple_Music()
+			}
 		}
 	}
 	
@@ -60,9 +69,11 @@ private final class NCMain: UINavigationController {
 		
 		result.setNavigationBarHidden(true, animated: false)
 		
-		let toolbar = result.toolbar!
-		result.setToolbarHidden(false, animated: false)
-		toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		if !WorkingOn.toolbar {
+			let toolbar = result.toolbar!
+			result.setToolbarHidden(false, animated: false)
+			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
+		}
 		
 		return result
 	}
