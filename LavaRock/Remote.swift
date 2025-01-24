@@ -112,30 +112,38 @@ import UIKit
 	}()
 	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause.fill"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
 	
-	private static let dme_repeat = UIDeferredMenuElement.uncached { use in use([
-		UIAction(
-			title: InterfaceText.Repeat_One,
+	private static let dme_repeat = UIDeferredMenuElement.uncached { use in
+		let action = UIAction(
+			title: { // As of iOS 18.3 RC, with `preferredElementSize: .small`, VoiceOver never says “selected”.
+				var segments: [String] = []
+				if repeat_is_on { segments.append(InterfaceText.Selected) }
+				segments.append(InterfaceText.Repeat_One)
+				return segments.formatted(.list(type: .and, width: .narrow))
+			}(),
 			image: UIImage(systemName: "repeat.1"),
 			attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented,
 			state: {
-				guard
-					!ApplicationMusicPlayer.is_empty,
-					let mode = ApplicationMusicPlayer._shared?.state.repeatMode,
-					mode == .one
-				else { return .off }
-				return .on
-			}()) { _ in
-				guard
-					let player = ApplicationMusicPlayer._shared,
-					let mode = player.state.repeatMode
-				else { return }
-				if mode == .one {
-					player.state.repeatMode = MusicPlayer.RepeatMode.none
-				} else {
-					player.state.repeatMode = .one
-				}
+				if repeat_is_on
+				{ return .on }
+				return .off
+			}()
+		) { _ in
+			guard let player = ApplicationMusicPlayer._shared else { return }
+			if repeat_is_on {
+				player.state.repeatMode = MusicPlayer.RepeatMode.none
+			} else {
+				player.state.repeatMode = .one
 			}
-	])}
+		}
+		use([action])
+	}
+	private static var repeat_is_on: Bool {
+		guard
+			let player = ApplicationMusicPlayer._shared,
+			let mode = player.state.repeatMode
+		else { return false }
+		return mode == .one
+	}
 	
 	private static let dme_rewind = UIDeferredMenuElement.uncached { use in
 		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
