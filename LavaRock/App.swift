@@ -34,7 +34,11 @@ enum WorkingOn {
 					.background { Color(white: .one_eighth / 2) }
 					.ignoresSafeArea()
 				if WorkingOn.toolbar {
-					BubbleBar()
+					ZStack {
+						if !Global.shared.focus_is_spotlight {
+							BubbleBar()
+						}
+					}.animation(.linear_quick(), value: Global.shared.focus_is_spotlight)
 				}
 			}
 			.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.

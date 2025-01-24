@@ -10,7 +10,6 @@ struct BubbleBar: View {
 				Image(systemName: "play.circle.fill")
 					.symbolRenderingMode(.hierarchical)
 			}
-			Spacer()
 			Menu {
 			} label: {
 				Image(systemName: "ellipsis.circle.fill")
@@ -19,8 +18,8 @@ struct BubbleBar: View {
 		}
 		.font(.largeTitle)
 		.dynamicType_default_to_plus_3()
-		.padding()
-		.background(Material.bar)
+		.padding(.eight)
+		.background(Material.bar, in: .capsule)
 	}
 }
 

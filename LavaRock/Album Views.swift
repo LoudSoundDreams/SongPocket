@@ -30,7 +30,6 @@ import MusicKit
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
-//		.touching($is_pressing)
 		.accessibilityAddTraits(.isButton)
 	}
 	@ViewBuilder private var border: some View {
@@ -42,7 +41,6 @@ import MusicKit
 				} else { BorderUnselected() }
 		}
 	}
-//	@State private var is_pressing = false
 	
 	private func tapped() {
 		switch exhibit.selection {
