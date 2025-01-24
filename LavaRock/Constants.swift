@@ -92,7 +92,7 @@ enum InterfaceText {
 	
 	static let Now_Playing = "Now Playing"
 	static let Paused = "Paused"
-	static let Open_Apple_Music = "Open Apple Music"
+	static let Apple_Music = "Apple Music"
 	
 	static let _welcome_title = "Hi!"
 	static let _welcome_subtitle = "SongPocket shows and plays your Apple Music library."

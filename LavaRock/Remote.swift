@@ -57,7 +57,7 @@ import UIKit
 		return UIMenu(title: title_menu(), children: [
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
 				dme_go_to_album,
-				Self.dme_toggle_repeat,
+				Self.dme_repeat,
 				Self.action_open_Apple_Music,
 			]),
 			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
@@ -86,7 +86,7 @@ import UIKit
 #endif
 		}()) { [weak self] _ in self?.weak_exhibitTVC?.go_to_album() }
 	])}
-	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Open_Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
+	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
 	
 	private static let dme_toggle_playing = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)
@@ -112,7 +112,7 @@ import UIKit
 	}()
 	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause.fill"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
 	
-	private static let dme_toggle_repeat = UIDeferredMenuElement.uncached { use in use([
+	private static let dme_repeat = UIDeferredMenuElement.uncached { use in use([
 		UIAction(
 			title: InterfaceText.Repeat_One,
 			image: UIImage(systemName: "repeat.1"),
@@ -120,16 +120,16 @@ import UIKit
 			state: {
 				guard
 					!ApplicationMusicPlayer.is_empty,
-					let repeat_mode = ApplicationMusicPlayer._shared?.state.repeatMode,
-					repeat_mode == .one
+					let mode = ApplicationMusicPlayer._shared?.state.repeatMode,
+					mode == .one
 				else { return .off }
 				return .on
 			}()) { _ in
 				guard
 					let player = ApplicationMusicPlayer._shared,
-					let repeat_mode = player.state.repeatMode
+					let mode = player.state.repeatMode
 				else { return }
-				if repeat_mode == .one {
+				if mode == .one {
 					player.state.repeatMode = MusicPlayer.RepeatMode.none
 				} else {
 					player.state.repeatMode = .one
