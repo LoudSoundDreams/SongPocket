@@ -7,6 +7,18 @@ struct BubbleBar: View {
 		HStack(alignment: .bottom) {
 			Menu {
 			} label: {
+				Image(systemName: "arrow.up.arrow.down.circle.fill")
+					.symbolRenderingMode(.hierarchical)
+			}
+			.padding(.trailing)
+			Menu {
+			} label: {
+				Image(systemName: "waveform.circle.fill")
+					.symbolRenderingMode(.hierarchical)
+			}
+			.padding(.trailing)
+			Button {
+			} label: {
 				Image(systemName: "play.circle.fill")
 					.symbolRenderingMode(.hierarchical)
 			}

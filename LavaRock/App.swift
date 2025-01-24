@@ -36,7 +36,7 @@ enum WorkingOn {
 				if WorkingOn.toolbar {
 					ZStack {
 						if !Global.shared.focus_is_spotlight {
-							BubbleBar()
+							BubbleBar().padding(.horizontal)
 						}
 					}.animation(.linear_quick(), value: Global.shared.focus_is_spotlight)
 				}
