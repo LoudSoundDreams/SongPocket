@@ -58,10 +58,3 @@ private extension View {
 			.animation(active ? nil : .linear_quick(), value: active)
 	}
 }
-
-struct TheBar: View {
-	var body: some View {
-		Button("hop", systemImage: "hare") {
-		}
-	}
-}
