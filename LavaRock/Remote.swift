@@ -7,7 +7,7 @@ import UIKit
 @MainActor final class Remote {
 	static let shared = Remote()
 	let b_remote = UIBarButtonItem()
-	weak var weak_exhibitTVC: ExhibitTVC?
+	weak var tvc_weak: ExhibitTVC?
 	
 	private init() {
 		refresh()
@@ -84,7 +84,7 @@ import UIKit
 			else { return .disabled }
 			return []
 #endif
-		}()) { [weak self] _ in self?.weak_exhibitTVC?.go_to_artwork() }
+		}()) { [weak self] _ in self?.tvc_weak?.go_to_artwork() }
 	])}
 	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleLibrary.open_Apple_Music() }
 	

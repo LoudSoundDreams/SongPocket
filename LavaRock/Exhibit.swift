@@ -266,7 +266,7 @@ final class ExhibitTVC: LRTableViewController {
 		reflect_selection()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: AppleLibrary.merged, object: nil)
-		Remote.shared.weak_exhibitTVC = self
+		Remote.shared.tvc_weak = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: Exhibit.changed_selection, object: nil)

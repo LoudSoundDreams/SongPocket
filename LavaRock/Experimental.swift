@@ -26,6 +26,7 @@ struct BubbleBar: View {
 			} label: {
 				Image(systemName: "ellipsis.circle.fill")
 					.symbolRenderingMode(.hierarchical)
+					.accessibilityLabel(InterfaceText.More)
 			}
 		}
 		.font(.largeTitle)
