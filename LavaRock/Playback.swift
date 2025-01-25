@@ -20,32 +20,32 @@ import Combine
 	}
 	
 	final func play_now(
-		_ uSongs_to_play: [USong],
-		starting_at uSong_start: USong? = nil
+		_ uSs_to_play: [USong],
+		starting_at uS_start: USong? = nil
 	) async {
-		let mkSongs_to_play: [MKSong] = await {
+		let mk_to_play: [MKSong] = await {
 			var result: [MKSong] = []
-			for uSong in uSongs_to_play {
+			for uSong in uSs_to_play {
 				guard let mkSong = await AppleCatalog.shared.mkSong_fetched(uSong: uSong) else { continue }
 				result.append(mkSong)
 			}
 			return result
 		}()
-		let start: MKSong? = await {
-			guard let uSong_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-			return await AppleCatalog.shared.mkSong_fetched(uSong: uSong_start)
+		let mk_start: MKSong? = await {
+			guard let uS_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
+			return await AppleCatalog.shared.mkSong_fetched(uSong: uS_start)
 		}()
 		
-		queue = Queue(for: mkSongs_to_play, startingAt: start) // Slow.
+		queue = Queue(for: mk_to_play, startingAt: mk_start) // Slow.
 		guard let _ = try? await play() else { return }
 		
 		state.repeatMode = RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
-	final func play_later(_ uSongs_to_append: [USong]) async {
-		let mkSongs_to_append: [MKSong] = await {
+	final func play_later(_ uSs_to_append: [USong]) async {
+		let mk_to_append: [MKSong] = await {
 			var result: [MKSong] = []
-			for uSong in uSongs_to_append {
+			for uSong in uSs_to_append {
 				guard let mkSong = await AppleCatalog.shared.mkSong_fetched(uSong: uSong) else { continue }
 				result.append(mkSong)
 			}
@@ -53,10 +53,10 @@ import Combine
 		}()
 		
 		if nil == queue.currentEntry {
-			queue = Queue(for: mkSongs_to_append)
+			queue = Queue(for: mk_to_append)
 			guard let _ = try? await prepareToPlay() else { return }
 		} else {
-			guard let _ = try? await queue.insert(mkSongs_to_append, position: .tail) else { return }
+			guard let _ = try? await queue.insert(mk_to_append, position: .tail) else { return }
 		}
 		
 		let rumbler = UINotificationFeedbackGenerator()
@@ -92,8 +92,8 @@ extension PlayerState {
 		
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
 		let player = MPMusicPlayerController.applicationQueuePlayer
-		NotificationCenter.default.addObserver(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: player) // Because we still use Media Player to check the current song.
-		NotificationCenter.default.addObserver(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: player) // Because we still use UIKit to indicate the repeat mode.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: player) // Because we still use Media Player to check the current song.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: player) // Because we still use UIKit to indicate the repeat mode.
 	}
 	@objc private func mp_now_playing() {
 		signal.toggle()

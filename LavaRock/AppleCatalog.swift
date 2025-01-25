@@ -32,7 +32,7 @@ extension AppleCatalog {
 	func watch() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
-		NotificationCenter.default.add_observer_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
+		NotificationCenter.default.addObserver_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
 		merge_changes()
 	}
 	@ObservationIgnored static let merged = Notification.Name("LR_Merged")

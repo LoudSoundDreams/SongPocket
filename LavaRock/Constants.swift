@@ -1,4 +1,4 @@
-// For consistency throughout the app.
+// For consistency or uniqueness throughout the app.
 
 import SwiftUI
 
@@ -37,9 +37,11 @@ extension View {
 	}
 }
 
-// MARK: - Persistence
+// MARK: - Unique strings
 
 /*
+ UserDefaults keys
+ 
  "hasEverImportedFromMusic"
  Values: Bool
  Used in versions ? through 2.7.1
