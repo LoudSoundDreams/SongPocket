@@ -13,7 +13,7 @@ struct BubbleBar: View {
 			.padding(.trailing)
 			
 			Menu {
-				let _ = PlayerState.shared.signal
+				let _ = PlayerState.shared.signal_player
 				
 				ControlGroup {
 					Button {

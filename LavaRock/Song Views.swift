@@ -79,7 +79,7 @@ import MusicKit
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
-					let _ = PlayerState.shared.signal
+					let _ = PlayerState.shared.signal_player
 					let _ = catalog.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
 					guard
 						let player = ApplicationMusicPlayer._shared,

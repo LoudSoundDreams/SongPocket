@@ -78,7 +78,7 @@ import Combine
 // We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
 @MainActor @Observable final class PlayerState {
 	private init() {}
-	private(set) var signal = false { didSet {
+	private(set) var signal_player = false { didSet {
 		NotificationCenter.default.post(name: .player_state, object: nil)
 	}}
 	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
@@ -87,7 +87,7 @@ extension PlayerState {
 	@ObservationIgnored static let shared = PlayerState()
 	func watch() {
 		ApplicationMusicPlayer.shared.state.objectWillChange
-			.sink { [weak self] in self?.signal.toggle() }
+			.sink { [weak self] in self?.signal_player.toggle() }
 			.store(in: &cancellables)
 		
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
@@ -96,9 +96,9 @@ extension PlayerState {
 		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: player) // Because we still use UIKit to indicate the repeat mode.
 	}
 	@objc private func mp_now_playing() {
-		signal.toggle()
+		signal_player.toggle()
 	}
 	@objc private func mp_state() {
-		signal.toggle()
+		signal_player.toggle()
 	}
 }
