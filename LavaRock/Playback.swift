@@ -86,12 +86,16 @@ import Combine
 extension PlayerState {
 	@ObservationIgnored static let shared = PlayerState()
 	func watch() {
-		ApplicationMusicPlayer._shared?.state.objectWillChange // 2do: We’re using this wrong. Make SwiftUI views observe this with `@Observed`.
+		ApplicationMusicPlayer.shared.state.objectWillChange
 			.sink { [weak self] in self?.signal.toggle() }
 			.store(in: &cancellables)
-		ApplicationMusicPlayer._shared?.queue.objectWillChange
-			.sink { [weak self] in self?.signal.toggle() }
-			.store(in: &cancellables)
+		
+		// Because we still use Media Player to check the current song, and as of iOS 18.3 RC, MusicKit only emits `objectWillChange`  events, use Media Player to detect when the current song changes.
+		let player = MPMusicPlayerController.applicationQueuePlayer
+		NotificationCenter.default.addObserver(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: player)
+	}
+	@objc private func mp_now_playing() {
+		signal.toggle()
 	}
 	@ObservationIgnored static let changed = Notification.Name("LR_PlayerState")
 }
