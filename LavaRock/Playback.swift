@@ -63,31 +63,6 @@ import Combine
 		rumbler.notificationOccurred(.success)
 	}
 	
-	@MainActor enum StatusNowPlaying {
-		case not_playing, paused, playing
-		init(uSong: USong) {
-			guard
-				uSong == ApplicationMusicPlayer.uSong_current,
-				let state = _shared?.state
-			else { self = .not_playing; return }
-			switch state.playbackStatus {
-				case .playing:
-					self = .playing
-				case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward:
-					self = .paused
-				@unknown default:
-					self = .paused
-			}
-		}
-		var foreground_color: Color {
-			switch self {
-				case .not_playing: return Color.primary
-				case .playing: return Color.accentColor
-				case .paused: return Color.accentColor.opacity(.one_half)
-			}
-		}
-	}
-	
 	/*
 	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
 	 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.

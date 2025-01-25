@@ -81,7 +81,18 @@ import MusicKit
 				.foregroundStyle({
 					let _ = PlayerState.shared.signal
 					let _ = catalog.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
-					return ApplicationMusicPlayer.StatusNowPlaying(uSong: uSong).foreground_color
+					guard
+						let player = ApplicationMusicPlayer._shared,
+						let uSong_current = ApplicationMusicPlayer.uSong_current,
+						uSong_current == uSong
+					else { return Color.primary }
+					switch player.state.playbackStatus {
+						case .playing:
+							return Color.accentColor
+						case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward: break
+						@unknown default: break
+					}
+					return Color.accentColor.opacity(.one_half)
 				}())
 			if
 				let artist_song = songInfo?._artist,
