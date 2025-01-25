@@ -39,14 +39,6 @@ extension Exhibit {
 		case expanded(UAlbum)
 	}
 	@ObservationIgnored fileprivate static let changed_focus = Notification.Name("LR_Focus")
-	func is_spotlighting(_ uAlbum: UAlbum? = nil) -> Bool {
-		switch focus {
-			case .covers, .expanded: return false
-			case .spotlight(let uA_spotlighted):
-				guard let uAlbum else { return true }
-				return uA_spotlighted == uAlbum
-		}
-	}
 	
 	enum Selection {
 		case view(USong?)

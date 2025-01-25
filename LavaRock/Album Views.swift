@@ -15,15 +15,15 @@ import MusicKit
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack {
-					if !exhibit.is_spotlighting(uAlbum) {
+					if !is_spotlighting(uAlbum) {
 						Rectangle().foregroundStyle(Material.thick)
 					}
-				}.animation(.linear_quick(), value: exhibit.is_spotlighting(uAlbum))
+				}.animation(.linear_quick(), value: is_spotlighting(uAlbum))
 				ZStack {
-					if !exhibit.is_spotlighting() {
+					if !is_spotlighting() {
 						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit).accessibilitySortPriority(10)
 					}
-				}.animation(.linear_quick(), value: exhibit.is_spotlighting())
+				}.animation(.linear_quick(), value: is_spotlighting())
 			}
 		}
 		.overlay { border.accessibilityHidden(true) } // Use `withAnimation` to animate this when entering or exiting select mode, but not when staying in select mode.
@@ -32,6 +32,15 @@ import MusicKit
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 	}
+	private func is_spotlighting(_ uAlbum: UAlbum? = nil) -> Bool {
+		switch exhibit.focus {
+			case .covers, .expanded: return false
+			case .spotlight(let uA_spotlighted):
+				guard let uAlbum else { return true }
+				return uA_spotlighted == uAlbum
+		}
+	}
+	
 	@ViewBuilder private var border: some View {
 		switch exhibit.selection {
 			case .view, .mode_songs: EmptyView()
