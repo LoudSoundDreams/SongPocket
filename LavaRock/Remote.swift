@@ -137,7 +137,7 @@ import UIKit
 		}
 		use([action])
 	}
-	private static var repeat_is_on: Bool {
+	static var repeat_is_on: Bool {
 		guard
 			let player = ApplicationMusicPlayer._shared,
 			let mode = player.state.repeatMode

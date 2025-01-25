@@ -58,6 +58,7 @@ enum WorkingOn {
 @MainActor @Observable final class Global {
 	private init() {}
 	var focus_is_spotlight = false
+	@ObservationIgnored var showcase: Exhibit?
 }
 extension Global {
 	@ObservationIgnored static let shared = Global()

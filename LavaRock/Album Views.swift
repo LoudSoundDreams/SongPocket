@@ -156,8 +156,9 @@ import MusicKit
 			Image(systemName: "checkmark.circle.fill") // 2do: Accessibility.
 				.symbolRenderingMode(.hierarchical)
 		}
+		.disabled(!can_select_album)
+		.animation(.default, value: can_select_album)
 	}
-	
 	private var menu_select: some View {
 		Menu {
 			switch exhibit.selection {

@@ -26,6 +26,7 @@ import MusicKit
 	}}
 	
 	fileprivate(set) var length_artwork: CGFloat!
+	@ObservationIgnored fileprivate(set) weak var tvc_weak: ExhibitTVC?
 }
 extension Exhibit {
 	fileprivate enum Artifact {
@@ -258,6 +259,9 @@ final class ExhibitTVC: LRTableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		exhibit.tvc_weak = self
+		Global.shared.showcase = exhibit
 		
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
