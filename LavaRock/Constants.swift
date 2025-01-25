@@ -160,7 +160,7 @@ enum InterfaceText {
 	static let Next = "Next"
 	
 	static let Repeat_One = "Repeat One"
-	static let Go_to_Album = "Go to Album"
+	static let Go_to_Artwork = "Go to Artwork"
 	
 	// MARK: Editing
 	
