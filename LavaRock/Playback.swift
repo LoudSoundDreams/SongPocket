@@ -103,9 +103,9 @@ import Combine
 // We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
 @MainActor @Observable final class PlayerState {
 	private init() {}
-	var signal = false { didSet {
-		Task {
-			NotificationCenter.default.post(name: Self.musicKit, object: nil)
+	private(set) var signal = false { didSet {
+		Task { // Might reduce bugs by delaying until next turn of the run loop.
+			NotificationCenter.default.post(name: Self.changed, object: nil)
 		}
 	}}
 	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
@@ -120,5 +120,5 @@ extension PlayerState {
 			.sink { [weak self] in self?.signal.toggle() }
 			.store(in: &cancellables)
 	}
-	@ObservationIgnored static let musicKit = Notification.Name("LR_PlayerState")
+	@ObservationIgnored static let changed = Notification.Name("LR_PlayerState")
 }
