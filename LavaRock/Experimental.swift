@@ -41,7 +41,7 @@ struct BubbleBar: View {
 							: "repeat.1")
 					}
 					Button {
-						AppleLibrary.open_Apple_Music()
+						AppleCatalog.open_Apple_Music()
 					} label: {
 						Label(InterfaceText.Apple_Music, systemImage: "arrow.up.forward.app")
 					}

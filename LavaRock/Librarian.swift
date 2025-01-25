@@ -192,8 +192,8 @@ final class LRAlbum {
 				case .random: return selected_unsorted.in_any_other_order { $0.uAlbum == $1.uAlbum }
 				case .recently_added:
 					return selected_unsorted.sorted { left, right in
-						let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_first_added
-						let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_first_added
+						let date_left = AppleCatalog.shared.albumInfo(uAlbum: left.uAlbum)?._date_first_added
+						let date_right = AppleCatalog.shared.albumInfo(uAlbum: right.uAlbum)?._date_first_added
 						if date_left == date_right { return false }
 						guard let date_right else { return true }
 						guard let date_left else { return false }
@@ -201,8 +201,8 @@ final class LRAlbum {
 					}
 				case .recently_released:
 					return selected_unsorted.sorted { left, right in
-						let date_left = AppleLibrary.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
-						let date_right = AppleLibrary.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
+						let date_left = AppleCatalog.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
+						let date_right = AppleCatalog.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
 						if date_left == date_right { return false }
 						guard let date_right else { return true }
 						guard let date_left else { return false }
@@ -236,8 +236,8 @@ final class LRAlbum {
 				case .track:
 					// Ideally, get the original track order the same way the merger does.
 					return selected_unsorted.sorted { left, right in
-						let mk_left = AppleLibrary.shared.mkSongs_cache[left]
-						let mk_right = AppleLibrary.shared.mkSongs_cache[right]
+						let mk_left = AppleCatalog.shared.mkSongs_cache[left]
+						let mk_right = AppleCatalog.shared.mkSongs_cache[right]
 						if mk_left == nil && mk_right == nil { return false }
 						guard let mk_right else { return true }
 						guard let mk_left else { return false }

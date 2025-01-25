@@ -84,7 +84,7 @@ import MusicKit
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
 	
-	private let apple_lib: AppleLibrary = .shared
+	private let catalog: AppleCatalog = .shared
 	var body: some View {
 		VStack(alignment: .leading) {
 			stack_info
@@ -102,7 +102,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_info: some View {
-		let albumInfo: AlbumInfo? = apple_lib.albumInfo(uAlbum: uAlbum)
+		let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum: uAlbum)
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""
 			else { return InterfaceText._tilde }
@@ -168,7 +168,7 @@ import MusicKit
 						withAnimation {
 							exhibit.selection = .mode_albums([uAlbum])
 						}
-					}.disabled(apple_lib.is_merging)
+					}.disabled(catalog.is_merging)
 					Divider()
 			}
 			b_above
@@ -200,7 +200,7 @@ import MusicKit
 			exhibit.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
 			return (exhibit.signal_artifacts && false ) ||
-			apple_lib.is_merging ||
+			catalog.is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: false)
 		}())
 	}
@@ -216,7 +216,7 @@ import MusicKit
 			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
 			return (exhibit.signal_artifacts && false) ||
-			apple_lib.is_merging ||
+			catalog.is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
@@ -230,7 +230,7 @@ import MusicKit
 	let length_max: CGFloat
 	
 	private var artwork: MusicKit.Artwork? {
-		return AppleLibrary.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
+		return AppleCatalog.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
 	}
 	var body: some View {
 		ZStack {

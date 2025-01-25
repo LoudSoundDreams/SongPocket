@@ -269,7 +269,7 @@ final class ExhibitTVC: LRTableViewController {
 		b_scope.preferredMenuElementOrder = .fixed
 		reflect_selection()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: AppleLibrary.merged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: AppleCatalog.merged, object: nil)
 		Remote.shared.tvc_weak = self
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
@@ -716,7 +716,7 @@ final class ExhibitTVC: LRTableViewController {
 		switch album_order {
 			case .random, .reverse, .recently_added: return true
 			case .recently_released: return uAlbums.contains {
-				nil != AppleLibrary.shared.albumInfo(uAlbum: $0)?._date_released
+				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
 			}
 		}
 	}

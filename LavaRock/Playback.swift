@@ -26,14 +26,14 @@ import Combine
 		let mkSongs_to_play: [MKSong] = await {
 			var result: [MKSong] = []
 			for uSong in uSongs_to_play {
-				guard let mkSong = await AppleLibrary.shared.mkSong_fetched(uSong: uSong) else { continue }
+				guard let mkSong = await AppleCatalog.shared.mkSong_fetched(uSong: uSong) else { continue }
 				result.append(mkSong)
 			}
 			return result
 		}()
 		let start: MKSong? = await {
 			guard let uSong_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-			return await AppleLibrary.shared.mkSong_fetched(uSong: uSong_start)
+			return await AppleCatalog.shared.mkSong_fetched(uSong: uSong_start)
 		}()
 		
 		queue = Queue(for: mkSongs_to_play, startingAt: start) // Slow.
@@ -46,7 +46,7 @@ import Combine
 		let mkSongs_to_append: [MKSong] = await {
 			var result: [MKSong] = []
 			for uSong in uSongs_to_append {
-				guard let mkSong = await AppleLibrary.shared.mkSong_fetched(uSong: uSong) else { continue }
+				guard let mkSong = await AppleCatalog.shared.mkSong_fetched(uSong: uSong) else { continue }
 				result.append(mkSong)
 			}
 			return result

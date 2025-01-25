@@ -10,7 +10,7 @@ typealias MKSong = MusicKit.Song
 typealias UAlbum = MPMediaEntityPersistentID
 typealias USong = MPMediaEntityPersistentID
 
-@MainActor @Observable final class AppleLibrary {
+@MainActor @Observable final class AppleCatalog {
 	private init() {}
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs_cache: [USong: MKSong] = [:]
@@ -20,9 +20,9 @@ typealias USong = MPMediaEntityPersistentID
 		}
 	}}
 }
-extension AppleLibrary {
-	@ObservationIgnored static let shared = AppleLibrary()
-	@ObservationIgnored private static let signposter = OSSignposter(subsystem: "apple library", category: .pointsOfInterest)
+extension AppleCatalog {
+	@ObservationIgnored static let shared = AppleCatalog()
+	@ObservationIgnored private static let signposter = OSSignposter(subsystem: "apple catalog", category: .pointsOfInterest)
 	
 	static func open_Apple_Music() {
 		guard let url = URL(string: "music://") else { return }
