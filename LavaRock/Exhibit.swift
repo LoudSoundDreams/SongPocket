@@ -47,14 +47,6 @@ extension Exhibit {
 				return uA_spotlighted == uAlbum
 		}
 	}
-	func is_expanded(_ uAlbum: UAlbum? = nil) -> Bool {
-		switch focus {
-			case .covers, .spotlight: return false
-			case .expanded(let uA_expanded):
-				guard let uAlbum else { return true }
-				return uA_expanded == uAlbum
-		}
-	}
 	
 	enum Selection {
 		case view(USong?)

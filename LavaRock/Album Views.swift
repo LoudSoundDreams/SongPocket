@@ -168,9 +168,16 @@ import MusicKit
 			{ IconSelected() }
 			else { IconUnselected() }
 		}
-		.disabled(exhibit.is_expanded())
-		.animation(.default, value: exhibit.is_expanded())
+		.disabled(!can_select_album)
+		.animation(.default, value: can_select_album)
 	}
+	private var can_select_album: Bool {
+		switch exhibit.focus {
+			case .covers: return true
+			case .expanded, .spotlight: return false
+		}
+	}
+	
 	private var b_above: some View {
 		Button(
 			exhibit.has_selected_album(uAlbum)
