@@ -426,8 +426,8 @@ final class ExhibitTVC: LRTableViewController {
 	
 	func go_to_artwork() {
 		guard
-			let uSong_current = ApplicationMusicPlayer.uSong_current,
-			let album_target = Librarian.album_containing_uSong[uSong_current]?.referencee
+			let uSong_target = ApplicationMusicPlayer.uSong_current,
+			let album_target = Librarian.album_containing_uSong[uSong_target]?.referencee
 		else { return }
 		exhibit.focus = .spotlight(album_target.uAlbum)
 	}
@@ -492,7 +492,7 @@ final class ExhibitTVC: LRTableViewController {
 				b_sort.menu = menu_sort()
 				b_scope.menu = menu_scope()
 				b_scope.image = image_scope
-				if uS_activated == nil {
+				if nil == uS_activated {
 					dismiss(animated: true) // In case “confirm play” action sheet is presented. 2do: Replace with SwiftUI.
 				}
 			case .mode_albums(let uAs_selected):

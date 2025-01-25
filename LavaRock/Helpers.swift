@@ -179,7 +179,7 @@ extension UITableView {
 					}
 					moves.append((old: offset, new: associated))
 				case .insert(let offset, _, let associated):
-					guard associated == nil else { return }
+					guard nil == associated else { return }
 					inserts.append(offset)
 			}}
 			old_to_delete = deletes

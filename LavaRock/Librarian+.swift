@@ -163,7 +163,7 @@ extension Librarian {
 			let to_add_sorted = to_add.sorted { left, right in
 				let mk_left = AppleCatalog.shared.mkSongs_cache[left]
 				let mk_right = AppleCatalog.shared.mkSongs_cache[right]
-				if mk_left == nil && mk_right == nil { return false }
+				if nil == mk_left && nil == mk_right { return false }
 				guard let mk_right else { return true }
 				guard let mk_left else { return false }
 				

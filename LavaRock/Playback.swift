@@ -15,7 +15,7 @@ import Combine
 #if targetEnvironment(simulator)
 		return false
 #else
-		return _shared?.queue.currentEntry == nil
+		return nil == _shared?.queue.currentEntry
 #endif
 	}
 	
@@ -52,7 +52,7 @@ import Combine
 			return result
 		}()
 		
-		if queue.currentEntry == nil {
+		if nil == queue.currentEntry {
 			queue = Queue(for: mkSongs_to_append)
 			guard let _ = try? await prepareToPlay() else { return }
 		} else {
@@ -67,12 +67,6 @@ import Combine
 		case not_playing, paused, playing
 		init(uSong: USong) {
 			guard
-				/*
-				 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
-				 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.
-				 `queue.currentEntry.item.id` doesn’t match either: “593338428”. (This stays the same each time the program runs.)
-				 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
-				 */
 				uSong == ApplicationMusicPlayer.uSong_current,
 				let state = _shared?.state
 			else { self = .not_playing; return }
@@ -94,12 +88,19 @@ import Combine
 		}
 	}
 	
+	/*
+	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
+	 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.
+	 `queue.currentEntry.item.id` doesn’t match either: “593338428”. (This stays the same each time the program runs.)
+	 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
+	 */
 	@MainActor static var uSong_current: USong? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return MPMusicPlayerController.applicationQueuePlayer.nowPlayingItem?.persistentID
 	}
 }
 
+// We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
 @MainActor @Observable final class PlayerState {
 	private init() {}
 	var signal = false { didSet {

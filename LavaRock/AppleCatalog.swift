@@ -14,7 +14,7 @@ typealias USong = MPMediaEntityPersistentID
 	private init() {}
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs_cache: [USong: MKSong] = [:]
-	private(set) var is_merging = false { didSet {
+	private(set) var is_merging = false { didSet { // Prevent users from modifying items while the app is modifying them.
 		if !is_merging {
 			NotificationCenter.default.post(name: Self.merged, object: nil)
 		}

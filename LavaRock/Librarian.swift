@@ -238,7 +238,7 @@ final class LRAlbum {
 					return selected_unsorted.sorted { left, right in
 						let mk_left = AppleCatalog.shared.mkSongs_cache[left]
 						let mk_right = AppleCatalog.shared.mkSongs_cache[right]
-						if mk_left == nil && mk_right == nil { return false }
+						if nil == mk_left && nil == mk_right { return false }
 						guard let mk_right else { return true }
 						guard let mk_left else { return false }
 						
@@ -261,12 +261,12 @@ final class LRAlbum {
 	private static func album_containing_uSongs(
 		_ uSongs: Set<USong>
 	) -> LRAlbum? {
-		var album_common: LRAlbum? = nil
+		var common: LRAlbum? = nil
 		for uSong in uSongs {
 			guard let album = album_containing_uSong[uSong]?.referencee else { return nil }
-			if album_common == nil { album_common = album }
-			guard album.uAlbum == album_common?.uAlbum else { return nil }
+			if nil == common { common = album }
+			guard album.uAlbum == common?.uAlbum else { return nil }
 		}
-		return album_common
+		return common
 	}
 }
