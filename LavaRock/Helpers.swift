@@ -95,6 +95,13 @@ extension View {
 			variable.wrappedValue = $0
 		}
 	}
+	func reacting(_ active: Bool) -> some View {
+		return self
+			.overlay {
+				Color.black.opacity(active ? .one_fourth : .zero)
+			}
+			.animation(active ? nil : .linear_quick(), value: active)
+	}
 }
 
 // MARK: UIKit

@@ -1,4 +1,4 @@
-// 2024-04-04
+// 2025-01-25
 
 import SwiftUI
 @preconcurrency import MusicKit
@@ -98,15 +98,5 @@ struct BubbleBar: View {
 		.menuOrder(.fixed)
 		.padding(.eight)
 		.background(Material.bar, in: .capsule)
-	}
-}
-
-private extension View {
-	func reacting(_ active: Bool) -> some View {
-		return self
-			.overlay {
-				Color.black.opacity(active ? .one_fourth : .zero)
-			}
-			.animation(active ? nil : .linear_quick(), value: active)
 	}
 }

@@ -4,7 +4,7 @@ import SwiftUI
 import MusicKit
 
 enum WorkingOn {
-	static let toolbar = 10 == 1
+	static let toolbar = 10 == 10
 }
 
 @main struct LavaRock: App {
