@@ -56,39 +56,12 @@ extension Exhibit {
 		}
 	}
 	
-	func toggle_spotlight(_ uAlbum: UAlbum) {
-		switch focus {
-			case .covers, .expanded:
-				focus = .spotlight(uAlbum)
-			case .spotlight(let uA_spotlighted):
-				if uA_spotlighted == uAlbum {
-					focus = .covers
-				} else { focus = .spotlight(uAlbum) }
-		}
-	}
-	func toggle_expand(_ uAlbum: UAlbum) {
-		switch focus {
-			case .covers, .spotlight:
-				focus = .expanded(uAlbum)
-			case .expanded(let uA_expanded):
-				if uA_expanded == uAlbum {
-					focus = .covers
-				} else { focus = .expanded(uAlbum) }
-		}
-	}
-	
 	enum Selection {
 		case view(USong?)
 		case mode_albums(Set<UAlbum>)
 		case mode_songs(Set<USong>)
 	}
 	@ObservationIgnored fileprivate static let changed_selection = Notification.Name("LR_Selection")
-	var is_viewing: Bool {
-		switch selection {
-			case .view: return true
-			case .mode_albums, .mode_songs: return false
-		}
-	}
 	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
 		switch selection {
 			case .view, .mode_songs: return false

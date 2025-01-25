@@ -45,14 +45,26 @@ import MusicKit
 	private func tapped() {
 		switch exhibit.selection {
 			case .mode_songs: return
-			case .view:
-				exhibit.toggle_spotlight(uAlbum)
+			case .view: break
 			case .mode_albums(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uAlbum) {
 					new_selected.remove(uAlbum)
 				} else { new_selected.insert(uAlbum) }
 				exhibit.selection = .mode_albums(new_selected)
+				return
+		}
+		switch exhibit.focus {
+			case .covers:
+				exhibit.focus = .expanded(uAlbum)
+			case .expanded(let uA_expanded):
+				if uA_expanded == uAlbum {
+					exhibit.focus = .covers
+				} else { exhibit.focus = .expanded(uAlbum) }
+			case .spotlight(let uA_spotlighted):
+				if uA_spotlighted == uAlbum {
+					exhibit.focus = .covers
+				} else { exhibit.focus = .spotlight(uAlbum) }
 		}
 	}
 }
@@ -69,8 +81,7 @@ import MusicKit
 			stack_info
 				.padding(.leading, .eight * 1/2) // Align with `SongRow`.
 			HStack(alignment: .bottom) {
-//				b_spotlight
-				b_expand
+				b_spotlight
 				Spacer()
 //				b_select
 				menu_select
@@ -111,32 +122,31 @@ import MusicKit
 	
 	private var b_spotlight: some View {
 		Button {
+			exhibit.focus = .spotlight(uAlbum)
 		} label: {
 			Image(systemName: "photo.circle.fill") // 2do: Accessibility.
 				.symbolRenderingMode(.hierarchical)
 		}
+		.disabled(!can_spotlight)
+		.animation(.default, value: can_spotlight)
 	}
+	private var can_spotlight: Bool {
+		switch exhibit.selection {
+			case .mode_albums, .mode_songs: return false
+			case .view: break
+		}
+		switch exhibit.focus {
+			case .expanded, .spotlight: return false
+			case .covers: return true
+		}
+	}
+	
 	private var b_select: some View {
 		Button {
 		} label: {
 			Image(systemName: "checkmark.circle.fill") // 2do: Accessibility.
 				.symbolRenderingMode(.hierarchical)
 		}
-	}
-	private var b_expand: some View {
-		Button {
-			exhibit.toggle_expand(uAlbum)
-		} label: {
-			Image(systemName: "chevron.forward.circle.fill") // 2do: Accessibility.
-				.symbolRenderingMode(.hierarchical)
-		}
-		.rotationEffect({
-			if exhibit.is_expanded(uAlbum)
-			{ return Angle.degrees(90) }
-			return Angle.zero
-		}())
-		.animation(.linear_quick(), value: exhibit.is_expanded(uAlbum))
-		.disabled(!exhibit.is_viewing)
 	}
 	
 	private var menu_select: some View {
