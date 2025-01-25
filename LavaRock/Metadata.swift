@@ -17,9 +17,9 @@ struct SongInfo {
 }
 
 #if targetEnvironment(simulator)
-@MainActor final class Sim_MusicLibrary {
-	private static let demoAlbums: [DemoAlbum] = [
-		DemoAlbum(
+@MainActor final class DummyCatalog {
+	private static let albums: [DummyAlbum] = [
+		DummyAlbum(
 			title: "Skyway",
 			artist: "Wanderer",
 			date_released: .strategy(iso8601_10char: "2024-05-31"),
@@ -29,7 +29,7 @@ struct SongInfo {
 				.init("Robot"),
 				.init("Last"),
 			]),
-		DemoAlbum(
+		DummyAlbum(
 			title: "Hillside",
 			artist: "Wanderer",
 			date_released: .strategy(iso8601_10char: "2024-02-29"),
@@ -37,7 +37,7 @@ struct SongInfo {
 			tracks: [
 				.init(""),
 			]),
-		DemoAlbum(
+		DummyAlbum(
 			title: "Dawn",
 			artist: "Wanderer",
 			date_released: .strategy(iso8601_10char: "2024-03-31"),
@@ -48,14 +48,14 @@ struct SongInfo {
 	]
 }
 
-struct DemoAlbum {
+struct DummyAlbum {
 	let title: String
 	let artist: String
 	let date_released: Date?
 	let image_file: String
-	let tracks: [DemoSong]
+	let tracks: [DummySong]
 }
-struct DemoSong {
+struct DummySong {
 	let title: String
 	let artist: String
 	init(_ title: String, artist: String = "") {
