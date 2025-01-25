@@ -11,8 +11,8 @@ import UIKit
 	
 	private init() {
 		refresh()
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: PlayerState.changed, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: AppleCatalog.merged, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .player_state, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .librarian_merged, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
 	}
 	@objc private func refresh() {
 		// Refresh menu title

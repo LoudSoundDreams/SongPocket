@@ -195,7 +195,7 @@ import MusicKit
 	private func tapped() {
 		switch exhibit.selection {
 			case .mode_albums: return
-			case .view: NotificationCenter.default.post(name: Self.confirm_play_uSong, object: uSong)
+			case .view: NotificationCenter.default.post(name: .confirm_play, object: uSong)
 			case .mode_songs(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uSong) {
@@ -204,5 +204,4 @@ import MusicKit
 				exhibit.selection = .mode_songs(new_selected)
 		}
 	}
-	static let confirm_play_uSong = Notification.Name("LR_ConfirmPlay")
 }

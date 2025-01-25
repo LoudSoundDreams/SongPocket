@@ -16,7 +16,7 @@ typealias USong = MPMediaEntityPersistentID
 	private(set) var mkSongs_cache: [USong: MKSong] = [:]
 	private(set) var is_merging = false { didSet { // Prevent users from modifying items while the app is modifying them.
 		if !is_merging {
-			NotificationCenter.default.post(name: Self.merged, object: nil)
+			NotificationCenter.default.post(name: .librarian_merged, object: nil)
 		}
 	}}
 }
@@ -35,7 +35,6 @@ extension AppleCatalog {
 		NotificationCenter.default.addObserver_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
 		merge_changes()
 	}
-	@ObservationIgnored static let merged = Notification.Name("LR_Merged")
 	
 	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
 		guard let mkSection = mkSections_cache[MusicItemID(String(uAlbum))] else { return nil }

@@ -80,6 +80,14 @@ extension View {
  Used in versions ? through 1.7
  */
 
+extension Notification.Name {
+	static let librarian_merged = Self("LR_Merged")
+	static let exhibit_focus = Self("LR_Focus")
+	static let exhibit_selection = Self("LR_Selection")
+	static let confirm_play = Self("LR_ConfirmPlay")
+	static let player_state = Self("LR_PlayerState")
+}
+
 // MARK: - UI text
 
 enum InterfaceText {

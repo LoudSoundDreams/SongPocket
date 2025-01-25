@@ -79,7 +79,7 @@ import Combine
 @MainActor @Observable final class PlayerState {
 	private init() {}
 	private(set) var signal = false { didSet {
-		NotificationCenter.default.post(name: Self.changed, object: nil)
+		NotificationCenter.default.post(name: .player_state, object: nil)
 	}}
 	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
 }
@@ -101,5 +101,4 @@ extension PlayerState {
 	@objc private func mp_state() {
 		signal.toggle()
 	}
-	@ObservationIgnored static let changed = Notification.Name("LR_PlayerState")
 }

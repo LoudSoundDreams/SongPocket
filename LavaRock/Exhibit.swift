@@ -18,11 +18,11 @@ import MusicKit
 			case .covers, .expanded:
 				Global.shared.focus_is_spotlight = false
 		}
-		NotificationCenter.default.post(name: Self.changed_focus, object: self)
+		NotificationCenter.default.post(name: .exhibit_focus, object: self)
 	}}
 	
 	var selection: Selection = .view(nil) { didSet {
-		NotificationCenter.default.post(name: Self.changed_selection, object: nil)
+		NotificationCenter.default.post(name: .exhibit_selection, object: nil)
 	}}
 	
 	fileprivate(set) var length_artwork: CGFloat!
@@ -39,14 +39,12 @@ extension Exhibit {
 		case spotlight(UAlbum)
 		case expanded(UAlbum)
 	}
-	@ObservationIgnored fileprivate static let changed_focus = Notification.Name("LR_Focus")
 	
 	enum Selection {
 		case view(USong?)
 		case mode_albums(Set<UAlbum>)
 		case mode_songs(Set<USong>)
 	}
-	@ObservationIgnored fileprivate static let changed_selection = Notification.Name("LR_Selection")
 	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
 		switch selection {
 			case .view, .mode_songs: return false
@@ -269,11 +267,11 @@ final class ExhibitTVC: LRTableViewController {
 		b_scope.preferredMenuElementOrder = .fixed
 		reflect_selection()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: AppleCatalog.merged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: .librarian_merged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: .exhibit_focus, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: .exhibit_selection, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: .confirm_play, object: nil)
 		Remote.shared.tvc_weak = self
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: Exhibit.changed_focus, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: SongRow.confirm_play_uSong, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: Exhibit.changed_selection, object: nil)
 	}
 	
 	override func viewIsAppearing(_ animated: Bool) {
@@ -791,7 +789,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -802,7 +800,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil)
+			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -814,7 +812,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil)
+			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
@@ -825,7 +823,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: Exhibit.changed_selection, object: nil)
+			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
 			let _ = await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
