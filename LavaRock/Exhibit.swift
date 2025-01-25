@@ -300,19 +300,25 @@ final class ExhibitTVC: LRTableViewController {
 	
 	private func refresh_contentInset(size_frame: CGSize) {
 		tableView.contentInset = {
+			let gutter: CGFloat
+			= size_frame.height / 2
+			- exhibit.length_artwork / 2
+			
 			// `adjustedContentInset` is what matters because it determines the scrolling limits, but we can’t set it directly. We can set `contentInset`, but UIKit adds safe area insets to that.
 			// As of iOS 18.3 RC, don’t use `contentInsetAdjustmentBehavior = .never`, because it breaks row sizing.
-			var gutter: CGFloat = .zero
-			gutter -= view.safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it effectively zero.
-			gutter += (size_frame.height / 2)
-			gutter -= (exhibit.length_artwork / 2)
 			
-			let top = gutter.rounded(.down) // As of iOS 18.3 developer beta 3, a non-integer value prevents you from rapidly expanding and collapsing albums.
-			let bottom = {
-				if WorkingOn.toolbar {
-					return gutter.rounded(.up)
-				} else { return .zero }
-			}()
+			var top: CGFloat = .zero
+			top -= view.safeAreaInsets.top // Offsets how `UIScrollView` interprets `contentInset`. Applying it now should make it effectively zero.
+			top += gutter
+			top = top.rounded(.down) // As of iOS 18.3 developer beta 3, a non-integer value prevents you from rapidly expanding and collapsing albums.
+			
+			var bottom: CGFloat = .zero
+			if WorkingOn.toolbar {
+				bottom -= view.safeAreaInsets.bottom
+				bottom += gutter
+				bottom = bottom.rounded(.up)
+			}
+			
 			return UIEdgeInsets(top: top, left: .zero, bottom: bottom, right: .zero)
 		}()
 	}
