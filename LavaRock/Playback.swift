@@ -79,9 +79,7 @@ import Combine
 @MainActor @Observable final class PlayerState {
 	private init() {}
 	private(set) var signal = false { didSet {
-		Task { // Might reduce bugs by delaying until next turn of the run loop.
-			NotificationCenter.default.post(name: Self.changed, object: nil)
-		}
+		NotificationCenter.default.post(name: Self.changed, object: nil)
 	}}
 	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
 }
