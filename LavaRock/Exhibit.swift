@@ -424,7 +424,7 @@ final class ExhibitTVC: LRTableViewController {
 	
 	@objc private func reflect_focus() {
 		switch exhibit.focus {
-			case .covers, .expanded:
+			case .covers:
 				Task {
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(false, animated: true)
@@ -433,6 +433,25 @@ final class ExhibitTVC: LRTableViewController {
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
 					let _ = await apply_rowIDs(exhibit.rowIDs)
+				}
+			case .expanded(let uA_to_expand):
+				Task {
+					if !WorkingOn.toolbar {
+						navigationController?.setToolbarHidden(false, animated: true)
+					}
+					exhibit.refresh_artifacts()
+					b_sort.menu = menu_sort()
+					b_scope.menu = menu_scope()
+					let _ = await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
+						if
+							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
+								case .row_song: return false
+								case .row_album(let uAlbum): return uAlbum == uA_to_expand
+							}})
+						{
+							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
+						}
+					})
 				}
 			case .spotlight(let uA_to_spotlight):
 				Task {
