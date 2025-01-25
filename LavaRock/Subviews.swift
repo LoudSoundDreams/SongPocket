@@ -33,13 +33,13 @@ struct IconUnselected: View {
 		Ellipsis()
 			.symbolRenderingMode(.hierarchical)
 			.accessibilityLabel(InterfaceText.Select)
-			.accessibilityRemoveTraits(.isSelected)
 	}
 }
 struct IconSelected: View {
 	var body: some View {
 		Ellipsis()
-			.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.2 developer beta 3, VoiceOver automatically adds “Selected” because of the SF Symbol.
+			.accessibilityLabel(InterfaceText.Select)
+			.accessibilityAddTraits(.isSelected)
 	}
 }
 struct Ellipsis: View {

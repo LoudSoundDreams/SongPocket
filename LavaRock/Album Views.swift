@@ -21,12 +21,12 @@ import MusicKit
 				}.animation(.linear_quick(), value: is_spotlighting(uAlbum))
 				ZStack {
 					if !is_spotlighting() {
-						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit).accessibilitySortPriority(10)
+						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
 					}
 				}.animation(.linear_quick(), value: is_spotlighting())
 			}
 		}
-		.overlay { border.accessibilityHidden(true) } // Use `withAnimation` to animate this when entering or exiting select mode, but not when staying in select mode.
+		.overlay { border.accessibilityHidden(true) } // 2do: Make VoiceOver say “selected”.
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
@@ -42,7 +42,7 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var border: some View {
-		switch exhibit.selection {
+		switch exhibit.selection { // Use `withAnimation` to animate this when entering or exiting select mode, but not when staying in select mode.
 			case .view, .mode_songs: EmptyView()
 			case .mode_albums(let uAs_selected):
 				if uAs_selected.contains(uAlbum) {
@@ -111,7 +111,7 @@ import MusicKit
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title_and_input_label)
 				.font_title3_bold()
-				.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary)
+				.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary) // 2do: Make VoiceOver say “dimmed”.
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
@@ -133,8 +133,9 @@ import MusicKit
 		Button {
 			exhibit.focus = .spotlight(uAlbum)
 		} label: {
-			Image(systemName: "photo.circle.fill") // 2do: Accessibility.
+			Image(systemName: "photo.circle.fill")
 				.symbolRenderingMode(.hierarchical)
+				.accessibilityLabel(InterfaceText.Show_artwork)
 		}
 		.disabled(!can_spotlight)
 		.animation(.default, value: can_spotlight)
@@ -153,7 +154,7 @@ import MusicKit
 	private var b_select: some View {
 		Button {
 		} label: {
-			Image(systemName: "checkmark.circle.fill") // 2do: Accessibility.
+			Image(systemName: "checkmark.circle.fill").accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.3 RC, VoiceOver automatically adds “Selected” because of the SF Symbol.
 				.symbolRenderingMode(.hierarchical)
 		}
 		.disabled(!can_select_album)

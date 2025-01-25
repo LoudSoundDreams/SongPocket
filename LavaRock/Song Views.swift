@@ -113,7 +113,7 @@ import MusicKit
 	private var b_select: some View {
 		Button {
 		} label: {
-			Image(systemName: "checkmark.circle.fill") // 2do: Accessibility.
+			Image(systemName: "checkmark.circle.fill").accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected)
 				.symbolRenderingMode(.hierarchical)
 		}
 	}
