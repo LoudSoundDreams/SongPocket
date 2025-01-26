@@ -51,7 +51,7 @@ private struct MenuTransport: View {
 						player.state.repeatMode = .one
 					}
 				} label: {
-					Label(
+					Label( // 2do: Depend on `@Observable` state.
 						{ () -> String in
 							var segments: [String] = []
 							if Remote.repeat_is_on { segments.append(InterfaceText.Selected) }
@@ -60,7 +60,7 @@ private struct MenuTransport: View {
 						}(),
 						systemImage: Remote.repeat_is_on
 						? "repeat.1.circle.fill" : SF.repeat_1)
-				}
+				}.menuActionDismissBehavior(.disabled)
 				Button {
 					AppleCatalog.open_Apple_Music()
 				} label: {
@@ -73,19 +73,19 @@ private struct MenuTransport: View {
 				} label: {
 					Image(systemName: SF.jump_back_15)
 						.accessibilityLabel(InterfaceText.Skip_back_15_seconds)
-				}
+				}.menuActionDismissBehavior(.disabled)
 				Button {
 					Tape.rewind()
 				} label: {
 					Image(systemName: SF.rewind)
 						.accessibilityLabel(InterfaceText.Restart)
-				}
+				}.menuActionDismissBehavior(.disabled)
 				Button {
 					Tape.jump_forward_15()
 				} label: {
 					Image(systemName: SF.jump_forward_15)
 						.accessibilityLabel(InterfaceText.Skip_forward_15_seconds)
-				}
+				}.menuActionDismissBehavior(.disabled)
 			}
 			ControlGroup {
 				Button {
@@ -93,7 +93,7 @@ private struct MenuTransport: View {
 				} label: {
 					Image(systemName: SF.previous_bold)
 						.accessibilityLabel(InterfaceText.Previous)
-				}
+				}.menuActionDismissBehavior(.disabled)
 				Button {
 					Task {
 						if PlayerState.shared.is_playing {
@@ -109,13 +109,13 @@ private struct MenuTransport: View {
 					.accessibilityLabel(
 						PlayerState.shared.is_playing
 						? InterfaceText.Pause : InterfaceText.Play)
-				}
+				}.menuActionDismissBehavior(.disabled)
 				Button {
 					Tape.next()
 				} label: {
 					Image(systemName: SF.next_bold)
 						.accessibilityLabel(InterfaceText.Next)
-				}
+				}.menuActionDismissBehavior(.disabled)
 			}
 		} label: {
 			Image(
