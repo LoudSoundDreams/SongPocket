@@ -685,7 +685,12 @@ final class ExhibitTVC: LRTableViewController {
 				UIDeferredMenuElement.uncached { [weak self] use in
 					// Runs each time the button presents the menu
 					guard let self else { return }
-					let action = order.albumOrder_action { [weak self] in self?.sort_albums(by: order) }
+					let action = UIAction(
+						title: order.name,
+						image: UIImage(systemName: order.sf_symbol)
+					) { [weak self] _ in
+						self?.sort_albums(by: order)
+					}
 					if !can_sort_albums(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
 					use([action])
 				}
@@ -719,7 +724,12 @@ final class ExhibitTVC: LRTableViewController {
 			UIMenu(options: .displayInline, children: songOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let action = order.songOrder_action { [weak self] in self?.sort_songs(by: order) }
+					let action = UIAction(
+						title: order.name,
+						image: UIImage(systemName: order.sf_symbol)
+					) { [weak self] _ in
+						self?.sort_songs(by: order)
+					}
 					var enabling = true
 					
 					if uSongs_to_sort().count <= 1 { enabling = false }

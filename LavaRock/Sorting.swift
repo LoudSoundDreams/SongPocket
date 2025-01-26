@@ -9,21 +9,21 @@ enum AlbumOrder {
 	case recently_added
 	case recently_released
 	
-	@MainActor func albumOrder_action(handler: @escaping () -> Void) -> UIAction {
-		return UIAction(
-			title: { switch self {
-				case .reverse: return InterfaceText.Reverse
-				case .random: return InterfaceText.Shuffle
-				case .recently_added: return InterfaceText.Recently_Added
-				case .recently_released: return InterfaceText.Recently_Released
-			}}(),
-			image: { switch self {
-				case .reverse: return UIImage(systemName: SF.reverse)
-				case .random: return UIImage(systemName: SF.shuffle)
-				case .recently_added: return UIImage(systemName: "plus.circle")
-				case .recently_released: return UIImage(systemName: "calendar")
-			}}(),
-			handler: { _ in handler() })
+	var name: String {
+		switch self {
+			case .reverse: return InterfaceText.Reverse
+			case .random: return InterfaceText.Shuffle
+			case .recently_added: return InterfaceText.Recently_Added
+			case .recently_released: return InterfaceText.Recently_Released
+		}
+	}
+	var sf_symbol: String {
+		switch self {
+			case .reverse: return SF.reverse
+			case .random: return SF.shuffle
+			case .recently_added: return "plus.circle"
+			case .recently_released: return "calendar"
+		}
 	}
 }
 
@@ -33,19 +33,19 @@ enum SongOrder {
 	
 	case track
 	
-	@MainActor func songOrder_action(handler: @escaping () -> Void) -> UIAction {
-		return UIAction(
-			title: { switch self {
-				case .reverse: return InterfaceText.Reverse
-				case .random: return InterfaceText.Shuffle
-				case .track: return InterfaceText.Track_Number
-			}}(),
-			image: { switch self {
-				case .reverse: return UIImage(systemName: SF.reverse)
-				case .random: return UIImage(systemName: SF.shuffle)
-				case .track: return UIImage(systemName: "number")
-			}}(),
-			handler: { _ in handler() })
+	var name: String {
+		switch self {
+			case .reverse: return InterfaceText.Reverse
+			case .random: return InterfaceText.Shuffle
+			case .track: return InterfaceText.Track_Number
+		}
+	}
+	var sf_symbol: String {
+		switch self {
+			case .reverse: return SF.reverse
+			case .random: return SF.shuffle
+			case .track: return "number"
+		}
 	}
 	
 	static func is_increasing_by_track(

@@ -24,12 +24,43 @@ struct BubbleBar: View {
 private struct MenuSort: View {
 	var body: some View {
 		Menu {
+			if let exhibit = Global.shared.showcase {
+				switch exhibit.focus {
+					case .spotlight: EmptyView()
+					case .covers: commands_albums
+					case .expanded: commands_songs
+				}
+			}
 		} label: {
 			Image(systemName: SF.sort)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.Sort)
 		}.menuOrder(.fixed)
 	}
+	
+	private var commands_albums: some View {
+		ForEach(Self.albumOrders_groups, id: \.self) { group in
+			Section { ForEach(group, id: \.self) { order in
+				Button {
+				} label: {
+					Label(order.name, systemImage: order.sf_symbol)
+				}
+			}}
+		}
+	}
+	private static let albumOrders_groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
+	
+	private var commands_songs: some View {
+		ForEach(Self.songOrders_groups, id: \.self) { group in
+			Section { ForEach(group, id: \.self) { order in
+				Button {
+				} label: {
+					Label(order.name, systemImage: order.sf_symbol)
+				}
+			}}
+		}
+	}
+	private static let songOrders_groups: [[SongOrder]] = [[.track], [.reverse, .random]]
 }
 
 // MARK: Transport
