@@ -21,6 +21,18 @@ import MediaPlayer
 				return false
 		}
 	}
+	var repeat_is_on: Bool {
+		let _ = _signal_state
+		guard
+			let player = ApplicationMusicPlayer._shared,
+			let mode = player.state.repeatMode // This property is optional.
+		else { return false }
+		switch mode {
+			case .one: return true
+			case .none, .all: fallthrough
+			@unknown default: return false
+		}
+	}
 	private var _signal_state = false
 	
 	/*
@@ -103,7 +115,7 @@ extension PlayerState {
 		player.queue = ApplicationMusicPlayer.Queue(for: mk_to_play, startingAt: mk_start) // Slow.
 		guard let _ = try? await player.play() else { return }
 		
-		player.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
+		repeat_off() // As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
 	static func play_later(_ uSs_to_append: [USong]) {
@@ -155,5 +167,11 @@ extension PlayerState {
 	}
 	static func jump_forward_15() {
 		player?.playbackTime += 15
+	}
+	static func repeat_off() {
+		player?.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none // Not simply `.none`; this property is optional.
+	}
+	static func repeat_1() {
+		player?.state.repeatMode = .one
 	}
 }

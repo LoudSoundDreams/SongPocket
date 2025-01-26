@@ -44,21 +44,20 @@ private struct MenuTransport: View {
 					Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
 				}
 				Button {
-					guard let player = ApplicationMusicPlayer._shared else { return }
-					if Remote.repeat_is_on {
-						player.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none
+					if PlayerState.shared.repeat_is_on {
+						Tape.repeat_off()
 					} else {
-						player.state.repeatMode = .one
+						Tape.repeat_1()
 					}
 				} label: {
-					Label( // 2do: Depend on `@Observable` state.
+					Label(
 						{ () -> String in
 							var segments: [String] = []
-							if Remote.repeat_is_on { segments.append(InterfaceText.Selected) }
+							if PlayerState.shared.repeat_is_on { segments.append(InterfaceText.Selected) }
 							segments.append(InterfaceText.Repeat_One)
 							return segments.formatted(.list(type: .and, width: .narrow))
 						}(),
-						systemImage: Remote.repeat_is_on
+						systemImage: PlayerState.shared.repeat_is_on
 						? "repeat.1.circle.fill" : SF.repeat_1)
 				}.menuActionDismissBehavior(.disabled)
 				Button {

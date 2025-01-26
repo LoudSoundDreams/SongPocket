@@ -113,29 +113,21 @@ import UIKit
 		let action = UIAction(
 			title: { // As of iOS 18.3 RC, with `preferredElementSize: .small`, VoiceOver never says “selected”.
 				var segments: [String] = []
-				if repeat_is_on { segments.append(InterfaceText.Selected) }
+				if PlayerState.shared.repeat_is_on { segments.append(InterfaceText.Selected) }
 				segments.append(InterfaceText.Repeat_One)
 				return segments.formatted(.list(type: .and, width: .narrow))
 			}(),
 			image: UIImage(systemName: SF.repeat_1),
 			attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented,
-			state: repeat_is_on ? .on : .off
+			state: PlayerState.shared.repeat_is_on ? .on : .off
 		) { _ in
-			guard let player = ApplicationMusicPlayer._shared else { return }
-			if repeat_is_on {
-				player.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none
+			if PlayerState.shared.repeat_is_on {
+				Tape.repeat_off()
 			} else {
-				player.state.repeatMode = .one
+				Tape.repeat_1()
 			}
 		}
 		use([action])
-	}
-	static var repeat_is_on: Bool {
-		guard
-			let player = ApplicationMusicPlayer._shared,
-			let mode = player.state.repeatMode
-		else { return false }
-		return mode == .one
 	}
 	
 	private static let dme_rewind = UIDeferredMenuElement.uncached { use in
