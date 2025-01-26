@@ -424,10 +424,10 @@ final class ExhibitTVC: LRTableViewController {
 	
 	func go_to_artwork() {
 		guard
-			let uSong_target = ApplicationMusicPlayer.uSong_current,
-			let album_target = Librarian.album_containing_uSong[uSong_target]?.referencee
+			let uSong = ApplicationMusicPlayer.uSong_current,
+			let album = Librarian.album_containing_uSong[uSong]?.referencee
 		else { return }
-		exhibit.focus = .spotlight(album_target.uAlbum)
+		exhibit.focus = .spotlight(album.uAlbum)
 	}
 	
 	@objc private func reflect_focus() {

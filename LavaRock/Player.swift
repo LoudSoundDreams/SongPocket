@@ -24,14 +24,14 @@ extension PlayerState {
 	func watch() {
 		guard let mp = MPMusicPlayerController._appQueuePlayer else { return }
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: mp)
 		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mp) // Because we still use Media Player to check the current song.
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: mp) // Because we still use UIKit to indicate the repeat mode.
 	}
-	@objc private func mp_now_playing() {
+	@objc private func mp_state() {
 		signal_player.toggle()
 		post()
 	}
-	@objc private func mp_state() {
+	@objc private func mp_now_playing() {
 		signal_player.toggle()
 		post()
 	}

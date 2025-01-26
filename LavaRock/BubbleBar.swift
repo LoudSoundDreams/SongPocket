@@ -100,21 +100,20 @@ private struct MenuTransport: View {
 						}
 					}
 				} label: {
-					Label(
-						{
-							if
-								let player = ApplicationMusicPlayer._shared,
-								player.state.playbackStatus == .playing
-							{ return InterfaceText.Pause }
-							return InterfaceText.Play
-						}(),
-						systemImage: {
-							if
-								let player = ApplicationMusicPlayer._shared,
-								player.state.playbackStatus == .playing
-							{ return SF.pause_bold }
-							return SF.play_bold
-						}())
+					Image(systemName: {
+						if
+							let player = ApplicationMusicPlayer._shared,
+							player.state.playbackStatus == .playing
+						{ return SF.pause_bold }
+						return SF.play_bold
+					}())
+					.accessibilityLabel({
+						if
+							let player = ApplicationMusicPlayer._shared,
+							player.state.playbackStatus == .playing
+						{ return InterfaceText.Pause }
+						return InterfaceText.Play
+					}())
 				}
 				Button {
 				} label: {
