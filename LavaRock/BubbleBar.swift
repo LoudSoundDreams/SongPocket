@@ -195,36 +195,44 @@ private struct MenuTransport: View {
 
 private struct MenuOverflow: View {
 	var body: some View {
-		Menu {
-			if let exhibit = Global.shared.showcase {
+		Menu { if let exhibit = Global.shared.showcase {
+			Section {
 				switch exhibit.selection {
 					case .view: EmptyView()
 					case .mode_albums, .mode_songs:
-						Section {
-							Button {
-								exhibit.end_selecting_animated()
-							} label: {
-								Label(InterfaceText.Done, systemImage: SF.select_fill)
-							}
+						Button {
+							exhibit.end_selecting_animated()
+						} label: {
+							Label(InterfaceText.Done, systemImage: SF.select_fill)
 						}
 				}
 			}
 			
+			let uSongs = exhibit.uSongs_scope()
+			
 			Button {
+				exhibit.end_selecting_animated()
+				Task { await Tape.play_now(uSongs) }
 			} label: {
 				Label(InterfaceText.Play, systemImage: SF.play_hollow)
-			}
+			}.disabled(uSongs.isEmpty)
 			
 			Button {
+				exhibit.end_selecting_animated()
+				// Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
+				let reordered = uSongs.in_any_other_order { $0 == $1 }
+				Task { await Tape.play_now(reordered) }
 			} label: {
 				Label(InterfaceText.Jumble, systemImage: SF.die_random())
-			}
+			}.disabled(uSongs.count <= 1)
 			
 			Button {
+				exhibit.end_selecting_animated()
+				Tape.play_later(uSongs)
 			} label: {
 				Label(InterfaceText.Add_to_Queue, systemImage: SF.add_to_queue)
-			}
-		} label: {
+			}.disabled(uSongs.isEmpty)
+		}} label: {
 			Image(systemName: SF.ellipsis)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.More)

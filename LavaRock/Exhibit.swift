@@ -144,6 +144,34 @@ extension Exhibit {
 				return uSong
 		}}
 	}
+	func uSongs_scope() -> [USong] { // In display order.
+		switch selection {
+			case .mode_songs(let uSs_selected):
+				return uSongs(with: uSs_selected)
+			case .mode_albums(let uAs_selected):
+				var result: [USong] = []
+				uAlbums(with: uAs_selected).forEach { uAlbum in // Order matters.
+					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
+					result.append(contentsOf: lrAlbum.uSongs)
+				}
+				return result
+			case .view:
+				break
+		}
+		switch focus {
+			case .spotlight:
+				return []
+			case .expanded:
+				return uSongs()
+			case .covers:
+				var result: [USong] = []
+				uAlbums().forEach { uAlbum in
+					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
+					result.append(contentsOf: lrAlbum.uSongs)
+				}
+				return result
+		}
+	}
 	
 	func has_album_range(from uA_anchor: UAlbum, forward: Bool) -> Bool {
 		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor }) else { return false }
@@ -593,7 +621,7 @@ final class ExhibitTVC: LRTableViewController {
 			children: [
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let uSongs = uSongs_scope()
+					let uSongs = exhibit.uSongs_scope()
 					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_hollow)) { [weak self] _ in
 						guard let self else { return }
 						exhibit.end_selecting_animated()
@@ -604,12 +632,11 @@ final class ExhibitTVC: LRTableViewController {
 				},
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let uSongs = uSongs_scope()
+					let uSongs = exhibit.uSongs_scope()
 					let action = UIAction(title: InterfaceText.Jumble, image: UIImage(systemName: SF.die_random())) { [weak self] _ in
 						guard let self else { return }
 						exhibit.end_selecting_animated()
 						Task {
-							// Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 							let reordered = uSongs.in_any_other_order { $0 == $1 }
 							await Tape.play_now(reordered)
 						}
@@ -619,7 +646,7 @@ final class ExhibitTVC: LRTableViewController {
 				},
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let uSongs = uSongs_scope()
+					let uSongs = exhibit.uSongs_scope()
 					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: SF.add_to_queue)) { [weak self] _ in
 						guard let self else { return }
 						exhibit.end_selecting_animated()
@@ -631,32 +658,6 @@ final class ExhibitTVC: LRTableViewController {
 			]
 		))
 		return UIMenu(children: menu_children)
-	}
-	private func uSongs_scope() -> [USong] { // In display order.
-		switch exhibit.selection {
-			case .mode_albums(let uAs_selected):
-				var result: [USong] = []
-				exhibit.uAlbums(with: uAs_selected).forEach { uAlbum in // Order matters.
-					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
-					result.append(contentsOf: lrAlbum.uSongs)
-				}
-				return result
-			case .mode_songs(let uSs_selected):
-				return exhibit.uSongs(with: uSs_selected)
-			case .view:
-				switch exhibit.focus {
-					case .spotlight: return []
-					case .covers:
-						var result: [USong] = []
-						exhibit.uAlbums().forEach { uAlbum in
-							guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
-							result.append(contentsOf: lrAlbum.uSongs)
-						}
-						return result
-					case .expanded:
-						return exhibit.uSongs()
-				}
-		}
 	}
 	
 	// MARK: Sorting
