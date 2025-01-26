@@ -42,7 +42,13 @@ private struct MenuTransport: View {
 					Global.shared.showcase?.tvc_weak?.go_to_artwork()
 				} label: {
 					Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
-				}
+				}.disabled({
+					guard
+						let current = LCD.shared.uSong_current, // As of iOS 18.3 RC, mentioning this triggers a redraw if we delete or re-add the current song, because that makes Media Player post a notification “now-playing item changed”.
+						Librarian.uSongs_known.contains(current)
+					else { return true }
+					return false
+				}())
 				
 				Button {
 					if LCD.shared.repeat_is_on {
