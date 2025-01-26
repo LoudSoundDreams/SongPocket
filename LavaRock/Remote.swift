@@ -119,11 +119,7 @@ import UIKit
 			}(),
 			image: UIImage(systemName: SF.repeat_1),
 			attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented,
-			state: {
-				if repeat_is_on
-				{ return .on }
-				return .off
-			}()
+			state: repeat_is_on ? .on : .off
 		) { _ in
 			guard let player = ApplicationMusicPlayer._shared else { return }
 			if repeat_is_on {

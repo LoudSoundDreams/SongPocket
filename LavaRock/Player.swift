@@ -3,6 +3,8 @@
 @preconcurrency import MusicKit
 import MediaPlayer
 
+// For clarity, separating “player” functionality into reading state in `PlayerState` and controlling playback in `Tape`.
+
 // We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
 @MainActor @Observable final class PlayerState {
 	private init() {}

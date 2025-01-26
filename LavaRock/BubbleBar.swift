@@ -5,11 +5,11 @@ import SwiftUI
 
 struct BubbleBar: View {
 	var body: some View {
-		HStack {
+		HStack(spacing: .zero) {
 			MenuSort()
-				.padding(.trailing)
+				.padding(.trailing, .eight * 3/2)
 			MenuTransport()
-				.padding(.trailing)
+				.padding(.trailing, .eight * 3/2)
 			MenuOverflow()
 		}
 		.font(.largeTitle)
