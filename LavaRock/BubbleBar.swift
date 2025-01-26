@@ -43,6 +43,7 @@ private struct MenuTransport: View {
 				} label: {
 					Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
 				}
+				
 				Button {
 					if LCD.shared.repeat_is_on {
 						Tape.repeat_off()
@@ -59,7 +60,9 @@ private struct MenuTransport: View {
 						}(),
 						systemImage: LCD.shared.repeat_is_on
 						? "repeat.1.circle.fill" : SF.repeat_1)
-				}.menuActionDismissBehavior(.disabled)
+				}
+				.menuActionDismissBehavior(.disabled)
+				
 				Button {
 					AppleCatalog.open_Apple_Music()
 				} label: {
@@ -72,19 +75,24 @@ private struct MenuTransport: View {
 				} label: {
 					Image(systemName: SF.jump_back_15)
 						.accessibilityLabel(InterfaceText.Skip_back_15_seconds)
-				}.menuActionDismissBehavior(.disabled)
+				}
+				.menuActionDismissBehavior(.disabled)
+				
 				Button {
 					Tape.rewind()
 				} label: {
 					Image(systemName: SF.rewind)
 						.accessibilityLabel(InterfaceText.Restart)
-				}.menuActionDismissBehavior(.disabled)
+				}
+				.menuActionDismissBehavior(.disabled)
+				
 				Button {
 					Tape.jump_forward_15()
 				} label: {
 					Image(systemName: SF.jump_forward_15)
 						.accessibilityLabel(InterfaceText.Skip_forward_15_seconds)
-				}.menuActionDismissBehavior(.disabled)
+				}
+				.menuActionDismissBehavior(.disabled)
 			}
 			ControlGroup {
 				Button {
@@ -92,12 +100,14 @@ private struct MenuTransport: View {
 				} label: {
 					Image(systemName: SF.previous_bold)
 						.accessibilityLabel(InterfaceText.Previous)
-				}.menuActionDismissBehavior(.disabled)
+				}
+				.menuActionDismissBehavior(.disabled)
+				
 				Button {
-					Task {
-						if LCD.shared.is_playing {
-							Tape.pause()
-						} else {
+					if LCD.shared.is_playing {
+						Tape.pause()
+					} else {
+						Task {
 							await Tape.resume()
 						}
 					}
@@ -108,13 +118,16 @@ private struct MenuTransport: View {
 					.accessibilityLabel(
 						LCD.shared.is_playing
 						? InterfaceText.Pause : InterfaceText.Play)
-				}.menuActionDismissBehavior(.disabled)
+				}
+				.menuActionDismissBehavior(.disabled)
+				
 				Button {
 					Tape.next()
 				} label: {
 					Image(systemName: SF.next_bold)
 						.accessibilityLabel(InterfaceText.Next)
-				}.menuActionDismissBehavior(.disabled)
+				}
+				.menuActionDismissBehavior(.disabled)
 			}
 		} label: {
 			Image(

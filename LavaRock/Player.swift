@@ -3,6 +3,21 @@
 @preconcurrency import MusicKit
 import MediaPlayer
 
+@MainActor extension ApplicationMusicPlayer {
+	fileprivate static var _shared: ApplicationMusicPlayer? {
+		guard MusicAuthorization.currentStatus == .authorized else { return nil }
+		return .shared
+	}
+	
+	static var is_empty: Bool {
+#if targetEnvironment(simulator)
+		return false
+#else
+		return nil == _shared?.queue.currentEntry
+#endif
+	}
+}
+
 // For clarity, separating “player” functionality into reading state in `LCD` and controlling playback in `Tape`.
 
 // We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
@@ -11,8 +26,8 @@ import MediaPlayer
 	
 	var is_playing: Bool { // UIKit views need to manually pull this value …
 		let _ = _signal_state // … but this pushes SwiftUI views that mention this property to redraw.
-		guard let mp = MPMusicPlayerController._appQueuePlayer else { return false }
-		switch mp.playbackState {
+		guard let mpPlayer else { return false }
+		switch mpPlayer.playbackState {
 			case .playing:
 				return true
 			case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward:
@@ -23,9 +38,7 @@ import MediaPlayer
 	}
 	var repeat_is_on: Bool {
 		let _ = _signal_state
-		guard
-			let player = ApplicationMusicPlayer._shared,
-			let mode = player.state.repeatMode // This property is optional.
+		guard let mode = mkPlayer?.state.repeatMode // Note: this property is optional.
 		else { return false }
 		switch mode {
 			case .one: return true
@@ -43,17 +56,24 @@ import MediaPlayer
 	 */
 	var uSong_current: USong? {
 		let _ = _signal_now_playing
-		return MPMusicPlayerController._appQueuePlayer?.nowPlayingItem?.persistentID
+		return mpPlayer?.nowPlayingItem?.persistentID
 	}
 	private var _signal_now_playing = false
 }
 extension LCD {
 	@ObservationIgnored static let shared = LCD()
+	private var mkPlayer: ApplicationMusicPlayer? {
+		ApplicationMusicPlayer._shared
+	}
+	private var mpPlayer: MPMusicPlayerApplicationController? {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
+		return MPMusicPlayerController.applicationQueuePlayer
+	}
 	func watch() {
-		guard let mp = MPMusicPlayerController._appQueuePlayer else { return }
+		guard let mpPlayer else { return }
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: mp)
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mp) // Because we still use Media Player to check the current song.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: mpPlayer)
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mpPlayer) // Because we still use Media Player to check the current song.
 	}
 	@objc private func mp_state() {
 		_signal_state.toggle()
@@ -68,30 +88,8 @@ extension LCD {
 	}
 }
 
-@MainActor extension MPMusicPlayerController {
-	static var _appQueuePlayer: MPMusicPlayerApplicationController? {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
-		return applicationQueuePlayer
-	}
-}
-
-@MainActor extension ApplicationMusicPlayer {
-	static var is_empty: Bool {
-#if targetEnvironment(simulator)
-		return false
-#else
-		return nil == _shared?.queue.currentEntry
-#endif
-	}
-	
-	static var _shared: ApplicationMusicPlayer? {
-		guard MusicAuthorization.currentStatus == .authorized else { return nil }
-		return .shared
-	}
-}
-
 @MainActor enum Tape {
-	private static var player: ApplicationMusicPlayer? {
+	private static var mkPlayer: ApplicationMusicPlayer? {
 		ApplicationMusicPlayer._shared
 	}
 	
@@ -99,7 +97,7 @@ extension LCD {
 		_ uSs_to_play: [USong],
 		starting_at uS_start: USong? = nil
 	) async {
-		guard let player else { return }
+		guard let mkPlayer else { return }
 		
 		let mk_to_play: [MKSong] = await {
 			var result: [MKSong] = []
@@ -114,15 +112,15 @@ extension LCD {
 			return await AppleCatalog.shared.mkSong_fetched(uSong: uS_start)
 		}()
 		
-		player.queue = ApplicationMusicPlayer.Queue(for: mk_to_play, startingAt: mk_start) // Slow.
-		guard let _ = try? await player.play() else { return }
+		mkPlayer.queue = ApplicationMusicPlayer.Queue(for: mk_to_play, startingAt: mk_start) // Slow.
+		guard let _ = try? await mkPlayer.play() else { return }
 		
 		repeat_off() // As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
 	static func play_later(_ uSs_to_append: [USong]) {
 		Task {
-			guard let player else { return }
+			guard let mkPlayer else { return }
 			
 			let mk_to_append: [MKSong] = await {
 				var result: [MKSong] = []
@@ -133,11 +131,11 @@ extension LCD {
 				return result
 			}()
 			
-			if nil == player.queue.currentEntry {
-				player.queue = ApplicationMusicPlayer.Queue(for: mk_to_append)
-				guard let _ = try? await player.prepareToPlay() else { return }
+			if nil == mkPlayer.queue.currentEntry {
+				mkPlayer.queue = ApplicationMusicPlayer.Queue(for: mk_to_append)
+				guard let _ = try? await mkPlayer.prepareToPlay() else { return }
 			} else {
-				guard let _ = try? await player.queue.insert(mk_to_append, position: .tail) else { return }
+				guard let _ = try? await mkPlayer.queue.insert(mk_to_append, position: .tail) else { return }
 			}
 			
 			let rumbler = UINotificationFeedbackGenerator()
@@ -146,34 +144,34 @@ extension LCD {
 	}
 	
 	static func resume() async {
-		try? await player?.play()
+		try? await mkPlayer?.play()
 	}
 	static func pause() {
-		player?.pause()
+		mkPlayer?.pause()
 	}
 	static func rewind() {
-		player?.restartCurrentEntry()
+		mkPlayer?.restartCurrentEntry()
 	}
 	static func previous() {
 		Task {
-			try? await player?.skipToPreviousEntry()
+			try? await mkPlayer?.skipToPreviousEntry()
 		}
 	}
 	static func next() {
 		Task {
-			try? await player?.skipToNextEntry()
+			try? await mkPlayer?.skipToNextEntry()
 		}
 	}
 	static func jump_back_15() {
-		player?.playbackTime -= 15
+		mkPlayer?.playbackTime -= 15
 	}
 	static func jump_forward_15() {
-		player?.playbackTime += 15
+		mkPlayer?.playbackTime += 15
 	}
 	static func repeat_off() {
-		player?.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none // Not simply `.none`; this property is optional.
+		mkPlayer?.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none // Not simply `.none`; this property is optional.
 	}
 	static func repeat_1() {
-		player?.state.repeatMode = .one
+		mkPlayer?.state.repeatMode = .one
 	}
 }
