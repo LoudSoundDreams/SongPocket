@@ -64,6 +64,8 @@ extension Global {
 	@ObservationIgnored static let shared = Global()
 }
 
+// MARK: Private
+
 private struct RepNCMain: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> NCMain { NCMain.create() }
 	func updateUIViewController(_ vc: NCMain, context: Context) {}

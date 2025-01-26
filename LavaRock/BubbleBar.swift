@@ -37,8 +37,6 @@ private struct MenuSort: View {
 private struct MenuTransport: View {
 	var body: some View {
 		Menu {
-			let _ = PlayerState.shared.signal_player
-			
 			ControlGroup {
 				Button {
 					Global.shared.showcase?.tvc_weak?.go_to_artwork()

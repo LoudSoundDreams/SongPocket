@@ -627,9 +627,7 @@ final class ExhibitTVC: LRTableViewController {
 					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
-						Task {
-							await ApplicationMusicPlayer._shared?.play_later(uSongs)
-						}
+						ApplicationMusicPlayer._shared?.play_later(uSongs)
 					}
 					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
 					use([action])
