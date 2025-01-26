@@ -4,15 +4,6 @@ import Testing
 @testable import LavaRock
 import Foundation
 
-private struct Numbered {
-	let value: Int?
-	let number: Int
-	init(_ value: Int?, number: Int) {
-		self.value = value
-		self.number = number
-	}
-}
-
 @Test func lexical() {
 	let correct: [String?] = [
 		"", "", " ",
@@ -29,6 +20,14 @@ private struct Numbered {
 	#expect(passes)
 }
 
+private struct Numbered {
+	let value: Int?
+	let number: Int
+	init(_ value: Int?, number: Int) {
+		self.value = value
+		self.number = number
+	}
+}
 @Test func sort_stable() {
 	let input: [Int?] = [
 		nil, 0, 0,
@@ -49,40 +48,29 @@ private struct Numbered {
 		nil, nil, nil, nil,
 		nil, nil, nil,
 	]
-	
-	let expected = correct.enumerated().map { (offset, element) in
-		Numbered(element, number: offset)
-	}
 	let before = input.enumerated().map { (offset, element) in
 		Numbered(element, number: offset)
 	}
+	let expected = correct.enumerated().map { (offset, element) in
+		Numbered(element, number: offset)
+	}
+	
 	let after = before.sorted { left, right in
-		if left.value == right.value { return false }
+		if left.value == right.value { return false } // Important: documentation says to return `false` in this case.
 		guard let val_right = right.value else { return true }
 		guard let val_left = left.value else { return false }
 		return val_left < val_right
 	}
 	
-	let zipped = Array(zip(after, expected))
-	let passes_sort = zipped.all_neighbors_satisfy { each, next in
-		let val_output = each.0.value
-		let val_correct = each.1.value
-		return val_output == val_correct
+	let zipped = Array(zip(expected, after))
+	let passes_sort = zipped.allSatisfy { (expect, out) in
+		expect.value == out.value
 	}
 	#expect(passes_sort)
 	
 	let passes_stable = after.all_neighbors_satisfy { each, next in
-		guard each.value == next.value else {
-			return true //
-		}
+		guard each.value == next.value else { return true } // Valid assumption if `passes_sort` earlier.
 		return each.number < next.number
 	}
 	#expect(passes_stable)
-}
-
-private func are_ordered(_ left: Int?, _ right: Int?) -> Bool {
-	if left == right { return true }
-	guard let right else { return true }
-	guard let left else { return false }
-	return left < right
 }
