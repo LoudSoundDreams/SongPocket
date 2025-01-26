@@ -25,7 +25,7 @@ private struct MenuSort: View {
 	var body: some View {
 		Menu {
 		} label: {
-			Image(systemName: "arrow.up.arrow.down.circle.fill")
+			Image(systemName: SF.sort)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.Sort)
 		}.menuOrder(.fixed)
@@ -43,7 +43,7 @@ private struct MenuTransport: View {
 				Button {
 					Global.shared.showcase?.tvc_weak?.go_to_artwork()
 				} label: {
-					Label(InterfaceText.Go_to_Artwork, systemImage: "photo")
+					Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
 				}
 				Button {
 					guard let player = ApplicationMusicPlayer._shared else { return }
@@ -61,13 +61,12 @@ private struct MenuTransport: View {
 							return segments.formatted(.list(type: .and, width: .narrow))
 						}(),
 						systemImage: Remote.repeat_is_on
-						? "repeat.1.circle.fill"
-						: "repeat.1")
+						? "repeat.1.circle.fill" : SF.repeat_1)
 				}
 				Button {
 					AppleCatalog.open_Apple_Music()
 				} label: {
-					Label(InterfaceText.Apple_Music, systemImage: "arrow.up.forward.app")
+					Label(InterfaceText.Apple_Music, systemImage: SF.app_external)
 				}
 			}
 			ControlGroup {
@@ -93,8 +92,8 @@ private struct MenuTransport: View {
 							if
 								let player = ApplicationMusicPlayer._shared,
 								player.state.playbackStatus == .playing
-							{ return "pause.fill" }
-							return "play.fill"
+							{ return SF.pause_bold }
+							return SF.play_bold
 						}())
 				}
 			}
@@ -103,8 +102,8 @@ private struct MenuTransport: View {
 				if
 					let player = ApplicationMusicPlayer._shared,
 					player.state.playbackStatus == .playing
-				{ return "pause.circle.fill" }
-				return "play.circle.fill"
+				{ return SF.pause_circle }
+				return SF.play_circle
 			}())
 			.symbolRenderingMode(.hierarchical)
 		}
@@ -119,7 +118,7 @@ private struct MenuOverflow: View {
 	var body: some View {
 		Menu {
 		} label: {
-			Image(systemName: "ellipsis.circle.fill")
+			Image(systemName: SF.ellipsis)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.More)
 		}.menuOrder(.fixed)

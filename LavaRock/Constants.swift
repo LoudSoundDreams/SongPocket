@@ -195,3 +195,43 @@ enum InterfaceText {
 	static let To_Top = "To Top"
 	static let To_Bottom = "To Bottom"
 }
+
+// MARK: - SF Symbols
+
+enum SF {
+	static let select_fill = "checkmark.circle.fill"
+	static let select_hollow = "checkmark.circle"
+	static let select_up = "arrowtriangle.up.circle"
+	static let select_down = "arrowtriangle.down.circle"
+	static let deselect_up = "arrowtriangle.up.circle.fill"
+	static let deselect_down = "arrowtriangle.down.circle.fill"
+	
+	static let sort = "arrow.up.arrow.down.circle.fill"
+	static let reverse = "arrow.uturn.up"
+	static let shuffle = "shuffle"
+	static let move_up = "arrow.up.circle.fill"
+	static let move_down = "arrow.down.circle.fill"
+	static let to_top = "arrow.up.to.line"
+	static let to_bottom = "arrow.down.to.line"
+	
+	static func die_random() -> String {
+		switch Int.random(in: 1...6) {
+			case 1: return "die.face.1"
+			case 2: return "die.face.2"
+			case 3: return "die.face.3"
+			case 4: return "die.face.4"
+			case 5: return "die.face.5"
+			default: return "die.face.6"
+		}
+	}
+	
+	static let play_circle = "play.circle.fill"
+	static let pause_circle = "pause.circle.fill"
+	static let play_bold = "play.fill"
+	static let pause_bold = "pause.fill"
+	static let repeat_1 = "repeat.1"
+	static let photo = "photo"
+	
+	static let ellipsis = "ellipsis.circle.fill"
+	static let app_external = "arrow.up.forward.app"
+}

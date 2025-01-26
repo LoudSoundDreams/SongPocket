@@ -113,7 +113,7 @@ import MusicKit
 	private var b_select: some View {
 		Button {
 		} label: {
-			Image(systemName: "checkmark.circle.fill").accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected)
+			Image(systemName: SF.select_fill).accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected)
 				.symbolRenderingMode(.hierarchical)
 		}
 	}
@@ -143,7 +143,7 @@ import MusicKit
 				switch exhibit.selection {
 					case .mode_albums, .mode_songs: EmptyView()
 					case .view:
-						Button(InterfaceText.Select, systemImage: "checkmark.circle") {
+						Button(InterfaceText.Select, systemImage: SF.select_hollow) {
 							withAnimation {
 								exhibit.selection = .mode_songs([uSong])
 							}
@@ -164,8 +164,7 @@ import MusicKit
 			exhibit.has_selected_song(uSong)
 			? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: exhibit.has_selected_song(uSong)
-			? "arrowtriangle.up.circle.fill"
-			: "arrowtriangle.up.circle"
+			? SF.deselect_up : SF.select_up
 		) {
 			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
@@ -179,8 +178,7 @@ import MusicKit
 			exhibit.has_selected_song(uSong)
 			? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: exhibit.has_selected_song(uSong)
-			? "arrowtriangle.down.circle.fill"
-			: "arrowtriangle.down.circle"
+			? SF.deselect_down : SF.select_down
 		) {
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({

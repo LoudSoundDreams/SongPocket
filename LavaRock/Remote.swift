@@ -43,8 +43,8 @@ import UIKit
 	private func show_pause() {
 		b_remote.image = image_pause
 	}
-	private let image_play = UIImage(systemName: "play.circle.fill")!.applying_hierarchical_tint()
-	private let image_pause = UIImage(systemName: "pause.circle.fill")!.applying_hierarchical_tint()
+	private let image_play = UIImage(systemName: SF.play_circle)!.applying_hierarchical_tint()
+	private let image_pause = UIImage(systemName: SF.pause_circle)!.applying_hierarchical_tint()
 	
 	private func title_menu() -> String {
 		guard MusicAuthorization.currentStatus == .authorized
@@ -74,7 +74,7 @@ import UIKit
 	}
 	
 	private lazy var dme_go_to_artwork = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Go_to_Artwork, image: UIImage(systemName: "photo"), attributes: {
+		UIAction(title: InterfaceText.Go_to_Artwork, image: UIImage(systemName: SF.photo), attributes: {
 #if targetEnvironment(simulator)
 			return []
 #else
@@ -86,7 +86,7 @@ import UIKit
 #endif
 		}()) { [weak self] _ in self?.tvc_weak?.go_to_artwork() }
 	])}
-	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: "arrow.up.forward.app")) { _ in AppleCatalog.open_Apple_Music() }
+	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: SF.app_external)) { _ in AppleCatalog.open_Apple_Music() }
 	
 	private static let dme_toggle_playing = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)
@@ -106,11 +106,11 @@ import UIKit
 #endif
 	}
 	private static let a_play: UIAction = {
-		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play.fill"), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_bold), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
 		result.accessibilityTraits.formUnion(.startsMediaSession)
 		return result
 	}()
-	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: "pause.fill"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
+	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: SF.pause_bold), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
 	
 	private static let dme_repeat = UIDeferredMenuElement.uncached { use in
 		let action = UIAction(
@@ -120,7 +120,7 @@ import UIKit
 				segments.append(InterfaceText.Repeat_One)
 				return segments.formatted(.list(type: .and, width: .narrow))
 			}(),
-			image: UIImage(systemName: "repeat.1"),
+			image: UIImage(systemName: SF.repeat_1),
 			attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented,
 			state: {
 				if repeat_is_on
