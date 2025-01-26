@@ -127,7 +127,7 @@ import UIKit
 		) { _ in
 			guard let player = ApplicationMusicPlayer._shared else { return }
 			if repeat_is_on {
-				player.state.repeatMode = MusicPlayer.RepeatMode.none
+				player.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none
 			} else {
 				player.state.repeatMode = .one
 			}

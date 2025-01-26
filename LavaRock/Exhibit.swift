@@ -530,9 +530,9 @@ final class ExhibitTVC: LRTableViewController {
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				self.exhibit.selection = .view(nil)
 				Task {
-					guard let album_chosen = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
+					guard let album = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
 					await ApplicationMusicPlayer._shared?.play_now(
-						album_chosen.uSongs,
+						album.uSongs,
 						starting_at: uSong_activated)
 				}
 			}
