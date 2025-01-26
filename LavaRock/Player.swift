@@ -91,7 +91,9 @@ extension LCD {
 }
 
 @MainActor enum Tape {
-	private static let player: ApplicationMusicPlayer? = ._shared
+	private static var player: ApplicationMusicPlayer? {
+		ApplicationMusicPlayer._shared
+	}
 	
 	static func play_now(
 		_ uSs_to_play: [USong],
