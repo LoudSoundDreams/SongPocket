@@ -165,6 +165,20 @@ private struct MenuTransport: View {
 private struct MenuOverflow: View {
 	var body: some View {
 		Menu {
+			Button {
+			} label: {
+				Label(InterfaceText.Play, systemImage: SF.play_hollow)
+			}
+			
+			Button {
+			} label: {
+				Label(InterfaceText.Jumble, systemImage: SF.die_random())
+			}
+			
+			Button {
+			} label: {
+				Label(InterfaceText.Add_to_Queue, systemImage: SF.add_to_queue)
+			}
 		} label: {
 			Image(systemName: SF.ellipsis)
 				.symbolRenderingMode(.hierarchical)
