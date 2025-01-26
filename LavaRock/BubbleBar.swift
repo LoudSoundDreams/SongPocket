@@ -69,6 +69,11 @@ private struct MenuTransport: View {
 				} label: {
 					Label(InterfaceText.Apple_Music, systemImage: SF.app_external)
 				}
+			} label: {
+				let _ = AppleCatalog.shared.is_merging
+				if let message = Librarian.message_if_empty {
+					Text(message)
+				}
 			}
 			
 			ControlGroup {

@@ -15,9 +15,8 @@ import UIKit
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .librarian_merged, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
 	}
 	@objc private func refresh() {
-		// Refresh menu title
 		b_remote.preferredMenuElementOrder = .fixed
-		b_remote.menu = menu()
+		b_remote.menu = menu() // Refreshes menu title.
 		
 		// Make button reflect playback status
 #if targetEnvironment(simulator)
@@ -43,31 +42,26 @@ import UIKit
 	private let image_play = UIImage(systemName: SF.play_circle)!.applying_hierarchical_tint()
 	private let image_pause = UIImage(systemName: SF.pause_circle)!.applying_hierarchical_tint()
 	
-	private func title_menu() -> String {
-		guard MusicAuthorization.currentStatus == .authorized
-		else { return "" }
-		guard !Librarian.the_albums.isEmpty
-		else { return InterfaceText._empty_library_message }
-		return ""
-	}
 	private func menu() -> UIMenu {
-		return UIMenu(title: title_menu(), children: [
-			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				dme_go_to_artwork,
-				Self.dme_repeat,
-				Self.action_open_Apple_Music,
-			]),
-			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				Self.dme_jump_backward,
-				Self.dme_rewind,
-				Self.dme_jump_forward,
-			]),
-			UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-				Self.dme_track_previous,
-				Self.dme_toggle_playing,
-				Self.dme_track_next,
-			]),
-		])
+		return UIMenu(
+			title: Librarian.message_if_empty ?? "",
+			children: [
+				UIMenu(options: .displayInline, preferredElementSize: .small, children: [
+					dme_go_to_artwork,
+					Self.dme_repeat,
+					Self.action_open_Apple_Music,
+				]),
+				UIMenu(options: .displayInline, preferredElementSize: .small, children: [
+					Self.dme_jump_backward,
+					Self.dme_rewind,
+					Self.dme_jump_forward,
+				]),
+				UIMenu(options: .displayInline, preferredElementSize: .small, children: [
+					Self.dme_track_previous,
+					Self.dme_toggle_playing,
+					Self.dme_track_next,
+				]),
+			])
 	}
 	
 	private lazy var dme_go_to_artwork = UIDeferredMenuElement.uncached { use in use([
