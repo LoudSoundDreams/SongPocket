@@ -80,9 +80,9 @@ import MusicKit
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
 					let _ = catalog.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
-					guard uSong == PlayerState.shared.uSong_current
+					guard uSong == LCD.shared.uSong_current
 					else { return Color.primary }
-					if PlayerState.shared.is_playing {
+					if LCD.shared.is_playing {
 						return Color.accentColor
 					} else { return Color.accentColor.opacity(.one_half) }
 				}())

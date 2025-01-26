@@ -85,7 +85,7 @@ extension Notification.Name {
 	static let exhibit_focus = Self("LR_Focus")
 	static let exhibit_selection = Self("LR_Selection")
 	static let confirm_play = Self("LR_ConfirmPlay")
-	static let player_state = Self("LR_PlayerState")
+	static let lcd = Self("LR_LCD")
 }
 
 // MARK: - UI text

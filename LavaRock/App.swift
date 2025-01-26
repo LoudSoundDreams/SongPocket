@@ -51,7 +51,7 @@ enum WorkingOn {
 	
 	@MainActor static func integrate_Apple_Music() {
 		AppleCatalog.shared.watch() // (3)
-		PlayerState.shared.watch()
+		LCD.shared.watch()
 	}
 }
 

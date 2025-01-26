@@ -3,10 +3,10 @@
 @preconcurrency import MusicKit
 import MediaPlayer
 
-// For clarity, separating “player” functionality into reading state in `PlayerState` and controlling playback in `Tape`.
+// For clarity, separating “player” functionality into reading state in `LCD` and controlling playback in `Tape`.
 
 // We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
-@MainActor @Observable final class PlayerState {
+@MainActor @Observable final class LCD {
 	private init() {}
 	
 	var is_playing: Bool { // UIKit views need to manually pull this value …
@@ -47,8 +47,8 @@ import MediaPlayer
 	}
 	private var _signal_now_playing = false
 }
-extension PlayerState {
-	@ObservationIgnored static let shared = PlayerState()
+extension LCD {
+	@ObservationIgnored static let shared = LCD()
 	func watch() {
 		guard let mp = MPMusicPlayerController._appQueuePlayer else { return }
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
@@ -64,7 +64,7 @@ extension PlayerState {
 		post()
 	}
 	private func post() {
-		NotificationCenter.default.post(name: .player_state, object: nil)
+		NotificationCenter.default.post(name: .lcd, object: nil)
 	}
 }
 

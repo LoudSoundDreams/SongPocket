@@ -44,7 +44,7 @@ private struct MenuTransport: View {
 					Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
 				}
 				Button {
-					if PlayerState.shared.repeat_is_on {
+					if LCD.shared.repeat_is_on {
 						Tape.repeat_off()
 					} else {
 						Tape.repeat_1()
@@ -53,11 +53,11 @@ private struct MenuTransport: View {
 					Label(
 						{ () -> String in
 							var segments: [String] = []
-							if PlayerState.shared.repeat_is_on { segments.append(InterfaceText.Selected) }
+							if LCD.shared.repeat_is_on { segments.append(InterfaceText.Selected) }
 							segments.append(InterfaceText.Repeat_One)
 							return segments.formatted(.list(type: .and, width: .narrow))
 						}(),
-						systemImage: PlayerState.shared.repeat_is_on
+						systemImage: LCD.shared.repeat_is_on
 						? "repeat.1.circle.fill" : SF.repeat_1)
 				}.menuActionDismissBehavior(.disabled)
 				Button {
@@ -95,7 +95,7 @@ private struct MenuTransport: View {
 				}.menuActionDismissBehavior(.disabled)
 				Button {
 					Task {
-						if PlayerState.shared.is_playing {
+						if LCD.shared.is_playing {
 							Tape.pause()
 						} else {
 							await Tape.resume()
@@ -103,10 +103,10 @@ private struct MenuTransport: View {
 					}
 				} label: {
 					Image(
-						systemName: PlayerState.shared.is_playing
+						systemName: LCD.shared.is_playing
 						? SF.pause_bold : SF.play_bold)
 					.accessibilityLabel(
-						PlayerState.shared.is_playing
+						LCD.shared.is_playing
 						? InterfaceText.Pause : InterfaceText.Play)
 				}.menuActionDismissBehavior(.disabled)
 				Button {
@@ -118,7 +118,7 @@ private struct MenuTransport: View {
 			}
 		} label: {
 			Image(
-				systemName: PlayerState.shared.is_playing
+				systemName: LCD.shared.is_playing
 				? SF.pause_circle : SF.play_circle)
 			.symbolRenderingMode(.hierarchical)
 		}

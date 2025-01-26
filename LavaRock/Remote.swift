@@ -11,7 +11,7 @@ import UIKit
 	
 	private init() {
 		refresh()
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .player_state, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .lcd, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .librarian_merged, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
 	}
 	@objc private func refresh() {
@@ -27,7 +27,7 @@ import UIKit
 			show_play()
 			return
 		}
-		if PlayerState.shared.is_playing {
+		if LCD.shared.is_playing {
 			show_pause()
 		} else {
 			show_play()
@@ -76,7 +76,7 @@ import UIKit
 			return []
 #else
 			guard
-				let current = PlayerState.shared.uSong_current,
+				let current = LCD.shared.uSong_current,
 				Librarian.uSongs_known.contains(current)
 			else { return .disabled }
 			return []
@@ -89,7 +89,7 @@ import UIKit
 #if targetEnvironment(simulator)
 		use([a_pause])
 #else
-		if PlayerState.shared.is_playing {
+		if LCD.shared.is_playing {
 			use([a_pause])
 		} else {
 			let action = a_resume
@@ -113,15 +113,15 @@ import UIKit
 		let action = UIAction(
 			title: { // As of iOS 18.3 RC, with `preferredElementSize: .small`, VoiceOver never says “selected”.
 				var segments: [String] = []
-				if PlayerState.shared.repeat_is_on { segments.append(InterfaceText.Selected) }
+				if LCD.shared.repeat_is_on { segments.append(InterfaceText.Selected) }
 				segments.append(InterfaceText.Repeat_One)
 				return segments.formatted(.list(type: .and, width: .narrow))
 			}(),
 			image: UIImage(systemName: SF.repeat_1),
 			attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented,
-			state: PlayerState.shared.repeat_is_on ? .on : .off
+			state: LCD.shared.repeat_is_on ? .on : .off
 		) { _ in
-			if PlayerState.shared.repeat_is_on {
+			if LCD.shared.repeat_is_on {
 				Tape.repeat_off()
 			} else {
 				Tape.repeat_1()
