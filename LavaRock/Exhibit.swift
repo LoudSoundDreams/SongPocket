@@ -531,9 +531,7 @@ final class ExhibitTVC: LRTableViewController {
 				self.exhibit.selection = .view(nil)
 				Task {
 					guard let album = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
-					await ApplicationMusicPlayer._shared?.play_now(
-						album.uSongs,
-						starting_at: uSong_activated)
+					await Tape.play_now(album.uSongs, starting_at: uSong_activated)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
@@ -599,9 +597,7 @@ final class ExhibitTVC: LRTableViewController {
 					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
-						Task {
-							await ApplicationMusicPlayer._shared?.play_now(uSongs)
-						}
+						Task { await Tape.play_now(uSongs) }
 					}
 					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
 					use([action])
@@ -615,7 +611,7 @@ final class ExhibitTVC: LRTableViewController {
 						Task {
 							// Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 							let uSongs_reordered = uSongs.in_any_other_order { $0 == $1 }
-							await ApplicationMusicPlayer._shared?.play_now(uSongs_reordered)
+							await Tape.play_now(uSongs_reordered)
 						}
 					}
 					if uSongs.count <= 1 { action.attributes.formUnion(.disabled) }
@@ -627,7 +623,7 @@ final class ExhibitTVC: LRTableViewController {
 					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
-						ApplicationMusicPlayer._shared?.play_later(uSongs)
+						Tape.play_later(uSongs)
 					}
 					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
 					use([action])

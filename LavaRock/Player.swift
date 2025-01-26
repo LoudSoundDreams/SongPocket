@@ -74,11 +74,17 @@ extension PlayerState {
 		guard MusicAuthorization.currentStatus == .authorized else { return nil }
 		return .shared
 	}
+}
+
+@MainActor enum Tape {
+	private static let player: ApplicationMusicPlayer? = ._shared
 	
-	final func play_now(
+	static func play_now(
 		_ uSs_to_play: [USong],
 		starting_at uS_start: USong? = nil
 	) async {
+		guard let player else { return }
+		
 		let mk_to_play: [MKSong] = await {
 			var result: [MKSong] = []
 			for uSong in uSs_to_play {
@@ -92,14 +98,16 @@ extension PlayerState {
 			return await AppleCatalog.shared.mkSong_fetched(uSong: uS_start)
 		}()
 		
-		queue = Queue(for: mk_to_play, startingAt: mk_start) // Slow.
-		guard let _ = try? await play() else { return }
+		player.queue = ApplicationMusicPlayer.Queue(for: mk_to_play, startingAt: mk_start) // Slow.
+		guard let _ = try? await player.play() else { return }
 		
-		state.repeatMode = RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
+		player.state.repeatMode = ApplicationMusicPlayer.RepeatMode.none // Not `.none`; this property is optional. As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
-	final func play_later(_ uSs_to_append: [USong]) {
+	static func play_later(_ uSs_to_append: [USong]) {
 		Task {
+			guard let player else { return }
+			
 			let mk_to_append: [MKSong] = await {
 				var result: [MKSong] = []
 				for uSong in uSs_to_append {
@@ -109,15 +117,41 @@ extension PlayerState {
 				return result
 			}()
 			
-			if nil == queue.currentEntry {
-				queue = Queue(for: mk_to_append)
-				guard let _ = try? await prepareToPlay() else { return }
+			if nil == player.queue.currentEntry {
+				player.queue = ApplicationMusicPlayer.Queue(for: mk_to_append)
+				guard let _ = try? await player.prepareToPlay() else { return }
 			} else {
-				guard let _ = try? await queue.insert(mk_to_append, position: .tail) else { return }
+				guard let _ = try? await player.queue.insert(mk_to_append, position: .tail) else { return }
 			}
 			
 			let rumbler = UINotificationFeedbackGenerator()
 			rumbler.notificationOccurred(.success)
 		}
+	}
+	
+	static func resume() async {
+		try? await player?.play()
+	}
+	static func pause() {
+		player?.pause()
+	}
+	static func rewind() {
+		player?.restartCurrentEntry()
+	}
+	static func previous() {
+		Task {
+			try? await player?.skipToPreviousEntry()
+		}
+	}
+	static func next() {
+		Task {
+			try? await player?.skipToNextEntry()
+		}
+	}
+	static func jump_back_15() {
+		player?.playbackTime -= 15
+	}
+	static func jump_forward_15() {
+		player?.playbackTime += 15
 	}
 }

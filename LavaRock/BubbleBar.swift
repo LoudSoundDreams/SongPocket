@@ -69,16 +69,19 @@ private struct MenuTransport: View {
 			}
 			ControlGroup {
 				Button {
+					Tape.jump_back_15()
 				} label: {
 					Image(systemName: SF.jump_back_15)
 						.accessibilityLabel(InterfaceText.Skip_back_15_seconds)
 				}
 				Button {
+					Tape.rewind()
 				} label: {
 					Image(systemName: SF.rewind)
 						.accessibilityLabel(InterfaceText.Restart)
 				}
 				Button {
+					Tape.jump_forward_15()
 				} label: {
 					Image(systemName: SF.jump_forward_15)
 						.accessibilityLabel(InterfaceText.Skip_forward_15_seconds)
@@ -86,49 +89,38 @@ private struct MenuTransport: View {
 			}
 			ControlGroup {
 				Button {
+					Tape.previous()
 				} label: {
 					Image(systemName: SF.previous_bold)
 						.accessibilityLabel(InterfaceText.Previous)
 				}
 				Button {
 					Task {
-						guard let player = ApplicationMusicPlayer._shared else { return }
-						if player.state.playbackStatus == .playing {
-							player.pause()
+						if PlayerState.shared.is_playing {
+							Tape.pause()
 						} else {
-							try? await player.play()
+							await Tape.resume()
 						}
 					}
 				} label: {
-					Image(systemName: {
-						if
-							let player = ApplicationMusicPlayer._shared,
-							player.state.playbackStatus == .playing
-						{ return SF.pause_bold }
-						return SF.play_bold
-					}())
-					.accessibilityLabel({
-						if
-							let player = ApplicationMusicPlayer._shared,
-							player.state.playbackStatus == .playing
-						{ return InterfaceText.Pause }
-						return InterfaceText.Play
-					}())
+					Image(
+						systemName: PlayerState.shared.is_playing
+						? SF.pause_bold : SF.play_bold)
+					.accessibilityLabel(
+						PlayerState.shared.is_playing
+						? InterfaceText.Pause : InterfaceText.Play)
 				}
 				Button {
+					Tape.next()
 				} label: {
 					Image(systemName: SF.next_bold)
 						.accessibilityLabel(InterfaceText.Next)
 				}
 			}
 		} label: {
-			Image(systemName: {
-				if
-					let player = ApplicationMusicPlayer._shared,
-					player.state.playbackStatus == .playing
-				{ return SF.pause_circle }
-				return SF.play_circle
-			}())
+			Image(
+				systemName: PlayerState.shared.is_playing
+				? SF.pause_circle : SF.play_circle)
 			.symbolRenderingMode(.hierarchical)
 		}
 		.menuOrder(.fixed)

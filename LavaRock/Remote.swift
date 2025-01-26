@@ -92,7 +92,7 @@ import UIKit
 		if PlayerState.shared.is_playing {
 			use([a_pause])
 		} else {
-			let action = a_play
+			let action = a_resume
 			if ApplicationMusicPlayer.is_empty {
 				action.attributes.formUnion(.disabled)
 			} else {
@@ -102,12 +102,12 @@ import UIKit
 		}
 #endif
 	}
-	private static let a_play: UIAction = {
-		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_bold), attributes: .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.play() } }
+	private static let a_resume: UIAction = {
+		let result = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_bold), attributes: .keepsMenuPresented) { _ in Task { await Tape.resume() } }
 		result.accessibilityTraits.formUnion(.startsMediaSession)
 		return result
 	}()
-	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: SF.pause_bold), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.pause() }
+	private static let a_pause = UIAction(title: InterfaceText.Pause, image: UIImage(systemName: SF.pause_bold), attributes: .keepsMenuPresented) { _ in Tape.pause() }
 	
 	private static let dme_repeat = UIDeferredMenuElement.uncached { use in
 		let action = UIAction(
@@ -143,7 +143,7 @@ import UIKit
 	}
 	
 	private static let dme_rewind = UIDeferredMenuElement.uncached { use in
-		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: SF.rewind), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
+		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: SF.rewind), attributes: .keepsMenuPresented) { _ in Tape.rewind() }
 		if ApplicationMusicPlayer.is_empty { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
 			action.attributes.formUnion(.disabled)
 		} else {
@@ -154,16 +154,16 @@ import UIKit
 	
 	private static let dme_track_previous = UIDeferredMenuElement.uncached { use in use([
 		// Ideally, disable this when there are no previous tracks to skip to.
-		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
+		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { Tape.previous() } }
 	])}
 	private static let dme_track_next = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
+		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { Tape.next() } }
 	])}
 	
 	private static let dme_jump_backward = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: SF.jump_back_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
+		UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: SF.jump_back_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Tape.jump_back_15() }
 	])}
 	private static let dme_jump_forward = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Skip_forward_15_seconds, image: UIImage(systemName: SF.jump_forward_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
+		UIAction(title: InterfaceText.Skip_forward_15_seconds, image: UIImage(systemName: SF.jump_forward_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Tape.jump_forward_15() }
 	])}
 }
