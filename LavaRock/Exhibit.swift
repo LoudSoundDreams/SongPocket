@@ -594,7 +594,7 @@ final class ExhibitTVC: LRTableViewController {
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
 					let uSongs = uSongs_scope()
-					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: "play")) { [weak self] _ in
+					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_hollow)) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
 						Task { await Tape.play_now(uSongs) }
@@ -620,7 +620,7 @@ final class ExhibitTVC: LRTableViewController {
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
 					let uSongs = uSongs_scope()
-					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: "text.line.last.and.arrowtriangle.forward")) { [weak self] _ in
+					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: SF.add_to_queue)) { [weak self] _ in
 						guard let self else { return }
 						end_selecting_animated()
 						Tape.play_later(uSongs)
@@ -685,14 +685,14 @@ final class ExhibitTVC: LRTableViewController {
 				UIDeferredMenuElement.uncached { [weak self] use in
 					// Runs each time the button presents the menu
 					guard let self else { return }
-					let action = order.action { [weak self] in self?.sort_albums(by: order) }
+					let action = order.albumOrder_action { [weak self] in self?.sort_albums(by: order) }
 					if !can_sort_albums(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
 					use([action])
 				}
 			})
 		}
 	}()
-	private func can_sort_albums(by album_order: AlbumOrder) -> Bool {
+	private func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
 		let uAlbums = uAlbums_to_sort()
 		guard uAlbums.count >= 2 else { return false }
 		
@@ -705,7 +705,7 @@ final class ExhibitTVC: LRTableViewController {
 				guard rs_selected.ranges.count <= 1 else { return false }
 		}
 		
-		switch album_order {
+		switch albumOrder {
 			case .random, .reverse, .recently_added: return true
 			case .recently_released: return uAlbums.contains {
 				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
@@ -719,7 +719,7 @@ final class ExhibitTVC: LRTableViewController {
 			UIMenu(options: .displayInline, children: songOrders.map { order in
 				UIDeferredMenuElement.uncached { [weak self] use in
 					guard let self else { return }
-					let action = order.action { [weak self] in self?.sort_songs(by: order) }
+					let action = order.songOrder_action { [weak self] in self?.sort_songs(by: order) }
 					var enabling = true
 					
 					if uSongs_to_sort().count <= 1 { enabling = false }

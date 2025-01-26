@@ -9,7 +9,7 @@ enum AlbumOrder {
 	case recently_added
 	case recently_released
 	
-	@MainActor func action(handler: @escaping () -> Void) -> UIAction {
+	@MainActor func albumOrder_action(handler: @escaping () -> Void) -> UIAction {
 		return UIAction(
 			title: { switch self {
 				case .reverse: return InterfaceText.Reverse
@@ -33,7 +33,7 @@ enum SongOrder {
 	
 	case track
 	
-	@MainActor func action(handler: @escaping () -> Void) -> UIAction {
+	@MainActor func songOrder_action(handler: @escaping () -> Void) -> UIAction {
 		return UIAction(
 			title: { switch self {
 				case .reverse: return InterfaceText.Reverse

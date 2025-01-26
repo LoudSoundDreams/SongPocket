@@ -215,6 +215,7 @@ enum SF {
 	static let to_top = "arrow.up.to.line"
 	static let to_bottom = "arrow.down.to.line"
 	
+	static let play_hollow = "play"
 	static func die_random() -> String {
 		switch Int.random(in: 1...6) {
 			case 1: return "die.face.1"
@@ -225,6 +226,7 @@ enum SF {
 			default: return "die.face.6"
 		}
 	}
+	static let add_to_queue = "text.line.last.and.arrowtriangle.forward"
 	
 	static let play_circle = "play.circle.fill"
 	static let pause_circle = "pause.circle.fill"
