@@ -220,8 +220,8 @@ private struct MenuOverflow: View {
 			Button {
 				exhibit.end_selecting_animated()
 				// Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
-				let reordered = uSongs.in_any_other_order { $0 == $1 }
-				Task { await Tape.play_now(reordered) }
+				let jumbled = uSongs.in_any_other_order { $0 == $1 }
+				Task { await Tape.play_now(jumbled) }
 			} label: {
 				Label(InterfaceText.Jumble, systemImage: SF.die_random())
 			}.disabled(uSongs.count <= 1)

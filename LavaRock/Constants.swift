@@ -210,8 +210,8 @@ enum SF {
 	static let sort = "arrow.up.arrow.down.circle.fill"
 	static let reverse = "arrow.uturn.up"
 	static let shuffle = "shuffle"
-	static let move_up = "arrow.up.circle.fill"
-	static let move_down = "arrow.down.circle.fill"
+	static let move_up_circle = "arrow.up.circle.fill"
+	static let move_down_circle = "arrow.down.circle.fill"
 	static let to_top = "arrow.up.to.line"
 	static let to_bottom = "arrow.down.to.line"
 	
