@@ -69,7 +69,7 @@ extension LCD {
 		guard let mpPlayer else { return }
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
 		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: mpPlayer)
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mpPlayer) // Because we still use Media Player to check the current song.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mpPlayer) // As of iOS 18.3 RC, Media Player posts this when we delete the current song, even though `MPMusicPlayerController.nowPlayingItem` still returns the same value.
 	}
 	@objc private func mp_state() {
 		_signal_state.toggle()
