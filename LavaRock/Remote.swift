@@ -76,7 +76,7 @@ import UIKit
 			return []
 #else
 			guard
-				let current = ApplicationMusicPlayer.uSong_current,
+				let current = PlayerState.shared.uSong_current,
 				Librarian.uSongs_known.contains(current)
 			else { return .disabled }
 			return []

@@ -79,20 +79,12 @@ import MusicKit
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title ?? InterfaceText._tilde)
 				.foregroundStyle({
-					let _ = PlayerState.shared.signal_player
 					let _ = catalog.is_merging // I think this should be unnecessary, but I’ve seen the indicator get outdated after deleting a recently played song.
-					guard
-						let player = ApplicationMusicPlayer._shared,
-						let uSong_current = ApplicationMusicPlayer.uSong_current,
-						uSong_current == uSong
+					guard uSong == PlayerState.shared.uSong_current
 					else { return Color.primary }
-					switch player.state.playbackStatus {
-						case .playing:
-							return Color.accentColor
-						case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward: break
-						@unknown default: break
-					}
-					return Color.accentColor.opacity(.one_half)
+					if PlayerState.shared.is_playing {
+						return Color.accentColor
+					} else { return Color.accentColor.opacity(.one_half) }
 				}())
 			if
 				let artist_song = songInfo?._artist,

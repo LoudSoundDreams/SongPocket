@@ -6,8 +6,9 @@ import MediaPlayer
 // We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
 @MainActor @Observable final class PlayerState {
 	private init() {}
-	private(set) var signal_player = false
-	var is_playing: Bool {
+	
+	var is_playing: Bool { // UIKit views need to manually pull this value …
+		let _ = _signal_state // … but this pushes SwiftUI views that mention this property to redraw.
 		guard let mp = MPMusicPlayerController._appQueuePlayer else { return false }
 		switch mp.playbackState {
 			case .playing:
@@ -18,6 +19,19 @@ import MediaPlayer
 				return false
 		}
 	}
+	private var _signal_state = false
+	
+	/*
+	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
+	 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.
+	 `queue.currentEntry.item.id` doesn’t match either: “593338428”. (This stays the same each time the program runs.)
+	 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
+	 */
+	var uSong_current: USong? {
+		let _ = _signal_now_playing
+		return MPMusicPlayerController._appQueuePlayer?.nowPlayingItem?.persistentID
+	}
+	private var _signal_now_playing = false
 }
 extension PlayerState {
 	@ObservationIgnored static let shared = PlayerState()
@@ -28,11 +42,11 @@ extension PlayerState {
 		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mp) // Because we still use Media Player to check the current song.
 	}
 	@objc private func mp_state() {
-		signal_player.toggle()
+		_signal_state.toggle()
 		post()
 	}
 	@objc private func mp_now_playing() {
-		signal_player.toggle()
+		_signal_now_playing.toggle()
 		post()
 	}
 	private func post() {
@@ -54,16 +68,6 @@ extension PlayerState {
 #else
 		return nil == _shared?.queue.currentEntry
 #endif
-	}
-	
-	/*
-	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
-	 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.
-	 `queue.currentEntry.item.id` doesn’t match either: “593338428”. (This stays the same each time the program runs.)
-	 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
-	 */
-	@MainActor static var uSong_current: USong? {
-		return MPMusicPlayerController._appQueuePlayer?.nowPlayingItem?.persistentID
 	}
 	
 	static var _shared: ApplicationMusicPlayer? {
