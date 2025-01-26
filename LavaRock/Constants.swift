@@ -145,24 +145,7 @@ enum InterfaceText {
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
 	static let Add_to_Queue = "Add to Queue"
-	static func Randomize(for_localeLanguageIdentifiers langIDs: [String]) -> String {
-		return "Jumble"
-		/*
-		 let en_US = "Randomize"
-		 for langID in langIDs { // Return early with the first match.
-		 let lang = Locale.Language(identifier: langID)
-		 guard lang.languageCode == Locale.LanguageCode.english
-		 else { continue }
-		 switch lang.region { // Don’t use `Locale.region`; that matches the Settings app → Language & Region → Region.
-		 // As of iOS 18.2 developer beta 2, for these English variants, the Photos app says …
-		 case .unitedKingdom, .southAfrica, .australia, .singapore, .ireland, .newZealand: return "Randomise" // “Customise”
-		 case .india, .unitedStates, .canada: return en_US // “Customize”
-		 default: return en_US
-		 }
-		 }
-		 return en_US
-		 */
-	}
+	static let Jumble = "Jumble"
 	
 	static let Pause = "Pause"
 	static let Restart = "Restart"
@@ -194,6 +177,24 @@ enum InterfaceText {
 	static let Move_Down = "Move down"
 	static let To_Top = "To Top"
 	static let To_Bottom = "To Bottom"
+	
+	private static func Randomize(
+		for_locale_preferredLanguages langIDs: [String]
+	) -> String {
+		let en_US = "Randomize"
+		for langID in langIDs { // Return early with the first match.
+			let lang = Locale.Language(identifier: langID)
+			guard lang.languageCode == Locale.LanguageCode.english
+			else { continue }
+			switch lang.region { // Don’t use `Locale.region`; that matches the Settings app → Language & Region → Region.
+					// As of iOS 18.2 developer beta 2, for these English variants, the Photos app says …
+				case .unitedKingdom, .southAfrica, .australia, .singapore, .ireland, .newZealand: return "Randomise" // “Customise”
+				case .india, .unitedStates, .canada: return en_US // “Customize”
+				default: return en_US
+			}
+		}
+		return en_US
+	}
 }
 
 // MARK: - SF Symbols

@@ -176,8 +176,8 @@ import MusicKit
 			b_below
 		} label: {
 			if exhibit.has_selected_album(uAlbum)
-			{ IconSelected() }
-			else { IconUnselected() }
+			{ EllipsisSelected() }
+			else { EllipsisUnselected() }
 		}
 		.disabled(!can_select_album)
 		.animation(.default, value: can_select_album)
@@ -244,7 +244,7 @@ import MusicKit
 				ZStack {
 					Color(white: .one_fourth)
 						.frame(width: length_max, height: length_max)
-					PlaceholderMusicNote()
+					Placeholder()
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
 			}

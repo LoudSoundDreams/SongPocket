@@ -28,14 +28,14 @@ struct Border: View {
 	}
 }
 
-struct IconUnselected: View {
+struct EllipsisUnselected: View {
 	var body: some View {
 		Image(systemName: SF.ellipsis)
 			.symbolRenderingMode(.hierarchical)
 			.accessibilityLabel(InterfaceText.Select)
 	}
 }
-struct IconSelected: View {
+struct EllipsisSelected: View {
 	var body: some View {
 		Image(systemName: SF.ellipsis)
 			.accessibilityLabel(InterfaceText.Select)
@@ -43,7 +43,7 @@ struct IconSelected: View {
 	}
 }
 
-struct PlaceholderMusicNote: View {
+struct Placeholder: View {
 	var body: some View {
 		Image(systemName: "music.note")
 			.foregroundStyle(Color(white: .one_half))

@@ -155,8 +155,8 @@ import MusicKit
 			}
 		} label: {
 			if exhibit.has_selected_song(uSong)
-			{ IconSelected() }
-			else { IconUnselected() }
+			{ EllipsisSelected() }
+			else { EllipsisUnselected() }
 		}
 	}
 	private var b_above: some View {
