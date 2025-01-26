@@ -62,6 +62,7 @@ private struct MenuTransport: View {
 						? "repeat.1.circle.fill" : SF.repeat_1)
 				}
 				.menuActionDismissBehavior(.disabled)
+				.disabled(LCD.shared.is_blank)
 				
 				Button {
 					AppleCatalog.open_Apple_Music()
@@ -69,6 +70,7 @@ private struct MenuTransport: View {
 					Label(InterfaceText.Apple_Music, systemImage: SF.app_external)
 				}
 			}
+			
 			ControlGroup {
 				Button {
 					Tape.jump_back_15()
@@ -77,6 +79,7 @@ private struct MenuTransport: View {
 						.accessibilityLabel(InterfaceText.Skip_back_15_seconds)
 				}
 				.menuActionDismissBehavior(.disabled)
+				.disabled(LCD.shared.is_blank)
 				
 				Button {
 					Tape.rewind()
@@ -85,6 +88,7 @@ private struct MenuTransport: View {
 						.accessibilityLabel(InterfaceText.Restart)
 				}
 				.menuActionDismissBehavior(.disabled)
+				.disabled(LCD.shared.is_blank)
 				
 				Button {
 					Tape.jump_forward_15()
@@ -93,7 +97,9 @@ private struct MenuTransport: View {
 						.accessibilityLabel(InterfaceText.Skip_forward_15_seconds)
 				}
 				.menuActionDismissBehavior(.disabled)
+				.disabled(LCD.shared.is_blank)
 			}
+			
 			ControlGroup {
 				Button {
 					Tape.previous()
@@ -102,6 +108,7 @@ private struct MenuTransport: View {
 						.accessibilityLabel(InterfaceText.Previous)
 				}
 				.menuActionDismissBehavior(.disabled)
+				.disabled(LCD.shared.is_blank)
 				
 				Button {
 					if LCD.shared.is_playing {
@@ -120,6 +127,7 @@ private struct MenuTransport: View {
 						? InterfaceText.Pause : InterfaceText.Play)
 				}
 				.menuActionDismissBehavior(.disabled)
+				.disabled(LCD.shared.is_blank)
 				
 				Button {
 					Tape.next()
@@ -128,6 +136,7 @@ private struct MenuTransport: View {
 						.accessibilityLabel(InterfaceText.Next)
 				}
 				.menuActionDismissBehavior(.disabled)
+				.disabled(LCD.shared.is_blank)
 			}
 		} label: {
 			Image(

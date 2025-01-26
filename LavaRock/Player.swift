@@ -8,14 +8,6 @@ import MediaPlayer
 		guard MusicAuthorization.currentStatus == .authorized else { return nil }
 		return .shared
 	}
-	
-	static var is_empty: Bool {
-#if targetEnvironment(simulator)
-		return false
-#else
-		return nil == _shared?.queue.currentEntry
-#endif
-	}
 }
 
 // For clarity, separating “player” functionality into reading state in `LCD` and controlling playback in `Tape`.
@@ -48,6 +40,10 @@ import MediaPlayer
 	}
 	private var _signal_state = false
 	
+	var is_blank: Bool {
+		let _ = _signal_now_playing
+		return nil == mkPlayer?.queue.currentEntry
+	}
 	/*
 	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
 	 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.

@@ -23,7 +23,7 @@ import UIKit
 #if targetEnvironment(simulator)
 		show_pause()
 #else
-		guard !ApplicationMusicPlayer.is_empty else {
+		guard !LCD.shared.is_blank else {
 			show_play()
 			return
 		}
@@ -93,7 +93,7 @@ import UIKit
 			use([a_pause])
 		} else {
 			let action = a_resume
-			if ApplicationMusicPlayer.is_empty {
+			if LCD.shared.is_blank {
 				action.attributes.formUnion(.disabled)
 			} else {
 				action.attributes.subtract(.disabled)
@@ -118,7 +118,7 @@ import UIKit
 				return segments.formatted(.list(type: .and, width: .narrow))
 			}(),
 			image: UIImage(systemName: SF.repeat_1),
-			attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented,
+			attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented,
 			state: LCD.shared.repeat_is_on ? .on : .off
 		) { _ in
 			if LCD.shared.repeat_is_on {
@@ -132,7 +132,7 @@ import UIKit
 	
 	private static let dme_rewind = UIDeferredMenuElement.uncached { use in
 		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: SF.rewind), attributes: .keepsMenuPresented) { _ in Tape.rewind() }
-		if ApplicationMusicPlayer.is_empty { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
+		if LCD.shared.is_blank { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
 			action.attributes.formUnion(.disabled)
 		} else {
 			action.attributes.subtract(.disabled)
@@ -142,16 +142,16 @@ import UIKit
 	
 	private static let dme_track_previous = UIDeferredMenuElement.uncached { use in use([
 		// Ideally, disable this when there are no previous tracks to skip to.
-		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { Tape.previous() } }
+		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Task { Tape.previous() } }
 	])}
 	private static let dme_track_next = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { Tape.next() } }
+		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Task { Tape.next() } }
 	])}
 	
 	private static let dme_jump_backward = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: SF.jump_back_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Tape.jump_back_15() }
+		UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: SF.jump_back_15), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Tape.jump_back_15() }
 	])}
 	private static let dme_jump_forward = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Skip_forward_15_seconds, image: UIImage(systemName: SF.jump_forward_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Tape.jump_forward_15() }
+		UIAction(title: InterfaceText.Skip_forward_15_seconds, image: UIImage(systemName: SF.jump_forward_15), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Tape.jump_forward_15() }
 	])}
 }
