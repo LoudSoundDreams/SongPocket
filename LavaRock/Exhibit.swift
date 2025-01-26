@@ -610,8 +610,8 @@ final class ExhibitTVC: LRTableViewController {
 						exhibit.end_selecting_animated()
 						Task {
 							// Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
-							let uSongs_reordered = uSongs.in_any_other_order { $0 == $1 }
-							await Tape.play_now(uSongs_reordered)
+							let reordered = uSongs.in_any_other_order { $0 == $1 }
+							await Tape.play_now(reordered)
 						}
 					}
 					if uSongs.count <= 1 { action.attributes.formUnion(.disabled) }
