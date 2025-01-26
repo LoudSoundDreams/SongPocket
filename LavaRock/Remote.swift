@@ -23,14 +23,11 @@ import UIKit
 #if targetEnvironment(simulator)
 		show_pause()
 #else
-		guard
-			let player = ApplicationMusicPlayer._shared,
-			!ApplicationMusicPlayer.is_empty
-		else {
+		guard !ApplicationMusicPlayer.is_empty else {
 			show_play()
 			return
 		}
-		if player.state.playbackStatus == .playing {
+		if PlayerState.shared.is_playing {
 			show_pause()
 		} else {
 			show_play()
@@ -92,7 +89,7 @@ import UIKit
 #if targetEnvironment(simulator)
 		use([a_pause])
 #else
-		if ApplicationMusicPlayer._shared?.state.playbackStatus == .playing {
+		if PlayerState.shared.is_playing {
 			use([a_pause])
 		} else {
 			let action = a_play

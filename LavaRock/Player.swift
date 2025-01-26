@@ -2,33 +2,48 @@
 
 @preconcurrency import MusicKit
 import MediaPlayer
-import Combine
 
 // We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
 @MainActor @Observable final class PlayerState {
 	private init() {}
-	private(set) var signal_player = false { didSet {
-		NotificationCenter.default.post(name: .player_state, object: nil)
-	}}
-	@ObservationIgnored private var cancellables: Set<AnyCancellable> = []
+	private(set) var signal_player = false
+	var is_playing: Bool {
+		guard let mp = MPMusicPlayerController._appQueuePlayer else { return false }
+		switch mp.playbackState {
+			case .playing:
+				return true
+			case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward:
+				fallthrough
+			@unknown default:
+				return false
+		}
+	}
 }
 extension PlayerState {
 	@ObservationIgnored static let shared = PlayerState()
 	func watch() {
-		ApplicationMusicPlayer.shared.state.objectWillChange
-			.sink { [weak self] in self?.signal_player.toggle() }
-			.store(in: &cancellables)
-		
+		guard let mp = MPMusicPlayerController._appQueuePlayer else { return }
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
-		let player = MPMusicPlayerController.applicationQueuePlayer
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: player) // Because we still use Media Player to check the current song.
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: player) // Because we still use UIKit to indicate the repeat mode.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mp) // Because we still use Media Player to check the current song.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: mp) // Because we still use UIKit to indicate the repeat mode.
 	}
 	@objc private func mp_now_playing() {
 		signal_player.toggle()
+		post()
 	}
 	@objc private func mp_state() {
 		signal_player.toggle()
+		post()
+	}
+	private func post() {
+		NotificationCenter.default.post(name: .player_state, object: nil)
+	}
+}
+
+@MainActor extension MPMusicPlayerController {
+	static var _appQueuePlayer: MPMusicPlayerApplicationController? {
+		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
+		return applicationQueuePlayer
 	}
 }
 
@@ -48,8 +63,7 @@ extension PlayerState {
 	 Workaround: Each time we set the queue, keep our own records so we can figure out whether this `MusicKit.Song` we’re checking corresponds to `queue.currentEntry.id`.
 	 */
 	@MainActor static var uSong_current: USong? {
-		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
-		return MPMusicPlayerController.applicationQueuePlayer.nowPlayingItem?.persistentID
+		return MPMusicPlayerController._appQueuePlayer?.nowPlayingItem?.persistentID
 	}
 	
 	static var _shared: ApplicationMusicPlayer? {
