@@ -230,6 +230,11 @@ enum SF {
 	static let pause_circle = "pause.circle.fill"
 	static let play_bold = "play.fill"
 	static let pause_bold = "pause.fill"
+	static let rewind = "arrow.counterclockwise"
+	static let jump_back_15 = "gobackward.15"
+	static let jump_forward_15 = "goforward.15"
+	static let previous_bold = "backward.end.fill"
+	static let next_bold = "forward.end.fill"
 	static let repeat_1 = "repeat.1"
 	static let photo = "photo"
 	

@@ -71,6 +71,28 @@ private struct MenuTransport: View {
 			}
 			ControlGroup {
 				Button {
+				} label: {
+					Image(systemName: SF.jump_back_15)
+						.accessibilityLabel(InterfaceText.Skip_back_15_seconds)
+				}
+				Button {
+				} label: {
+					Image(systemName: SF.rewind)
+						.accessibilityLabel(InterfaceText.Restart)
+				}
+				Button {
+				} label: {
+					Image(systemName: SF.jump_forward_15)
+						.accessibilityLabel(InterfaceText.Skip_forward_15_seconds)
+				}
+			}
+			ControlGroup {
+				Button {
+				} label: {
+					Image(systemName: SF.previous_bold)
+						.accessibilityLabel(InterfaceText.Previous)
+				}
+				Button {
 					Task {
 						guard let player = ApplicationMusicPlayer._shared else { return }
 						if player.state.playbackStatus == .playing {
@@ -95,6 +117,11 @@ private struct MenuTransport: View {
 							{ return SF.pause_bold }
 							return SF.play_bold
 						}())
+				}
+				Button {
+				} label: {
+					Image(systemName: SF.next_bold)
+						.accessibilityLabel(InterfaceText.Next)
 				}
 			}
 		} label: {

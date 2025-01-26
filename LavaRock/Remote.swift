@@ -146,7 +146,7 @@ import UIKit
 	}
 	
 	private static let dme_rewind = UIDeferredMenuElement.uncached { use in
-		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: "arrow.counterclockwise"), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
+		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: SF.rewind), attributes: .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.restartCurrentEntry() }
 		if ApplicationMusicPlayer.is_empty { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
 			action.attributes.formUnion(.disabled)
 		} else {
@@ -157,16 +157,16 @@ import UIKit
 	
 	private static let dme_track_previous = UIDeferredMenuElement.uncached { use in use([
 		// Ideally, disable this when there are no previous tracks to skip to.
-		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: "backward.end.fill"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
+		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToPreviousEntry() } }
 	])}
 	private static let dme_track_next = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Next, image: UIImage(systemName: "forward.end.fill"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
+		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in Task { try await ApplicationMusicPlayer._shared?.skipToNextEntry() } }
 	])}
 	
 	private static let dme_jump_backward = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: "gobackward.15"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
+		UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: SF.jump_back_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime -= 15 }
 	])}
 	private static let dme_jump_forward = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Skip_forward_15_seconds, image: UIImage(systemName: "goforward.15"), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
+		UIAction(title: InterfaceText.Skip_forward_15_seconds, image: UIImage(systemName: SF.jump_forward_15), attributes: ApplicationMusicPlayer.is_empty ? .disabled : .keepsMenuPresented) { _ in ApplicationMusicPlayer._shared?.playbackTime += 15 }
 	])}
 }
