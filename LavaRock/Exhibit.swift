@@ -418,7 +418,7 @@ final class ExhibitTVC: LRTableViewController {
 			exhibit.refresh_artifacts()
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
@@ -440,7 +440,7 @@ final class ExhibitTVC: LRTableViewController {
 					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
-					let _ = await apply_rowIDs(exhibit.rowIDs)
+					await apply_rowIDs(exhibit.rowIDs)
 				}
 			case .expanded(let uA_to_expand):
 				Task {
@@ -450,7 +450,7 @@ final class ExhibitTVC: LRTableViewController {
 					exhibit.refresh_artifacts()
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
-					let _ = await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
+					await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
 						if
 							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
 								case .row_song: return false
@@ -469,7 +469,7 @@ final class ExhibitTVC: LRTableViewController {
 					exhibit.refresh_artifacts()
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
-					let _ = await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
+					await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
 						if
 							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
 								case .row_song: return false
@@ -746,7 +746,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func sort_songs(by songOrder: SongOrder) {
@@ -755,7 +755,7 @@ final class ExhibitTVC: LRTableViewController {
 			Librarian.save()
 			
 			exhibit.refresh_artifacts()
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
@@ -784,7 +784,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func promote_songs() {
@@ -795,7 +795,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
@@ -807,7 +807,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func demote_songs() {
@@ -818,7 +818,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
@@ -832,7 +832,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_albums([])
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func float_songs() {
@@ -843,7 +843,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_songs([])
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
@@ -855,7 +855,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_albums([])
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func sink_songs() {
@@ -866,7 +866,7 @@ final class ExhibitTVC: LRTableViewController {
 			
 			exhibit.refresh_artifacts()
 			exhibit.selection = .mode_songs([])
-			let _ = await apply_rowIDs(exhibit.rowIDs)
+			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 }
