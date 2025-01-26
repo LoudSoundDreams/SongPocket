@@ -154,8 +154,9 @@ enum InterfaceText {
 		 guard lang.languageCode == Locale.LanguageCode.english
 		 else { continue }
 		 switch lang.region { // Don’t use `Locale.region`; that matches the Settings app → Language & Region → Region.
-		 case .unitedKingdom, .southAfrica, .australia, .singapore, .ireland, .newZealand: return "Randomise" // As of iOS 18.2 developer beta 2, Photos says “Customise” for these variants of English.
-		 case .india, .unitedStates, .canada: return en_US // As of iOS 18.2 developer beta 2, Photos says “Customize” for these variants of English.
+		 // As of iOS 18.2 developer beta 2, for these English variants, the Photos app says …
+		 case .unitedKingdom, .southAfrica, .australia, .singapore, .ireland, .newZealand: return "Randomise" // “Customise”
+		 case .india, .unitedStates, .canada: return en_US // “Customize”
 		 default: return en_US
 		 }
 		 }

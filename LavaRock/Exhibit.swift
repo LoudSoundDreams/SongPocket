@@ -557,8 +557,8 @@ final class ExhibitTVC: LRTableViewController {
 	
 	private let b_sort = UIBarButtonItem(title: InterfaceText.Sort, image: UIImage(systemName: "arrow.up.arrow.down.circle.fill")?.applying_hierarchical_tint())
 	private lazy var b_scope = UIBarButtonItem(title: InterfaceText.More)
-	private lazy var image_scope = image_scope_highlighted?.applying_hierarchical_tint()
-	private let image_scope_highlighted = UIImage(systemName: "ellipsis.circle.fill")
+	private lazy var image_scope = image_scope_highlighted.applying_hierarchical_tint()
+	private let image_scope_highlighted = UIImage(systemName: "ellipsis.circle.fill")!
 	
 	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
 	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))

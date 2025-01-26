@@ -12,8 +12,8 @@ enum AlbumOrder {
 	@MainActor func action(handler: @escaping () -> Void) -> UIAction {
 		return UIAction(
 			title: { switch self {
-				case .random: return InterfaceText.Shuffle
 				case .reverse: return InterfaceText.Reverse
+				case .random: return InterfaceText.Shuffle
 				case .recently_added: return InterfaceText.Recently_Added
 				case .recently_released: return InterfaceText.Recently_Released
 			}}(),
@@ -36,8 +36,8 @@ enum SongOrder {
 	@MainActor func action(handler: @escaping () -> Void) -> UIAction {
 		return UIAction(
 			title: { switch self {
-				case .random: return InterfaceText.Shuffle
 				case .reverse: return InterfaceText.Reverse
+				case .random: return InterfaceText.Shuffle
 				case .track: return InterfaceText.Track_Number
 			}}(),
 			image: { switch self {

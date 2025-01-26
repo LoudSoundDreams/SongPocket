@@ -162,8 +162,7 @@ import MusicKit
 	private var b_above: some View {
 		Button(
 			exhibit.has_selected_song(uSong)
-			? InterfaceText.Deselect_Up
-			: InterfaceText.Select_Up,
+			? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: exhibit.has_selected_song(uSong)
 			? "arrowtriangle.up.circle.fill"
 			: "arrowtriangle.up.circle"
@@ -178,8 +177,7 @@ import MusicKit
 	private var b_below: some View {
 		Button(
 			exhibit.has_selected_song(uSong)
-			? InterfaceText.Deselect_Down
-			: InterfaceText.Select_Down,
+			? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: exhibit.has_selected_song(uSong)
 			? "arrowtriangle.down.circle.fill"
 			: "arrowtriangle.down.circle"

@@ -154,7 +154,7 @@ import MusicKit
 	private var b_select: some View {
 		Button {
 		} label: {
-			Image(systemName: "checkmark.circle.fill").accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.3 RC, VoiceOver automatically adds “Selected” because of the SF Symbol.
+			Image(systemName: "checkmark.circle.fill").accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.3 RC, VoiceOver automatically says “Selected” because of the SF Symbol.
 				.symbolRenderingMode(.hierarchical)
 		}
 		.disabled(!can_select_album)
@@ -192,8 +192,7 @@ import MusicKit
 	private var b_above: some View {
 		Button(
 			exhibit.has_selected_album(uAlbum)
-			? InterfaceText.Deselect_Up
-			: InterfaceText.Select_Up,
+			? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: exhibit.has_selected_album(uAlbum)
 			? "arrowtriangle.up.circle.fill"
 			: "arrowtriangle.up.circle"
@@ -208,8 +207,7 @@ import MusicKit
 	private var b_below: some View {
 		Button(
 			exhibit.has_selected_album(uAlbum)
-			? InterfaceText.Deselect_Down
-			: InterfaceText.Select_Down,
+			? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: exhibit.has_selected_album(uAlbum)
 			? "arrowtriangle.down.circle.fill"
 			: "arrowtriangle.down.circle"
