@@ -60,6 +60,11 @@ extension Exhibit {
 				return uSs_selected.contains(uSong)
 		}
 	}
+	func end_selecting_animated() {
+		withAnimation {
+			selection = .view(nil)
+		}
+	}
 	
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
 	fileprivate func refresh_artifacts() {
@@ -546,12 +551,7 @@ final class ExhibitTVC: LRTableViewController {
 	
 	// MARK: Editing
 	
-	private lazy var a_done = UIAction(title: InterfaceText.Done, image: UIImage(systemName: SF.select_fill)) { [weak self] _ in self?.end_selecting_animated() }
-	private func end_selecting_animated() {
-		withAnimation {
-			self.exhibit.selection = .view(nil)
-		}
-	}
+	private lazy var a_done = UIAction(title: InterfaceText.Done, image: UIImage(systemName: SF.select_fill)) { [weak self] _ in self?.exhibit.end_selecting_animated() }
 	
 	private let b_sort = UIBarButtonItem(title: InterfaceText.Sort, image: UIImage(systemName: SF.sort)!.applying_hierarchical_tint())
 	private lazy var b_scope = UIBarButtonItem(title: InterfaceText.More)
@@ -596,7 +596,7 @@ final class ExhibitTVC: LRTableViewController {
 					let uSongs = uSongs_scope()
 					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_hollow)) { [weak self] _ in
 						guard let self else { return }
-						end_selecting_animated()
+						exhibit.end_selecting_animated()
 						Task { await Tape.play_now(uSongs) }
 					}
 					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
@@ -607,7 +607,7 @@ final class ExhibitTVC: LRTableViewController {
 					let uSongs = uSongs_scope()
 					let action = UIAction(title: InterfaceText.Jumble, image: UIImage(systemName: SF.die_random())) { [weak self] _ in
 						guard let self else { return }
-						end_selecting_animated()
+						exhibit.end_selecting_animated()
 						Task {
 							// Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 							let uSongs_reordered = uSongs.in_any_other_order { $0 == $1 }
@@ -622,7 +622,7 @@ final class ExhibitTVC: LRTableViewController {
 					let uSongs = uSongs_scope()
 					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: SF.add_to_queue)) { [weak self] _ in
 						guard let self else { return }
-						end_selecting_animated()
+						exhibit.end_selecting_animated()
 						Tape.play_later(uSongs)
 					}
 					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }

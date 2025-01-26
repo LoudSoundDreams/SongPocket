@@ -196,6 +196,20 @@ private struct MenuTransport: View {
 private struct MenuOverflow: View {
 	var body: some View {
 		Menu {
+			if let exhibit = Global.shared.showcase {
+				switch exhibit.selection {
+					case .view: EmptyView()
+					case .mode_albums, .mode_songs:
+						Section {
+							Button {
+								exhibit.end_selecting_animated()
+							} label: {
+								Label(InterfaceText.Done, systemImage: SF.select_fill)
+							}
+						}
+				}
+			}
+			
 			Button {
 			} label: {
 				Label(InterfaceText.Play, systemImage: SF.play_hollow)
