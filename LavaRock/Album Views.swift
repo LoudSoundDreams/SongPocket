@@ -84,7 +84,7 @@ import MusicKit
 	var body: some View {
 		VStack(alignment: .leading) {
 			stack_info
-				.padding(.leading, .eight * 1/2) // Align with `SongRow`.
+				.padding(.leading, SongRow.nudge_leading)
 			HStack(alignment: .bottom) {
 				b_spotlight
 				Spacer()

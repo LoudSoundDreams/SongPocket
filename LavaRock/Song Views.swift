@@ -7,6 +7,7 @@ import MusicKit
 	let uSong: USong
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
+	static let nudge_leading: CGFloat = .eight * 1/2
 	
 	private let catalog: AppleCatalog = .shared
 	var body: some View {
@@ -34,10 +35,9 @@ import MusicKit
 				.dynamicType_default_to_plus_3()
 				.imageScale(.large)
 			}
-			.padding(.horizontal)
-			.padding(.leading, .eight * 1/2) // Align with `AlbumLabel`.
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
-			Separator().padding(.horizontal).padding(.leading, .eight * 1/2)
+			.padding(.horizontal).padding(.leading, Self.nudge_leading) // Align with outermost toolbar buttons.
+			Separator().padding(.horizontal).padding(.leading, Self.nudge_leading)
 		}
 		.background { highlight }
 		.overlay { border }
