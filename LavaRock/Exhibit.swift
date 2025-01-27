@@ -26,8 +26,12 @@ import MusicKit
 		NotificationCenter.default.post(name: .exhibit_focus, object: self)
 	}}
 	
-	var selection: Selection = .view(nil) { didSet {
+	var selection: Selection = .view { didSet {
 		NotificationCenter.default.post(name: .exhibit_selection, object: nil)
+	}}
+	
+	var activated: USong? { didSet { // Only use this when `selection == .view` and `focus == .expanded`.
+		NotificationCenter.default.post(name: .song_activation, object: nil)
 	}}
 	
 	fileprivate(set) var length_artwork: CGFloat!
@@ -46,7 +50,7 @@ extension Exhibit {
 	}
 	
 	enum Selection {
-		case view(USong?)
+		case view
 		case mode_albums(Set<UAlbum>)
 		case mode_songs(Set<USong>)
 	}
@@ -88,9 +92,9 @@ extension Exhibit {
 		
 		// In case we removed items the user was doing something with.
 		switch selection {
-			case .view(let uS_activated):
-				if let uS_activated, uSongs(with: [uS_activated]).isEmpty {
-					selection = .view(nil)
+			case .view:
+				if let activated, uSongs(with: [activated]).isEmpty {
+					self.activated = nil
 				}
 			case .mode_albums(let old_selected):
 				let selectable = Set(uAlbums(with: old_selected))
@@ -99,7 +103,7 @@ extension Exhibit {
 				}
 			case .mode_songs(let old_selected):
 				guard !uSongs().isEmpty else {
-					selection = .view(nil)
+					selection = .view
 					break
 				}
 				let selectable = Set(uSongs(with: old_selected))
@@ -131,7 +135,7 @@ extension Exhibit {
 	}
 	func end_selecting_animated() {
 		withAnimation {
-			selection = .view(nil)
+			selection = .view
 		}
 	}
 	func reorder_selection(up: Bool, to_limit: Bool) {
@@ -314,7 +318,7 @@ final class ExhibitTVC: LRTableViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: .librarian_merged, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: .exhibit_focus, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: .exhibit_selection, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(confirm_play), name: .confirm_play, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_activation), name: .song_activation, object: nil)
 		Remote.shared.tvc_weak = self
 	}
 	
@@ -529,14 +533,11 @@ final class ExhibitTVC: LRTableViewController {
 	
 	@objc private func reflect_selection() {
 		switch exhibit.selection {
-			case .view(let uS_activated):
+			case .view:
 				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_scope], animated: true)
 				b_sort.menu = menu_sort()
 				b_scope.menu = menu_scope()
 				b_scope.image = image_scope
-				if nil == uS_activated {
-					dismiss(animated: true) // In case “confirm play” action sheet is presented.
-				}
 			case .mode_albums(let uAs_selected):
 				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_scope], animated: true)
 				b_album_promote.isEnabled = !uAs_selected.isEmpty
@@ -554,35 +555,35 @@ final class ExhibitTVC: LRTableViewController {
 		}
 	}
 	
-	@objc private func confirm_play(notification: Notification) {
-		guard
-			let uS_activated = notification.object as? USong,
-			let view_anchor: UIView = { () -> UITableViewCell? in
-				guard let row_activated = exhibit.artifacts.firstIndex(where: { switch $0 {
-					case .row_album: return false
-					case .row_song(let uSong): return uSong == uS_activated
-				}}) else { return nil }
-				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
-			}()
-		else { return }
+	@objc private func reflect_activation() {
+		guard let activated = exhibit.activated else {
+			dismiss(animated: true) // Should be the “Start Playing” action sheet.
+			return
+		}
 		
-		exhibit.selection = .view(uS_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		guard let view_anchor: UIView = { () -> UITableViewCell? in
+			guard let row_activating = exhibit.artifacts.firstIndex(where: { switch $0 {
+				case .row_album: return false
+				case .row_song(let uSong): return uSong == activated
+			}}) else { return nil }
+			return tableView.cellForRow(at: IndexPath(row: row_activating, section: 0))
+		}() else { return }
 		
 		let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		sheet.popoverPresentationController?.sourceView = view_anchor
 		sheet.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
-				self.exhibit.selection = .view(nil)
+				self.exhibit.activated = nil
 				Task {
-					guard let album = Librarian.album_containing_uSong[uS_activated]?.referencee else { return }
-					await Tape.play_now(album.uSongs, starting_at: uS_activated)
+					guard let album = Librarian.album_containing_uSong[activated]?.referencee else { return }
+					await Tape.play_now(album.uSongs, starting_at: activated)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
 		sheet.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
-				self.exhibit.selection = .view(nil)
+				self.exhibit.activated = nil
 			}
 		)
 		present(sheet, animated: true)

@@ -65,14 +65,15 @@ import MusicKit
 			.opacity(is_highlighted ? .one_half : .zero)
 			.animation(
 				is_highlighted ? nil : .default,
-				value: exhibit.selection)
+				value: exhibit.activated)
 	}
 	private var is_highlighted: Bool {
 		switch exhibit.selection {
 			case .mode_albums, .mode_songs: return false
-			case .view(let uS_activated):
+			case .view:
 				if is_pressing { return true }
-				return uS_activated == uSong
+				guard let activated = exhibit.activated else { return false }
+				return activated == uSong
 		}
 	}
 	@State private var is_pressing = false
@@ -188,7 +189,8 @@ import MusicKit
 	private func tapped() {
 		switch exhibit.selection {
 			case .mode_albums: return
-			case .view: NotificationCenter.default.post(name: .confirm_play, object: uSong)
+			case .view:
+				exhibit.activated = uSong
 			case .mode_songs(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uSong) {
