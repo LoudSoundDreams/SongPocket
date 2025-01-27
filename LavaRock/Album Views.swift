@@ -50,7 +50,8 @@ import MusicKit
 	private func tapped() {
 		switch exhibit.selection {
 			case .mode_songs: return
-			case .view: break
+			case .view:
+				break
 			case .mode_albums(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uAlbum) {
@@ -142,7 +143,8 @@ import MusicKit
 	private var can_spotlight: Bool {
 		switch exhibit.selection {
 			case .mode_albums, .mode_songs: return false
-			case .view: break
+			case .view:
+				break
 		}
 		switch exhibit.focus {
 			case .expanded, .spotlight: return false

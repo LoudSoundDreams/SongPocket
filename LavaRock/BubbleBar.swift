@@ -4,7 +4,7 @@ import SwiftUI
 @preconcurrency import MusicKit
 
 struct BubbleBar: View {
-	static let width_border: CGFloat = .eight * 3/4
+	static let width_border: CGFloat = .eight * 1/2
 	
 	var body: some View {
 		HStack(spacing: .zero) {
@@ -64,7 +64,8 @@ private struct MenuSort: View {
 			.controlGroupStyle(.compactMenu)
 			.disabled({
 				switch exhibit.selection {
-					case .view: return true
+					case .view:
+						return true
 					case .mode_albums(let uAs_selected):
 						return uAs_selected.isEmpty
 					case .mode_songs(let uSs_selected):
@@ -229,7 +230,6 @@ private struct MenuTransport: View {
 		.menuOrder(.fixed)
 		.controlGroupStyle(.compactMenu)
 		.disabled(is_selecting)
-//		.animation(.default, value: is_selecting) // 2do
 	}
 	private var is_selecting: Bool {
 		guard let exhibit = Global.shared.showcase else { return false }
@@ -293,7 +293,6 @@ private struct MenuOverflow: View {
 							return .monochrome
 					}
 				}())
-				.animation(.default, value: Global.shared.showcase?.selection)
 				.accessibilityLabel(InterfaceText.More)
 		}.menuOrder(.fixed)
 	}

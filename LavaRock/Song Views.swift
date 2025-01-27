@@ -61,17 +61,19 @@ import MusicKit
 		}
 	}
 	@ViewBuilder private var highlight: some View {
-		let highlighting: Bool = {
-			switch exhibit.selection {
-				case .mode_albums, .mode_songs: return false
-				case .view(let uS_activated):
-					if is_pressing { return true }
-					return uS_activated == uSong
-			}
-		}()
 		Color.accentColor
-			.opacity(highlighting ? .one_half : .zero)
-			.animation(highlighting ? nil : .default, value: exhibit.selection)
+			.opacity(is_highlighted ? .one_half : .zero)
+			.animation(
+				is_highlighted ? nil : .default,
+				value: exhibit.selection)
+	}
+	private var is_highlighted: Bool {
+		switch exhibit.selection {
+			case .mode_albums, .mode_songs: return false
+			case .view(let uS_activated):
+				if is_pressing { return true }
+				return uS_activated == uSong
+		}
 	}
 	@State private var is_pressing = false
 	

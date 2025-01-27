@@ -50,26 +50,6 @@ extension Exhibit {
 		case mode_albums(Set<UAlbum>)
 		case mode_songs(Set<USong>)
 	}
-	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
-		switch selection {
-			case .view, .mode_songs: return false
-			case .mode_albums(let uAs_selected):
-				return uAs_selected.contains(uAlbum)
-		}
-	}
-	func has_selected_song(_ uSong: USong? = nil) -> Bool {
-		switch selection {
-			case .view, .mode_albums: return false
-			case .mode_songs(let uSs_selected):
-				guard let uSong else { return true }
-				return uSs_selected.contains(uSong)
-		}
-	}
-	func end_selecting_animated() {
-		withAnimation {
-			selection = .view(nil)
-		}
-	}
 	
 	@objc private func refresh_attractions() {
 //		refresh_artifacts()
@@ -134,6 +114,26 @@ extension Exhibit {
 		return Librarian.the_albums.map { $0.uAlbum }
 	}
 	
+	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
+		switch selection {
+			case .view, .mode_songs: return false
+			case .mode_albums(let uAs_selected):
+				return uAs_selected.contains(uAlbum)
+		}
+	}
+	func has_selected_song(_ uSong: USong? = nil) -> Bool {
+		switch selection {
+			case .view, .mode_albums: return false
+			case .mode_songs(let uSs_selected):
+				guard let uSong else { return true }
+				return uSs_selected.contains(uSong)
+		}
+	}
+	func end_selecting_animated() {
+		withAnimation {
+			selection = .view(nil)
+		}
+	}
 	func reorder_selection(up: Bool, to_limit: Bool) {
 	}
 	
@@ -556,36 +556,36 @@ final class ExhibitTVC: LRTableViewController {
 	
 	@objc private func confirm_play(notification: Notification) {
 		guard
-			let uSong_activated = notification.object as? USong,
-			let view_popover_anchor: UIView = { () -> UITableViewCell? in
+			let uS_activated = notification.object as? USong,
+			let view_anchor: UIView = { () -> UITableViewCell? in
 				guard let row_activated = exhibit.artifacts.firstIndex(where: { switch $0 {
 					case .row_album: return false
-					case .row_song(let uSong): return uSong == uSong_activated
+					case .row_song(let uSong): return uSong == uS_activated
 				}}) else { return nil }
 				return tableView.cellForRow(at: IndexPath(row: row_activated, section: 0))
 			}()
 		else { return }
 		
-		exhibit.selection = .view(uSong_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
+		exhibit.selection = .view(uS_activated) // The UI is clearer if we leave the row selected while the action sheet is onscreen. You must eventually deselect the row in every possible scenario after this moment.
 		
-		let action_sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		action_sheet.popoverPresentationController?.sourceView = view_popover_anchor
-		action_sheet.addAction(
+		let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		sheet.popoverPresentationController?.sourceView = view_anchor
+		sheet.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
 				self.exhibit.selection = .view(nil)
 				Task {
-					guard let album = Librarian.album_containing_uSong[uSong_activated]?.referencee else { return }
-					await Tape.play_now(album.uSongs, starting_at: uSong_activated)
+					guard let album = Librarian.album_containing_uSong[uS_activated]?.referencee else { return }
+					await Tape.play_now(album.uSongs, starting_at: uS_activated)
 				}
 			}
 			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
-		action_sheet.addAction(
+		sheet.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
 				self.exhibit.selection = .view(nil)
 			}
 		)
-		present(action_sheet, animated: true)
+		present(sheet, animated: true)
 	}
 	
 	// MARK: Editing
