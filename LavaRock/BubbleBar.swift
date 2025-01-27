@@ -23,15 +23,46 @@ struct BubbleBar: View {
 
 private struct MenuSort: View {
 	var body: some View {
-		Menu {
-			if let exhibit = Global.shared.showcase {
-				switch exhibit.focus {
-					case .spotlight: EmptyView()
-					case .covers: commands_albums
-					case .expanded: commands_songs
+		Menu { if let exhibit = Global.shared.showcase {
+			switch exhibit.focus {
+				case .spotlight: EmptyView()
+				case .covers: commands_albums
+				case .expanded: commands_songs
+			}
+			
+			ControlGroup {
+				Button {
+				} label: {
+					Image(systemName: SF.to_top)
+						.accessibilityLabel(InterfaceText.To_Top)
+				}
+				Button {
+				} label: {
+					Image(systemName: "arrow.up")
+						.accessibilityLabel(InterfaceText.Move_Up)
+				}
+				Button {
+				} label: {
+					Image(systemName: "arrow.down")
+						.accessibilityLabel(InterfaceText.Move_Down)
+				}
+				Button {
+				} label: {
+					Image(systemName: SF.to_bottom)
+						.accessibilityLabel(InterfaceText.To_Bottom)
 				}
 			}
-		} label: {
+			.controlGroupStyle(.compactMenu)
+			.disabled({
+				switch exhibit.selection {
+					case .view: return true
+					case .mode_albums(let uAs_selected):
+						return uAs_selected.isEmpty
+					case .mode_songs(let uSs_selected):
+						return uSs_selected.isEmpty
+				}
+			}())
+		}} label: {
 			Image(systemName: SF.sort)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.Sort)
@@ -234,7 +265,17 @@ private struct MenuOverflow: View {
 			}.disabled(uSongs.isEmpty)
 		}} label: {
 			Image(systemName: SF.ellipsis)
-				.symbolRenderingMode(.hierarchical)
+				.symbolRenderingMode({
+					guard let exhibit = Global.shared.showcase
+					else { return .hierarchical }
+					switch exhibit.selection {
+						case .view:
+							return .hierarchical
+						case .mode_albums, .mode_songs:
+							return .monochrome
+					}
+				}())
+				.animation(.default, value: Global.shared.showcase?.selection)
 				.accessibilityLabel(InterfaceText.More)
 		}.menuOrder(.fixed)
 	}
