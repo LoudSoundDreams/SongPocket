@@ -5,9 +5,14 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class Exhibit {
+	init() {
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh_attractions), name: .librarian_merged, object: nil)
+	}
+	
 	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact]
 	= Exhibit.uAlbums_fresh().map { .row_album($0) } { didSet {
 		signal_artifacts.toggle()
+		NotificationCenter.default.post(name: .exhibit_attractions, object: self)
 	}}
 	private(set) var signal_artifacts = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
 	
@@ -66,6 +71,9 @@ extension Exhibit {
 		}
 	}
 	
+	@objc private func refresh_attractions() {
+//		refresh_artifacts()
+	}
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
 	fileprivate func refresh_artifacts() {
 		artifacts = {

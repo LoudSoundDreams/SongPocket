@@ -82,6 +82,7 @@ extension View {
 
 extension Notification.Name {
 	static let librarian_merged = Self("LR_Merged")
+	static let exhibit_attractions = Self("LR_Attractions")
 	static let exhibit_focus = Self("LR_Focus")
 	static let exhibit_selection = Self("LR_Selection")
 	static let confirm_play = Self("LR_ConfirmPlay")
