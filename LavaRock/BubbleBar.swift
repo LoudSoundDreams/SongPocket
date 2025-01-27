@@ -219,6 +219,15 @@ private struct MenuTransport: View {
 		}
 		.menuOrder(.fixed)
 		.controlGroupStyle(.compactMenu)
+		.disabled(is_selecting)
+//		.animation(.default, value: is_selecting) // 2do
+	}
+	private var is_selecting: Bool {
+		guard let exhibit = Global.shared.showcase else { return false }
+		switch exhibit.selection {
+			case .view: return false
+			case .mode_albums, .mode_songs: return true
+		}
 	}
 }
 
