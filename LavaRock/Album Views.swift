@@ -14,16 +14,12 @@ import MusicKit
 		.opacity(exhibit.has_selected_song() ? .one_half : 1)
 		.overlay {
 			ZStack(alignment: .bottom) {
-				ZStack {
-					if !is_spotlighting(uAlbum) {
-						Rectangle().foregroundStyle(Material.thick)
-					}
-				}.animation(.linear_quick(), value: is_spotlighting(uAlbum))
-				ZStack {
-					if !is_spotlighting() {
-						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
-					}
-				}.animation(.linear_quick(), value: is_spotlighting())
+				ZStack { if !is_spotlighting(uAlbum) {
+					Rectangle().foregroundStyle(Material.thick)
+				}}.animation(.linear_quick(), value: is_spotlighting(uAlbum))
+				ZStack { if !is_spotlighting() {
+					AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
+				}}.animation(.linear_quick(), value: is_spotlighting())
 			}
 		}
 		.overlay { border.accessibilityHidden(true) } // 2do: Make VoiceOver say “selected”.
