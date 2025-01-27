@@ -4,17 +4,19 @@ import SwiftUI
 @preconcurrency import MusicKit
 
 struct BubbleBar: View {
+	static let width_border: CGFloat = .eight * 3/4
+	
 	var body: some View {
 		HStack(spacing: .zero) {
 			MenuSort()
-				.padding(.trailing, .eight * 3/2)
+			Spacer()
 			MenuTransport()
-				.padding(.trailing, .eight * 3/2)
+			Spacer()
 			MenuOverflow()
 		}
 		.font(.largeTitle)
 		.dynamicType_default_to_plus_3()
-		.padding(.eight)
+		.padding(Self.width_border)
 		.background(Material.bar, in: .capsule)
 	}
 }
@@ -36,16 +38,19 @@ private struct MenuSort: View {
 					Image(systemName: SF.to_top)
 						.accessibilityLabel(InterfaceText.To_Top)
 				}
+				
 				Button {
 				} label: {
 					Image(systemName: "arrow.up")
 						.accessibilityLabel(InterfaceText.Move_Up)
-				}
+				}.menuActionDismissBehavior(.disabled)
+				
 				Button {
 				} label: {
 					Image(systemName: "arrow.down")
 						.accessibilityLabel(InterfaceText.Move_Down)
-				}
+				}.menuActionDismissBehavior(.disabled)
+				
 				Button {
 				} label: {
 					Image(systemName: SF.to_bottom)
