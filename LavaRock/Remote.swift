@@ -136,10 +136,10 @@ import UIKit
 	
 	private static let dme_track_previous = UIDeferredMenuElement.uncached { use in use([
 		// Ideally, disable this when there are no previous tracks to skip to.
-		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Task { Tape.previous() } }
+		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Tape.previous() }
 	])}
 	private static let dme_track_next = UIDeferredMenuElement.uncached { use in use([
-		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Task { Tape.next() } }
+		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Tape.next() }
 	])}
 	
 	private static let dme_jump_backward = UIDeferredMenuElement.uncached { use in use([

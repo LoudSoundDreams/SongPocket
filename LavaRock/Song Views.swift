@@ -38,9 +38,10 @@ import MusicKit
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
 		}
-		.padding(.horizontal, {
+		.padding(.horizontal, { () -> CGFloat? in
 			guard WorkingOn.toolbar else { return nil } // Not `.zero`, but the default.
-			return LavaRock.padding_bubbleBar_horizontal + BubbleBar.width_border
+			return LavaRock.padding_bubbleBar_horizontal
+			+ BubbleBar.width_border
 		}())
 		.padding(.leading, Self.nudge_leading) // Align with outermost toolbar buttons.
 		.background { highlight }

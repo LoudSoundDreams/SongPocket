@@ -97,7 +97,8 @@ import MusicKit
 		}
 		.padding(.all, { () -> CGFloat? in
 			guard WorkingOn.toolbar else { return nil }
-			return LavaRock.padding_bubbleBar_horizontal + BubbleBar.width_border
+			return LavaRock.padding_bubbleBar_horizontal
+			+ BubbleBar.width_border
 		}())
 	}
 	

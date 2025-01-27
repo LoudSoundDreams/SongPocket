@@ -8,7 +8,7 @@ enum WorkingOn {
 }
 
 @main struct LavaRock: App {
-	static let padding_bubbleBar_horizontal: CGFloat = .eight * 3/2
+	static let padding_bubbleBar_horizontal: CGFloat = .eight * 2
 	
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
