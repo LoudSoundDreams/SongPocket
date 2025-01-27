@@ -94,7 +94,10 @@ import MusicKit
 			.font(.largeTitle)
 			.dynamicType_default_to_plus_3()
 		}
-		.padding()
+		.padding(.all, { () -> CGFloat? in
+			guard WorkingOn.toolbar else { return nil }
+			return LavaRock.padding_bubbleBar_horizontal + BubbleBar.width_border
+		}())
 	}
 	
 	@ViewBuilder private var stack_info: some View {

@@ -36,9 +36,13 @@ import MusicKit
 				.imageScale(.large)
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
-			.padding(.horizontal).padding(.leading, Self.nudge_leading) // Align with outermost toolbar buttons.
-			Separator().padding(.horizontal).padding(.leading, Self.nudge_leading)
+			Separator()
 		}
+		.padding(.horizontal, {
+			guard WorkingOn.toolbar else { return nil } // Not `.zero`, but the default.
+			return LavaRock.padding_bubbleBar_horizontal + BubbleBar.width_border
+		}())
+		.padding(.leading, Self.nudge_leading) // Align with outermost toolbar buttons.
 		.background { highlight }
 		.overlay { border }
 		.frame(maxWidth: exhibit.length_artwork)

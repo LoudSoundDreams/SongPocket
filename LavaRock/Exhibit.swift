@@ -126,6 +126,9 @@ extension Exhibit {
 		return Librarian.the_albums.map { $0.uAlbum }
 	}
 	
+	func reorder_selection(up: Bool, to_limit: Bool) {
+	}
+	
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
 		return artifacts.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
 			case .row_song: return nil

@@ -34,24 +34,28 @@ private struct MenuSort: View {
 			
 			ControlGroup {
 				Button {
+					exhibit.reorder_selection(up: true, to_limit: true)
 				} label: {
 					Image(systemName: SF.to_top)
 						.accessibilityLabel(InterfaceText.To_Top)
 				}
 				
 				Button {
+					exhibit.reorder_selection(up: true, to_limit: false)
 				} label: {
 					Image(systemName: "arrow.up")
 						.accessibilityLabel(InterfaceText.Move_Up)
 				}.menuActionDismissBehavior(.disabled)
 				
 				Button {
+					exhibit.reorder_selection(up: false, to_limit: false)
 				} label: {
 					Image(systemName: "arrow.down")
 						.accessibilityLabel(InterfaceText.Move_Down)
 				}.menuActionDismissBehavior(.disabled)
 				
 				Button {
+					exhibit.reorder_selection(up: false, to_limit: true)
 				} label: {
 					Image(systemName: SF.to_bottom)
 						.accessibilityLabel(InterfaceText.To_Bottom)

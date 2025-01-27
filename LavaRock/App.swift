@@ -8,6 +8,8 @@ enum WorkingOn {
 }
 
 @main struct LavaRock: App {
+	static let padding_bubbleBar_horizontal: CGFloat = .eight * 2
+	
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		let defaults = UserDefaults.standard
@@ -35,7 +37,7 @@ enum WorkingOn {
 					.ignoresSafeArea()
 				if WorkingOn.toolbar {
 					ZStack { if !Global.shared.focus_is_spotlight {
-						BubbleBar().padding(.horizontal)
+						BubbleBar().padding(.horizontal, Self.padding_bubbleBar_horizontal)
 					}}.animation(.linear_quick(), value: Global.shared.focus_is_spotlight)
 				}
 			}
