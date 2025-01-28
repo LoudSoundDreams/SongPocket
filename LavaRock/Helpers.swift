@@ -25,11 +25,10 @@ extension Array {
 		var try_number = 1
 		while true {
 			let result = shuffled()
-			if
+			if try_number >= 42 ||
 				!result.indices.allSatisfy({ i_result in
 					are_equivalent(self[i_result], result[i_result])
 				})
-					|| try_number >= 42
 			{ return result }
 			try_number += 1
 		}

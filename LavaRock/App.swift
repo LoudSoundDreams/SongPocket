@@ -35,6 +35,13 @@ enum WorkingOn {
 				RepNCMain()
 					.background { Color(white: .one_eighth / 2) }
 					.ignoresSafeArea()
+				
+//					.toolbar { if WorkingOn.toolbar {
+//						ToolbarItemGroup(placement: .bottomBar) {
+//							BubbleBar()
+//						}
+//					}}
+				
 				if WorkingOn.toolbar {
 					ZStack { if !Global.shared.focus_is_spotlight {
 						BubbleBar().padding(.horizontal, Self.padding_bubbleBar_horizontal)
