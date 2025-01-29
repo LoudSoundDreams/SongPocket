@@ -146,7 +146,7 @@ import MusicKit
 							withAnimation {
 								exhibit.selection = .mode_songs([uSong])
 							}
-						}.disabled(catalog.is_merging)
+						}.disabled(is_merging)
 						Divider()
 				}
 				b_above
@@ -168,7 +168,7 @@ import MusicKit
 			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
 			return (exhibit.signal_artifacts && false) ||
-			catalog.is_merging ||
+			is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: false)
 		}())
 	}
@@ -182,10 +182,11 @@ import MusicKit
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({
 			return (exhibit.signal_artifacts && false) ||
-			catalog.is_merging ||
+			is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: true)
 		}())
 	}
+	private var is_merging: Bool { Global.shared.librarian_is_merging }
 	
 	private func tapped() {
 		switch exhibit.selection {

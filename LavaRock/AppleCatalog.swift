@@ -14,11 +14,6 @@ typealias USong = MPMediaEntityPersistentID
 	private init() {}
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	private(set) var mkSongs_cache: [USong: MKSong] = [:]
-	private(set) var is_merging = false { didSet { // Prevent users from modifying items while the app is modifying them.
-		if !is_merging {
-			NotificationCenter.default.post(name: .librarian_merged, object: nil)
-		}
-	}}
 }
 extension AppleCatalog {
 	@ObservationIgnored static let shared = AppleCatalog()
@@ -111,12 +106,9 @@ extension AppleCatalog {
 			let mk_union = mkSections_cache.merging(mk_dict) { old, new in new }
 			mkSections_cache = mk_union // Show new data immediately …
 			
-			is_merging = true
 			await Librarian.merge_MediaPlayer_items(mpSongs)
 			
 			Librarian.save()
-			is_merging = false
-			
 			try? await Task.sleep(for: .seconds(3)) // … but don’t hide deleted data before removing it from the screen anyway.
 			
 			mkSections_cache = mk_dict

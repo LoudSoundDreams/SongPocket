@@ -171,7 +171,7 @@ import MusicKit
 						withAnimation {
 							exhibit.selection = .mode_albums([uAlbum])
 						}
-					}.disabled(catalog.is_merging)
+					}.disabled(is_merging)
 					Divider()
 			}
 			b_above
@@ -201,7 +201,7 @@ import MusicKit
 			exhibit.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
 			return (exhibit.signal_artifacts && false ) ||
-			catalog.is_merging ||
+			is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: false)
 		}())
 	}
@@ -215,11 +215,12 @@ import MusicKit
 			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
 			return (exhibit.signal_artifacts && false) ||
-			catalog.is_merging ||
+			is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
 	
+	private var is_merging: Bool { Global.shared.librarian_is_merging }
 }
 
 // MARK: Art

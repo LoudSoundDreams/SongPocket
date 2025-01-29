@@ -6,6 +6,9 @@ extension Librarian {
 	static func merge_MediaPlayer_items(
 		_ mpSongs_by_album_then_track: [MPMediaItem]
 	) async {
+		Global.shared.librarian_is_merging = true
+		defer { Global.shared.librarian_is_merging = false }
+		
 		// Use MediaPlayer for album and song IDs.
 		// Ideally, use MusicKit for all other metadata.
 		
