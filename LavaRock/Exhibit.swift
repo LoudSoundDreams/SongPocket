@@ -130,6 +130,24 @@ extension Exhibit {
 		}
 	}
 	func reorder_selection(up: Bool, to_limit: Bool) {
+		switch selection {
+			case .view: return
+			case .mode_albums(let uAs_selected):
+				if up {
+					Librarian.promote_albums(uAs_selected, to_limit: to_limit)
+				} else {
+					Librarian.demote_albums(uAs_selected, to_limit: to_limit)
+				}
+			case .mode_songs(let uSs_selected):
+				if up {
+					Librarian.promote_songs(uSs_selected, to_limit: to_limit)
+				} else {
+					Librarian.demote_songs(uSs_selected, to_limit: to_limit)
+				}
+		}
+		Librarian.save()
+		refresh_artifacts()
+		NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 	}
 	
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
@@ -792,46 +810,26 @@ final class ExhibitTVC: LRTableViewController {
 	
 	private func promote_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
-			Librarian.promote_albums(uAs_selected, to_limit: false)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+			exhibit.reorder_selection(up: true, to_limit: false)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func promote_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
-			Librarian.promote_songs(uSs_selected, to_limit: false)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
+			exhibit.reorder_selection(up: true, to_limit: false)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
 	private func demote_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
-			Librarian.demote_albums(uAs_selected, to_limit: false)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
+			exhibit.reorder_selection(up: false, to_limit: false)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func demote_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
-			Librarian.demote_songs(uSs_selected, to_limit: false)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			NotificationCenter.default.post(name: .exhibit_selection, object: nil)
+			exhibit.reorder_selection(up: false, to_limit: false)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
