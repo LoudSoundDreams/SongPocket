@@ -12,10 +12,7 @@ enum WorkingOn {
 	
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
-		let defaults = UserDefaults.standard
-		defaults.dictionaryRepresentation().forEach { (key_existing, _) in
-			defaults.removeObject(forKey: key_existing)
-		}
+		UserDefaults.delete_deprecated_entries()
 		
 		// In order, (1) migrate persistent data, then (2) show persistent data, then (3) update persistent data.
 		
@@ -36,18 +33,19 @@ enum WorkingOn {
 					.background { Color(white: .one_eighth / 2) }
 					.ignoresSafeArea()
 				if WorkingOn.toolbar {
-					ZStack { if !Global.shared.focus_is_spotlight {
+					ZStack { if !spotlighting {
 						BubbleBar().padding(.horizontal, Self.padding_bubbleBar_horizontal)
-					}}.animation(.linear_quick(), value: Global.shared.focus_is_spotlight)
+					}}.animation(.linear_quick(), value: spotlighting)
 				}
 			}
-			.persistentSystemOverlays(Global.shared.focus_is_spotlight ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
+			.persistentSystemOverlays(spotlighting ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
 			.task {
 				guard MusicAuthorization.currentStatus == .authorized else { return }
 				Self.integrate_Apple_Music()
 			}
 		}
 	}
+	private var spotlighting: Bool { Global.shared.focus_is_spotlight }
 	
 	@MainActor static func integrate_Apple_Music() {
 		AppleCatalog.shared.watch() // (3)
@@ -57,8 +55,8 @@ enum WorkingOn {
 
 @MainActor @Observable final class Global {
 	private init() {}
-	var focus_is_spotlight = false
 	@ObservationIgnored var showcase: Exhibit?
+	var focus_is_spotlight = false
 }
 extension Global {
 	@ObservationIgnored static let shared = Global()

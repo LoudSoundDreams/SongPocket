@@ -2,6 +2,21 @@
 
 import CoreData
 
+// MARK: UserDefaults
+
+extension UserDefaults {
+	static func delete_deprecated_entries() {
+		let domain = standard
+		let in_use: Set<String> = []
+		domain.dictionaryRepresentation().forEach { (key, _) in
+			guard !in_use.contains(key) else { return }
+			domain.removeObject(forKey: key)
+		}
+	}
+}
+
+// MARK: Core Data
+
 enum ZZZDatabase {
 	@MainActor static func migrate() {
 		// Make it look like the app never used Core Data previously.

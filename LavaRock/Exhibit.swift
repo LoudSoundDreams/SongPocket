@@ -308,7 +308,7 @@ final class ExhibitTVC: LRTableViewController {
 		super.viewDidLoad()
 		
 		exhibit.tvc_weak = self
-		Global.shared.showcase = exhibit
+		Global.shared.showcase = exhibit // Ideally, whoever initializes this view should also initialize this.
 		
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
