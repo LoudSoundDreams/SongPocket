@@ -83,9 +83,10 @@ private struct MenuSort: View {
 		ForEach(Self.albumOrders_groups, id: \.self) { group in
 			Section { ForEach(group, id: \.self) { order in
 				Button {
+					Global.shared.showcase?.sort_albums(by: order)
 				} label: {
 					Label(order.name, systemImage: order.sf_symbol)
-				}
+				}.disabled(false) // 2do
 			}}
 		}
 	}
@@ -95,9 +96,10 @@ private struct MenuSort: View {
 		ForEach(Self.songOrders_groups, id: \.self) { group in
 			Section { ForEach(group, id: \.self) { order in
 				Button {
+					Global.shared.showcase?.sort_songs(by: order)
 				} label: {
 					Label(order.name, systemImage: order.sf_symbol)
-				}
+				}.disabled(false) // 2do
 			}}
 		}
 	}

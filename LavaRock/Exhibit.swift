@@ -129,6 +129,33 @@ extension Exhibit {
 			selection = .view
 		}
 	}
+	
+	func sort_albums(by albumOrder: AlbumOrder) {
+		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
+		Librarian.save()
+		refresh_artifacts()
+	}
+	func uAlbums_to_sort() -> Set<UAlbum> {
+		switch selection {
+			case .mode_songs: return []
+			case .view: return Set(uAlbums())
+			case .mode_albums(let uAs_selected): return uAs_selected
+		}
+	}
+	
+	func sort_songs(by songOrder: SongOrder) {
+		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
+		Librarian.save()
+		refresh_artifacts()
+	}
+	func uSongs_to_sort() -> Set<USong> {
+		switch selection {
+			case .mode_albums: return []
+			case .view: return Set(uSongs())
+			case .mode_songs(let uSs_selected): return uSs_selected
+		}
+	}
+	
 	func reorder_selection(up: Bool, to_limit: Bool) {
 		switch selection {
 			case .view: return
@@ -718,7 +745,7 @@ final class ExhibitTVC: LRTableViewController {
 		}
 	}()
 	private func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
-		let uAlbums = uAlbums_to_sort()
+		let uAlbums = exhibit.uAlbums_to_sort()
 		guard uAlbums.count >= 2 else { return false }
 		
 		switch exhibit.selection {
@@ -752,7 +779,7 @@ final class ExhibitTVC: LRTableViewController {
 					}
 					var enabling = true
 					
-					if uSongs_to_sort().count <= 1 { enabling = false }
+					if exhibit.uSongs_to_sort().count <= 1 { enabling = false }
 					
 					switch exhibit.selection {
 						case .mode_albums, .view: break
@@ -772,35 +799,14 @@ final class ExhibitTVC: LRTableViewController {
 	
 	private func sort_albums(by albumOrder: AlbumOrder) {
 		Task {
-			Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
+			exhibit.sort_albums(by: albumOrder)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func sort_songs(by songOrder: SongOrder) {
 		Task {
-			Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
+			exhibit.sort_songs(by: songOrder)
 			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	
-	private func uAlbums_to_sort() -> Set<UAlbum> {
-		switch exhibit.selection {
-			case .mode_songs: return []
-			case .view: return Set(exhibit.uAlbums())
-			case .mode_albums(let uAs_selected): return uAs_selected
-		}
-	}
-	private func uSongs_to_sort() -> Set<USong> {
-		switch exhibit.selection {
-			case .mode_albums: return []
-			case .view: return Set(exhibit.uSongs())
-			case .mode_songs(let uSs_selected): return uSs_selected
 		}
 	}
 	
