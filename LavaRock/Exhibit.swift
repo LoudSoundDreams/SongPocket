@@ -554,24 +554,20 @@ final class ExhibitTVC: LRTableViewController {
 		switch exhibit.selection {
 			case .view:
 				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_scope], animated: true)
-				b_sort.menu = menu_sort()
-				b_scope.menu = menu_scope()
 				b_scope.image = image_scope
 			case .mode_albums(let uAs_selected):
 				setToolbarItems([b_sort, .flexibleSpace(), b_promote, .flexibleSpace(), b_demote, .flexibleSpace(), b_scope], animated: true)
 				b_promote.isEnabled = !uAs_selected.isEmpty
 				b_demote.isEnabled = b_promote.isEnabled
-				b_sort.menu = menu_sort() // In case it’s open.
-				b_scope.menu = menu_scope()
 				b_scope.image = image_scope_highlighted
 			case .mode_songs(let uSs_selected):
 				setToolbarItems([b_sort, .flexibleSpace(), b_promote, .flexibleSpace(), b_demote, .flexibleSpace(), b_scope], animated: true)
 				b_promote.isEnabled = !uSs_selected.isEmpty
 				b_demote.isEnabled = b_promote.isEnabled
-				b_sort.menu = menu_sort()
-				b_scope.menu = menu_scope()
 				b_scope.image = image_scope_highlighted
 		}
+		b_sort.menu = menu_sort() // In case it’s open.
+		b_scope.menu = menu_scope()
 	}
 	
 	@objc private func reflect_activation() {
