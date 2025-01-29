@@ -2,8 +2,6 @@
 
 import SwiftUI
 
-// MARK: - Styling
-
 extension Double {
 	static var one_half: Self { 1/2 }
 	static var one_fourth: Self { 1/4 }
@@ -36,60 +34,6 @@ extension View {
 		dynamicTypeSize(.large ... .xxxLarge)
 	}
 }
-
-// MARK: - Unique strings
-
-/*
- UserDefaults keys
- 
- "hasEverImportedFromMusic"
- Values: Bool
- Used in versions ? through 2.7.1
- 
- "nowPlayingIcon"
- Values: String
- Used in versions 1.8 through 1.13.3:
- • "Speaker"
- • "Fish"
- Used in versions 1.12 through 1.13.3:
- • "Paw"
- • "Luxo"
- Used in versions 1.8 through 1.11.2:
- • "Bird"
- • "Sailboat"
- • "Beach umbrella"
- 
- "accentColorName"
- Values: String
- Used in versions 1.0 through 1.13.3
- • "Blueberry"
- • "Grape"
- • "Strawberry"
- • "Tangerine"
- • "Lime"
- 
- "appearance"
- Values: Int
- Used in versions 1.6 through 1.13
- • `0` for “match system”
- • `1` for “always light”
- • `2` for “always dark”
- 
- "shouldExplainQueueAction"
- Values: Bool
- Used in versions ? through 1.7
- */
-
-extension Notification.Name {
-	static let librarian_merged = Self("LR_Merged")
-	static let exhibit_attractions = Self("LR_Attractions")
-	static let exhibit_focus = Self("LR_Focus")
-	static let exhibit_selection = Self("LR_Selection")
-	static let song_activation = Self("LR_Song_Activation")
-	static let lcd = Self("LR_LCD")
-}
-
-// MARK: - UI text
 
 enum InterfaceText {
 	static let Cancel = "Cancel"
@@ -198,7 +142,57 @@ enum InterfaceText {
 	}
 }
 
-// MARK: - SF Symbols
+// MARK: - Internal
+
+/*
+ UserDefaults keys
+ 
+ "hasEverImportedFromMusic"
+ Values: Bool
+ Used in versions ? through 2.7.1
+ 
+ "nowPlayingIcon"
+ Values: String
+ Used in versions 1.8 through 1.13.3:
+ • "Speaker"
+ • "Fish"
+ Used in versions 1.12 through 1.13.3:
+ • "Paw"
+ • "Luxo"
+ Used in versions 1.8 through 1.11.2:
+ • "Bird"
+ • "Sailboat"
+ • "Beach umbrella"
+ 
+ "accentColorName"
+ Values: String
+ Used in versions 1.0 through 1.13.3
+ • "Blueberry"
+ • "Grape"
+ • "Strawberry"
+ • "Tangerine"
+ • "Lime"
+ 
+ "appearance"
+ Values: Int
+ Used in versions 1.6 through 1.13
+ • `0` for “match system”
+ • `1` for “always light”
+ • `2` for “always dark”
+ 
+ "shouldExplainQueueAction"
+ Values: Bool
+ Used in versions ? through 1.7
+ */
+
+extension Notification.Name {
+	static let librarian_merged = Self("LR_Merged")
+	static let exhibit_attractions = Self("LR_Attractions")
+	static let exhibit_focus = Self("LR_Focus")
+	static let exhibit_selection = Self("LR_Selection")
+	static let song_activation = Self("LR_Song_Activation")
+	static let lcd = Self("LR_LCD")
+}
 
 enum SF {
 	static let select_fill = "checkmark.circle.fill"

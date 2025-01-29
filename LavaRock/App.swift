@@ -48,31 +48,6 @@ import MusicKit
 	}
 }
 
-// MARK: Global
-
-enum WorkingOn {
-	static let toolbar = 10 == 1
-}
-
-@MainActor @Observable final class Global {
-	private init() {}
-	
-	@ObservationIgnored var showcase: Exhibit?
-	var showcase_is_spotlighting = false
-	@ObservationIgnored weak var gallery: ExhibitTVC?
-	
-	var librarian_is_merging = false { didSet { // Prevent users from modifying items while the app is modifying them.
-		if !librarian_is_merging {
-			NotificationCenter.default.post(name: .librarian_merged, object: nil)
-		}
-	}}
-}
-extension Global {
-	@ObservationIgnored static let shared = Global()
-}
-
-// MARK: Private
-
 private struct RepNCMain: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> NCMain { NCMain.create() }
 	func updateUIViewController(_ vc: NCMain, context: Context) {}

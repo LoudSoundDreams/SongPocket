@@ -31,6 +31,7 @@
 		15048E622CF0FBA7005DC698 /* Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15048E612CF0FBA3005DC698 /* Subviews.swift */; };
 		157249F52D45A6C4004C3AAF /* BubbleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157249F42D45A6B9004C3AAF /* BubbleBar.swift */; };
 		158BACCD2D3A47F8002A4025 /* Song Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158BACCC2D3A47F7002A4025 /* Song Views.swift */; };
+		15EA28B22D4A3A1A004ADEE7 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EA28B12D4A3A17004ADEE7 /* Global.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		15048E612CF0FBA3005DC698 /* Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subviews.swift; sourceTree = "<group>"; };
 		157249F42D45A6B9004C3AAF /* BubbleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleBar.swift; sourceTree = "<group>"; };
 		158BACCC2D3A47F7002A4025 /* Song Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Song Views.swift"; sourceTree = "<group>"; };
+		15EA28B12D4A3A17004ADEE7 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			children = (
 				071A0B9D277E76510017F76D /* App.swift */,
 				07E0BBDA276567760010117E /* Constants.swift */,
+				15EA28B12D4A3A17004ADEE7 /* Global.swift */,
 				076830BE24B42E3E0033E3CC /* Exhibit.swift */,
 				07934CF927CDBEB0002B2444 /* ExhibitTVC.storyboard */,
 				07755A57294821860056E90C /* Album Views.swift */,
@@ -257,6 +260,7 @@
 				071B30942C88CD3400239BF3 /* Librarian.swift in Sources */,
 				070056912C8275C0006F1069 /* Disk.swift in Sources */,
 				078FDD0F2638872100779AF2 /* Helpers.swift in Sources */,
+				15EA28B22D4A3A1A004ADEE7 /* Global.swift in Sources */,
 				07E0BBDE276567760010117E /* Constants.swift in Sources */,
 				15048E622CF0FBA7005DC698 /* Subviews.swift in Sources */,
 				07755A58294821860056E90C /* Album Views.swift in Sources */,
