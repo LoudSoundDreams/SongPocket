@@ -607,19 +607,15 @@ final class ExhibitTVC: LRTableViewController {
 	private lazy var image_scope = image_scope_highlighted.applying_hierarchical_tint()
 	private let image_scope_highlighted = UIImage(systemName: SF.ellipsis)!
 	
-	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_album_promote, menu: UIMenu(children: [a_album_float]))
-	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_album_demote, menu: UIMenu(children: [a_album_sink]))
+	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_promote, menu: UIMenu(children: [a_album_float]))
+	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_demote, menu: UIMenu(children: [a_album_sink]))
+	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_promote, menu: UIMenu(children: [a_song_float]))
+	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_demote, menu: UIMenu(children: [a_song_sink]))
 	
-	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_song_promote, menu: UIMenu(children: [a_song_float]))
-	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_song_demote, menu: UIMenu(children: [a_song_sink]))
-	
-	private lazy var a_album_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: SF.move_up_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.promote_albums() }
-	private lazy var a_album_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: SF.move_down_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.demote_albums() }
+	private lazy var a_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: SF.move_up_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.promote() }
+	private lazy var a_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: SF.move_down_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.demote() }
 	private lazy var a_album_float = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: SF.to_top)) { [weak self] _ in self?.float_albums() }
 	private lazy var a_album_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: SF.to_bottom)) { [weak self] _ in self?.sink_albums() }
-	
-	private lazy var a_song_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: SF.move_up_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.promote_songs() }
-	private lazy var a_song_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: SF.move_down_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.demote_songs() }
 	private lazy var a_song_float = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: SF.to_top)) { [weak self] _ in self?.float_songs() }
 	private lazy var a_song_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: SF.to_bottom)) { [weak self] _ in self?.sink_songs() }
 	
@@ -808,26 +804,13 @@ final class ExhibitTVC: LRTableViewController {
 	
 	// MARK: Moving up and down
 	
-	private func promote_albums() {
+	private func promote() {
 		Task {
 			exhibit.reorder_selection(up: true, to_limit: false)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
-	private func promote_songs() {
-		Task {
-			exhibit.reorder_selection(up: true, to_limit: false)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	
-	private func demote_albums() {
-		Task {
-			exhibit.reorder_selection(up: false, to_limit: false)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	private func demote_songs() {
+	private func demote() {
 		Task {
 			exhibit.reorder_selection(up: false, to_limit: false)
 			await apply_rowIDs(exhibit.rowIDs)
