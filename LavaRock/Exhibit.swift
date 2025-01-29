@@ -558,16 +558,16 @@ final class ExhibitTVC: LRTableViewController {
 				b_scope.menu = menu_scope()
 				b_scope.image = image_scope
 			case .mode_albums(let uAs_selected):
-				setToolbarItems([b_sort, .flexibleSpace(), b_album_promote, .flexibleSpace(), b_album_demote, .flexibleSpace(), b_scope], animated: true)
-				b_album_promote.isEnabled = !uAs_selected.isEmpty
-				b_album_demote.isEnabled = b_album_promote.isEnabled
+				setToolbarItems([b_sort, .flexibleSpace(), b_promote, .flexibleSpace(), b_demote, .flexibleSpace(), b_scope], animated: true)
+				b_promote.isEnabled = !uAs_selected.isEmpty
+				b_demote.isEnabled = b_promote.isEnabled
 				b_sort.menu = menu_sort() // In case it’s open.
 				b_scope.menu = menu_scope()
 				b_scope.image = image_scope_highlighted
 			case .mode_songs(let uSs_selected):
-				setToolbarItems([b_sort, .flexibleSpace(), b_song_promote, .flexibleSpace(), b_song_demote, .flexibleSpace(), b_scope], animated: true)
-				b_song_promote.isEnabled = !uSs_selected.isEmpty
-				b_song_demote.isEnabled = b_song_promote.isEnabled
+				setToolbarItems([b_sort, .flexibleSpace(), b_promote, .flexibleSpace(), b_demote, .flexibleSpace(), b_scope], animated: true)
+				b_promote.isEnabled = !uSs_selected.isEmpty
+				b_demote.isEnabled = b_promote.isEnabled
 				b_sort.menu = menu_sort()
 				b_scope.menu = menu_scope()
 				b_scope.image = image_scope_highlighted
@@ -617,10 +617,8 @@ final class ExhibitTVC: LRTableViewController {
 	private lazy var image_scope = image_scope_highlighted.applying_hierarchical_tint()
 	private let image_scope_highlighted = UIImage(systemName: SF.ellipsis)!
 	
-	private lazy var b_album_promote = UIBarButtonItem(primaryAction: a_promote, menu: UIMenu(children: [a_float]))
-	private lazy var b_album_demote = UIBarButtonItem(primaryAction: a_demote, menu: UIMenu(children: [a_sink]))
-	private lazy var b_song_promote = UIBarButtonItem(primaryAction: a_promote, menu: UIMenu(children: [a_float]))
-	private lazy var b_song_demote = UIBarButtonItem(primaryAction: a_demote, menu: UIMenu(children: [a_sink]))
+	private lazy var b_promote = UIBarButtonItem(primaryAction: a_promote, menu: UIMenu(children: [a_float]))
+	private lazy var b_demote = UIBarButtonItem(primaryAction: a_demote, menu: UIMenu(children: [a_sink]))
 	
 	private lazy var a_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: SF.move_up_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.promote() }
 	private lazy var a_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: SF.move_down_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.demote() }
