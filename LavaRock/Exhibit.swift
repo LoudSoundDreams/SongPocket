@@ -147,7 +147,17 @@ extension Exhibit {
 		}
 		Librarian.save()
 		refresh_artifacts()
-		NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+		if to_limit {
+			switch selection {
+				case .view: break
+				case .mode_albums:
+					selection = .mode_albums([])
+				case .mode_songs:
+					selection = .mode_songs([])
+			}
+		} else {
+			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+		}
 	}
 	
 	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
@@ -821,46 +831,26 @@ final class ExhibitTVC: LRTableViewController {
 	
 	private func float_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
-			Librarian.promote_albums(uAs_selected, to_limit: true)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			exhibit.selection = .mode_albums([])
+			exhibit.reorder_selection(up: true, to_limit: true)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func float_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
-			Librarian.promote_songs(uSs_selected, to_limit: true)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			exhibit.selection = .mode_songs([])
+			exhibit.reorder_selection(up: true, to_limit: true)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
 	private func sink_albums() {
 		Task {
-			guard case let .mode_albums(uAs_selected) = exhibit.selection else { return }
-			Librarian.demote_albums(uAs_selected, to_limit: true)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			exhibit.selection = .mode_albums([])
+			exhibit.reorder_selection(up: false, to_limit: true)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	private func sink_songs() {
 		Task {
-			guard case let .mode_songs(uSs_selected) = exhibit.selection else { return }
-			Librarian.demote_songs(uSs_selected, to_limit: true)
-			Librarian.save()
-			
-			exhibit.refresh_artifacts()
-			exhibit.selection = .mode_songs([])
+			exhibit.reorder_selection(up: false, to_limit: true)
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
