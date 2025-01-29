@@ -187,18 +187,18 @@ final class LRAlbum {
 	
 	// Sort
 	static func sort_albums(
-		_ uAs_selected: Set<UAlbum>,
+		_ uAs_chosen: Set<UAlbum>,
 		by albumOrder: AlbumOrder
 	) {
-		let selected_sorted: [LRAlbum] = {
-			let selected_unsorted = the_albums.filter {
-				uAs_selected.contains($0.uAlbum)
+		let chosen_sorted: [LRAlbum] = {
+			let chosen_unsorted = the_albums.filter {
+				uAs_chosen.contains($0.uAlbum)
 			}
 			switch albumOrder {
-				case .reverse: return selected_unsorted.reversed()
-				case .random: return selected_unsorted.in_any_other_order { $0.uAlbum == $1.uAlbum }
+				case .reverse: return chosen_unsorted.reversed()
+				case .random: return chosen_unsorted.in_any_other_order { $0.uAlbum == $1.uAlbum }
 				case .recently_added:
-					return selected_unsorted.sorted { left, right in
+					return chosen_unsorted.sorted { left, right in
 						let date_left = AppleCatalog.shared.albumInfo(uAlbum: left.uAlbum)?._date_first_added
 						let date_right = AppleCatalog.shared.albumInfo(uAlbum: right.uAlbum)?._date_first_added
 						if date_left == date_right { return false }
@@ -207,7 +207,7 @@ final class LRAlbum {
 						return date_left > date_right
 					}
 				case .recently_released:
-					return selected_unsorted.sorted { left, right in
+					return chosen_unsorted.sorted { left, right in
 						let date_left = AppleCatalog.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
 						let date_right = AppleCatalog.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
 						if date_left == date_right { return false }
@@ -217,32 +217,32 @@ final class LRAlbum {
 					}
 			}
 		}()
-		let indices_selected: [Int] = the_albums.indices.filter { i_selected in
-			uAs_selected.contains(the_albums[i_selected].uAlbum)
+		let indices_chosen: [Int] = the_albums.indices.filter { i_chosen in
+			uAs_chosen.contains(the_albums[i_chosen].uAlbum)
 		}
 		var new_albums = the_albums
-		indices_selected.indices.forEach { counter in
-			let i_selected = indices_selected[counter]
-			let album_for_here = selected_sorted[counter]
-			new_albums[i_selected] = album_for_here
+		indices_chosen.indices.forEach { counter in
+			let i_chosen = indices_chosen[counter]
+			let album_for_here = chosen_sorted[counter]
+			new_albums[i_chosen] = album_for_here
 		}
 		the_albums = new_albums
 	}
 	static func sort_songs(
-		_ uSs_selected: Set<USong>,
+		_ uSs_chosen: Set<USong>,
 		by songOrder: SongOrder
 	) {
-		guard let album = album_containing_uSongs(uSs_selected) else { return }
-		let selected_sorted: [USong] = {
-			let selected_unsorted = album.uSongs.filter {
-				uSs_selected.contains($0)
+		guard let album = album_containing_uSongs(uSs_chosen) else { return }
+		let chosen_sorted: [USong] = {
+			let chosen_unsorted = album.uSongs.filter {
+				uSs_chosen.contains($0)
 			}
 			switch songOrder {
-				case .reverse: return selected_unsorted.reversed()
-				case .random: return selected_unsorted.in_any_other_order { $0 == $1 }
+				case .reverse: return chosen_unsorted.reversed()
+				case .random: return chosen_unsorted.in_any_other_order { $0 == $1 }
 				case .track:
 					// Ideally, get the original track order the same way the merger does.
-					return selected_unsorted.sorted { left, right in
+					return chosen_unsorted.sorted { left, right in
 						let mk_left = AppleCatalog.shared.mkSongs_cache[left]
 						let mk_right = AppleCatalog.shared.mkSongs_cache[right]
 						if nil == mk_left && nil == mk_right { return false }
@@ -253,14 +253,14 @@ final class LRAlbum {
 					}
 			}
 		}()
-		let indices_selected: [Int] = album.uSongs.indices.filter { i_uSong in
-			uSs_selected.contains(album.uSongs[i_uSong])
+		let indices_chosen: [Int] = album.uSongs.indices.filter { i_uSong in
+			uSs_chosen.contains(album.uSongs[i_uSong])
 		}
 		var new_uSongs = album.uSongs
-		indices_selected.indices.forEach { counter in
-			let i_selected = indices_selected[counter]
-			let song_for_here = selected_sorted[counter]
-			new_uSongs[i_selected] = song_for_here
+		indices_chosen.indices.forEach { counter in
+			let i_chosen = indices_chosen[counter]
+			let song_for_here = chosen_sorted[counter]
+			new_uSongs[i_chosen] = song_for_here
 		}
 		album.uSongs = new_uSongs
 	}
