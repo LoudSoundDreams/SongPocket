@@ -111,7 +111,7 @@ private struct MenuTransport: View {
 		Menu {
 			ControlGroup {
 				Button {
-					Global.shared.showcase?.tvc_weak?.go_to_artwork()
+					Global.shared.gallery?.spotlight_current()
 				} label: {
 					Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
 				}.disabled({

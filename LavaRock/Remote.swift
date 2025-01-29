@@ -7,7 +7,6 @@ import UIKit
 @MainActor final class Remote {
 	static let shared = Remote()
 	let b_remote = UIBarButtonItem()
-	weak var tvc_weak: ExhibitTVC?
 	
 	private init() {
 		refresh()
@@ -47,7 +46,7 @@ import UIKit
 			title: Librarian.message_if_empty ?? "",
 			children: [
 				UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-					dme_go_to_artwork,
+					dme_spotlight_current,
 					Self.dme_repeat,
 					Self.action_open_Apple_Music,
 				]),
@@ -64,7 +63,7 @@ import UIKit
 			])
 	}
 	
-	private lazy var dme_go_to_artwork = UIDeferredMenuElement.uncached { use in use([
+	private lazy var dme_spotlight_current = UIDeferredMenuElement.uncached { use in use([
 		UIAction(title: InterfaceText.Go_to_Artwork, image: UIImage(systemName: SF.photo), attributes: {
 #if targetEnvironment(simulator)
 			return []
@@ -75,7 +74,7 @@ import UIKit
 			else { return .disabled }
 			return []
 #endif
-		}()) { [weak self] _ in self?.tvc_weak?.go_to_artwork() }
+		}()) { _ in Global.shared.gallery?.spotlight_current() }
 	])}
 	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: SF.app_external)) { _ in AppleCatalog.open_Apple_Music() }
 	

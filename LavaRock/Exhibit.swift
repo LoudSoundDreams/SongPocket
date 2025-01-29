@@ -35,7 +35,6 @@ import MusicKit
 	}}
 	
 	fileprivate(set) var length_artwork: CGFloat!
-	@ObservationIgnored fileprivate(set) weak var tvc_weak: ExhibitTVC?
 }
 extension Exhibit {
 	fileprivate enum Artifact {
@@ -307,8 +306,8 @@ final class ExhibitTVC: LRTableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		exhibit.tvc_weak = self
 		Global.shared.showcase = exhibit // Ideally, whoever initializes this view should also initialize this.
+		Global.shared.gallery = self
 		
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
@@ -320,7 +319,6 @@ final class ExhibitTVC: LRTableViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: .exhibit_focus, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: .exhibit_selection, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_activation), name: .song_activation, object: nil)
-		Remote.shared.tvc_weak = self
 	}
 	
 	override func viewIsAppearing(_ animated: Bool) {
@@ -471,7 +469,7 @@ final class ExhibitTVC: LRTableViewController {
 		}
 	}
 	
-	func go_to_artwork() {
+	func spotlight_current() {
 		guard
 			let uSong = LCD.shared.uSong_current,
 			let album = Librarian.album_containing_uSong[uSong]?.referencee
