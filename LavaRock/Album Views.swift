@@ -117,13 +117,11 @@ import MusicKit
 				Text(artist_album)
 					.font_caption2_bold()
 					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
-				
 			}
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
 					.font(.caption2).monospacedDigit()
 					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
-				
 			}
 		}
 		.accessibilityElement(children: .combine)
