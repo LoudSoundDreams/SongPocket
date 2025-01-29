@@ -19,9 +19,9 @@ import MusicKit
 	var focus: Focus = .covers { didSet {
 		switch focus {
 			case .spotlight:
-				Global.shared.focus_is_spotlight = true
+				Global.shared.showcase_is_spotlighting = true
 			case .covers, .expanded:
-				Global.shared.focus_is_spotlight = false
+				Global.shared.showcase_is_spotlighting = false
 		}
 		NotificationCenter.default.post(name: .exhibit_focus, object: self)
 	}}

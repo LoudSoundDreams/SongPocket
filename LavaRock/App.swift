@@ -3,13 +3,7 @@
 import SwiftUI
 import MusicKit
 
-enum WorkingOn {
-	static let toolbar = 10 == 1
-}
-
 @main struct LavaRock: App {
-	static let padding_bubbleBar_horizontal: CGFloat = .eight * 3/2
-	
 	init() {
 		// Clean up after ourselves; leave no unused data in persistent storage.
 		UserDefaults.delete_deprecated_entries()
@@ -45,7 +39,8 @@ enum WorkingOn {
 			}
 		}
 	}
-	private var spotlighting: Bool { Global.shared.focus_is_spotlight }
+	private var spotlighting: Bool { Global.shared.showcase_is_spotlighting }
+	static let padding_bubbleBar_horizontal: CGFloat = .eight * 3/2
 	
 	@MainActor static func integrate_Apple_Music() {
 		AppleCatalog.shared.watch() // (3)
@@ -53,15 +48,21 @@ enum WorkingOn {
 	}
 }
 
+// MARK: Global
+
+enum WorkingOn {
+	static let toolbar = 10 == 1
+}
+
 @MainActor @Observable final class Global {
 	private init() {}
 	@ObservationIgnored var showcase: Exhibit?
+	var showcase_is_spotlighting = false
 	var librarian_is_merging = false { didSet { // Prevent users from modifying items while the app is modifying them.
 		if !librarian_is_merging {
 			NotificationCenter.default.post(name: .librarian_merged, object: nil)
 		}
 	}}
-	var focus_is_spotlight = false
 }
 extension Global {
 	@ObservationIgnored static let shared = Global()

@@ -115,8 +115,8 @@
 		0768308724B42DEC0033E3CC /* LavaRock */ = {
 			isa = PBXGroup;
 			children = (
-				07E0BBDA276567760010117E /* Constants.swift */,
 				071A0B9D277E76510017F76D /* App.swift */,
+				07E0BBDA276567760010117E /* Constants.swift */,
 				076830BE24B42E3E0033E3CC /* Exhibit.swift */,
 				07934CF927CDBEB0002B2444 /* ExhibitTVC.storyboard */,
 				07755A57294821860056E90C /* Album Views.swift */,
@@ -422,7 +422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1393;
+				CURRENT_PROJECT_VERSION = 1394;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -452,7 +452,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1393;
+				CURRENT_PROJECT_VERSION = 1394;
 				DEVELOPMENT_ASSET_PATHS = "LavaRock/Dev\\ Assets";
 				DEVELOPMENT_TEAM = DN5BFUM2N5;
 				GENERATE_INFOPLIST_FILE = YES;
