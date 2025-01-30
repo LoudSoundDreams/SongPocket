@@ -187,7 +187,6 @@ enum InterfaceText {
 
 extension Notification.Name {
 	static let librarian_merged = Self("LR_Merged")
-	static let exhibit_attractions = Self("LR_Attractions")
 	static let exhibit_focus = Self("LR_Focus")
 	static let exhibit_selection = Self("LR_Selection")
 	static let song_activation = Self("LR_Song_Activation")
