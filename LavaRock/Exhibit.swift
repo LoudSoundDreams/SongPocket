@@ -543,7 +543,6 @@ final class ExhibitTVC: LRTableViewController {
 					}
 					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
 					artifact_target = nil
-					await apply_rowIDs(exhibit.rowIDs)
 				case .expanded(let uA_to_expand):
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(false, animated: true)
