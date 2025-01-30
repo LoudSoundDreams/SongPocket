@@ -534,7 +534,7 @@ final class ExhibitTVC: LRTableViewController {
 	
 	@objc private func reflect_focus() {
 		Task {
-			let indexPath_target: IndexPath?
+			let artifact_target: Exhibit.Artifact?
 			
 			switch exhibit.focus {
 				case .covers:
@@ -542,45 +542,32 @@ final class ExhibitTVC: LRTableViewController {
 						navigationController?.setToolbarHidden(false, animated: true)
 					}
 					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-					indexPath_target = nil
+					artifact_target = nil
 					await apply_rowIDs(exhibit.rowIDs)
 				case .expanded(let uA_to_expand):
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(false, animated: true)
 					}
 					exhibit.refresh_artifacts()
-					indexPath_target = {
-						guard
-							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
-								case .row_song: return false
-								case .row_album(let uAlbum): return uAlbum == uA_to_expand
-							}})
-						else { return nil }
-						return IndexPath(row: row_target, section: 0)
-					}()
+					artifact_target = .row_album(uA_to_expand)
 				case .spotlight(let uA_to_spotlight):
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(true, animated: true)
 					}
 					exhibit.refresh_artifacts()
-					indexPath_target = {
-						guard
-							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
-								case .row_song: return false
-								case .row_album(let uAlbum): return uAlbum == uA_to_spotlight
-							}})
-						else { return nil }
-						return IndexPath(row: row_target, section: 0)
-					}()
+					artifact_target = .row_album(uA_to_spotlight)
 			}
 			
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
 			await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
-				guard let indexPath_target else { return }
+				guard
+					let artifact_target,
+					let i_artifact = self.exhibit.artifacts.firstIndex(of: artifact_target)
+				else { return }
 				self.tableView.scrollToRow(
-					at: indexPath_target,
-					at: UITableView.ScrollPosition.top,
+					at: IndexPath(row: i_artifact, section: 0),
+					at: .top,
 					animated: true)
 			})
 		}
