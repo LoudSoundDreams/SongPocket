@@ -173,7 +173,8 @@ extension Exhibit {
 		refresh_artifacts()
 		if to_limit {
 			switch selection {
-				case .view: break
+				case .view:
+					break
 				case .mode_albums:
 					selection = .mode_albums([])
 				case .mode_songs:
@@ -287,7 +288,8 @@ extension Exhibit {
 			return result
 		}()
 		switch selection {
-			case .mode_songs: break
+			case .mode_songs:
+				return
 			case .view:
 				withAnimation {
 					selection = .mode_albums(new_selected)
@@ -325,7 +327,8 @@ extension Exhibit {
 			return result
 		}()
 		switch selection {
-			case .mode_albums: break
+			case .mode_albums:
+				return
 			case .view:
 				withAnimation {
 					selection = .mode_songs(new_selected)
@@ -432,20 +435,22 @@ final class ExhibitTVC: LRTableViewController {
 						Text(InterfaceText._welcome_subtitle)
 					} actions: {
 						Button(InterfaceText.Start) {
-							Task {
-								switch MusicAuthorization.currentStatus {
-									case .authorized: break // Should never run
-									case .notDetermined:
-										switch await MusicAuthorization.request() {
-											case .denied, .restricted, .notDetermined: break
-											case .authorized: LavaRock.integrate_Apple_Music()
-											@unknown default: break
-										}
-									case .denied, .restricted:
-										guard let url_settings = URL(string: UIApplication.openSettingsURLString) else { return }
-										let _ = await UIApplication.shared.open(url_settings)
-									@unknown default: break
+							switch MusicAuthorization.currentStatus {
+								case .authorized: return
+								case .denied, .restricted: Task {
+									guard
+										let url_settings = URL(string: UIApplication.openSettingsURLString)
+									else { return }
+									let _ = await UIApplication.shared.open(url_settings)
 								}
+								case .notDetermined: Task {
+									switch await MusicAuthorization.request() {
+										case .denied, .restricted, .notDetermined: return
+										case .authorized: LavaRock.integrate_Apple_Music()
+										@unknown default: return
+									}
+								}
+								@unknown default: return
 							}
 						}
 					}
@@ -648,58 +653,54 @@ final class ExhibitTVC: LRTableViewController {
 	// MARK: Scope
 	
 	private func menu_scope() -> UIMenu {
-		var menu_children: [UIMenu] = []
+		var menu_children: [UIMenuElement] = []
 		switch exhibit.selection {
 			case .view: break
 			case .mode_albums, .mode_songs:
-				menu_children.append(UIMenu(
-					options: .displayInline,
-					children: [
-						a_done,
-					]
-				))
+				menu_children.append(a_done)
 		}
-		menu_children.append(UIMenu(
-			options: .displayInline,
-			children: [
-				UIDeferredMenuElement.uncached { [weak self] use in
-					guard let self else { return }
-					let uSongs = exhibit.uSongs_scope()
-					let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_hollow)) { [weak self] _ in
+		menu_children.append(
+			UIMenu(
+				options: .displayInline,
+				children: [
+					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
-						exhibit.end_selecting_animated()
-						Task { await Tape.play_now(uSongs) }
-					}
-					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
-					use([action])
-				},
-				UIDeferredMenuElement.uncached { [weak self] use in
-					guard let self else { return }
-					let uSongs = exhibit.uSongs_scope()
-					let action = UIAction(title: InterfaceText.Jumble, image: UIImage(systemName: SF.die_random())) { [weak self] _ in
-						guard let self else { return }
-						exhibit.end_selecting_animated()
-						Task {
-							let jumbled = uSongs.in_any_other_order { $0 == $1 }
-							await Tape.play_now(jumbled)
+						let uSongs = exhibit.uSongs_scope()
+						let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_hollow)) { [weak self] _ in
+							guard let self else { return }
+							exhibit.end_selecting_animated()
+							Task { await Tape.play_now(uSongs) }
 						}
-					}
-					if uSongs.count <= 1 { action.attributes.formUnion(.disabled) }
-					use([action])
-				},
-				UIDeferredMenuElement.uncached { [weak self] use in
-					guard let self else { return }
-					let uSongs = exhibit.uSongs_scope()
-					let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: SF.add_to_queue)) { [weak self] _ in
+						if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
+						use([action])
+					},
+					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
-						exhibit.end_selecting_animated()
-						Tape.play_later(uSongs)
-					}
-					if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
-					use([action])
-				},
-			]
-		))
+						let uSongs = exhibit.uSongs_scope()
+						let action = UIAction(title: InterfaceText.Jumble, image: UIImage(systemName: SF.die_random())) { [weak self] _ in
+							guard let self else { return }
+							exhibit.end_selecting_animated()
+							Task {
+								let jumbled = uSongs.in_any_other_order { $0 == $1 }
+								await Tape.play_now(jumbled)
+							}
+						}
+						if uSongs.count <= 1 { action.attributes.formUnion(.disabled) }
+						use([action])
+					},
+					UIDeferredMenuElement.uncached { [weak self] use in
+						guard let self else { return }
+						let uSongs = exhibit.uSongs_scope()
+						let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: SF.add_to_queue)) { [weak self] _ in
+							guard let self else { return }
+							exhibit.end_selecting_animated()
+							Tape.play_later(uSongs)
+						}
+						if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
+						use([action])
+					},
+				])
+		)
 		return UIMenu(children: menu_children)
 	}
 	
@@ -711,34 +712,34 @@ final class ExhibitTVC: LRTableViewController {
 	// • Contiguous
 	// • With useful data
 	private func menu_sort() -> UIMenu? {
-		return UIMenu(
-			children: {
-				switch exhibit.focus {
-					case .spotlight: return []
-					case .covers: return menu_sections_album_sort
-					case .expanded: return menu_sections_song_sort
-				}
-			}()
-		)
+		return UIMenu(children: {
+			switch exhibit.focus {
+				case .spotlight: return []
+				case .covers: return menu_sections_album_sort
+				case .expanded: return menu_sections_song_sort
+			}
+		}())
 	}
 	
-	private lazy var menu_sections_album_sort: [UIMenu] = {
-		let groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
-		return groups.map { albumOrders in
-			UIMenu(options: .displayInline, children: albumOrders.map { order in
-				UIDeferredMenuElement.uncached { [weak self] use in
-					// Runs each time the button presents the menu
-					guard let self else { return }
-					let action = UIAction(
-						title: order.name,
-						image: UIImage(systemName: order.sf_symbol)
-					) { [weak self] _ in
-						self?.sort_albums(by: order)
+	private lazy var menu_sections_album_sort: [UIMenuElement] = {
+		let sections: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
+		return sections.map { section in
+			UIMenu(
+				options: .displayInline,
+				children: section.map { order in
+					UIDeferredMenuElement.uncached { [weak self] use in
+						// Runs each time the button presents the menu
+						guard let self else { return }
+						let action = UIAction(
+							title: order.name,
+							image: UIImage(systemName: order.sf_symbol)
+						) { [weak self] _ in
+							self?.sort_albums(by: order)
+						}
+						if !can_sort_albums(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
+						use([action])
 					}
-					if !can_sort_albums(by: order) { action.attributes.formUnion(.disabled) } // You must do this inside `UIDeferredMenuElement.uncached`.
-					use([action])
-				}
-			})
+				})
 		}
 	}()
 	private func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
@@ -762,35 +763,37 @@ final class ExhibitTVC: LRTableViewController {
 		}
 	}
 	
-	private lazy var menu_sections_song_sort: [UIMenu] = {
-		let groups: [[SongOrder]] = [[.track], [.reverse, .random]]
-		return groups.map { songOrders in
-			UIMenu(options: .displayInline, children: songOrders.map { order in
-				UIDeferredMenuElement.uncached { [weak self] use in
-					guard let self else { return }
-					let action = UIAction(
-						title: order.name,
-						image: UIImage(systemName: order.sf_symbol)
-					) { [weak self] _ in
-						self?.sort_songs(by: order)
+	private lazy var menu_sections_song_sort: [UIMenuElement] = {
+		let sections: [[SongOrder]] = [[.track], [.reverse, .random]]
+		return sections.map { section in
+			UIMenu(
+				options: .displayInline,
+				children: section.map { order in
+					UIDeferredMenuElement.uncached { [weak self] use in
+						guard let self else { return }
+						let action = UIAction(
+							title: order.name,
+							image: UIImage(systemName: order.sf_symbol)
+						) { [weak self] _ in
+							self?.sort_songs(by: order)
+						}
+						var enabling = true
+						
+						if exhibit.uSongs_to_sort().count <= 1 { enabling = false }
+						
+						switch exhibit.selection {
+							case .mode_albums, .view: break
+							case .mode_songs(let uSs_selected):
+								let rs_selected = exhibit.uSongs().indices(where: { uSong in
+									uSs_selected.contains(uSong)
+								})
+								if rs_selected.ranges.count >= 2 { enabling = false }
+						}
+						
+						if !enabling { action.attributes.formUnion(.disabled) }
+						use([action])
 					}
-					var enabling = true
-					
-					if exhibit.uSongs_to_sort().count <= 1 { enabling = false }
-					
-					switch exhibit.selection {
-						case .mode_albums, .view: break
-						case .mode_songs(let uSs_selected):
-							let rs_selected = exhibit.uSongs().indices(where: { uSong in
-								uSs_selected.contains(uSong)
-							})
-							if rs_selected.ranges.count >= 2 { enabling = false }
-					}
-					
-					if !enabling { action.attributes.formUnion(.disabled) }
-					use([action])
-				}
-			})
+				})
 		}
 	}()
 	

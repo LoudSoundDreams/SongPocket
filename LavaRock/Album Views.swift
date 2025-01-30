@@ -142,8 +142,7 @@ import MusicKit
 	private var can_spotlight: Bool {
 		switch exhibit.selection {
 			case .mode_albums, .mode_songs: return false
-			case .view:
-				break
+			case .view: break
 		}
 		switch exhibit.focus {
 			case .expanded, .spotlight: return false

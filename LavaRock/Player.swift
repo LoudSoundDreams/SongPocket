@@ -20,12 +20,9 @@ import MediaPlayer
 		let _ = _signal_state // … but this pushes SwiftUI views that mention this property to redraw.
 		guard let mpPlayer else { return false }
 		switch mpPlayer.playbackState {
-			case .playing:
-				return true
-			case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward:
-				fallthrough
-			@unknown default:
-				return false
+			case .playing: return true
+			case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward: return false
+			@unknown default: return false
 		}
 	}
 	var repeat_is_on: Bool {
@@ -34,7 +31,7 @@ import MediaPlayer
 		else { return false }
 		switch mode {
 			case .one: return true
-			case .none, .all: fallthrough
+			case .none, .all: return false
 			@unknown default: return false
 		}
 	}
