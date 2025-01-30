@@ -534,50 +534,55 @@ final class ExhibitTVC: LRTableViewController {
 	
 	@objc private func reflect_focus() {
 		Task {
+			let indexPath_target: IndexPath?
+			
 			switch exhibit.focus {
 				case .covers:
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(false, animated: true)
 					}
 					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-					b_sort.menu = menu_sort()
-					b_scope.menu = menu_scope()
+					indexPath_target = nil
 					await apply_rowIDs(exhibit.rowIDs)
 				case .expanded(let uA_to_expand):
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(false, animated: true)
 					}
 					exhibit.refresh_artifacts()
-					b_sort.menu = menu_sort()
-					b_scope.menu = menu_scope()
-					await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
-						if
+					indexPath_target = {
+						guard
 							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
 								case .row_song: return false
 								case .row_album(let uAlbum): return uAlbum == uA_to_expand
 							}})
-						{
-							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
-						}
-					})
+						else { return nil }
+						return IndexPath(row: row_target, section: 0)
+					}()
 				case .spotlight(let uA_to_spotlight):
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(true, animated: true)
 					}
 					exhibit.refresh_artifacts()
-					b_sort.menu = menu_sort()
-					b_scope.menu = menu_scope()
-					await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
-						if
+					indexPath_target = {
+						guard
 							let row_target: Int = self.exhibit.artifacts.firstIndex(where: { switch $0 {
 								case .row_song: return false
 								case .row_album(let uAlbum): return uAlbum == uA_to_spotlight
 							}})
-						{
-							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
-						}
-					})
+						else { return nil }
+						return IndexPath(row: row_target, section: 0)
+					}()
 			}
+			
+			b_sort.menu = menu_sort()
+			b_scope.menu = menu_scope()
+			await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
+				guard let indexPath_target else { return }
+				self.tableView.scrollToRow(
+					at: indexPath_target,
+					at: UITableView.ScrollPosition.top,
+					animated: true)
+			})
 		}
 	}
 	
