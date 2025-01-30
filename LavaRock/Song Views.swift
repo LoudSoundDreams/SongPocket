@@ -52,7 +52,6 @@ import MusicKit
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
-		.touching($is_pressing)
 	}
 	static let nudge_leading: CGFloat = .eight * 1/2
 	@ViewBuilder private var border: some View {
@@ -69,18 +68,16 @@ import MusicKit
 			.opacity(is_highlighted ? .one_half : .zero)
 			.animation(
 				is_highlighted ? nil : .default,
-				value: exhibit.activated)
+				value: is_highlighted)
 	}
 	private var is_highlighted: Bool {
 		switch exhibit.selection {
-			case .mode_albums, .mode_songs: return false
+			case .mode_albums, .mode_songs:
+				return false
 			case .view:
-				if is_pressing { return true }
-				guard let activated = exhibit.activated else { return false }
-				return activated == uSong
+				return uSong == exhibit.activated
 		}
 	}
-	@State private var is_pressing = false
 	
 	@ViewBuilder private func stack_info(
 		_ songInfo: SongInfo?,
