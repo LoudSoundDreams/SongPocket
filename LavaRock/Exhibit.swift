@@ -81,13 +81,17 @@ extension Exhibit {
 			}
 		}()
 		
-		// In case we removed items the user was doing something with.
+		// Merging might have removed selected items or the activated song.
 		switch selection {
 			case .view:
 				if let activated, uSongs(with: [activated]).isEmpty {
 					self.activated = nil
 				}
 			case .mode_albums(let old_selected):
+				guard !uAlbums().isEmpty else {
+					selection = .view // We could let users manually exit select mode, but they can’t re-enter because the “Select” button exists only on album rows, so don’t leave them in a transient state.
+					break
+				}
 				let selectable = Set(uAlbums(with: old_selected))
 				if old_selected != selectable {
 					selection = .mode_albums(selectable)
