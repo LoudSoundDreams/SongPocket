@@ -14,7 +14,7 @@ struct BubbleBar: View {
 			Spacer()
 			MenuOverflow()
 		}
-		.font(.largeTitle)
+		.font(.title)
 		.dynamicType_default_to_plus_3()
 		.padding(Self.width_border)
 		.background(Material.bar, in: .capsule)

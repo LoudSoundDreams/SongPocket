@@ -7,7 +7,6 @@ import MusicKit
 	let uSong: USong
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
-	static let nudge_leading: CGFloat = .eight * 1/2
 	
 	private let catalog: AppleCatalog = .shared
 	var body: some View {
@@ -35,8 +34,8 @@ import MusicKit
 //					b_select
 					menu_select(songInfo, albumInfo)
 				}
-				.dynamicType_default_to_plus_3()
 				.imageScale(.large)
+				.dynamicType_default_to_plus_3()
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
@@ -55,6 +54,7 @@ import MusicKit
 		.onTapGesture { tapped() }
 		.touching($is_pressing)
 	}
+	static let nudge_leading: CGFloat = .eight * 1/2
 	@ViewBuilder private var border: some View {
 		switch exhibit.selection {
 			case .view, .mode_albums: EmptyView()
