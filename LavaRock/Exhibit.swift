@@ -52,31 +52,36 @@ extension Exhibit {
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
 	fileprivate func refresh_artifacts() {
 		artifacts = {
-			let uAlbums = Self.uAlbums_fresh()
+			let uAs_fresh = Self.uAlbums_fresh()
+			
+			// Merging might have removed the spotlighted or expanded album.
 			switch focus {
 				case .covers:
-					return uAlbums.map { .row_album($0) }
-					
+					break
 				case .spotlight(let uA_spotlighted):
-					// If we removed the spotlighted album, change focus to covers.
-					if nil == uAlbums.firstIndex(where: { $0 == uA_spotlighted }) {
-						focus = .covers
-					}
-					return uAlbums.map { .row_album($0) }
-					
+					if !uAs_fresh.contains(uA_spotlighted)
+					{ focus = .covers }
 				case .expanded(let uA_expanded):
-					// If we removed the expanded album, change focus to covers.
-					guard
-						let i_expanded = uAlbums.firstIndex(where: { $0 == uA_expanded }),
-						let album_expanded = Librarian.album_with_uAlbum[uA_expanded]?.referencee
-					else {
-						focus = .covers
-						return uAlbums.map { .row_album($0) }
+					if !uAs_fresh.contains(uA_expanded)
+					{ focus = .covers }
+			}
+			
+			switch focus {
+				case .covers, .spotlight:
+					return uAs_fresh.map { .row_album($0) }
+				case .expanded(let uA_expanded):
+					var result: [Artifact] = []
+					uAs_fresh.forEach { uAlbum in
+						result.append(.row_album(uAlbum))
+						
+						if uAlbum == uA_expanded {
+							guard
+								let album_expanded = Librarian.album_with_uAlbum[uAlbum]?.referencee
+							else { return }
+							let to_inline: [USong] = album_expanded.uSongs
+							result.append(contentsOf: to_inline.map { .row_song($0) })
+						}
 					}
-					
-					let uSongs_inline: [Artifact] = album_expanded.uSongs.map { .row_song($0) }
-					var result: [Artifact] = uAlbums.map { .row_album($0) }
-					result.insert(contentsOf: uSongs_inline, at: i_expanded + 1)
 					return result
 			}
 		}()
