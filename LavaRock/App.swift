@@ -9,16 +9,8 @@ import MusicKit
 		UserDefaults.delete_deprecated_entries()
 		
 		// In order, (1) migrate persistent data, then (2) show persistent data, then (3) update persistent data.
-		
-		// (1) Migrate before running any UI code, so our UI can assume already-migrated data.
-		ZZZDatabase.migrate()
-		
-		// (2)
-		let loaded = Disk.load_albums()
-		Librarian.the_albums = loaded
-		loaded.forEach {
-			Librarian.register_album($0)
-		}
+		ZZZDatabase.migrate() // (1) Migrate before running any UI code, so our UI can assume already-migrated data.
+		Librarian.load() // (2)
 	}
 	var body: some Scene {
 		WindowGroup {

@@ -61,6 +61,13 @@ final class LRAlbum {
 	static func save() {
 		Disk.save_albums(the_albums)
 	}
+	static func load() {
+		let loaded = Disk.load_albums()
+		the_albums = loaded
+		loaded.forEach {
+			register_album($0)
+		}
+	}
 	
 	// Inspect
 	static func debug_Print() {
