@@ -5,13 +5,20 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class Exhibit {
+	init() {
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_librarian), name: .librarian_merged, object: nil)
+	}
+	
 	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact] =
 	Exhibit.uAlbums_fresh().map { .row_album($0) } { didSet {
 		signal_artifacts += 1
+		NotificationCenter.default.post(name: .exhibit_artifacts, object: self)
 	}}
 	private(set) var signal_artifacts = 0 // Value is meaningless; we’re setting this property to tell SwiftUI to redraw views. (As of iOS 18.3, setting it to the same value again does trigger observers, but I’m being safe.)
 	
 	var focus: Focus = .covers { didSet {
+		refresh_artifacts()
+		
 		switch focus {
 			case .spotlight:
 				Global.shared.showcase_is_spotlighting = true
@@ -49,12 +56,17 @@ extension Exhibit {
 		case mode_songs(Set<USong>)
 	}
 	
+	@objc private func reflect_librarian() {
+		refresh_artifacts()
+	}
+	
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
-	fileprivate func refresh_artifacts() {
+	private func refresh_artifacts() {
 		artifacts = {
 			let uAs_fresh = Self.uAlbums_fresh()
 			
 			// Merging might have removed the spotlighted or expanded album.
+			// Set `focus` only if necessary; it triggers this method.
 			switch focus {
 				case .covers:
 					break
@@ -368,7 +380,7 @@ final class ExhibitTVC: LRTableViewController {
 		b_scope.preferredMenuElementOrder = .fixed
 		reflect_selection()
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh_rows), name: .librarian_merged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reflect_artifacts), name: .exhibit_artifacts, object: exhibit)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: .exhibit_focus, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: .exhibit_selection, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_activation), name: .song_activation, object: nil)
@@ -515,15 +527,6 @@ final class ExhibitTVC: LRTableViewController {
 	
 	// MARK: Events
 	
-	@objc private func refresh_rows() {
-		Task {
-			exhibit.refresh_artifacts()
-			b_sort.menu = menu_sort()
-			b_scope.menu = menu_scope()
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	
 	func spotlight_current() {
 		guard
 			let uSong = LCD.shared.uSong_current,
@@ -532,43 +535,45 @@ final class ExhibitTVC: LRTableViewController {
 		exhibit.focus = .spotlight(album.uAlbum)
 	}
 	
-	@objc private func reflect_focus() {
+	@objc private func reflect_artifacts() {
 		Task {
-			let artifact_target: Exhibit.Artifact?
-			
-			switch exhibit.focus {
-				case .covers:
-					if !WorkingOn.toolbar {
-						navigationController?.setToolbarHidden(false, animated: true)
-					}
-					exhibit.refresh_artifacts() // Immediately proceed to update the table view; don’t wait until a separate `Task`. As of iOS 17.6 developer beta 2, `UITableView` has a bug where it might call `cellForRowAt` with invalidly large `IndexPath`s: it’s trying to draw subsequent rows after we change a cell’s height in a `UIHostingConfiguration`, but forgetting to call `numberOfRowsInSection` first.
-					artifact_target = nil
-				case .expanded(let uA_to_expand):
-					if !WorkingOn.toolbar {
-						navigationController?.setToolbarHidden(false, animated: true)
-					}
-					exhibit.refresh_artifacts()
-					artifact_target = .row_album(uA_to_expand)
-				case .spotlight(let uA_to_spotlight):
-					if !WorkingOn.toolbar {
-						navigationController?.setToolbarHidden(true, animated: true)
-					}
-					exhibit.refresh_artifacts()
-					artifact_target = .row_album(uA_to_spotlight)
-			}
-			
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
 			await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
-				guard
-					let artifact_target,
-					let i_artifact = self.exhibit.artifacts.firstIndex(of: artifact_target)
-				else { return }
-				self.tableView.scrollToRow(
-					at: IndexPath(row: i_artifact, section: 0),
-					at: .top,
-					animated: true)
+				self.scroll_to_attraction()
 			})
+		}
+	}
+	private func scroll_to_attraction() {
+		let artifact_target: Exhibit.Artifact? = {
+			switch exhibit.focus {
+				case .covers: return nil
+				case .expanded(let uA_expanded):
+					return .row_album(uA_expanded)
+				case .spotlight(let uA_spotlighted):
+					return .row_album(uA_spotlighted)
+			}
+		}()
+		guard
+			let artifact_target,
+			let i_artifact = self.exhibit.artifacts.firstIndex(of: artifact_target)
+		else { return }
+		tableView.scrollToRow(
+			at: IndexPath(row: i_artifact, section: 0),
+			at: .top,
+			animated: true)
+	}
+	
+	@objc private func reflect_focus() {
+		switch exhibit.focus {
+			case .spotlight:
+				if !WorkingOn.toolbar {
+					navigationController?.setToolbarHidden(true, animated: true)
+				}
+			case .covers, .expanded:
+				if !WorkingOn.toolbar {
+					navigationController?.setToolbarHidden(false, animated: true)
+				}
 		}
 	}
 	
