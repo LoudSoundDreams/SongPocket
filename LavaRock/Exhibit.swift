@@ -132,7 +132,6 @@ extension Exhibit {
 	
 	func sort_albums(by albumOrder: AlbumOrder) {
 		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
-		Librarian.save()
 		refresh_artifacts()
 	}
 	func uAlbums_to_sort() -> Set<UAlbum> {
@@ -145,7 +144,6 @@ extension Exhibit {
 	
 	func sort_songs(by songOrder: SongOrder) {
 		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
-		Librarian.save()
 		refresh_artifacts()
 	}
 	func uSongs_to_sort() -> Set<USong> {
@@ -172,7 +170,6 @@ extension Exhibit {
 					Librarian.demote_songs(uSs_selected, to_limit: to_limit)
 				}
 		}
-		Librarian.save()
 		refresh_artifacts()
 		if to_limit {
 			switch selection {

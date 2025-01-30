@@ -106,6 +106,8 @@ final class LRAlbum {
 		_ uAlbums_selected: Set<UAlbum>,
 		to_limit: Bool
 	) {
+		defer { save() }
+		
 		let rs_to_promote = the_albums.indices(where: { album in
 			uAlbums_selected.contains(album.uAlbum)
 		})
@@ -121,6 +123,8 @@ final class LRAlbum {
 		_ uSongs_selected: Set<USong>,
 		to_limit: Bool
 	) {
+		defer { save() }
+		
 		guard let album = album_containing_uSongs(uSongs_selected) else { return } // Verify that the selected songs are in the same album. Find that album.
 		let rs_to_promote = album.uSongs.indices(where: { uSong in
 			uSongs_selected.contains(uSong)
@@ -149,6 +153,8 @@ final class LRAlbum {
 		_ uAlbums_selected: Set<UAlbum>,
 		to_limit: Bool
 	) {
+		defer { save() }
+		
 		let rs_to_demote = the_albums.indices(where: { album in
 			uAlbums_selected.contains(album.uAlbum)
 		})
@@ -166,6 +172,8 @@ final class LRAlbum {
 		_ uSongs_selected: Set<USong>,
 		to_limit: Bool
 	) {
+		defer { save() }
+		
 		guard let album = album_containing_uSongs(uSongs_selected) else { return }
 		let rs_to_demote = album.uSongs.indices(where: { uSong in
 			uSongs_selected.contains(uSong)
@@ -197,6 +205,8 @@ final class LRAlbum {
 		_ uAs_chosen: Set<UAlbum>,
 		by albumOrder: AlbumOrder
 	) {
+		defer { save() }
+		
 		let chosen_sorted: [LRAlbum] = {
 			let chosen_unsorted = the_albums.filter {
 				uAs_chosen.contains($0.uAlbum)
@@ -239,6 +249,8 @@ final class LRAlbum {
 		_ uSs_chosen: Set<USong>,
 		by songOrder: SongOrder
 	) {
+		defer { save() }
+		
 		guard let album = album_containing_uSongs(uSs_chosen) else { return }
 		let chosen_sorted: [USong] = {
 			let chosen_unsorted = album.uSongs.filter {

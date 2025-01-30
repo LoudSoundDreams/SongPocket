@@ -9,6 +9,8 @@ extension Librarian {
 		Global.shared.librarian_is_merging = true
 		defer { Global.shared.librarian_is_merging = false }
 		
+		defer { save() }
+		
 		// Use MediaPlayer for album and song IDs.
 		// Ideally, use MusicKit for all other metadata.
 		

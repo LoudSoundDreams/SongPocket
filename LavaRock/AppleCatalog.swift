@@ -108,7 +108,6 @@ extension AppleCatalog {
 			
 			await Librarian.merge_MediaPlayer_items(mpSongs)
 			
-			Librarian.save()
 			try? await Task.sleep(for: .seconds(3)) // … but don’t hide deleted data before removing it from the screen anyway.
 			
 			mkSections_cache = mk_dict
