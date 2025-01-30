@@ -15,7 +15,10 @@ import MusicKit
 			HStack(alignment: .firstTextBaseline) {
 				let songInfo: SongInfo? = {
 					guard let mkSong = catalog.mkSongs_cache[uSong] else {
-						Task { await catalog.cache_mkSong(uSong: uSong) } // SwiftUI redraws this view afterward because this view observes the cache.
+						let _ = catalog.signal_mkSongs
+						Task {
+							await catalog.cache_mkSong(uSong: uSong)
+						}
 						return nil
 					}
 					return SongInfo(
@@ -167,8 +170,8 @@ import MusicKit
 		) {
 			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
-			return (exhibit.signal_artifacts && false) ||
-			is_merging ||
+			let _ = exhibit.signal_artifacts
+			return is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: false)
 		}())
 	}
@@ -181,8 +184,8 @@ import MusicKit
 		) {
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({
-			return (exhibit.signal_artifacts && false) ||
-			is_merging ||
+			let _ = exhibit.signal_artifacts
+			return is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: true)
 		}())
 	}

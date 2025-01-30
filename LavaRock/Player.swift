@@ -35,7 +35,7 @@ import MediaPlayer
 			@unknown default: return false
 		}
 	}
-	private var _signal_state = false
+	private var _signal_state = 0
 	
 	var is_blank: Bool {
 		let _ = _signal_now_playing
@@ -51,7 +51,7 @@ import MediaPlayer
 		let _ = _signal_now_playing
 		return mpPlayer?.nowPlayingItem?.persistentID
 	}
-	private var _signal_now_playing = false
+	private var _signal_now_playing = 0
 }
 extension LCD {
 	@ObservationIgnored static let shared = LCD()
@@ -69,11 +69,11 @@ extension LCD {
 		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mpPlayer) // As of iOS 18.3 RC, Media Player posts this when we delete the current song, even though `MPMusicPlayerController.nowPlayingItem` still returns the same value.
 	}
 	@objc private func mp_state() {
-		_signal_state.toggle()
+		_signal_state += 1
 		post()
 	}
 	@objc private func mp_now_playing() {
-		_signal_now_playing.toggle()
+		_signal_now_playing += 1
 		post()
 	}
 	private func post() {

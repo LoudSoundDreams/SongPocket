@@ -197,8 +197,8 @@ import MusicKit
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
-			return (exhibit.signal_artifacts && false ) ||
-			is_merging ||
+			let _ = exhibit.signal_artifacts
+			return is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: false)
 		}())
 	}
@@ -211,8 +211,8 @@ import MusicKit
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
-			return (exhibit.signal_artifacts && false) ||
-			is_merging ||
+			let _ = exhibit.signal_artifacts
+			return is_merging ||
 			!exhibit.has_album_range(from: uAlbum, forward: true)
 		}())
 	}

@@ -5,11 +5,11 @@ import SwiftUI
 import MusicKit
 
 @MainActor @Observable final class Exhibit {
-	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact]
-	= Exhibit.uAlbums_fresh().map { .row_album($0) } { didSet {
-		signal_artifacts.toggle()
+	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact] =
+	Exhibit.uAlbums_fresh().map { .row_album($0) } { didSet {
+		signal_artifacts += 1
 	}}
-	private(set) var signal_artifacts = false // Value is meaningless; we’re toggling this to tell SwiftUI to redraw views. (As of iOS 18.3 beta 1, setting the property to the same value again doesn’t trigger observers.)
+	private(set) var signal_artifacts = 0 // Value is meaningless; we’re setting this property to tell SwiftUI to redraw views. (As of iOS 18.3, setting it to the same value again does trigger observers, but I’m being safe.)
 	
 	var focus: Focus = .covers { didSet {
 		switch focus {
@@ -204,7 +204,7 @@ extension Exhibit {
 		}}
 	}
 	func uSongs_scope() -> [USong] { // In display order.
-		let _ = signal_artifacts.toggle()
+		let _ = signal_artifacts
 		switch selection {
 			case .mode_songs(let uSs_selected):
 				return uSongs(with: uSs_selected)

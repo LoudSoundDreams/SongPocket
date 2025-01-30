@@ -13,7 +13,10 @@ typealias USong = MPMediaEntityPersistentID
 @MainActor @Observable final class AppleCatalog {
 	private init() {}
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
-	private(set) var mkSongs_cache: [USong: MKSong] = [:]
+	@ObservationIgnored private(set) var mkSongs_cache: [USong: MKSong] = [:] { didSet {
+		signal_mkSongs += 1
+	}}
+	fileprivate(set) var signal_mkSongs = 0
 }
 extension AppleCatalog {
 	@ObservationIgnored static let shared = AppleCatalog()
