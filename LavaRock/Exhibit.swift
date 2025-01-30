@@ -182,12 +182,9 @@ extension Exhibit {
 		refresh_artifacts()
 		if to_limit {
 			switch selection {
-				case .view:
-					break
-				case .mode_albums:
-					selection = .mode_albums([])
-				case .mode_songs:
-					selection = .mode_songs([])
+				case .view: break
+				case .mode_albums: selection = .mode_albums([])
+				case .mode_songs: selection = .mode_songs([])
 			}
 		} else {
 			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
@@ -536,9 +533,9 @@ final class ExhibitTVC: LRTableViewController {
 	}
 	
 	@objc private func reflect_focus() {
-		switch exhibit.focus {
-			case .covers:
-				Task {
+		Task {
+			switch exhibit.focus {
+				case .covers:
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(false, animated: true)
 					}
@@ -546,9 +543,7 @@ final class ExhibitTVC: LRTableViewController {
 					b_sort.menu = menu_sort()
 					b_scope.menu = menu_scope()
 					await apply_rowIDs(exhibit.rowIDs)
-				}
-			case .expanded(let uA_to_expand):
-				Task {
+				case .expanded(let uA_to_expand):
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(false, animated: true)
 					}
@@ -565,9 +560,7 @@ final class ExhibitTVC: LRTableViewController {
 							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 						}
 					})
-				}
-			case .spotlight(let uA_to_spotlight):
-				Task {
+				case .spotlight(let uA_to_spotlight):
 					if !WorkingOn.toolbar {
 						navigationController?.setToolbarHidden(true, animated: true)
 					}
@@ -584,7 +577,7 @@ final class ExhibitTVC: LRTableViewController {
 							self.tableView.scrollToRow(at: IndexPath(row: row_target, section: 0), at: .top, animated: true)
 						}
 					})
-				}
+			}
 		}
 	}
 	
