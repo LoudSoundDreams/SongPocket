@@ -4,6 +4,8 @@ import SwiftUI
 import MusicKit
 
 @MainActor struct SongRow: View {
+	static let nudge_leading: CGFloat = .eight * 1/2
+	
 	let uSong: USong
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
@@ -40,12 +42,8 @@ import MusicKit
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
 		}
-		.padding(.horizontal, { () -> CGFloat? in
-			guard WorkingOn.toolbar else { return nil } // Not `.zero`, but the default.
-			return LavaRock.padding_bubbleBar_horizontal
-			+ BubbleBar.width_border
-		}())
-		.padding(.leading, Self.nudge_leading) // Align with outermost toolbar buttons.
+		.padding(.horizontal)
+		.padding(.leading, Self.nudge_leading)
 		.background { highlight }
 		.overlay { border }
 		.frame(maxWidth: exhibit.length_artwork)
@@ -53,7 +51,6 @@ import MusicKit
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
-	static let nudge_leading: CGFloat = .eight * 1/2
 	@ViewBuilder private var border: some View {
 		switch exhibit.selection {
 			case .view, .mode_albums: EmptyView()

@@ -20,7 +20,7 @@ import MusicKit
 					.ignoresSafeArea()
 				if WorkingOn.toolbar {
 					ZStack { if !spotlighting {
-						BubbleBar().padding(.horizontal, Self.padding_bubbleBar_horizontal)
+						BubbleBar()
 					}}.animation(.linear_quick(), value: spotlighting)
 				}
 			}
@@ -31,7 +31,6 @@ import MusicKit
 			}
 		}
 	}
-	static let padding_bubbleBar_horizontal: CGFloat = .eight * 3/2
 	private var spotlighting: Bool { Global.shared.showcase_is_spotlighting }
 	
 	@MainActor static func integrate_Apple_Music() {
