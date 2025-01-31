@@ -21,13 +21,13 @@ struct BubbleBar: View {
 
 private struct MenuSort: View {
 	var body: some View {
-		Menu { if let exhibit = Global.shared.showcase {
+		Menu { if let showcase = Global.shared.showcase {
 			// Include sort commands depending on the type to sort: albums or songs.
 			// Enable sort commands depending on the items to sort:
 			// • 2 or more
 			// • Contiguous
 			// • With useful data
-			switch exhibit.focus {
+			switch showcase.focus {
 				case .spotlight: EmptyView()
 				case .covers: commands_albums
 				case .expanded: commands_songs
@@ -35,28 +35,28 @@ private struct MenuSort: View {
 			
 			ControlGroup {
 				Button {
-					exhibit.reorder_selection(up: true, to_limit: true)
+					showcase.reorder_selection(up: true, to_limit: true)
 				} label: {
 					Image(systemName: SF.to_top)
 						.accessibilityLabel(InterfaceText.To_Top)
 				}
 				
 				Button {
-					exhibit.reorder_selection(up: true, to_limit: false)
+					showcase.reorder_selection(up: true, to_limit: false)
 				} label: {
 					Image(systemName: "arrow.up")
 						.accessibilityLabel(InterfaceText.Move_Up)
 				}.menuActionDismissBehavior(.disabled)
 				
 				Button {
-					exhibit.reorder_selection(up: false, to_limit: false)
+					showcase.reorder_selection(up: false, to_limit: false)
 				} label: {
 					Image(systemName: "arrow.down")
 						.accessibilityLabel(InterfaceText.Move_Down)
 				}.menuActionDismissBehavior(.disabled)
 				
 				Button {
-					exhibit.reorder_selection(up: false, to_limit: true)
+					showcase.reorder_selection(up: false, to_limit: true)
 				} label: {
 					Image(systemName: SF.to_bottom)
 						.accessibilityLabel(InterfaceText.To_Bottom)
@@ -64,13 +64,10 @@ private struct MenuSort: View {
 			}
 			.controlGroupStyle(.compactMenu)
 			.disabled({
-				switch exhibit.selection {
-					case .view:
-						return true
-					case .mode_albums(let uAs_selected):
-						return uAs_selected.isEmpty
-					case .mode_songs(let uSs_selected):
-						return uSs_selected.isEmpty
+				switch showcase.selection {
+					case .view: return true
+					case .mode_albums(let uAs_selected): return uAs_selected.isEmpty
+					case .mode_songs(let uSs_selected): return uSs_selected.isEmpty
 				}
 			}())
 		}} label: {
@@ -88,9 +85,9 @@ private struct MenuSort: View {
 				} label: {
 					Label(order.name, systemImage: order.sf_symbol)
 				}.disabled({
-					guard let exhibit = Global.shared.showcase
+					guard let showcase = Global.shared.showcase
 					else { return true }
-					return !exhibit.can_sort_albums(by: order)
+					return !showcase.can_sort_albums(by: order)
 				}())
 			}}
 		}
@@ -105,9 +102,9 @@ private struct MenuSort: View {
 				} label: {
 					Label(order.name, systemImage: order.sf_symbol)
 				}.disabled({
-					guard let exhibit = Global.shared.showcase
+					guard let showcase = Global.shared.showcase
 					else { return true }
-					return !exhibit.can_sort_songs(by: order)
+					return !showcase.can_sort_songs(by: order)
 				}())
 			}}
 		}
@@ -151,8 +148,8 @@ private struct MenuTransport: View {
 		.disabled(is_selecting)
 	}
 	private var is_selecting: Bool {
-		guard let exhibit = Global.shared.showcase else { return false }
-		switch exhibit.selection {
+		guard let showcase = Global.shared.showcase else { return false }
+		switch showcase.selection {
 			case .view: return false
 			case .mode_albums, .mode_songs: return true
 		}
@@ -281,30 +278,30 @@ private struct MenuTransport: View {
 
 private struct MenuOverflow: View {
 	var body: some View {
-		Menu { if let exhibit = Global.shared.showcase {
+		Menu { if let showcase = Global.shared.showcase {
 			Section {
-				switch exhibit.selection {
+				switch showcase.selection {
 					case .view: EmptyView()
 					case .mode_albums, .mode_songs:
 						Button {
-							exhibit.end_selecting_animated()
+							showcase.end_selecting_animated()
 						} label: {
 							Label(InterfaceText.Done, systemImage: SF.select_fill)
 						}
 				}
 			}
 			
-			let uSongs = exhibit.uSongs_scope()
+			let uSongs = showcase.uSongs_scope()
 			
 			Button {
-				exhibit.end_selecting_animated()
+				showcase.end_selecting_animated()
 				Task { await Tape.play_now(uSongs) }
 			} label: {
 				Label(InterfaceText.Play, systemImage: SF.play_hollow)
 			}.disabled(uSongs.isEmpty)
 			
 			Button {
-				exhibit.end_selecting_animated()
+				showcase.end_selecting_animated()
 				// Don’t trust `MusicPlayer.shuffleMode`. As of iOS 17.6 developer beta 3, if you happen to set the queue with the same contents, and set `shuffleMode = .songs` after calling `play`, not before, then the same song always plays the first time. Instead of continuing to test and comment about this ridiculous API, I’d rather shuffle the songs myself and turn off Apple Music’s shuffle mode.
 				let jumbled = uSongs.in_any_other_order { $0 == $1 }
 				Task { await Tape.play_now(jumbled) }
@@ -316,7 +313,7 @@ private struct MenuOverflow: View {
 			}.disabled(uSongs.count <= 1)
 			
 			Button {
-				exhibit.end_selecting_animated()
+				showcase.end_selecting_animated()
 				Tape.play_later(uSongs)
 			} label: {
 				Label(InterfaceText.Add_to_Queue, systemImage: SF.add_to_queue)
@@ -324,9 +321,9 @@ private struct MenuOverflow: View {
 		}} label: {
 			Image(systemName: SF.ellipsis)
 				.symbolRenderingMode({
-					guard let exhibit = Global.shared.showcase
+					guard let showcase = Global.shared.showcase
 					else { return .hierarchical }
-					switch exhibit.selection {
+					switch showcase.selection {
 						case .view:
 							return .hierarchical
 						case .mode_albums, .mode_songs:

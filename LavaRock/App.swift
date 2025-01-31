@@ -30,7 +30,7 @@ import MusicKit
 			}
 		}
 	}
-	private var spotlighting: Bool { Global.shared.showcase_is_spotlighting }
+	private var spotlighting: Bool { Global.shared.is_spotlighting }
 	
 	@MainActor static func integrate_Apple_Music() {
 		AppleCatalog.shared.watch() // (3)
