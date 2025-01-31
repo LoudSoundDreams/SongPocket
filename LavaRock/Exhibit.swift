@@ -180,6 +180,20 @@ extension Exhibit {
 			}
 		}
 	}
+	func can_sort_songs(by songOrder: SongOrder) -> Bool {
+		guard uSongs_to_sort().count >= 2 else { return false }
+		
+		switch selection {
+			case .mode_albums, .view: break
+			case .mode_songs(let uSs_selected):
+				let rs_selected = uSongs().indices(where: { uSong in
+					uSs_selected.contains(uSong)
+				})
+				guard rs_selected.ranges.count <= 1 else { return false }
+		}
+		
+		return true
+	}
 	
 	private func uAlbums_to_sort() -> Set<UAlbum> {
 		let _ = signal_artifacts // In case, for example, after first merge.
@@ -189,7 +203,8 @@ extension Exhibit {
 			case .mode_albums(let uAs_selected): return uAs_selected
 		}
 	}
-	func uSongs_to_sort() -> Set<USong> {
+	private func uSongs_to_sort() -> Set<USong> {
+		let _ = signal_artifacts // In case, for example, focus is an expanded album with 1 song, and merging adds a 2nd song.
 		switch selection {
 			case .mode_albums: return []
 			case .view: return Set(uSongs())
@@ -772,7 +787,7 @@ final class ExhibitTVC: LRTableViewController {
 					UIDeferredMenuElement.uncached { [weak self] use in
 						guard let self else { return }
 						let action = UIAction(title: order.name, image: UIImage(systemName: order.sf_symbol)) { [weak self] _ in self?.sort_songs(by: order) }
-						if !can_sort_songs(by: order) {
+						if !exhibit.can_sort_songs(by: order) {
 							action.attributes.formUnion(.disabled)
 						}
 						use([action])
@@ -780,21 +795,6 @@ final class ExhibitTVC: LRTableViewController {
 				})
 		}
 	}()
-	
-	private func can_sort_songs(by songOrder: SongOrder) -> Bool {
-		guard exhibit.uSongs_to_sort().count >= 2 else { return false }
-		
-		switch exhibit.selection {
-			case .mode_albums, .view: break
-			case .mode_songs(let uSs_selected):
-				let rs_selected = exhibit.uSongs().indices(where: { uSong in
-					uSs_selected.contains(uSong)
-				})
-				guard rs_selected.ranges.count <= 1 else { return false }
-		}
-		
-		return true
-	}
 	
 	private func sort_albums(by albumOrder: AlbumOrder) {
 		Task {
