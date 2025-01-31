@@ -283,7 +283,10 @@ private struct MenuOverflow: View {
 				let jumbled = uSongs.in_any_other_order { $0 == $1 }
 				Task { await Tape.play_now(jumbled) }
 			} label: {
-				Label(InterfaceText.Jumble, systemImage: SF.die_random())
+				Label(InterfaceText.Jumble, systemImage: {
+					let _ = die_rolls
+					return SF.die_random()
+				}())
 			}.disabled(uSongs.count <= 1)
 			
 			Button {
@@ -305,6 +308,9 @@ private struct MenuOverflow: View {
 					}
 				}())
 				.accessibilityLabel(InterfaceText.More)
-		}.menuOrder(.fixed)
+		}
+		.menuOrder(.fixed)
+		.onLongPressGesture(minimumDuration: .zero) { die_rolls += 1 }
 	}
+	@State private var die_rolls = 0
 }
