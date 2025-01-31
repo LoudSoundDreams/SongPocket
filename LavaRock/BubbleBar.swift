@@ -26,6 +26,11 @@ struct BubbleBar: View {
 private struct MenuSort: View {
 	var body: some View {
 		Menu { if let exhibit = Global.shared.showcase {
+			// Include sort commands depending on the type to sort: albums or songs.
+			// Enable sort commands depending on the items to sort:
+			// • 2 or more
+			// • Contiguous
+			// • With useful data
 			switch exhibit.focus {
 				case .spotlight: EmptyView()
 				case .covers: commands_albums

@@ -577,7 +577,7 @@ final class ExhibitTVC: LRTableViewController {
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
 			await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
-				self.scroll_to_attraction()
+				self.scroll_to_attraction() // 2do: Do this only if `focus` changed.
 			})
 		}
 	}
@@ -668,7 +668,7 @@ final class ExhibitTVC: LRTableViewController {
 		present(sheet, animated: true)
 	}
 	
-	// MARK: Editing
+	// MARK: Edit
 	
 	private lazy var a_done = UIAction(title: InterfaceText.Done, image: UIImage(systemName: SF.select_fill)) { [weak self] _ in self?.exhibit.end_selecting_animated() }
 	
@@ -742,13 +742,8 @@ final class ExhibitTVC: LRTableViewController {
 		return UIMenu(children: menu_children)
 	}
 	
-	// MARK: Sort
+	// MARK: Reorder
 	
-	// Including sort commands depends on the type to sort: albums or songs.
-	// Enabling sort commands depends on the items to sort:
-	// • 2 or more
-	// • Contiguous
-	// • With useful data
 	private func menu_sort() -> UIMenu? {
 		return UIMenu(children: {
 			switch exhibit.focus {
@@ -808,8 +803,6 @@ final class ExhibitTVC: LRTableViewController {
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
-	
-	// MARK: Reorder
 	
 	private func promote() {
 		Task {
