@@ -19,7 +19,8 @@ import MusicKit
 					.background { Color(white: .one_eighth / 2) }
 					.ignoresSafeArea()
 				ZStack { if !spotlighting {
-					BubbleBar().transition(.move(edge: .bottom))
+					BubbleBar()
+//						.transition(.move(edge: .bottom)) // 2do: Unreliable.
 				}}.animation(.linear_quick(), value: spotlighting)
 			}
 			.persistentSystemOverlays(spotlighting ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
