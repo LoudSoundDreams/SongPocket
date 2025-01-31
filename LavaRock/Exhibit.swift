@@ -66,44 +66,19 @@ extension Exhibit {
 		return Librarian.the_albums.map { $0.uAlbum }
 	}
 	@objc private func merged() {
+		// Merging might have removed the spotlighted or expanded album.
+		switch focus {
+			case .covers:
+				break
+			case .spotlight(let uA_spotlighted):
+				if !Self.uAlbums_fresh().contains(uA_spotlighted)
+				{ focus = .covers }
+			case .expanded(let uA_expanded):
+				if !Self.uAlbums_fresh().contains(uA_expanded)
+				{ focus = .covers }
+		}
+		
 		refresh_artifacts()
-	}
-	private func refresh_artifacts() {
-		artifacts = {
-			let uAs_fresh = Self.uAlbums_fresh()
-			
-			// Merging might have removed the spotlighted or expanded album.
-			// Set `focus` only if necessary; it triggers this method.
-			switch focus {
-				case .covers:
-					break
-				case .spotlight(let uA_spotlighted):
-					if !uAs_fresh.contains(uA_spotlighted)
-					{ focus = .covers }
-				case .expanded(let uA_expanded):
-					if !uAs_fresh.contains(uA_expanded)
-					{ focus = .covers }
-			}
-			
-			switch focus {
-				case .covers, .spotlight:
-					return uAs_fresh.map { .row_album($0) }
-				case .expanded(let uA_expanded):
-					var result: [Artifact] = []
-					uAs_fresh.forEach { uAlbum in
-						result.append(.row_album(uAlbum))
-						
-						if uAlbum == uA_expanded {
-							guard
-								let album_expanded = Librarian.album_with_uAlbum[uAlbum]?.referencee
-							else { return }
-							let to_inline: [USong] = album_expanded.uSongs
-							result.append(contentsOf: to_inline.map { .row_song($0) })
-						}
-					}
-					return result
-			}
-		}()
 		
 		// Merging might have removed selected items or the activated song.
 		switch selection {
@@ -130,6 +105,29 @@ extension Exhibit {
 					selection = .mode_songs(selectable)
 				}
 		}
+	}
+	private func refresh_artifacts() { // 2do: Return a value instead.
+		artifacts = {
+			let uAs_fresh = Self.uAlbums_fresh()
+			switch focus {
+				case .covers, .spotlight:
+					return uAs_fresh.map { .row_album($0) }
+				case .expanded(let uA_expanded):
+					var result: [Artifact] = []
+					uAs_fresh.forEach { uAlbum in
+						result.append(.row_album(uAlbum))
+						
+						if uAlbum == uA_expanded {
+							guard
+								let album_expanded = Librarian.album_with_uAlbum[uAlbum]?.referencee
+							else { return }
+							let to_inline: [USong] = album_expanded.uSongs
+							result.append(contentsOf: to_inline.map { .row_song($0) })
+						}
+					}
+					return result
+			}
+		}()
 	}
 	
 	func uSongs_scope() -> [USong] { // In display order.
@@ -586,10 +584,22 @@ final class ExhibitTVC: LRTableViewController {
 		Task {
 			b_sort.menu = menu_sort()
 			b_scope.menu = menu_scope()
-			await apply_rowIDs(exhibit.rowIDs, running_before_continuation: {
-				self.scroll_to_attraction() // 2do: Do this only if `focus` changed.
-			})
+			await apply_rowIDs(exhibit.rowIDs)
 		}
+	}
+	
+	@objc private func reflect_focus() {
+		switch exhibit.focus {
+			case .spotlight:
+				if !WorkingOn.toolbar {
+					navigationController?.setToolbarHidden(true, animated: true)
+				}
+			case .covers, .expanded:
+				if !WorkingOn.toolbar {
+					navigationController?.setToolbarHidden(false, animated: true)
+				}
+		}
+		scroll_to_attraction()
 	}
 	private func scroll_to_attraction() {
 		let artifact_target: Exhibit.Artifact? = {
@@ -605,22 +615,11 @@ final class ExhibitTVC: LRTableViewController {
 			let artifact_target,
 			let i_artifact = self.exhibit.artifacts.firstIndex(of: artifact_target)
 		else { return }
-		tableView.scrollToRow(
-			at: IndexPath(row: i_artifact, section: 0),
-			at: .top,
-			animated: true)
-	}
-	
-	@objc private func reflect_focus() {
-		switch exhibit.focus {
-			case .spotlight:
-				if !WorkingOn.toolbar {
-					navigationController?.setToolbarHidden(true, animated: true)
-				}
-			case .covers, .expanded:
-				if !WorkingOn.toolbar {
-					navigationController?.setToolbarHidden(false, animated: true)
-				}
+		Task { // Prevents jank in case we called `apply_rowIDs` just earlier.
+			tableView.scrollToRow(
+				at: IndexPath(row: i_artifact, section: 0),
+				at: .top,
+				animated: true)
 		}
 	}
 	
