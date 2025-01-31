@@ -167,7 +167,6 @@ import MusicKit
 		) {
 			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
-			let _ = exhibit.signal_artifacts
 			return is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: false)
 		}())
@@ -181,7 +180,6 @@ import MusicKit
 		) {
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({
-			let _ = exhibit.signal_artifacts
 			return is_merging ||
 			!exhibit.has_song_range(from: uSong, forward: true)
 		}())

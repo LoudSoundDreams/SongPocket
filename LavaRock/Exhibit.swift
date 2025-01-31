@@ -6,7 +6,7 @@ import MusicKit
 
 @MainActor @Observable final class Exhibit {
 	init() {
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_librarian), name: .librarian_merged, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(merged), name: .librarian_merged, object: nil)
 	}
 	
 	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact] =
@@ -14,7 +14,7 @@ import MusicKit
 		signal_artifacts += 1
 		NotificationCenter.default.post(name: .exhibit_artifacts, object: self)
 	}}
-	private(set) var signal_artifacts = 0 // Value is meaningless; we’re setting this property to tell SwiftUI to redraw views. (As of iOS 18.3, setting it to the same value again does trigger observers, but I’m being safe.)
+	private var signal_artifacts = 0 // Value is meaningless; we’re setting this property to tell SwiftUI to redraw views. (As of iOS 18.3, setting it to the same value again does trigger observers, but I’m being safe.)
 	
 	var focus: Focus = .covers { didSet {
 		refresh_artifacts()
@@ -56,11 +56,18 @@ extension Exhibit {
 		case mode_songs(Set<USong>)
 	}
 	
-	@objc private func reflect_librarian() {
-		refresh_artifacts()
-	}
+	// MARK: Artifacts
 	
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
+	
+	private static func uAlbums_fresh() -> [UAlbum] {
+		guard MusicAuthorization.currentStatus == .authorized
+		else { return [] } // Don’t show any albums; show a placeholder.
+		return Librarian.the_albums.map { $0.uAlbum }
+	}
+	@objc private func merged() {
+		refresh_artifacts()
+	}
 	private func refresh_artifacts() {
 		artifacts = {
 			let uAs_fresh = Self.uAlbums_fresh()
@@ -124,140 +131,7 @@ extension Exhibit {
 				}
 		}
 	}
-	private static func uAlbums_fresh() -> [UAlbum] {
-		guard MusicAuthorization.currentStatus == .authorized
-		else { return [] } // Don’t show any albums; show a placeholder.
-		return Librarian.the_albums.map { $0.uAlbum }
-	}
 	
-	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
-		switch selection {
-			case .view, .mode_songs: return false
-			case .mode_albums(let uAs_selected):
-				return uAs_selected.contains(uAlbum)
-		}
-	}
-	func has_selected_song(_ uSong: USong? = nil) -> Bool {
-		switch selection {
-			case .view, .mode_albums: return false
-			case .mode_songs(let uSs_selected):
-				guard let uSong else { return true }
-				return uSs_selected.contains(uSong)
-		}
-	}
-	func end_selecting_animated() {
-		withAnimation {
-			selection = .view
-		}
-	}
-	
-	func sort_albums(by albumOrder: AlbumOrder) {
-		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
-		refresh_artifacts()
-	}
-	func sort_songs(by songOrder: SongOrder) {
-		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
-		refresh_artifacts()
-	}
-	
-	func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
-		let to_sort = uAlbums_to_sort()
-		guard to_sort.count >= 2 else { return false }
-		
-		switch selection {
-			case .mode_songs, .view: break
-			case .mode_albums(let uAs_selected):
-				let rs_selected = uAlbums().indices(where: { uAlbum in
-					uAs_selected.contains(uAlbum)
-				})
-				guard rs_selected.ranges.count <= 1 else { return false }
-		}
-		
-		switch albumOrder {
-			case .random, .reverse, .recently_added: return true
-			case .recently_released: return to_sort.contains {
-				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
-			}
-		}
-	}
-	func can_sort_songs(by songOrder: SongOrder) -> Bool {
-		guard uSongs_to_sort().count >= 2 else { return false }
-		
-		switch selection {
-			case .mode_albums, .view: break
-			case .mode_songs(let uSs_selected):
-				let rs_selected = uSongs().indices(where: { uSong in
-					uSs_selected.contains(uSong)
-				})
-				guard rs_selected.ranges.count <= 1 else { return false }
-		}
-		
-		return true
-	}
-	
-	private func uAlbums_to_sort() -> Set<UAlbum> {
-		let _ = signal_artifacts // In case, for example, after first merge.
-		switch selection {
-			case .mode_songs: return []
-			case .view: return Set(uAlbums())
-			case .mode_albums(let uAs_selected): return uAs_selected
-		}
-	}
-	private func uSongs_to_sort() -> Set<USong> {
-		let _ = signal_artifacts // In case, for example, focus is an expanded album with 1 song, and merging adds a 2nd song.
-		switch selection {
-			case .mode_albums: return []
-			case .view: return Set(uSongs())
-			case .mode_songs(let uSs_selected): return uSs_selected
-		}
-	}
-	
-	func reorder_selection(up: Bool, to_limit: Bool) {
-		switch selection {
-			case .view: return
-			case .mode_albums(let uAs_selected):
-				if up {
-					Librarian.promote_albums(uAs_selected, to_limit: to_limit)
-				} else {
-					Librarian.demote_albums(uAs_selected, to_limit: to_limit)
-				}
-			case .mode_songs(let uSs_selected):
-				if up {
-					Librarian.promote_songs(uSs_selected, to_limit: to_limit)
-				} else {
-					Librarian.demote_songs(uSs_selected, to_limit: to_limit)
-				}
-		}
-		refresh_artifacts()
-		if to_limit {
-			switch selection {
-				case .view: break
-				case .mode_albums: selection = .mode_albums([])
-				case .mode_songs: selection = .mode_songs([])
-			}
-		} else {
-			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
-		}
-	}
-	
-	fileprivate func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
-		return artifacts.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
-			case .row_song: return nil
-			case .row_album(let uAlbum):
-				guard let chosen else { return uAlbum }
-				guard chosen.contains(uAlbum) else { return nil }
-				return uAlbum
-		}}
-	}
-	fileprivate func uSongs(with chosen: Set<USong>? = nil) -> [USong] {
-		return artifacts.compactMap { switch $0 {
-			case .row_album: return nil
-			case .row_song(let uSong):
-				guard let chosen else { return uSong }
-				guard chosen.contains(uSong) else { return nil }
-				return uSong
-		}}
-	}
 	func uSongs_scope() -> [USong] { // In display order.
 		let _ = signal_artifacts
 		switch selection {
@@ -285,6 +159,50 @@ extension Exhibit {
 					result.append(contentsOf: lrAlbum.uSongs)
 				}
 				return result
+		}
+	}
+	
+	private func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
+		let _ = signal_artifacts
+		return artifacts.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
+			case .row_song: return nil
+			case .row_album(let uAlbum):
+				guard let chosen else { return uAlbum }
+				guard chosen.contains(uAlbum) else { return nil }
+				return uAlbum
+		}}
+	}
+	private func uSongs(with chosen: Set<USong>? = nil) -> [USong] {
+		let _ = signal_artifacts
+		return artifacts.compactMap { switch $0 {
+			case .row_album: return nil
+			case .row_song(let uSong):
+				guard let chosen else { return uSong }
+				guard chosen.contains(uSong) else { return nil }
+				return uSong
+		}}
+	}
+	
+	// MARK: Select
+	
+	func has_selected_album(_ uAlbum: UAlbum) -> Bool {
+		switch selection {
+			case .view, .mode_songs: return false
+			case .mode_albums(let uAs_selected):
+				return uAs_selected.contains(uAlbum)
+		}
+	}
+	func has_selected_song(_ uSong: USong? = nil) -> Bool {
+		switch selection {
+			case .view, .mode_albums: return false
+			case .mode_songs(let uSs_selected):
+				guard let uSong else { return true }
+				return uSs_selected.contains(uSong)
+		}
+	}
+	func end_selecting_animated() {
+		withAnimation {
+			selection = .view
 		}
 	}
 	
@@ -392,6 +310,98 @@ extension Exhibit {
 				selection = .mode_songs(new_selected)
 		}
 	}
+	
+	// MARK: Reorder
+	
+	func sort_albums(by albumOrder: AlbumOrder) {
+		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
+		refresh_artifacts()
+	}
+	func sort_songs(by songOrder: SongOrder) {
+		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
+		refresh_artifacts()
+	}
+	
+	func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
+		let to_sort = uAlbums_to_sort()
+		guard to_sort.count >= 2 else { return false }
+		
+		switch selection {
+			case .mode_songs, .view: break
+			case .mode_albums(let uAs_selected):
+				let rs_selected = uAlbums().indices(where: { uAlbum in
+					uAs_selected.contains(uAlbum)
+				})
+				guard rs_selected.ranges.count <= 1 else { return false }
+		}
+		
+		switch albumOrder {
+			case .random, .reverse, .recently_added: return true
+			case .recently_released: return to_sort.contains {
+				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
+			}
+		}
+	}
+	func can_sort_songs(by songOrder: SongOrder) -> Bool {
+		guard uSongs_to_sort().count >= 2 else { return false }
+		
+		switch selection {
+			case .mode_albums, .view: break
+			case .mode_songs(let uSs_selected):
+				let rs_selected = uSongs().indices(where: { uSong in
+					uSs_selected.contains(uSong)
+				})
+				guard rs_selected.ranges.count <= 1 else { return false }
+		}
+		
+		return true
+	}
+	
+	private func uAlbums_to_sort() -> Set<UAlbum> {
+		let _ = signal_artifacts // In case, for example, after first merge.
+		switch selection {
+			case .mode_songs: return []
+			case .view: return Set(uAlbums())
+			case .mode_albums(let uAs_selected): return uAs_selected
+		}
+	}
+	private func uSongs_to_sort() -> Set<USong> {
+		let _ = signal_artifacts // In case, for example, focus is an expanded album with 1 song, and merging adds a 2nd song.
+		switch selection {
+			case .mode_albums: return []
+			case .view: return Set(uSongs())
+			case .mode_songs(let uSs_selected): return uSs_selected
+		}
+	}
+	
+	func reorder_selection(up: Bool, to_limit: Bool) {
+		switch selection {
+			case .view: return
+			case .mode_albums(let uAs_selected):
+				if up {
+					Librarian.promote_albums(uAs_selected, to_limit: to_limit)
+				} else {
+					Librarian.demote_albums(uAs_selected, to_limit: to_limit)
+				}
+			case .mode_songs(let uSs_selected):
+				if up {
+					Librarian.promote_songs(uSs_selected, to_limit: to_limit)
+				} else {
+					Librarian.demote_songs(uSs_selected, to_limit: to_limit)
+				}
+		}
+		refresh_artifacts()
+		if to_limit {
+			switch selection {
+				case .view: break
+				case .mode_albums: selection = .mode_albums([])
+				case .mode_songs: selection = .mode_songs([])
+			}
+		} else {
+			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
+		}
+	}
+	
 }
 extension Exhibit.Artifact: Hashable {}
 extension Exhibit.Focus: Equatable {}
