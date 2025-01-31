@@ -18,11 +18,9 @@ import MusicKit
 				RepNCMain()
 					.background { Color(white: .one_eighth / 2) }
 					.ignoresSafeArea()
-				if WorkingOn.toolbar {
-					ZStack { if !spotlighting {
-						BubbleBar()
-					}}.animation(.linear_quick(), value: spotlighting)
-				}
+				ZStack { if !spotlighting {
+					BubbleBar()
+				}}.animation(.linear_quick(), value: spotlighting)
 			}
 			.persistentSystemOverlays(spotlighting ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
 			.task {
@@ -46,15 +44,7 @@ private struct RepNCMain: UIViewControllerRepresentable {
 private final class NCMain: UINavigationController {
 	static func create() -> Self {
 		let result = Self(rootViewController: ExhibitTVC.init_please())
-		
 		result.setNavigationBarHidden(true, animated: false)
-		
-		if !WorkingOn.toolbar {
-			let toolbar = result.toolbar!
-			result.setToolbarHidden(false, animated: false)
-			toolbar.scrollEdgeAppearance = toolbar.standardAppearance
-		}
-		
 		return result
 	}
 	

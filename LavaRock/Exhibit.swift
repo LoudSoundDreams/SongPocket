@@ -28,9 +28,7 @@ import MusicKit
 		NotificationCenter.default.post(name: .exhibit_focus, object: self)
 	}}
 	
-	var selection: Selection = .view { didSet {
-		NotificationCenter.default.post(name: .exhibit_selection, object: nil)
-	}}
+	var selection: Selection = .view
 	
 	var activated: USong? { didSet { // Only use this when `selection == .view` and `focus == .expanded`.
 		NotificationCenter.default.post(name: .song_activation, object: nil)
@@ -395,8 +393,6 @@ extension Exhibit {
 				case .mode_albums: selection = .mode_albums([])
 				case .mode_songs: selection = .mode_songs([])
 			}
-		} else {
-			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 		}
 	}
 }
@@ -420,13 +416,9 @@ final class ExhibitTVC: LRTableViewController {
 		
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
-		b_sort.preferredMenuElementOrder = .fixed
-		b_scope.preferredMenuElementOrder = .fixed
-		reflect_selection()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_artifacts), name: .exhibit_artifacts, object: exhibit)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: .exhibit_focus, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_selection), name: .exhibit_selection, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_activation), name: .song_activation, object: nil)
 	}
 	
@@ -471,11 +463,9 @@ final class ExhibitTVC: LRTableViewController {
 			top = top.rounded(.down) // As of iOS 18.3 developer beta 3, a non-integer value prevents you from rapidly expanding and collapsing albums.
 			
 			var bottom: CGFloat = .zero
-			if WorkingOn.toolbar {
-				bottom -= view.safeAreaInsets.bottom
-				bottom += gutter
-				bottom = bottom.rounded(.up)
-			}
+			bottom -= view.safeAreaInsets.bottom
+			bottom += gutter
+			bottom = bottom.rounded(.up)
 			
 			return UIEdgeInsets(top: top, left: .zero, bottom: bottom, right: .zero)
 		}()
@@ -581,26 +571,11 @@ final class ExhibitTVC: LRTableViewController {
 	
 	@objc private func reflect_artifacts() {
 		Task {
-			b_sort.menu = menu_sort()
-			b_scope.menu = menu_scope()
 			await apply_rowIDs(exhibit.rowIDs)
 		}
 	}
 	
 	@objc private func reflect_focus() {
-		switch exhibit.focus {
-			case .spotlight:
-				if !WorkingOn.toolbar {
-					navigationController?.setToolbarHidden(true, animated: true)
-				}
-			case .covers, .expanded:
-				if !WorkingOn.toolbar {
-					navigationController?.setToolbarHidden(false, animated: true)
-				}
-		}
-		scroll_to_attraction()
-	}
-	private func scroll_to_attraction() {
 		let artifact_target: Exhibit.Artifact? = {
 			switch exhibit.focus {
 				case .covers: return nil
@@ -620,26 +595,6 @@ final class ExhibitTVC: LRTableViewController {
 				at: .top,
 				animated: true)
 		}
-	}
-	
-	@objc private func reflect_selection() {
-		switch exhibit.selection {
-			case .view:
-				setToolbarItems([b_sort, .flexibleSpace(), Remote.shared.b_remote, .flexibleSpace(), b_scope], animated: true)
-				b_scope.image = image_scope
-			case .mode_albums(let uAs_selected):
-				setToolbarItems([b_sort, .flexibleSpace(), b_promote, .flexibleSpace(), b_demote, .flexibleSpace(), b_scope], animated: true)
-				b_promote.isEnabled = !uAs_selected.isEmpty
-				b_demote.isEnabled = b_promote.isEnabled
-				b_scope.image = image_scope_highlighted
-			case .mode_songs(let uSs_selected):
-				setToolbarItems([b_sort, .flexibleSpace(), b_promote, .flexibleSpace(), b_demote, .flexibleSpace(), b_scope], animated: true)
-				b_promote.isEnabled = !uSs_selected.isEmpty
-				b_demote.isEnabled = b_promote.isEnabled
-				b_scope.image = image_scope_highlighted
-		}
-		b_sort.menu = menu_sort() // In case it’s open.
-		b_scope.menu = menu_scope()
 	}
 	
 	@objc private func reflect_activation() {
@@ -674,167 +629,5 @@ final class ExhibitTVC: LRTableViewController {
 			}
 		)
 		present(sheet, animated: true)
-	}
-	
-	// MARK: Edit
-	
-	private lazy var a_done = UIAction(title: InterfaceText.Done, image: UIImage(systemName: SF.select_fill)) { [weak self] _ in self?.exhibit.end_selecting_animated() }
-	
-	private let b_sort = UIBarButtonItem(title: InterfaceText.Sort, image: UIImage(systemName: SF.sort)!.applying_hierarchical_tint())
-	private lazy var b_scope = UIBarButtonItem(title: InterfaceText.More)
-	private lazy var image_scope = image_scope_highlighted.applying_hierarchical_tint()
-	private let image_scope_highlighted = UIImage(systemName: SF.ellipsis)!
-	
-	private lazy var b_promote = UIBarButtonItem(primaryAction: a_promote, menu: UIMenu(children: [a_float]))
-	private lazy var b_demote = UIBarButtonItem(primaryAction: a_demote, menu: UIMenu(children: [a_sink]))
-	
-	private lazy var a_promote = UIAction(title: InterfaceText.Move_Up, image: UIImage(systemName: SF.move_up_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.promote() }
-	private lazy var a_demote = UIAction(title: InterfaceText.Move_Down, image: UIImage(systemName: SF.move_down_circle)!.applying_hierarchical_tint()) { [weak self] _ in self?.demote() }
-	private lazy var a_float = UIAction(title: InterfaceText.To_Top, image: UIImage(systemName: SF.to_top)) { [weak self] _ in self?.float() }
-	private lazy var a_sink = UIAction(title: InterfaceText.To_Bottom, image: UIImage(systemName: SF.to_bottom)) { [weak self] _ in self?.sink() }
-	
-	// MARK: Scope
-	
-	private func menu_scope() -> UIMenu {
-		var menu_children: [UIMenuElement] = []
-		switch exhibit.selection {
-			case .view: break
-			case .mode_albums, .mode_songs:
-				menu_children.append(a_done)
-		}
-		menu_children.append(
-			UIMenu(
-				options: .displayInline,
-				children: [
-					UIDeferredMenuElement.uncached { [weak self] use in
-						guard let self else { return }
-						let uSongs = exhibit.uSongs_scope()
-						let action = UIAction(title: InterfaceText.Play, image: UIImage(systemName: SF.play_hollow)
-						) { [weak self] _ in
-							guard let self else { return }
-							exhibit.end_selecting_animated()
-							Task { await Tape.play_now(uSongs) }
-						}
-						if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
-						use([action])
-					},
-					UIDeferredMenuElement.uncached { [weak self] use in
-						guard let self else { return }
-						let uSongs = exhibit.uSongs_scope()
-						let action = UIAction(title: InterfaceText.Jumble, image: UIImage(systemName: SF.die_random())
-						) { [weak self] _ in
-							guard let self else { return }
-							exhibit.end_selecting_animated()
-							Task {
-								let jumbled = uSongs.in_any_other_order { $0 == $1 }
-								await Tape.play_now(jumbled)
-							}
-						}
-						if uSongs.count <= 1 { action.attributes.formUnion(.disabled) }
-						use([action])
-					},
-					UIDeferredMenuElement.uncached { [weak self] use in
-						guard let self else { return }
-						let uSongs = exhibit.uSongs_scope()
-						let action = UIAction(title: InterfaceText.Add_to_Queue, image: UIImage(systemName: SF.add_to_queue)
-						) { [weak self] _ in
-							guard let self else { return }
-							exhibit.end_selecting_animated()
-							Tape.play_later(uSongs)
-						}
-						if uSongs.isEmpty { action.attributes.formUnion(.disabled) }
-						use([action])
-					},
-				])
-		)
-		return UIMenu(children: menu_children)
-	}
-	
-	// MARK: Reorder
-	
-	private func menu_sort() -> UIMenu? {
-		return UIMenu(children: {
-			switch exhibit.focus {
-				case .spotlight: return []
-				case .covers: return menu_sections_album_sort
-				case .expanded: return menu_sections_song_sort
-			}
-		}())
-	}
-	
-	private lazy var menu_sections_album_sort: [UIMenuElement] = {
-		let sections: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
-		return sections.map { section in
-			UIMenu(
-				options: .displayInline,
-				children: section.map { order in
-					UIDeferredMenuElement.uncached { [weak self] use in
-						// Runs each time the button presents the menu
-						guard let self else { return }
-						let action = UIAction(title: order.name, image: UIImage(systemName: order.sf_symbol)) { [weak self] _ in self?.sort_albums(by: order) }
-						if !exhibit.can_sort_albums(by: order) {
-							// You must do this inside `UIDeferredMenuElement.uncached`.
-							action.attributes.formUnion(.disabled)
-						}
-						use([action])
-					}
-				})
-		}
-	}()
-	private lazy var menu_sections_song_sort: [UIMenuElement] = {
-		let sections: [[SongOrder]] = [[.track], [.reverse, .random]]
-		return sections.map { section in
-			UIMenu(
-				options: .displayInline,
-				children: section.map { order in
-					UIDeferredMenuElement.uncached { [weak self] use in
-						guard let self else { return }
-						let action = UIAction(title: order.name, image: UIImage(systemName: order.sf_symbol)) { [weak self] _ in self?.sort_songs(by: order) }
-						if !exhibit.can_sort_songs(by: order) {
-							action.attributes.formUnion(.disabled)
-						}
-						use([action])
-					}
-				})
-		}
-	}()
-	
-	private func sort_albums(by albumOrder: AlbumOrder) {
-		Task {
-			exhibit.sort_albums(by: albumOrder)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	private func sort_songs(by songOrder: SongOrder) {
-		Task {
-			exhibit.sort_songs(by: songOrder)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	
-	private func promote() {
-		Task {
-			exhibit.reorder_selection(up: true, to_limit: false)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	private func demote() {
-		Task {
-			exhibit.reorder_selection(up: false, to_limit: false)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	
-	private func float() {
-		Task {
-			exhibit.reorder_selection(up: true, to_limit: true)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
-	}
-	private func sink() {
-		Task {
-			exhibit.reorder_selection(up: false, to_limit: true)
-			await apply_rowIDs(exhibit.rowIDs)
-		}
 	}
 }

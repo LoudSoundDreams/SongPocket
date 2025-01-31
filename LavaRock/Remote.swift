@@ -4,7 +4,7 @@ import UIKit
 @preconcurrency import MusicKit
 
 @MainActor final class Remote {
-	static let shared = Remote()
+	static let __shared = Remote()
 	let b_remote = UIBarButtonItem()
 	
 	private init() {
