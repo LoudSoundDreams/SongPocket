@@ -155,17 +155,17 @@ extension Exhibit {
 		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
 		refresh_artifacts()
 	}
+	func sort_songs(by songOrder: SongOrder) {
+		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
+		refresh_artifacts()
+	}
+	
 	func uAlbums_to_sort() -> Set<UAlbum> {
 		switch selection {
 			case .mode_songs: return []
 			case .view: return Set(uAlbums())
 			case .mode_albums(let uAs_selected): return uAs_selected
 		}
-	}
-	
-	func sort_songs(by songOrder: SongOrder) {
-		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
-		refresh_artifacts()
 	}
 	func uSongs_to_sort() -> Set<USong> {
 		switch selection {

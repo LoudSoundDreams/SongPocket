@@ -12,7 +12,7 @@ import MediaPlayer
 
 // For clarity, separating “player” functionality into reading state in `LCD` and controlling playback in `Tape`.
 
-// We’re using our own observation so we can handle not having access to the player, and respond later when we integrate it.
+// We’re using our own observation so we can handle not having authorization for the player, and respond later when we integrate it.
 @MainActor @Observable final class LCD {
 	private init() {}
 	
