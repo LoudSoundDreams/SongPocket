@@ -160,7 +160,29 @@ extension Exhibit {
 		refresh_artifacts()
 	}
 	
-	func uAlbums_to_sort() -> Set<UAlbum> {
+	func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
+		let to_sort = uAlbums_to_sort()
+		guard to_sort.count >= 2 else { return false }
+		
+		switch selection {
+			case .mode_songs, .view: break
+			case .mode_albums(let uAs_selected):
+				let rs_selected = uAlbums().indices(where: { uAlbum in
+					uAs_selected.contains(uAlbum)
+				})
+				guard rs_selected.ranges.count <= 1 else { return false }
+		}
+		
+		switch albumOrder {
+			case .random, .reverse, .recently_added: return true
+			case .recently_released: return to_sort.contains {
+				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
+			}
+		}
+	}
+	
+	private func uAlbums_to_sort() -> Set<UAlbum> {
+		let _ = signal_artifacts // In case, for example, after first merge.
 		switch selection {
 			case .mode_songs: return []
 			case .view: return Set(uAlbums())
@@ -732,7 +754,7 @@ final class ExhibitTVC: LRTableViewController {
 						// Runs each time the button presents the menu
 						guard let self else { return }
 						let action = UIAction(title: order.name, image: UIImage(systemName: order.sf_symbol)) { [weak self] _ in self?.sort_albums(by: order) }
-						if !can_sort_albums(by: order) {
+						if !exhibit.can_sort_albums(by: order) {
 							// You must do this inside `UIDeferredMenuElement.uncached`.
 							action.attributes.formUnion(.disabled)
 						}
@@ -759,26 +781,6 @@ final class ExhibitTVC: LRTableViewController {
 		}
 	}()
 	
-	private func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
-		let uAlbums = exhibit.uAlbums_to_sort()
-		guard uAlbums.count >= 2 else { return false }
-		
-		switch exhibit.selection {
-			case .mode_songs, .view: break
-			case .mode_albums(let uAs_selected):
-				let rs_selected = exhibit.uAlbums().indices(where: { uAlbum in
-					uAs_selected.contains(uAlbum)
-				})
-				guard rs_selected.ranges.count <= 1 else { return false }
-		}
-		
-		switch albumOrder {
-			case .random, .reverse, .recently_added: return true
-			case .recently_released: return uAlbums.contains {
-				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
-			}
-		}
-	}
 	private func can_sort_songs(by songOrder: SongOrder) -> Bool {
 		guard exhibit.uSongs_to_sort().count >= 2 else { return false }
 		

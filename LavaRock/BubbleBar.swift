@@ -86,7 +86,11 @@ private struct MenuSort: View {
 					Global.shared.showcase?.sort_albums(by: order)
 				} label: {
 					Label(order.name, systemImage: order.sf_symbol)
-				}.disabled(false) // 2do
+				}.disabled({
+					guard let exhibit = Global.shared.showcase
+					else { return true }
+					return !exhibit.can_sort_albums(by: order)
+				}())
 			}}
 		}
 	}
