@@ -38,7 +38,7 @@ import MediaPlayer
 	private var _signal_state = 0
 	
 	var is_blank: Bool {
-		let _ = _signal_now_playing
+		let _ = _signal_now_playing // 2do: When MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events. Do we care?
 		return nil == mkPlayer?.queue.currentEntry
 	}
 	/*
@@ -81,6 +81,8 @@ extension LCD {
 	}
 }
 
+// 2do: Magic Tap
+// As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor enum Tape {
 	private static var mkPlayer: ApplicationMusicPlayer? {
 		ApplicationMusicPlayer._shared

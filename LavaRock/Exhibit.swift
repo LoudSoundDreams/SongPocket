@@ -399,7 +399,6 @@ extension Exhibit {
 			NotificationCenter.default.post(name: .exhibit_selection, object: nil) // We didn’t change which albums were selected, but we made them contiguous, which should enable sorting.
 		}
 	}
-	
 }
 extension Exhibit.Artifact: Hashable {}
 extension Exhibit.Focus: Equatable {}
@@ -667,7 +666,7 @@ final class ExhibitTVC: LRTableViewController {
 					await Tape.play_now(album.uSongs, starting_at: activated)
 				}
 			}
-			// I want to silence VoiceOver after you choose actions that start playback, but `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
+			// 2do: Silence VoiceOver after starting audio. `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
 		sheet.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in

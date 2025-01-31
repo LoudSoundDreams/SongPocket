@@ -3,7 +3,6 @@
 import UIKit
 @preconcurrency import MusicKit
 
-// As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor final class Remote {
 	static let shared = Remote()
 	let b_remote = UIBarButtonItem()
@@ -11,7 +10,7 @@ import UIKit
 	private init() {
 		refresh()
 		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .lcd, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .librarian_merged, object: nil) // Because when MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events.
+		NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .librarian_merged, object: nil)
 	}
 	@objc private func refresh() {
 		b_remote.preferredMenuElementOrder = .fixed
@@ -46,24 +45,24 @@ import UIKit
 			title: Librarian.message_if_empty ?? "",
 			children: [
 				UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-					dme_spotlight_current,
+					dme_spotlight,
 					Self.dme_repeat,
-					Self.action_open_Apple_Music,
+					Self.action_apple_music,
 				]),
 				UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-					Self.dme_jump_backward,
+					Self.dme_jump_back,
 					Self.dme_rewind,
 					Self.dme_jump_forward,
 				]),
 				UIMenu(options: .displayInline, preferredElementSize: .small, children: [
-					Self.dme_track_previous,
-					Self.dme_toggle_playing,
-					Self.dme_track_next,
+					Self.dme_previous,
+					Self.dme_play_pause,
+					Self.dme_next,
 				]),
 			])
 	}
 	
-	private lazy var dme_spotlight_current = UIDeferredMenuElement.uncached { use in use([
+	private lazy var dme_spotlight = UIDeferredMenuElement.uncached { use in use([
 		UIAction(title: InterfaceText.Go_to_Artwork, image: UIImage(systemName: SF.photo), attributes: {
 #if targetEnvironment(simulator)
 			return []
@@ -76,9 +75,9 @@ import UIKit
 #endif
 		}()) { _ in Global.shared.gallery?.spotlight_current() }
 	])}
-	private static let action_open_Apple_Music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: SF.app_external)) { _ in AppleCatalog.open_Apple_Music() }
+	private static let action_apple_music = UIAction(title: InterfaceText.Apple_Music, image: UIImage(systemName: SF.app_external)) { _ in AppleCatalog.open_Apple_Music() }
 	
-	private static let dme_toggle_playing = UIDeferredMenuElement.uncached { use in
+	private static let dme_play_pause = UIDeferredMenuElement.uncached { use in
 #if targetEnvironment(simulator)
 		use([a_pause])
 #else
@@ -125,7 +124,7 @@ import UIKit
 	
 	private static let dme_rewind = UIDeferredMenuElement.uncached { use in
 		let action = UIAction(title: InterfaceText.Restart, image: UIImage(systemName: SF.rewind), attributes: .keepsMenuPresented) { _ in Tape.rewind() }
-		if LCD.shared.is_blank { // Can we notice when `playbackTime` becomes or becomes not `0` while the menu is open?
+		if LCD.shared.is_blank {
 			action.attributes.formUnion(.disabled)
 		} else {
 			action.attributes.subtract(.disabled)
@@ -133,15 +132,14 @@ import UIKit
 		use([action])
 	}
 	
-	private static let dme_track_previous = UIDeferredMenuElement.uncached { use in use([
-		// Ideally, disable this when there are no previous tracks to skip to.
+	private static let dme_previous = UIDeferredMenuElement.uncached { use in use([
 		UIAction(title: InterfaceText.Previous, image: UIImage(systemName: SF.previous_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Tape.previous() }
 	])}
-	private static let dme_track_next = UIDeferredMenuElement.uncached { use in use([
+	private static let dme_next = UIDeferredMenuElement.uncached { use in use([
 		UIAction(title: InterfaceText.Next, image: UIImage(systemName: SF.next_bold), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Tape.next() }
 	])}
 	
-	private static let dme_jump_backward = UIDeferredMenuElement.uncached { use in use([
+	private static let dme_jump_back = UIDeferredMenuElement.uncached { use in use([
 		UIAction(title: InterfaceText.Skip_back_15_seconds, image: UIImage(systemName: SF.jump_back_15), attributes: LCD.shared.is_blank ? .disabled : .keepsMenuPresented) { _ in Tape.jump_back_15() }
 	])}
 	private static let dme_jump_forward = UIDeferredMenuElement.uncached { use in use([
