@@ -190,7 +190,6 @@ extension Notification.Name {
 	static let exhibit_artifacts = Self("LR_Artifacts")
 	static let exhibit_focus = Self("LR_Focus")
 	static let song_activation = Self("LR_Song_Activation")
-	static let lcd = Self("LR_LCD")
 }
 
 enum SF {

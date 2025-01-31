@@ -70,14 +70,9 @@ extension LCD {
 	}
 	@objc private func mp_state() {
 		_signal_state += 1
-		post()
 	}
 	@objc private func mp_now_playing() {
 		_signal_now_playing += 1
-		post()
-	}
-	private func post() {
-		NotificationCenter.default.post(name: .lcd, object: nil)
 	}
 }
 
