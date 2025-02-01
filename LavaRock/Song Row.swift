@@ -145,7 +145,7 @@ import SwiftUI
 			exhibit.has_selected_song(uSong)
 			? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: exhibit.has_selected_song(uSong)
-			? SF.deselect_up : SF.select_up
+			? SF.circle_triangle_up_fill : SF.circle_triangle_up_hollow
 		) {
 			exhibit.change_song_range(from: uSong, forward: false)
 		}.disabled({
@@ -158,7 +158,7 @@ import SwiftUI
 			exhibit.has_selected_song(uSong)
 			? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: exhibit.has_selected_song(uSong)
-			? SF.deselect_down : SF.select_down
+			? SF.circle_triangle_down_fill : SF.circle_triangle_down_hollow
 		) {
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled({

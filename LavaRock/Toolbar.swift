@@ -38,7 +38,7 @@ struct BubbleBar: View {
 					}
 			}
 		} label: {
-			Image(systemName: SF.select_fill)
+			Image(systemName: SF.circle_check)
 				.symbolRenderingMode({
 					guard let showcase else { return .hierarchical }
 					switch showcase.selection {
@@ -70,7 +70,7 @@ struct BubbleBar: View {
 			section_reorder
 			section_scope
 		} label: {
-			Image(systemName: SF.ellipsis)
+			Image(systemName: SF.circle_ellipsis)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.More)
 		}

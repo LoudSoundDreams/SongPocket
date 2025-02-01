@@ -28,7 +28,7 @@ struct MenuTransport: View {
 		} label: {
 			Image(
 				systemName: LCD.shared.is_playing
-				? SF.pause_circle : SF.play_circle)
+				? SF.circle_pause : SF.circle_play)
 			.symbolRenderingMode(.hierarchical)
 		}
 		.menuOrder(.fixed)
@@ -133,7 +133,7 @@ struct MenuTransport: View {
 					return segments.formatted(.list(type: .and, width: .narrow))
 				}(),
 				systemImage: LCD.shared.repeat_is_on
-				? "repeat.1.circle.fill" : SF.repeat_1)
+				? SF.circle_repeat_1 : SF.repeat_1)
 		}
 		.menuActionDismissBehavior(.disabled)
 		.disabled(LCD.shared.is_blank)

@@ -30,14 +30,14 @@ struct Border: View {
 
 struct EllipsisUnselected: View {
 	var body: some View {
-		Image(systemName: SF.ellipsis)
+		Image(systemName: SF.circle_ellipsis)
 			.symbolRenderingMode(.hierarchical)
 			.accessibilityLabel(InterfaceText.Select)
 	}
 }
 struct EllipsisSelected: View {
 	var body: some View {
-		Image(systemName: SF.ellipsis)
+		Image(systemName: SF.circle_ellipsis)
 			.accessibilityLabel(InterfaceText.Select)
 			.accessibilityAddTraits(.isSelected)
 	}

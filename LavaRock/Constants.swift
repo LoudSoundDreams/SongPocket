@@ -192,11 +192,11 @@ extension Notification.Name {
 }
 
 enum SF {
-	static let select_fill = "checkmark.circle.fill"
-	static let select_up = "arrowtriangle.up.circle"
-	static let select_down = "arrowtriangle.down.circle"
-	static let deselect_up = "arrowtriangle.up.circle.fill"
-	static let deselect_down = "arrowtriangle.down.circle.fill"
+	static let circle_check = "checkmark.circle.fill"
+	static let circle_triangle_up_hollow = "arrowtriangle.up.circle"
+	static let circle_triangle_down_hollow = "arrowtriangle.down.circle"
+	static let circle_triangle_up_fill = "arrowtriangle.up.circle.fill"
+	static let circle_triangle_down_fill = "arrowtriangle.down.circle.fill"
 	
 	static let reverse = "arrow.uturn.up"
 	static let shuffle = "shuffle"
@@ -208,8 +208,8 @@ enum SF {
 	static let play_hollow = "play"
 	static let add_to_queue = "text.line.last.and.arrowtriangle.forward"
 	
-	static let play_circle = "play.circle.fill"
-	static let pause_circle = "pause.circle.fill"
+	static let circle_play = "play.circle.fill"
+	static let circle_pause = "pause.circle.fill"
 	static let play_bold = "play.fill"
 	static let pause_bold = "pause.fill"
 	static let rewind = "arrow.counterclockwise"
@@ -218,10 +218,11 @@ enum SF {
 	static let previous_bold = "backward.end.fill"
 	static let next_bold = "forward.end.fill"
 	static let repeat_1 = "repeat.1"
+	static let circle_repeat_1 = "repeat.1.circle.fill"
 	
 	static let photo_fill = "photo.fill"
-	static let photo_circle = "photo.circle.fill"
-	static let ellipsis = "ellipsis.circle.fill"
+	static let circle_photo = "photo.circle.fill"
+	static let circle_ellipsis = "ellipsis.circle.fill"
 	static let app_external = "arrow.up.forward.app"
 	static let music_note = "music.note"
 }

@@ -127,7 +127,7 @@ import MusicKit
 		Button {
 			exhibit.focus = .spotlight(uAlbum)
 		} label: {
-			Image(systemName: SF.photo_circle)
+			Image(systemName: SF.circle_photo)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.Show_artwork)
 		}
@@ -167,7 +167,7 @@ import MusicKit
 			exhibit.has_selected_album(uAlbum)
 			? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
 			systemImage: exhibit.has_selected_album(uAlbum)
-			? SF.deselect_up : SF.select_up
+			? SF.circle_triangle_up_fill : SF.circle_triangle_up_hollow
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: false)
 		}.disabled({
@@ -180,7 +180,7 @@ import MusicKit
 			exhibit.has_selected_album(uAlbum)
 			? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
 			systemImage: exhibit.has_selected_album(uAlbum)
-			? SF.deselect_down : SF.select_down
+			? SF.circle_triangle_down_fill : SF.circle_triangle_down_hollow
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled({
