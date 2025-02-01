@@ -66,7 +66,7 @@ struct BubbleBar: View {
 	
 	private var menu_overflow: some View {
 		Menu {
-			submenu_sort
+			sections_sort
 			section_reorder
 			section_scope
 		} label: {
@@ -77,19 +77,6 @@ struct BubbleBar: View {
 		.menuOrder(.fixed)
 	}
 	
-	private var submenu_sort: some View {
-		Menu {
-			sections_sort
-		} label: { if let showcase {
-			Label(
-				{ switch showcase.focus {
-					case .spotlight: return ""
-					case .covers: return InterfaceText.Sort_Albums
-					case .expanded: return InterfaceText.Sort_Songs
-				}}(),
-				systemImage: SF.sort)
-		}}
-	}
 	@ViewBuilder private var sections_sort: some View {
 		// Include sort commands depending on the type to sort: albums or songs.
 		// Enable sort commands depending on the items to sort:
