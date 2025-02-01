@@ -31,12 +31,9 @@ import SwiftUI
 				
 				stack_info(songInfo, albumInfo)
 				Spacer()
-				Group {
-//					b_select
-					menu_select(songInfo, albumInfo)
-				}
-				.imageScale(.large)
-				.dynamicType_default_to_plus_3()
+				menu_select(songInfo, albumInfo)
+					.imageScale(.large)
+					.dynamicType_default_to_plus_3()
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
@@ -101,14 +98,6 @@ import SwiftUI
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title].compactMap { $0 })
 		.accessibilityAddTraits(.isButton)
-	}
-	
-	private var b_select: some View {
-		Button {
-		} label: {
-			Image(systemName: SF.select_fill).accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected)
-				.symbolRenderingMode(.hierarchical)
-		}
 	}
 	
 	private func menu_select(

@@ -86,7 +86,6 @@ import MusicKit
 			HStack(alignment: .bottom) {
 				b_spotlight
 				Spacer()
-//				b_select
 				menu_select
 			}
 			.font(.largeTitle)
@@ -143,15 +142,6 @@ import MusicKit
 		}
 	}
 	
-	private var b_select: some View {
-		Button {
-		} label: {
-			Image(systemName: SF.select_fill).accessibilityLabel(InterfaceText.Select).accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.3 RC, VoiceOver automatically says “Selected” because of the SF Symbol.
-				.symbolRenderingMode(.hierarchical)
-		}
-		.disabled(!can_select_album)
-		.animation(.default, value: can_select_album)
-	}
 	private var menu_select: some View {
 		Menu {
 			b_above
