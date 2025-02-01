@@ -183,7 +183,7 @@ struct BubbleBar: View {
 					await Tape.play_now(jumbled)
 				}
 			} label: {
-				Label(InterfaceText.Jumble, systemImage: {
+				Label(InterfaceText.Play_Jumbled, systemImage: {
 					let _ = die_rolls
 					return SF.die_random()
 				}())
