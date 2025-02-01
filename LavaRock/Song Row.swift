@@ -31,9 +31,12 @@ import SwiftUI
 				
 				stack_info(songInfo, albumInfo)
 				Spacer()
-				menu_select(songInfo, albumInfo)
-					.imageScale(.large)
-					.dynamicType_default_to_plus_3()
+				ZStack {
+					menu_select(songInfo, albumInfo)
+						.imageScale(.large)
+						.dynamicType_default_to_plus_3()
+						.opacity(can_select_song ? 1 : .zero)
+				}.animation(.default, value: can_select_song)
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
@@ -67,6 +70,12 @@ import SwiftUI
 		switch exhibit.selection {
 			case .mode_albums, .mode_songs: return false
 			case .view: return uSong == exhibit.activated
+		}
+	}
+	private var can_select_song: Bool {
+		switch exhibit.selection {
+			case .mode_songs: return true
+			case .mode_albums, .view: return false
 		}
 	}
 	

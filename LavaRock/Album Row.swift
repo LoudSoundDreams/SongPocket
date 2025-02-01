@@ -80,13 +80,15 @@ import MusicKit
 	
 	private let catalog: AppleCatalog = .shared
 	var body: some View {
-		VStack(alignment: .leading) {
+		HStack(alignment: .bottom) {
 			stack_info
 				.padding(.leading, SongRow.nudge_leading * 2)
-			HStack(alignment: .bottom) {
+			Spacer()
+			VStack {
+				ZStack {
+					menu_select.opacity(can_select_album ? 1 : .zero)
+				}.animation(.default, value: can_select_album)
 				b_spotlight
-				Spacer()
-				menu_select
 			}
 			.font(.largeTitle)
 			.dynamicType_default_to_plus_3()
@@ -152,13 +154,11 @@ import MusicKit
 			{ EllipsisSelected() }
 			else { EllipsisUnselected() }
 		}
-		.disabled(!can_select_album)
-		.animation(.default, value: can_select_album)
 	}
 	private var can_select_album: Bool {
-		switch exhibit.focus {
-			case .covers: return true
-			case .expanded, .spotlight: return false
+		switch exhibit.selection {
+			case .mode_albums: return true
+			case .mode_songs, .view: return false
 		}
 	}
 	
