@@ -31,12 +31,11 @@ import SwiftUI
 				
 				stack_info(songInfo, albumInfo)
 				Spacer()
-				ZStack {
-					menu_select(songInfo, albumInfo)
-						.imageScale(.large)
-						.dynamicType_default_to_plus_3()
-						.opacity(can_select_song ? 1 : .zero)
-				}.animation(.default, value: can_select_song)
+				menu_select(songInfo, albumInfo)
+					.imageScale(.large)
+					.dynamicType_default_to_plus_3()
+					.opacity(can_select_song ? 1 : .zero) // Keep the layout stable by never removing the view.
+					.animation(.default, value: can_select_song)
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()

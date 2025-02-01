@@ -85,9 +85,9 @@ import MusicKit
 				.padding(.leading, SongRow.padding_align_AlbumLabel)
 			Spacer()
 			VStack {
-				ZStack {
-					menu_select.opacity(can_select_album ? 1 : .zero)
-				}.animation(.default, value: can_select_album)
+				menu_select
+					.opacity(can_select_album ? 1 : .zero)
+					.animation(.default, value: can_select_album)
 				b_spotlight
 			}
 			.font(.largeTitle)
