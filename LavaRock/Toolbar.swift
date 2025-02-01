@@ -3,17 +3,15 @@
 import SwiftUI
 
 struct BubbleBar: View {
-	static let width_border: CGFloat = .eight * 1/2
-	
 	var body: some View {
 		HStack {
-			MenuTransport()
 			b_select_mode
+			MenuTransport()
 			menu_overflow
 		}
 		.font(.largeTitle)
 		.dynamicType_default_to_plus_3()
-		.padding(Self.width_border)
+		.padding(.eight * 1/2)
 		.background(Material.bar, in: .capsule)
 	}
 	
