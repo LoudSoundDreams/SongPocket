@@ -123,7 +123,27 @@ private struct MenuOverflow: View {
 						}
 				}
 			}
-			
+			section_scope
+		}} label: {
+			Image(systemName: SF.ellipsis)
+				.symbolRenderingMode({
+					guard let showcase = Global.shared.showcase
+					else { return .hierarchical }
+					switch showcase.selection {
+						case .view:
+							return .hierarchical
+						case .mode_albums, .mode_songs:
+							return .monochrome
+					}
+				}())
+				.accessibilityLabel(InterfaceText.More)
+		}
+		.menuOrder(.fixed)
+		.onLongPressGesture(minimumDuration: .zero) { die_rolls += 1 }
+	}
+	
+	private var section_scope: some View {
+		Section { if let showcase = Global.shared.showcase {
 			let uSongs = showcase.uSongs_scope()
 			
 			Button {
@@ -155,22 +175,7 @@ private struct MenuOverflow: View {
 			} label: {
 				Label(InterfaceText.Add_to_Queue, systemImage: SF.add_to_queue)
 			}.disabled(uSongs.isEmpty)
-		}} label: {
-			Image(systemName: SF.ellipsis)
-				.symbolRenderingMode({
-					guard let showcase = Global.shared.showcase
-					else { return .hierarchical }
-					switch showcase.selection {
-						case .view:
-							return .hierarchical
-						case .mode_albums, .mode_songs:
-							return .monochrome
-					}
-				}())
-				.accessibilityLabel(InterfaceText.More)
-		}
-		.menuOrder(.fixed)
-		.onLongPressGesture(minimumDuration: .zero) { die_rolls += 1 }
+		}}
 	}
 	@State private var die_rolls = 0
 }
