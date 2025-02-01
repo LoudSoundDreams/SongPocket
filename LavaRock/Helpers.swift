@@ -79,7 +79,7 @@ extension NotificationCenter {
 	}
 }
 
-// MARK: SwiftUI
+// MARK: UI
 
 extension Color {
 	static func debug_random() -> Self {
@@ -95,8 +95,6 @@ extension View {
 		}
 	}
 }
-
-// MARK: UIKit
 
 extension UIImage {
 	func applying_hierarchical_tint() -> UIImage? {

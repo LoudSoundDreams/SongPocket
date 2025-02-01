@@ -75,8 +75,6 @@ import MusicKit
 	}
 }
 
-// MARK: Label
-
 @MainActor private struct AlbumLabel: View {
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
@@ -213,8 +211,6 @@ import MusicKit
 	
 	private var is_merging: Bool { Global.shared.librarian_is_merging }
 }
-
-// MARK: Art
 
 @MainActor struct AlbumArt: View {
 	let uAlbum: UAlbum
