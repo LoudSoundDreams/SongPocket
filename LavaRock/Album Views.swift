@@ -125,7 +125,7 @@ import MusicKit
 		Button {
 			exhibit.focus = .spotlight(uAlbum)
 		} label: {
-			Image(systemName: "photo.circle.fill")
+			Image(systemName: SF.photo_circle)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.Show_artwork)
 		}

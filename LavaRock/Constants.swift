@@ -89,8 +89,8 @@ enum InterfaceText {
 	
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
-	static let Add_to_Queue = "Play Later"
 	static let Jumble = "Jumble"
+	static let Play_Later = "Play Later"
 	
 	static let Pause = "Pause"
 	static let Restart = "Restart"
@@ -201,6 +201,8 @@ enum SF {
 	
 	static let reverse = "arrow.uturn.up"
 	static let shuffle = "shuffle"
+	static let move_up = "arrow.up"
+	static let move_down = "arrow.down"
 	static let to_top = "arrow.up.to.line"
 	static let to_bottom = "arrow.down.to.line"
 	
@@ -227,8 +229,11 @@ enum SF {
 	static let previous_bold = "backward.end.fill"
 	static let next_bold = "forward.end.fill"
 	static let repeat_1 = "repeat.1"
-	static let photo = "photo"
 	
+	static let photo_hollow = "photo"
+	static let photo_fill = "photo.fill"
+	static let photo_circle = "photo.circle.fill"
 	static let ellipsis = "ellipsis.circle.fill"
 	static let app_external = "arrow.up.forward.app"
+	static let music_note = "music.note"
 }

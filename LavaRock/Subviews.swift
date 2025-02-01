@@ -45,7 +45,7 @@ struct EllipsisSelected: View {
 
 struct Placeholder: View {
 	var body: some View {
-		Image(systemName: "music.note")
+		Image(systemName: SF.music_note)
 			.foregroundStyle(Color(white: .one_half))
 			.font(.title)
 	}

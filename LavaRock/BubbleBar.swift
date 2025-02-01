@@ -135,14 +135,14 @@ struct BubbleBar: View {
 			Button {
 				showcase.reorder_selection(up: true, to_limit: false)
 			} label: {
-				Image(systemName: "arrow.up")
+				Image(systemName: SF.move_up)
 					.accessibilityLabel(InterfaceText.Move_Up)
 			}.menuActionDismissBehavior(.disabled)
 			
 			Button {
 				showcase.reorder_selection(up: false, to_limit: false)
 			} label: {
-				Image(systemName: "arrow.down")
+				Image(systemName: SF.move_down)
 					.accessibilityLabel(InterfaceText.Move_Down)
 			}.menuActionDismissBehavior(.disabled)
 			
@@ -163,7 +163,7 @@ struct BubbleBar: View {
 	}
 	
 	private var section_scope: some View {
-		ControlGroup { if let showcase {
+		Section { if let showcase {
 			let uSongs = showcase.uSongs_scope()
 			
 			Button {
@@ -193,7 +193,7 @@ struct BubbleBar: View {
 				showcase.end_selecting_animated()
 				Tape.play_later(uSongs)
 			} label: {
-				Label(InterfaceText.Add_to_Queue, systemImage: SF.add_to_queue)
+				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
 			}.disabled(uSongs.isEmpty)
 		}}
 	}
