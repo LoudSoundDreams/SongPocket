@@ -18,25 +18,28 @@ struct BubbleBar: View {
 
 private struct MenuSort: View {
 	var body: some View {
-		Menu { if let showcase = Global.shared.showcase {
-			// Include sort commands depending on the type to sort: albums or songs.
-			// Enable sort commands depending on the items to sort:
-			// • 2 or more
-			// • Contiguous
-			// • With useful data
-			switch showcase.focus {
-				case .spotlight: EmptyView()
-				case .covers: sections_sort_albums
-				case .expanded: sections_sort_songs
-			}
-			
+		Menu {
+			sections_sort
 			controlGroup_reorder
-		}} label: {
+		} label: {
 			Image(systemName: SF.sort)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.Sort)
 		}.menuOrder(.fixed)
 	}
+	
+	@ViewBuilder private var sections_sort: some View { if let showcase = Global.shared.showcase {
+		// Include sort commands depending on the type to sort: albums or songs.
+		// Enable sort commands depending on the items to sort:
+		// • 2 or more
+		// • Contiguous
+		// • With useful data
+		switch showcase.focus {
+			case .spotlight: EmptyView()
+			case .covers: sections_sort_albums
+			case .expanded: sections_sort_songs
+		}
+	}}
 	
 	private var sections_sort_albums: some View {
 		ForEach(Self.albumOrders_groups, id: \.self) { group in
