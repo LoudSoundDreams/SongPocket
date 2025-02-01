@@ -27,19 +27,18 @@ import MediaPlayer
 	}
 	var repeat_is_on: Bool {
 		let _ = _signal_state
-		guard let mode = mkPlayer?.state.repeatMode // Note: this property is optional.
-		else { return false }
-		switch mode {
+		guard let mpPlayer else { return false }
+		switch mpPlayer.repeatMode {
 			case .one: return true
-			case .none, .all: return false
+			case .default, .none, .all: return false
 			@unknown default: return false
 		}
 	}
 	private var _signal_state = 0
 	
 	var is_blank: Bool {
-		let _ = _signal_now_playing // 2do: When MusicKit enters or exits the “Not Playing” state, it doesn’t emit “queue changed” events. Do we care?
-		return nil == mkPlayer?.queue.currentEntry
+		let _ = _signal_now_playing
+		return nil == uSong_current
 	}
 	/*
 	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
@@ -55,9 +54,6 @@ import MediaPlayer
 }
 extension LCD {
 	@ObservationIgnored static let shared = LCD()
-	private var mkPlayer: ApplicationMusicPlayer? {
-		ApplicationMusicPlayer._shared
-	}
 	private var mpPlayer: MPMusicPlayerApplicationController? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return MPMusicPlayerController.applicationQueuePlayer
