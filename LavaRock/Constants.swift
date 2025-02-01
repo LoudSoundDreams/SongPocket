@@ -89,7 +89,6 @@ enum InterfaceText {
 	
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
-	static let Play_Jumbled = "Play Jumbled"
 	static let Play_Later = "Play Later"
 	
 	static let Pause = "Pause"
@@ -209,16 +208,6 @@ enum SF {
 	static let to_bottom = "arrow.down.to.line"
 	
 	static let play_hollow = "play"
-	static func die_random() -> String {
-		switch Int.random(in: 1...6) {
-			case 1: return "die.face.1"
-			case 2: return "die.face.2"
-			case 3: return "die.face.3"
-			case 4: return "die.face.4"
-			case 5: return "die.face.5"
-			default: return "die.face.6"
-		}
-	}
 	static let add_to_queue = "text.line.last.and.arrowtriangle.forward"
 	
 	static let play_circle = "play.circle.fill"
