@@ -83,6 +83,7 @@ import MusicKit
 		HStack(alignment: .bottom) {
 			stack_info
 				.padding(.leading, SongRow.padding_align_AlbumLabel)
+				.padding(.trailing, .eight) // Leave room before the buttons.
 			Spacer()
 			VStack {
 				menu_select
