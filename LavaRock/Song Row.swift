@@ -3,7 +3,7 @@
 import SwiftUI
 
 @MainActor struct SongRow: View {
-	static let nudge_leading: CGFloat = .eight * 1/4
+	static let padding_align_AlbumLabel: CGFloat = .eight * 1/2
 	
 	let uSong: USong
 	let uAlbum: UAlbum
@@ -42,7 +42,7 @@ import SwiftUI
 			Separator()
 		}
 		.padding(.horizontal)
-		.padding(.leading, Self.nudge_leading)
+		.padding(.horizontal, Self.padding_align_AlbumLabel)
 		.background { highlight }
 		.overlay { border }
 		.frame(maxWidth: exhibit.length_artwork)
