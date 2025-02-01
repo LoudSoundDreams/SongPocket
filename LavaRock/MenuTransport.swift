@@ -143,7 +143,7 @@ struct MenuTransport: View {
 		Button {
 			Global.shared.gallery?.spotlight_current()
 		} label: {
-			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo_hollow)
+			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo_fill)
 		}.disabled({
 			guard
 				let current = LCD.shared.uSong_current, // As of iOS 18.3 RC, mentioning this triggers a redraw if we delete or re-add the current song, because that makes Media Player post a notification “now-playing item changed”.

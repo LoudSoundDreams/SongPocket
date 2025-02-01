@@ -230,7 +230,6 @@ enum SF {
 	static let next_bold = "forward.end.fill"
 	static let repeat_1 = "repeat.1"
 	
-	static let photo_hollow = "photo"
 	static let photo_fill = "photo.fill"
 	static let photo_circle = "photo.circle.fill"
 	static let ellipsis = "ellipsis.circle.fill"
