@@ -26,47 +26,11 @@ private struct MenuSort: View {
 			// • With useful data
 			switch showcase.focus {
 				case .spotlight: EmptyView()
-				case .covers: commands_albums
-				case .expanded: commands_songs
+				case .covers: sections_sort_albums
+				case .expanded: sections_sort_songs
 			}
 			
-			ControlGroup {
-				Button {
-					showcase.reorder_selection(up: true, to_limit: true)
-				} label: {
-					Image(systemName: SF.to_top)
-						.accessibilityLabel(InterfaceText.To_Top)
-				}
-				
-				Button {
-					showcase.reorder_selection(up: true, to_limit: false)
-				} label: {
-					Image(systemName: "arrow.up")
-						.accessibilityLabel(InterfaceText.Move_Up)
-				}.menuActionDismissBehavior(.disabled)
-				
-				Button {
-					showcase.reorder_selection(up: false, to_limit: false)
-				} label: {
-					Image(systemName: "arrow.down")
-						.accessibilityLabel(InterfaceText.Move_Down)
-				}.menuActionDismissBehavior(.disabled)
-				
-				Button {
-					showcase.reorder_selection(up: false, to_limit: true)
-				} label: {
-					Image(systemName: SF.to_bottom)
-						.accessibilityLabel(InterfaceText.To_Bottom)
-				}
-			}
-			.controlGroupStyle(.compactMenu)
-			.disabled({
-				switch showcase.selection {
-					case .view: return true
-					case .mode_albums(let uAs_selected): return uAs_selected.isEmpty
-					case .mode_songs(let uSs_selected): return uSs_selected.isEmpty
-				}
-			}())
+			controlGroup_reorder
 		}} label: {
 			Image(systemName: SF.sort)
 				.symbolRenderingMode(.hierarchical)
@@ -74,7 +38,7 @@ private struct MenuSort: View {
 		}.menuOrder(.fixed)
 	}
 	
-	private var commands_albums: some View {
+	private var sections_sort_albums: some View {
 		ForEach(Self.albumOrders_groups, id: \.self) { group in
 			Section { ForEach(group, id: \.self) { order in
 				Button {
@@ -91,7 +55,7 @@ private struct MenuSort: View {
 	}
 	private static let albumOrders_groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
 	
-	private var commands_songs: some View {
+	private var sections_sort_songs: some View {
 		ForEach(Self.songOrders_groups, id: \.self) { group in
 			Section { ForEach(group, id: \.self) { order in
 				Button {
@@ -107,6 +71,45 @@ private struct MenuSort: View {
 		}
 	}
 	private static let songOrders_groups: [[SongOrder]] = [[.track], [.reverse, .random]]
+	
+	@ViewBuilder private var controlGroup_reorder: some View {
+		if let showcase = Global.shared.showcase { ControlGroup {
+			Button {
+				showcase.reorder_selection(up: true, to_limit: true)
+			} label: {
+				Image(systemName: SF.to_top)
+					.accessibilityLabel(InterfaceText.To_Top)
+			}
+			
+			Button {
+				showcase.reorder_selection(up: true, to_limit: false)
+			} label: {
+				Image(systemName: "arrow.up")
+					.accessibilityLabel(InterfaceText.Move_Up)
+			}.menuActionDismissBehavior(.disabled)
+			
+			Button {
+				showcase.reorder_selection(up: false, to_limit: false)
+			} label: {
+				Image(systemName: "arrow.down")
+					.accessibilityLabel(InterfaceText.Move_Down)
+			}.menuActionDismissBehavior(.disabled)
+			
+			Button {
+				showcase.reorder_selection(up: false, to_limit: true)
+			} label: {
+				Image(systemName: SF.to_bottom)
+					.accessibilityLabel(InterfaceText.To_Bottom)
+			}
+		}
+		.controlGroupStyle(.compactMenu)
+		.disabled({ switch showcase.selection {
+			case .view: return true
+			case .mode_albums(let uAs_selected): return uAs_selected.isEmpty
+			case .mode_songs(let uSs_selected): return uSs_selected.isEmpty
+		}}())
+		}
+	}
 }
 
 private struct MenuOverflow: View {
