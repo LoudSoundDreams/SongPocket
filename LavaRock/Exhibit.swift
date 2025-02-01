@@ -59,8 +59,7 @@ extension Exhibit {
 	@objc private func merged() {
 		// Merging might have removed the spotlighted or expanded album.
 		switch focus {
-			case .covers:
-				break
+			case .covers: break
 			case .spotlight(let uA_spotlighted):
 				if !Self.uAlbums_fresh().contains(uA_spotlighted)
 				{ focus = .covers }
@@ -79,7 +78,7 @@ extension Exhibit {
 				}
 			case .mode_albums(let old_selected):
 				guard !uAlbums().isEmpty else {
-					selection = .view // We could let users manually exit select mode, but they can’t re-enter because the “Select” button exists only on album rows, so don’t leave them in a transient state.
+					selection = .view
 					break
 				}
 				let selectable = Set(uAlbums(with: old_selected))
@@ -133,14 +132,11 @@ extension Exhibit {
 					result.append(contentsOf: lrAlbum.uSongs)
 				}
 				return result
-			case .view:
-				break
+			case .view: break
 		}
 		switch focus {
-			case .spotlight:
-				return []
-			case .expanded:
-				return uSongs()
+			case .spotlight: return []
+			case .expanded: return uSongs()
 			case .covers:
 				var result: [USong] = []
 				uAlbums().forEach { uAlbum in
@@ -224,12 +220,10 @@ extension Exhibit {
 	func change_album_range(from uA_anchor: UAlbum, forward: Bool) {
 		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor })
 		else { return }
-		let old_selected: Set<UAlbum> = {
-			switch selection {
-				case .mode_songs, .view: return []
-				case .mode_albums(let uAs_selected): return uAs_selected
-			}
-		}()
+		let old_selected: Set<UAlbum> = { switch selection {
+			case .mode_songs, .view: return []
+			case .mode_albums(let uAs_selected): return uAs_selected
+		}}()
 		let inserting: Bool = !old_selected.contains(uA_anchor)
 		let new_selected: Set<UAlbum> = {
 			var result = old_selected
@@ -250,8 +244,7 @@ extension Exhibit {
 			return result
 		}()
 		switch selection {
-			case .mode_songs:
-				return
+			case .mode_songs: return
 			case .view:
 				withAnimation {
 					selection = .mode_albums(new_selected)
@@ -263,12 +256,10 @@ extension Exhibit {
 	func change_song_range(from uS_anchor: USong, forward: Bool) {
 		guard let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor })
 		else { return }
-		let old_selected: Set<USong> = {
-			switch selection {
-				case .mode_albums, .view: return []
-				case .mode_songs(let uAs_selected): return uAs_selected
-			}
-		}()
+		let old_selected: Set<USong> = { switch selection {
+			case .mode_albums, .view: return []
+			case .mode_songs(let uAs_selected): return uAs_selected
+		}}()
 		let inserting: Bool = !old_selected.contains(uS_anchor)
 		let new_selected: Set<USong> = {
 			var result = old_selected
@@ -289,8 +280,7 @@ extension Exhibit {
 			return result
 		}()
 		switch selection {
-			case .mode_albums:
-				return
+			case .mode_albums: return
 			case .view:
 				withAnimation {
 					selection = .mode_songs(new_selected)
@@ -572,10 +562,8 @@ final class ExhibitTVC: LRTableViewController {
 		let artifact_target: Exhibit.Artifact? = {
 			switch exhibit.focus {
 				case .covers: return nil
-				case .expanded(let uA_expanded):
-					return .row_album(uA_expanded)
-				case .spotlight(let uA_spotlighted):
-					return .row_album(uA_spotlighted)
+				case .expanded(let uA_expanded): return .row_album(uA_expanded)
+				case .spotlight(let uA_spotlighted): return .row_album(uA_spotlighted)
 			}
 		}()
 		guard

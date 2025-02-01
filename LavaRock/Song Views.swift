@@ -68,10 +68,8 @@ import SwiftUI
 	}
 	private var is_highlighted: Bool {
 		switch exhibit.selection {
-			case .mode_albums, .mode_songs:
-				return false
-			case .view:
-				return uSong == exhibit.activated
+			case .mode_albums, .mode_songs: return false
+			case .view: return uSong == exhibit.activated
 		}
 	}
 	

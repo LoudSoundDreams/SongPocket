@@ -50,8 +50,6 @@ import MusicKit
 	private func tapped() {
 		switch exhibit.selection {
 			case .mode_songs: return
-			case .view:
-				break
 			case .mode_albums(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uAlbum) {
@@ -59,6 +57,7 @@ import MusicKit
 				} else { new_selected.insert(uAlbum) }
 				exhibit.selection = .mode_albums(new_selected)
 				return
+			case .view: break
 		}
 		switch exhibit.focus {
 			case .covers:
