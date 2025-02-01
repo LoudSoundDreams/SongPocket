@@ -5,52 +5,101 @@ import SwiftUI
 struct BubbleBar: View {
 	var body: some View {
 		HStack {
-			MenuSort()
+			b_select_mode
 			MenuTransport()
-			MenuOverflow()
+			menu_overflow
 		}
 		.font(.largeTitle)
 		.dynamicType_default_to_plus_3()
 		.padding(.eight * 1/2)
 		.background(Material.bar, in: .capsule)
 	}
-}
-
-private struct MenuSort: View {
-	var body: some View {
-		Menu {
-			sections_sort
-			controlGroup_reorder
+	
+	private var showcase: Exhibit? { Global.shared.showcase }
+	
+	private var b_select_mode: some View {
+		Button {
+			guard let showcase else { return }
+			switch showcase.selection {
+				case .mode_albums, .mode_songs:
+					showcase.end_selecting_animated()
+					return
+				case .view: break
+			}
+			switch showcase.focus {
+				case .spotlight: return
+				case .covers:
+					withAnimation {
+						showcase.selection = .mode_albums([])
+					}
+				case .expanded:
+					withAnimation {
+						showcase.selection = .mode_songs([])
+					}
+			}
 		} label: {
-			Image(systemName: SF.sort)
-				.symbolRenderingMode(.hierarchical)
-				.accessibilityLabel(InterfaceText.Sort)
-		}.menuOrder(.fixed)
+			Image(systemName: SF.select_fill)
+				.symbolRenderingMode({
+					guard let showcase else { return .hierarchical }
+					switch showcase.selection {
+						case .view:
+							return .hierarchical
+						case .mode_albums, .mode_songs:
+							return .monochrome
+					}
+				}())
+				.accessibilityLabel({
+					guard let showcase else { return InterfaceText.Select }
+					switch showcase.selection {
+						case .view:
+							return InterfaceText.Select
+						case .mode_albums, .mode_songs:
+							return InterfaceText.Done
+					}
+				}())
+		}.disabled({
+			guard let showcase else { return true }
+			return showcase.uAlbums().isEmpty ||
+			Global.shared.librarian_is_merging
+		}())
 	}
 	
-	@ViewBuilder private var sections_sort: some View { if let showcase = Global.shared.showcase {
+	private var menu_overflow: some View {
+		Menu {
+			sections_sort
+			section_reorder
+			section_scope
+		} label: {
+			Image(systemName: SF.ellipsis)
+				.symbolRenderingMode(.hierarchical)
+				.accessibilityLabel(InterfaceText.More)
+		}
+		.menuOrder(.fixed)
+		.onLongPressGesture(minimumDuration: .zero) { die_rolls += 1 }
+	}
+	
+	@ViewBuilder private var sections_sort: some View {
 		// Include sort commands depending on the type to sort: albums or songs.
 		// Enable sort commands depending on the items to sort:
 		// • 2 or more
 		// • Contiguous
 		// • With useful data
-		switch showcase.focus {
+		if let showcase { switch showcase.focus {
 			case .spotlight: EmptyView()
 			case .covers: sections_sort_albums
 			case .expanded: sections_sort_songs
-		}
-	}}
+		}}
+	}
 	
 	private var sections_sort_albums: some View {
 		ForEach(Self.albumOrders_groups, id: \.self) { group in
 			Section { ForEach(group, id: \.self) { order in
 				Button {
-					Global.shared.showcase?.sort_albums(by: order)
+					showcase?.sort_albums(by: order)
 				} label: {
 					Label(order.name, systemImage: order.sf_symbol)
 				}.disabled({
-					guard let showcase = Global.shared.showcase
-					else { return true }
+					guard let showcase else { return true }
 					return !showcase.can_sort_albums(by: order)
 				}())
 			}}
@@ -62,12 +111,11 @@ private struct MenuSort: View {
 		ForEach(Self.songOrders_groups, id: \.self) { group in
 			Section { ForEach(group, id: \.self) { order in
 				Button {
-					Global.shared.showcase?.sort_songs(by: order)
+					showcase?.sort_songs(by: order)
 				} label: {
 					Label(order.name, systemImage: order.sf_symbol)
 				}.disabled({
-					guard let showcase = Global.shared.showcase
-					else { return true }
+					guard let showcase else { return true }
 					return !showcase.can_sort_songs(by: order)
 				}())
 			}}
@@ -75,8 +123,8 @@ private struct MenuSort: View {
 	}
 	private static let songOrders_groups: [[SongOrder]] = [[.track], [.reverse, .random]]
 	
-	@ViewBuilder private var controlGroup_reorder: some View {
-		if let showcase = Global.shared.showcase { ControlGroup {
+	@ViewBuilder private var section_reorder: some View {
+		if let showcase { ControlGroup {
 			Button {
 				showcase.reorder_selection(up: true, to_limit: true)
 			} label: {
@@ -113,43 +161,9 @@ private struct MenuSort: View {
 		}}())
 		}
 	}
-}
-
-private struct MenuOverflow: View {
-	var body: some View {
-		Menu { if let showcase = Global.shared.showcase {
-			Section {
-				switch showcase.selection {
-					case .view: EmptyView()
-					case .mode_albums, .mode_songs:
-						Button {
-							showcase.end_selecting_animated()
-						} label: {
-							Label(InterfaceText.Done, systemImage: SF.select_fill)
-						}
-				}
-			}
-			section_scope
-		}} label: {
-			Image(systemName: SF.ellipsis)
-				.symbolRenderingMode({
-					guard let showcase = Global.shared.showcase
-					else { return .hierarchical }
-					switch showcase.selection {
-						case .view:
-							return .hierarchical
-						case .mode_albums, .mode_songs:
-							return .monochrome
-					}
-				}())
-				.accessibilityLabel(InterfaceText.More)
-		}
-		.menuOrder(.fixed)
-		.onLongPressGesture(minimumDuration: .zero) { die_rolls += 1 }
-	}
 	
 	private var section_scope: some View {
-		Section { if let showcase = Global.shared.showcase {
+		ControlGroup { if let showcase {
 			let uSongs = showcase.uSongs_scope()
 			
 			Button {

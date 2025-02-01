@@ -194,17 +194,13 @@ extension Notification.Name {
 
 enum SF {
 	static let select_fill = "checkmark.circle.fill"
-	static let select_hollow = "checkmark.circle"
 	static let select_up = "arrowtriangle.up.circle"
 	static let select_down = "arrowtriangle.down.circle"
 	static let deselect_up = "arrowtriangle.up.circle.fill"
 	static let deselect_down = "arrowtriangle.down.circle.fill"
 	
-	static let sort = "arrow.up.arrow.down.circle.fill"
 	static let reverse = "arrow.uturn.up"
 	static let shuffle = "shuffle"
-	static let move_up_circle = "arrow.up.circle.fill"
-	static let move_down_circle = "arrow.down.circle.fill"
 	static let to_top = "arrow.up.to.line"
 	static let to_bottom = "arrow.down.to.line"
 	

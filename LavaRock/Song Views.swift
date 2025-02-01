@@ -133,16 +133,6 @@ import SwiftUI
 				}()
 				return "\(InterfaceText._octothorpe) \(numbers)"
 			}()) {
-				switch exhibit.selection {
-					case .mode_albums, .mode_songs: EmptyView()
-					case .view:
-						Button(InterfaceText.Select, systemImage: SF.select_hollow) {
-							withAnimation {
-								exhibit.selection = .mode_songs([uSong])
-							}
-						}.disabled(is_merging)
-						Divider()
-				}
 				b_above
 				b_below
 			}
@@ -152,6 +142,7 @@ import SwiftUI
 			else { EllipsisUnselected() }
 		}
 	}
+	
 	private var b_above: some View {
 		Button(
 			exhibit.has_selected_song(uSong)

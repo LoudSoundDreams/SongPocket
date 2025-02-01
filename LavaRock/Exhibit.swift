@@ -123,6 +123,7 @@ extension Exhibit {
 	func uSongs_scope() -> [USong] { // In display order.
 		let _ = signal_artifacts
 		switch selection {
+			case .view: return []
 			case .mode_songs(let uSs_selected):
 				return uSongs(with: uSs_selected)
 			case .mode_albums(let uAs_selected):
@@ -132,22 +133,10 @@ extension Exhibit {
 					result.append(contentsOf: lrAlbum.uSongs)
 				}
 				return result
-			case .view: break
-		}
-		switch focus {
-			case .spotlight: return []
-			case .expanded: return uSongs()
-			case .covers:
-				var result: [USong] = []
-				uAlbums().forEach { uAlbum in
-					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
-					result.append(contentsOf: lrAlbum.uSongs)
-				}
-				return result
 		}
 	}
 	
-	private func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
+	func uAlbums(with chosen: Set<UAlbum>? = nil) -> [UAlbum] {
 		let _ = signal_artifacts
 		return artifacts.compactMap { switch $0 { // `compactMap` rather than `filter` because we’re returning a different type.
 			case .row_song: return nil
@@ -340,17 +329,23 @@ extension Exhibit {
 		let _ = signal_artifacts // In case, for example, after first merge.
 		switch selection {
 			case .mode_songs: return []
-			case .view: return Set(uAlbums())
-			case .mode_albums(let uAs_selected): return uAs_selected
+			case .view:
+				break
+			case .mode_albums(let uAs_selected):
+				if !uAs_selected.isEmpty { return uAs_selected }
 		}
+		return Set(uAlbums())
 	}
 	private func uSongs_to_sort() -> Set<USong> {
 		let _ = signal_artifacts // In case, for example, focus is an expanded album with 1 song, and merging adds a 2nd song.
 		switch selection {
 			case .mode_albums: return []
-			case .view: return Set(uSongs())
-			case .mode_songs(let uSs_selected): return uSs_selected
+			case .view:
+				break
+			case .mode_songs(let uSs_selected):
+				if !uSs_selected.isEmpty { return uSs_selected }
 		}
+		return Set(uSongs())
 	}
 	
 	func reorder_selection(up: Bool, to_limit: Bool) {

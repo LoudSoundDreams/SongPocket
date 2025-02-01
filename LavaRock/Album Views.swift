@@ -154,16 +154,6 @@ import MusicKit
 	}
 	private var menu_select: some View {
 		Menu {
-			switch exhibit.selection {
-				case .mode_songs, .mode_albums: EmptyView()
-				case .view:
-					Button(InterfaceText.Select, systemImage: SF.select_hollow) {
-						withAnimation {
-							exhibit.selection = .mode_albums([uAlbum])
-						}
-					}.disabled(is_merging)
-					Divider()
-			}
 			b_above
 			b_below
 		} label: {
@@ -207,7 +197,6 @@ import MusicKit
 			!exhibit.has_album_range(from: uAlbum, forward: true)
 		}())
 	}
-	
 	private var is_merging: Bool { Global.shared.librarian_is_merging }
 }
 
