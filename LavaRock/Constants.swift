@@ -89,7 +89,7 @@ enum InterfaceText {
 	
 	static let Start_Playing = "Start Playing"
 	static let Play = "Play"
-	static let Add_to_Queue = "Add to Queue"
+	static let Add_to_Queue = "Play Later"
 	static let Jumble = "Jumble"
 	
 	static let Pause = "Pause"
