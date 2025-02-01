@@ -3,7 +3,7 @@
 import SwiftUI
 
 @MainActor struct SongRow: View {
-	static let nudge_leading: CGFloat = .eight * 1/2
+	static let nudge_leading: CGFloat = .eight * 1/4
 	
 	let uSong: USong
 	let uAlbum: UAlbum

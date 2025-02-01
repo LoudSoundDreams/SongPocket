@@ -82,7 +82,7 @@ import MusicKit
 	var body: some View {
 		VStack(alignment: .leading) {
 			stack_info
-				.padding(.leading, SongRow.nudge_leading)
+				.padding(.leading, SongRow.nudge_leading * 2)
 			HStack(alignment: .bottom) {
 				b_spotlight
 				Spacer()
@@ -92,6 +92,7 @@ import MusicKit
 			.dynamicType_default_to_plus_3()
 		}
 		.padding()
+		.padding(.horizontal, .zero - SongRow.nudge_leading)
 	}
 	
 	@ViewBuilder private var stack_info: some View {

@@ -16,7 +16,14 @@ import MusicKit
 		WindowGroup {
 			ZStack(alignment: .bottom) {
 				RepNCMain()
-					.background { Color(white: .one_eighth / 2) }
+					.background {
+						LinearGradient(
+							gradient: Gradient(stops: [
+								Gradient.Stop(color: Color(white: .one_eighth / 4), location: .zero),
+								Gradient.Stop(color: Color(white: .one_eighth / 2), location: 1),
+							]),
+							startPoint: .top, endPoint: .bottom)
+					}
 					.ignoresSafeArea()
 				ZStack { if !spotlighting {
 					BubbleBar()
