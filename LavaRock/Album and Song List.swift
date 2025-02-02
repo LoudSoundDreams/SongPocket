@@ -279,7 +279,7 @@ extension Exhibit {
 		}
 	}
 	
-	// MARK: Reorder
+	// MARK: Sort
 	
 	func sort_albums(by albumOrder: AlbumOrder) {
 		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
@@ -347,6 +347,8 @@ extension Exhibit {
 		}
 		return Set(uSongs())
 	}
+	
+	// MARK: Reorder
 	
 	func reorder_selection(up: Bool, to_limit: Bool) {
 		switch selection {
