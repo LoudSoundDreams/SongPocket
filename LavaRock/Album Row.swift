@@ -107,22 +107,19 @@ import MusicKit
 			return title_album
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
-			if let date = albumInfo?._date_released {
-				Text(date.formatted(date: .numeric, time: .omitted))
-					.font(.caption2).monospacedDigit()
-					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
-					.accessibilitySortPriority(10)
-			}
+			Text(title_and_input_label)
+				.font_title3_bold()
+				.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary) // 2do: Make VoiceOver say “dimmed”.
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
 					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
-					.accessibilitySortPriority(20)
 			}
-			Text(title_and_input_label)
-				.font_title3_bold()
-				.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary) // 2do: Make VoiceOver say “dimmed”.
-				.accessibilitySortPriority(30)
+			if let date = albumInfo?._date_released {
+				Text(date.formatted(date: .numeric, time: .omitted))
+					.font(.caption2).monospacedDigit()
+					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
+			}
 		}
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
