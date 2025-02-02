@@ -137,7 +137,7 @@ import MusicKit
 				.accessibilityLabel(InterfaceText.Show_artwork)
 		}
 		.disabled(!can_spotlight)
-		.animation(.default, value: can_spotlight)
+		.animation(.linear_quick(), value: can_spotlight)
 	}
 	private var can_spotlight: Bool {
 		switch exhibit.selection {
