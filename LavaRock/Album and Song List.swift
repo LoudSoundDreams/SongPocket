@@ -350,6 +350,29 @@ extension Exhibit {
 	
 	// MARK: Reorder
 	
+	func can_reorder_selection(up: Bool) -> Bool {
+		switch selection {
+			case .view: return false
+			case .mode_albums(let uAs_selected):
+				guard !uAs_selected.isEmpty else { return false }
+				// If the selected albums are the topmost N albums, then they’re already at the top.
+				let at_limit: [UAlbum] = {
+					if up
+					{ return Array(uAlbums().prefix(uAs_selected.count)) }
+					return uAlbums().suffix(uAs_selected.count)
+				}()
+				return !at_limit.allSatisfy { uAs_selected.contains($0) }
+			case .mode_songs(let uSs_selected):
+				guard !uSs_selected.isEmpty else { return false }
+				let at_limit: [USong] = {
+					if up
+					{ return Array(uSongs().prefix(uSs_selected.count)) }
+					return uSongs().suffix(uSs_selected.count)
+				}()
+				return !at_limit.allSatisfy { uSs_selected.contains($0) }
+		}
+	}
+	
 	func reorder_selection(up: Bool, to_limit: Bool) {
 		switch selection {
 			case .view: return

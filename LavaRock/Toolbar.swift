@@ -129,35 +129,33 @@ struct BubbleBar: View {
 			} label: {
 				Image(systemName: SF.to_top)
 					.accessibilityLabel(InterfaceText.To_Top)
-			}
+			}.disabled(!showcase.can_reorder_selection(up: true))
 			
 			Button {
 				showcase.reorder_selection(up: true, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_up)
 					.accessibilityLabel(InterfaceText.Move_Up)
-			}.menuActionDismissBehavior(.disabled)
+			}
+			.menuActionDismissBehavior(.disabled)
+			.disabled(!showcase.can_reorder_selection(up: true))
 			
 			Button {
 				showcase.reorder_selection(up: false, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_down)
 					.accessibilityLabel(InterfaceText.Move_Down)
-			}.menuActionDismissBehavior(.disabled)
+			}
+			.menuActionDismissBehavior(.disabled)
+			.disabled(!showcase.can_reorder_selection(up: false))
 			
 			Button {
 				showcase.reorder_selection(up: false, to_limit: true)
 			} label: {
 				Image(systemName: SF.to_bottom)
 					.accessibilityLabel(InterfaceText.To_Bottom)
-			}
-		}
-		.controlGroupStyle(.compactMenu)
-		.disabled({ switch showcase.selection {
-			case .view: return true
-			case .mode_albums(let uAs_selected): return uAs_selected.isEmpty
-			case .mode_songs(let uSs_selected): return uSs_selected.isEmpty
-		}}())
+			}.disabled(!showcase.can_reorder_selection(up: false))
+		}.controlGroupStyle(.compactMenu)
 		}
 	}
 	
