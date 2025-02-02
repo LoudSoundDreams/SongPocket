@@ -192,7 +192,7 @@ extension Notification.Name {
 }
 
 enum SF {
-	static let circle_check = "checkmark.circle.fill"
+	static let circle_pencil = "pencil.circle.fill"
 	static let circle_triangle_up_hollow = "arrowtriangle.up.circle"
 	static let circle_triangle_down_hollow = "arrowtriangle.down.circle"
 	static let circle_triangle_up_fill = "arrowtriangle.up.circle.fill"

@@ -40,7 +40,7 @@ struct BubbleBar: View {
 					}
 			}
 		} label: {
-			Image(systemName: SF.circle_check)
+			Image(systemName: SF.circle_pencil)
 				.symbolRenderingMode({
 					guard let showcase else { return .hierarchical }
 					switch showcase.selection {
