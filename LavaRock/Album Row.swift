@@ -85,12 +85,13 @@ import MusicKit
 				.padding(.leading, SongRow.padding_align_AlbumLabel)
 				.padding(.trailing, .eight) // Leave room before the buttons.
 			Spacer()
-			VStack {
-				menu_select
-					.opacity(can_select_album ? 1 : .zero)
-					.animation(.default, value: can_select_album)
-				b_spotlight
-			}
+			ZStack {
+				if can_select_album {
+					menu_select
+				} else {
+					b_spotlight
+				}
+			}.animation(.default, value: can_select_album)
 			.font(.largeTitle)
 			.dynamicType_default_to_plus_3()
 		}
