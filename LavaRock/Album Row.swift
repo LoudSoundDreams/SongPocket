@@ -91,7 +91,7 @@ import MusicKit
 				} else {
 					b_spotlight
 				}
-			}.animation(.default, value: can_select_album)
+			}
 			.font(.largeTitle)
 			.dynamicType_default_to_plus_3()
 		}
