@@ -14,7 +14,7 @@ import MusicKit
 	}
 	var body: some Scene {
 		WindowGroup {
-			ZStack(alignment: .bottom) {
+			ZStack(alignment: .bottomTrailing) {
 				RepNCMain()
 					.background {
 						LinearGradient(
@@ -27,6 +27,8 @@ import MusicKit
 					.ignoresSafeArea()
 				ZStack { if !spotlighting {
 					BubbleBar()
+						.padding(.horizontal)
+						.padding(.horizontal, .zero - BubbleBar.width_border)
 //						.transition(.move(edge: .bottom)) // 2do: Unreliable.
 				}}.animation(.linear_quick(), value: spotlighting)
 			}
