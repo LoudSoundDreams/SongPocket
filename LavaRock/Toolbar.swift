@@ -42,10 +42,8 @@ struct BubbleBar: View {
 				.symbolRenderingMode({
 					guard let showcase else { return .hierarchical }
 					switch showcase.selection {
-						case .view:
-							return .hierarchical
-						case .mode_albums, .mode_songs:
-							return .monochrome
+						case .view: return .hierarchical
+						case .mode_albums, .mode_songs: return .monochrome
 					}
 				}())
 				.accessibilityLabel({
