@@ -172,7 +172,7 @@ struct BubbleBar: View {
 	
 	private var section_scope: some View {
 		Section { if let showcase {
-			let uSongs = showcase.uSongs_contained_in_selection()
+			let uSongs = showcase.uSongs_focused()
 			
 			Button {
 				showcase.end_selecting_animated()

@@ -142,16 +142,29 @@ extension Exhibit {
 		}
 	}
 	
-	func uSongs_contained_in_selection() -> [USong] { // In display order.
+	func uSongs_focused() -> [USong] { // In display order.
 		let _ = signal_artifacts
 		switch selection {
-			case .view: return []
-			case .mode_songs(let uSs_selected):
-				return uSongs(with: uSs_selected)
+			case .mode_songs(let uSs_selected): return uSongs(with: uSs_selected)
 			case .mode_albums(let uAs_selected):
 				var result: [USong] = []
 				uAlbums(with: uAs_selected).forEach { uAlbum in // Order matters.
-					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee else { return }
+					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee
+					else { return }
+					result.append(contentsOf: lrAlbum.uSongs)
+				}
+				return result
+			case .view:
+				break
+		}
+		switch focus {
+			case .spotlight: return []
+			case .expanded: return uSongs()
+			case .covers:
+				var result: [USong] = []
+				uAlbums().forEach { uAlbum in
+					guard let lrAlbum = Librarian.album_with_uAlbum[uAlbum]?.referencee
+					else { return  }
 					result.append(contentsOf: lrAlbum.uSongs)
 				}
 				return result
@@ -343,23 +356,17 @@ extension Exhibit {
 		let _ = signal_artifacts // In case, for example, after first merge.
 		switch selection {
 			case .mode_songs: return []
-			case .view:
-				break
-			case .mode_albums(let uAs_selected):
-				if !uAs_selected.isEmpty { return uAs_selected }
+			case .view: return Set(uAlbums()) // Implicitly select all.
+			case .mode_albums(let uAs_selected): return uAs_selected
 		}
-		return Set(uAlbums())
 	}
 	private func uSongs_to_sort() -> Set<USong> {
 		let _ = signal_artifacts // In case, for example, focus is an expanded album with 1 song, and merging adds a 2nd song.
 		switch selection {
 			case .mode_albums: return []
-			case .view:
-				break
-			case .mode_songs(let uSs_selected):
-				if !uSs_selected.isEmpty { return uSs_selected }
+			case .view: return Set(uSongs())
+			case .mode_songs(let uSs_selected): return uSs_selected
 		}
-		return Set(uSongs())
 	}
 	
 	// MARK: Reorder
