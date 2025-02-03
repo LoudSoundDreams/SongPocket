@@ -91,21 +91,29 @@ struct BubbleBar: View {
 		}}
 	}
 	
-	private var sections_sort_albums: some View {
-		ForEach(Self.albumOrders_groups, id: \.self) { group in
-			Section { ForEach(group, id: \.self) { order in
-				Button {
-					showcase?.sort_albums(by: order)
-				} label: {
-					Label(order.name, systemImage: order.sf_symbol)
-				}.disabled({
-					guard let showcase else { return true }
-					return !showcase.can_sort_albums(by: order)
-				}())
-			}}
+	@ViewBuilder private var sections_sort_albums: some View {
+		Section(description_albums()) {
+			buttons_sort_albums([.recently_added, .recently_released])
+		}
+		Section {
+			buttons_sort_albums([.reverse, .random])
 		}
 	}
-	private static let albumOrders_groups: [[AlbumOrder]] = [[.recently_added, .recently_released], [.reverse, .random]]
+	private func description_albums() -> String {
+		return ""
+	}
+	private func buttons_sort_albums(_ albumOrders: [AlbumOrder]) -> some View {
+		ForEach(albumOrders, id: \.self) { order in
+			Button {
+				showcase?.sort_albums(by: order)
+			} label: {
+				Label(order.name, systemImage: order.sf_symbol)
+			}.disabled({
+				guard let showcase else { return true }
+				return !showcase.can_sort_albums(by: order)
+			}())
+		}
+	}
 	
 	private var sections_sort_songs: some View {
 		ForEach(Self.songOrders_groups, id: \.self) { group in
