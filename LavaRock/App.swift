@@ -29,7 +29,7 @@ import MusicKit
 					BubbleBar()
 						.padding(.horizontal)
 						.padding(.horizontal, .zero - BubbleBar.width_border)
-						.transition(.move(edge: .bottom)) // 2do: Unreliable.
+						.transition(.move(edge: .bottom))
 				}}.animation(.linear_quick(), value: spotlighting)
 			}
 			.persistentSystemOverlays(spotlighting ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
