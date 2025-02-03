@@ -115,21 +115,29 @@ struct BubbleBar: View {
 		}
 	}
 	
-	private var sections_sort_songs: some View {
-		ForEach(Self.songOrders_groups, id: \.self) { group in
-			Section { ForEach(group, id: \.self) { order in
-				Button {
-					showcase?.sort_songs(by: order)
-				} label: {
-					Label(order.name, systemImage: order.sf_symbol)
-				}.disabled({
-					guard let showcase else { return true }
-					return !showcase.can_sort_songs(by: order)
-				}())
-			}}
+	@ViewBuilder private var sections_sort_songs: some View {
+		Section(description_songs()) {
+			buttons_sort_songs([.track])
+		}
+		Section {
+			buttons_sort_songs([.reverse, .random])
 		}
 	}
-	private static let songOrders_groups: [[SongOrder]] = [[.track], [.reverse, .random]]
+	private func description_songs() -> String {
+		return ""
+	}
+	private func buttons_sort_songs(_ songOrders: [SongOrder]) -> some View {
+		ForEach(songOrders, id: \.self) { order in
+			Button {
+				showcase?.sort_songs(by: order)
+			} label: {
+				Label(order.name, systemImage: order.sf_symbol)
+			}.disabled({
+				guard let showcase else { return true }
+				return !showcase.can_sort_songs(by: order)
+			}())
+		}
+	}
 	
 	@ViewBuilder private var section_reorder: some View {
 		if let showcase { ControlGroup {
