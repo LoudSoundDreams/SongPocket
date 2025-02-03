@@ -82,6 +82,7 @@ import MusicKit
 	var body: some View {
 		HStack(alignment: .bottom) {
 			stack_info
+				.padding(.leading, SongRow.nudge_text)
 				.padding(.trailing, .eight) // Leave room before the buttons.
 			Spacer()
 			ZStack {

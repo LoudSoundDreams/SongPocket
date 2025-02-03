@@ -3,6 +3,7 @@
 import SwiftUI
 
 @MainActor struct SongRow: View {
+	static let nudge_text: CGFloat = .eight * 1/4
 	let uSong: USong
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
@@ -28,6 +29,7 @@ import SwiftUI
 				let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum: uAlbum)
 				
 				stack_info(songInfo, albumInfo)
+					.padding(.leading, Self.nudge_text)
 				Spacer()
 				menu_select(songInfo, albumInfo)
 					.imageScale(.large)
