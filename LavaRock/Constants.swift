@@ -215,8 +215,8 @@ enum SF {
 	static let rewind = "arrow.counterclockwise"
 	static let jump_back_15 = "gobackward.15"
 	static let jump_forward_15 = "goforward.15"
-	static let previous_bold = "backward.end.fill"
-	static let next_bold = "forward.end.fill"
+	static let previous = "backward.end"
+	static let next = "forward.end"
 	static let repeat_1 = "repeat.1"
 	static let circle_repeat_1 = "repeat.1.circle.fill"
 	

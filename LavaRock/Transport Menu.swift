@@ -16,14 +16,14 @@ struct MenuTransport: View {
 				}
 			}
 			ControlGroup {
-				b_jump_back
+				b_previous
 				b_rewind
-				b_jump_forward
+				b_next
 			}
 			ControlGroup {
-				b_previous
+				b_jump_back
 				b_play_pause
-				b_next
+				b_jump_forward
 			}
 		} label: {
 			Image(
@@ -79,7 +79,7 @@ struct MenuTransport: View {
 		Button {
 			Tape.previous()
 		} label: {
-			Image(systemName: SF.previous_bold)
+			Image(systemName: SF.previous)
 				.accessibilityLabel(InterfaceText.Previous)
 		}
 		.menuActionDismissBehavior(.disabled)
@@ -89,7 +89,7 @@ struct MenuTransport: View {
 		Button {
 			Tape.next()
 		} label: {
-			Image(systemName: SF.next_bold)
+			Image(systemName: SF.next)
 				.accessibilityLabel(InterfaceText.Next)
 		}
 		.menuActionDismissBehavior(.disabled)
