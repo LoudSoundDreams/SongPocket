@@ -53,6 +53,7 @@ enum InterfaceText {
 	static let _welcome_subtitle = "SongPocket shows and plays your Apple Music library."
 	static let No_music = "No music"
 	static let _empty_library_message = "Add music to your Apple Music library."
+	static let _Updating_library_ellipsis = "Updating library…"
 	static let No_artwork = "No artwork"
 	static let Show_artwork = "Show artwork"
 	

@@ -120,6 +120,28 @@ extension Exhibit {
 		}()
 	}
 	
+	func message_status() -> String {
+		guard !Global.shared.librarian_is_merging
+		else { return InterfaceText._Updating_library_ellipsis }
+		switch selection {
+			case .mode_albums(let uAs_selected):
+				return InterfaceText.NUMBER_albums_selected(uAs_selected.count)
+			case .mode_songs(let uSs_selected):
+				return InterfaceText.NUMBER_songs_selected(uSs_selected.count)
+			case .view:
+				break
+		}
+		switch focus {
+			case .spotlight: return ""
+			case .covers:
+				let total_albums = uAlbums().count
+				return InterfaceText.NUMBER_albums(total_albums)
+			case .expanded:
+				let total_songs = uSongs().count
+				return InterfaceText.NUMBER_songs(total_songs)
+		}
+	}
+	
 	func uSongs_contained_in_selection() -> [USong] { // In display order.
 		let _ = signal_artifacts
 		switch selection {

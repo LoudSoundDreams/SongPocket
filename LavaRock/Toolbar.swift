@@ -92,7 +92,7 @@ struct BubbleBar: View {
 	}
 	
 	@ViewBuilder private var sections_sort_albums: some View {
-		Section(description_albums()) {
+		Section(showcase?.message_status() ?? "") {
 			buttons_sort_albums([.recently_added, .recently_released])
 		}
 		Section {
@@ -100,19 +100,12 @@ struct BubbleBar: View {
 		}
 	}
 	@ViewBuilder private var sections_sort_songs: some View {
-		Section(description_songs()) {
+		Section(showcase?.message_status() ?? "") {
 			buttons_sort_songs([.track])
 		}
 		Section {
 			buttons_sort_songs([.reverse, .random])
 		}
-	}
-	
-	private func description_albums() -> String {
-		return ""
-	}
-	private func description_songs() -> String {
-		return ""
 	}
 	
 	private func buttons_sort_albums(_ albumOrders: [AlbumOrder]) -> some View {
