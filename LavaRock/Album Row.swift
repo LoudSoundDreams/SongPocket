@@ -86,14 +86,20 @@ import MusicKit
 				.padding(.trailing, .eight) // Leave room before the buttons.
 			Spacer()
 			ZStack {
-				if can_select_album {
-					menu_select
-				} else {
-					b_spotlight
+				image_spotlight.hidden() // Keeps the layout stable.
+				switch exhibit.selection {
+					case .mode_songs: EmptyView()
+					case .mode_albums: menu_select
+					case .view:
+						switch exhibit.focus {
+							case .spotlight, .expanded: EmptyView()
+							case .covers: b_spotlight
+						}
 				}
 			}
 			.font(.largeTitle)
 			.dynamicType_default_to_plus_3()
+			.animation(.linear_quick(), value: exhibit.focus)
 		}
 		.padding()
 		.padding(.bottom, SongRow.padding_align_AlbumLabel)
@@ -129,22 +135,13 @@ import MusicKit
 		Button {
 			exhibit.focus = .spotlight(uAlbum)
 		} label: {
-			Image(systemName: SF.circle_photo)
-				.symbolRenderingMode(.hierarchical)
+			image_spotlight
 				.accessibilityLabel(InterfaceText.Show_artwork)
 		}
-		.disabled(!can_spotlight)
-		.animation(.linear_quick(), value: can_spotlight)
 	}
-	private var can_spotlight: Bool {
-		switch exhibit.selection {
-			case .mode_albums, .mode_songs: return false
-			case .view: break
-		}
-		switch exhibit.focus {
-			case .expanded, .spotlight: return false
-			case .covers: return true
-		}
+	private var image_spotlight: some View {
+		Image(systemName: SF.circle_photo)
+			.symbolRenderingMode(.hierarchical)
 	}
 	
 	private var menu_select: some View {
