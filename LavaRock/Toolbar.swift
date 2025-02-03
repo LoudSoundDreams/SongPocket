@@ -6,7 +6,7 @@ struct BubbleBar: View {
 	static let width_border: CGFloat = .eight * 1/2
 	
 	var body: some View {
-		HStack {
+		HStack(spacing: Self.width_border * 2) {
 			MenuTransport()
 			b_select_mode
 			menu_overflow
