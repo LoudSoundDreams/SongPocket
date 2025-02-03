@@ -26,10 +26,8 @@ struct MenuTransport: View {
 				b_jump_forward
 			}
 		} label: {
-			Image(
-				systemName: LCD.shared.is_playing
-				? SF.circle_pause : SF.circle_play)
-			.symbolRenderingMode(.hierarchical)
+			Image(systemName: SF.circle_waveform)
+				.symbolRenderingMode(.hierarchical)
 		}
 		.controlGroupStyle(.compactMenu)
 		.menuOrder(.fixed)
