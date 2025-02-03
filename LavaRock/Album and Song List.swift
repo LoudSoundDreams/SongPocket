@@ -120,7 +120,7 @@ extension Exhibit {
 		}()
 	}
 	
-	func uSongs_scope() -> [USong] { // In display order.
+	func uSongs_contained_in_selection() -> [USong] { // In display order.
 		let _ = signal_artifacts
 		switch selection {
 			case .view: return []

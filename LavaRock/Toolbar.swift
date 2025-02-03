@@ -99,9 +99,22 @@ struct BubbleBar: View {
 			buttons_sort_albums([.reverse, .random])
 		}
 	}
+	@ViewBuilder private var sections_sort_songs: some View {
+		Section(description_songs()) {
+			buttons_sort_songs([.track])
+		}
+		Section {
+			buttons_sort_songs([.reverse, .random])
+		}
+	}
+	
 	private func description_albums() -> String {
 		return ""
 	}
+	private func description_songs() -> String {
+		return ""
+	}
+	
 	private func buttons_sort_albums(_ albumOrders: [AlbumOrder]) -> some View {
 		ForEach(albumOrders, id: \.self) { order in
 			Button {
@@ -113,18 +126,6 @@ struct BubbleBar: View {
 				return !showcase.can_sort_albums(by: order)
 			}())
 		}
-	}
-	
-	@ViewBuilder private var sections_sort_songs: some View {
-		Section(description_songs()) {
-			buttons_sort_songs([.track])
-		}
-		Section {
-			buttons_sort_songs([.reverse, .random])
-		}
-	}
-	private func description_songs() -> String {
-		return ""
 	}
 	private func buttons_sort_songs(_ songOrders: [SongOrder]) -> some View {
 		ForEach(songOrders, id: \.self) { order in
@@ -178,7 +179,7 @@ struct BubbleBar: View {
 	
 	private var section_scope: some View {
 		Section { if let showcase {
-			let uSongs = showcase.uSongs_scope()
+			let uSongs = showcase.uSongs_contained_in_selection()
 			
 			Button {
 				showcase.end_selecting_animated()
