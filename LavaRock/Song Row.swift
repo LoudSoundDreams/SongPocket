@@ -3,8 +3,6 @@
 import SwiftUI
 
 @MainActor struct SongRow: View {
-	static let padding_align_AlbumLabel: CGFloat = .eight * 1/2
-	
 	let uSong: USong
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
@@ -41,7 +39,6 @@ import SwiftUI
 			Separator()
 		}
 		.padding(.horizontal)
-		.padding(.horizontal, Self.padding_align_AlbumLabel)
 		.background { highlight }
 		.overlay { border }
 		.frame(maxWidth: exhibit.length_artwork)

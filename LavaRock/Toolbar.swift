@@ -3,12 +3,10 @@
 import SwiftUI
 
 struct BubbleBar: View {
-	static let width_border: CGFloat = .eight * 1/2
-	
 	var body: some View {
 		HStack(spacing: Self.width_border * 2) {
-			MenuTransport()
 			b_select_mode
+			MenuTransport()
 			menu_overflow
 		}
 		.font(.largeTitle)
@@ -16,6 +14,7 @@ struct BubbleBar: View {
 		.padding(Self.width_border) // As of iOS 18.3, an open `Menu` stays 4 points away from the view that presented it.
 		.background(Material.bar, in: .capsule)
 	}
+	private static let width_border: CGFloat = .eight * 1/2
 	
 	private var showcase: Exhibit? { Global.shared.showcase }
 	

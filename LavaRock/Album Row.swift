@@ -82,7 +82,6 @@ import MusicKit
 	var body: some View {
 		HStack(alignment: .bottom) {
 			stack_info
-				.padding(.leading, SongRow.padding_align_AlbumLabel)
 				.padding(.trailing, .eight) // Leave room before the buttons.
 			Spacer()
 			ZStack {
@@ -100,9 +99,7 @@ import MusicKit
 			.font(.largeTitle)
 			.dynamicType_default_to_plus_3()
 			.animation(.linear_quick(), value: exhibit.focus)
-		}
-		.padding()
-		.padding(.bottom, SongRow.padding_align_AlbumLabel)
+		}.padding()
 	}
 	
 	@ViewBuilder private var stack_info: some View {
