@@ -13,7 +13,7 @@ struct BubbleBar: View {
 		}
 		.font(.largeTitle)
 		.dynamicType_default_to_plus_3()
-		.padding(Self.width_border)
+		.padding(Self.width_border) // As of iOS 18.3, an open `Menu` stays 4 points away from the view that presented it.
 		.background(Material.bar, in: .capsule)
 	}
 	
@@ -64,6 +64,8 @@ struct BubbleBar: View {
 		}())
 	}
 	
+	// MARK: Overflow
+	
 	private var menu_overflow: some View {
 		Menu {
 			sections_sort
@@ -73,8 +75,7 @@ struct BubbleBar: View {
 			Image(systemName: SF.circle_ellipsis)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.More)
-		}
-		.menuOrder(.fixed)
+		}.menuOrder(.fixed)
 	}
 	
 	@ViewBuilder private var sections_sort: some View {

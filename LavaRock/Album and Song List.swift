@@ -234,11 +234,7 @@ extension Exhibit {
 		}()
 		switch selection {
 			case .mode_songs: return
-			case .view:
-				withAnimation {
-					selection = .mode_albums(new_selected)
-				}
-			case .mode_albums:
+			case .view, .mode_albums:
 				selection = .mode_albums(new_selected)
 		}
 	}
@@ -270,11 +266,7 @@ extension Exhibit {
 		}()
 		switch selection {
 			case .mode_albums: return
-			case .view:
-				withAnimation {
-					selection = .mode_songs(new_selected)
-				}
-			case .mode_songs:
+			case .view, .mode_songs:
 				selection = .mode_songs(new_selected)
 		}
 	}

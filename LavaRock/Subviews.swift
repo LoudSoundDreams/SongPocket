@@ -24,7 +24,7 @@ struct BorderSelected: View {
 }
 struct Border: View {
 	var body: some View {
-		Rectangle().strokeBorder(lineWidth: .eight)
+		Rectangle().strokeBorder(lineWidth: .eight) // As of iOS 18.3, an open `Menu` stays 8 points away from the screen edge.
 	}
 }
 

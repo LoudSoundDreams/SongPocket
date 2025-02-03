@@ -31,8 +31,8 @@ struct MenuTransport: View {
 				? SF.circle_pause : SF.circle_play)
 			.symbolRenderingMode(.hierarchical)
 		}
-		.menuOrder(.fixed)
 		.controlGroupStyle(.compactMenu)
+		.menuOrder(.fixed)
 		.disabled(is_selecting)
 	}
 	private var is_selecting: Bool {
