@@ -8,7 +8,6 @@ import Foundation
 	
 	var showcase: Exhibit?
 	var librarian_is_merging = false { didSet { // Prevent users from modifying items while the app is modifying them.
-		// 2do: Prevent selecting or operating on selected items while merging.
 		if !librarian_is_merging {
 			NotificationCenter.default.post(name: .librarian_merged, object: nil)
 		}

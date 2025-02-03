@@ -59,8 +59,7 @@ struct BubbleBar: View {
 				}())
 		}.disabled({
 			guard let showcase else { return true }
-			return showcase.uAlbums().isEmpty ||
-			Global.shared.librarian_is_merging
+			return showcase.uAlbums().isEmpty
 		}())
 	}
 	
@@ -68,9 +67,11 @@ struct BubbleBar: View {
 	
 	private var menu_overflow: some View {
 		Menu {
-			sections_sort
-			section_reorder
-			section_scope
+			Group {
+				sections_sort
+				section_reorder
+				section_scope
+			}.disabled(Global.shared.librarian_is_merging)
 		} label: {
 			Image(systemName: SF.circle_ellipsis)
 				.symbolRenderingMode(.hierarchical)
