@@ -67,8 +67,7 @@ struct BubbleBar: View {
 	private var menu_overflow: some View {
 		Menu {
 			Group {
-				sections_sort
-				section_reorder
+				section_move
 				section_scope
 			}.disabled(Global.shared.librarian_is_merging)
 		} label: {
@@ -78,21 +77,28 @@ struct BubbleBar: View {
 		}.menuOrder(.fixed)
 	}
 	
-	@ViewBuilder private var sections_sort: some View {
-		// Include sort commands depending on the type to sort: albums or songs.
-		// Enable sort commands depending on the items to sort:
-		// • 2 or more
-		// • Contiguous
-		// • With useful data
-		if let showcase { switch showcase.focus {
-			case .spotlight: EmptyView()
-			case .covers: sections_sort_albums
-			case .expanded: sections_sort_songs
-		}}
-	}
+	@ViewBuilder private var section_move: some View { if let showcase {
+		Section(showcase.message_status()) {
+			Menu {
+				// Include sort commands depending on the type to sort: albums or songs.
+				// Enable sort commands depending on the items to sort:
+				// • 2 or more
+				// • Contiguous
+				// • With useful data
+				switch showcase.focus {
+					case .spotlight: EmptyView()
+					case .covers: sections_sort_albums
+					case .expanded: sections_sort_songs
+				}
+			} label: {
+				Label(InterfaceText.Arrange, systemImage: SF.sort)
+			}
+			section_reorder
+		}
+	}}
 	
 	@ViewBuilder private var sections_sort_albums: some View {
-		Section(showcase?.message_status() ?? "") {
+		Section {
 			buttons_sort_albums([.recently_added, .recently_released])
 		}
 		Section {
@@ -100,7 +106,7 @@ struct BubbleBar: View {
 		}
 	}
 	@ViewBuilder private var sections_sort_songs: some View {
-		Section(showcase?.message_status() ?? "") {
+		Section {
 			buttons_sort_songs([.track])
 		}
 		Section {
