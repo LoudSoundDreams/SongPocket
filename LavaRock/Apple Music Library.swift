@@ -12,20 +12,17 @@ typealias USong = MPMediaEntityPersistentID
 
 @MainActor @Observable final class AppleCatalog {
 	private init() {}
+	
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
 	@ObservationIgnored private(set) var mkSongs_cache: [USong: MKSong] = [:] { didSet {
 		signal_mkSongs += 1
+	
 	}}
 	fileprivate(set) var signal_mkSongs = 0
 }
 extension AppleCatalog {
 	@ObservationIgnored static let shared = AppleCatalog()
 	@ObservationIgnored private static let signposter = OSSignposter(subsystem: "apple catalog", category: .pointsOfInterest)
-	
-	static func open_Apple_Music() {
-		guard let url = URL(string: "music://") else { return }
-		UIApplication.shared.open(url)
-	}
 	
 	func watch() {
 		let library = MPMediaLibrary.default()

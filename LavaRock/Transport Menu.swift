@@ -155,7 +155,8 @@ struct MenuTransport: View {
 	
 	private var b_apple_music: some View {
 		Button {
-			AppleCatalog.open_Apple_Music()
+			guard let url = URL(string: "music://") else { return }
+			UIApplication.shared.open(url)
 		} label: {
 			Label(InterfaceText.Apple_Music, systemImage: SF.app_external)
 		}
