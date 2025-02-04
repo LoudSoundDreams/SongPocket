@@ -194,7 +194,7 @@ extension Exhibit {
 	
 	// MARK: Select
 	
-	func end_selecting_animated() {
+	func selection_end_animated() {
 		withAnimation {
 			selection = .view
 		}

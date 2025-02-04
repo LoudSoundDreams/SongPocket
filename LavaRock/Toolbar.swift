@@ -23,7 +23,7 @@ struct BubbleBar: View {
 			guard let showcase else { return }
 			switch showcase.selection {
 				case .mode_albums, .mode_songs:
-					showcase.end_selecting_animated()
+					showcase.selection_end_animated()
 					return
 				case .view: break
 			}
@@ -181,7 +181,7 @@ struct BubbleBar: View {
 			let uSongs = showcase.uSongs_scope()
 			
 			Button {
-				showcase.end_selecting_animated()
+				showcase.selection_end_animated()
 				Task {
 					await Tape.play_now(uSongs)
 				}
@@ -190,7 +190,7 @@ struct BubbleBar: View {
 			}.disabled(uSongs.isEmpty)
 			
 			Button {
-				showcase.end_selecting_animated()
+				showcase.selection_end_animated()
 				Tape.play_later(uSongs)
 			} label: {
 				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
