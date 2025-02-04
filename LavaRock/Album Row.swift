@@ -147,23 +147,16 @@ import MusicKit
 			b_above
 			b_below
 		} label: {
-			if exhibit.has_selected_album(uAlbum)
+			if is_selected
 			{ EllipsisSelected() }
 			else { EllipsisUnselected() }
 		}
 	}
-	private var can_select_album: Bool {
-		switch exhibit.selection {
-			case .mode_albums: return true
-			case .mode_songs, .view: return false
-		}
-	}
-	
 	private var b_above: some View {
 		Button(
-			exhibit.has_selected_album(uAlbum)
+			is_selected
 			? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
-			systemImage: exhibit.has_selected_album(uAlbum)
+			systemImage: is_selected
 			? SF.circle_triangle_up_fill : SF.circle_triangle_up_hollow
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: false)
@@ -171,13 +164,20 @@ import MusicKit
 	}
 	private var b_below: some View {
 		Button(
-			exhibit.has_selected_album(uAlbum)
+			is_selected
 			? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
-			systemImage: exhibit.has_selected_album(uAlbum)
+			systemImage: is_selected
 			? SF.circle_triangle_down_fill : SF.circle_triangle_down_hollow
 		) {
 			exhibit.change_album_range(from: uAlbum, forward: true)
 		}.disabled(!exhibit.has_album_range(from: uAlbum, forward: true))
+	}
+	private var is_selected: Bool {
+		switch exhibit.selection {
+			case .view, .mode_songs: return false
+			case .mode_albums(let uAs_selected):
+				return uAs_selected.contains(uAlbum)
+		}
 	}
 }
 
@@ -208,6 +208,6 @@ import MusicKit
 				}
 			}
 		}
-		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works
+		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works.
 	}
 }
