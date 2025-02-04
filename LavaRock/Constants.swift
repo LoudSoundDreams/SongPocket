@@ -199,7 +199,7 @@ enum SF {
 	static let circle_triangle_up_fill = "arrowtriangle.up.circle.fill"
 	static let circle_triangle_down_fill = "arrowtriangle.down.circle.fill"
 	
-	static let sort = "arrow.up.arrow.down"
+	static let arrange = "arrow.up.arrow.down"
 	static let reverse = "arrow.uturn.up"
 	static let shuffle = "shuffle"
 	static let move_up = "arrow.up"

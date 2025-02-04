@@ -296,18 +296,9 @@ extension Exhibit {
 		selection = .mode_songs(new_selected)
 	}
 	
-	// MARK: Sort
+	// MARK: Arrange
 	
-	func sort_albums(by albumOrder: AlbumOrder) {
-		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
-		refresh_artifacts()
-	}
-	func sort_songs(by songOrder: SongOrder) {
-		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
-		refresh_artifacts()
-	}
-	
-	func can_sort_albums(by albumOrder: AlbumOrder) -> Bool {
+	func can_arrange_albums(by albumOrder: AlbumOrder) -> Bool {
 		let to_sort = uAlbums_to_sort()
 		guard to_sort.count >= 2 else { return false }
 		
@@ -327,7 +318,7 @@ extension Exhibit {
 			}
 		}
 	}
-	func can_sort_songs(by songOrder: SongOrder) -> Bool {
+	func can_arrange_songs(by songOrder: SongOrder) -> Bool {
 		guard uSongs_to_sort().count >= 2 else { return false }
 		
 		switch selection {
@@ -340,6 +331,15 @@ extension Exhibit {
 		}
 		
 		return true
+	}
+	
+	func sort_albums(by albumOrder: AlbumOrder) {
+		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
+		refresh_artifacts()
+	}
+	func sort_songs(by songOrder: SongOrder) {
+		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
+		refresh_artifacts()
 	}
 	
 	private func uAlbums_to_sort() -> Set<UAlbum> {

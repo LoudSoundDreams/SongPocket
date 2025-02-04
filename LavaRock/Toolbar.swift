@@ -91,7 +91,7 @@ struct BubbleBar: View {
 					case .expanded: sections_sort_songs
 				}
 			} label: {
-				Label(InterfaceText.Arrange, systemImage: SF.sort)
+				Label(InterfaceText.Arrange, systemImage: SF.arrange)
 			}
 			section_reorder
 		}
@@ -122,7 +122,7 @@ struct BubbleBar: View {
 				Label(order.name, systemImage: order.sf_symbol)
 			}.disabled({
 				guard let showcase else { return true }
-				return !showcase.can_sort_albums(by: order)
+				return !showcase.can_arrange_albums(by: order)
 			}())
 		}
 	}
@@ -134,7 +134,7 @@ struct BubbleBar: View {
 				Label(order.name, systemImage: order.sf_symbol)
 			}.disabled({
 				guard let showcase else { return true }
-				return !showcase.can_sort_songs(by: order)
+				return !showcase.can_arrange_songs(by: order)
 			}())
 		}
 	}
