@@ -88,14 +88,14 @@ extension LCD {
 		let mk_to_play: [MKSong] = await {
 			var result: [MKSong] = []
 			for uSong in uSs_to_play {
-				guard let mkSong = await AppleCatalog.shared.mkSong_fetched(uSong: uSong) else { continue }
+				guard let mkSong = await AppleCatalog.shared.fetch_mkSong(for_uSong: uSong) else { continue }
 				result.append(mkSong)
 			}
 			return result
 		}()
 		let mk_start: MKSong? = await {
 			guard let uS_start else { return nil } // MusicKit lets us pass `nil` for `startingAt:`.
-			return await AppleCatalog.shared.mkSong_fetched(uSong: uS_start)
+			return await AppleCatalog.shared.fetch_mkSong(for_uSong: uS_start)
 		}()
 		
 		mkPlayer.queue = ApplicationMusicPlayer.Queue(for: mk_to_play, startingAt: mk_start) // Slow.
@@ -111,7 +111,7 @@ extension LCD {
 			let mk_to_append: [MKSong] = await {
 				var result: [MKSong] = []
 				for uSong in uSs_to_append {
-					guard let mkSong = await AppleCatalog.shared.mkSong_fetched(uSong: uSong) else { continue }
+					guard let mkSong = await AppleCatalog.shared.fetch_mkSong(for_uSong: uSong) else { continue }
 					result.append(mkSong)
 				}
 				return result

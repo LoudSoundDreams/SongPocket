@@ -238,8 +238,8 @@ final class LRAlbum {
 				case .track:
 					// Ideally, get the original track order the same way the merger does.
 					return chosen_unsorted.sorted { left, right in
-						let mk_left = AppleCatalog.shared.mkSongs_cache[left]
-						let mk_right = AppleCatalog.shared.mkSongs_cache[right]
+						let mk_left = AppleCatalog.shared.mkSong_for_uSong_cache[left]
+						let mk_right = AppleCatalog.shared.mkSong_for_uSong_cache[right]
 						if nil == mk_left && nil == mk_right { return false }
 						guard let mk_right else { return true }
 						guard let mk_left else { return false }

@@ -3,7 +3,7 @@
 import MediaPlayer
 
 extension Librarian {
-	static func merge_MediaPlayer_items(
+	static func merge_MediaPlayer(
 		_ mpSongs_by_album_then_track: [MPMediaItem]
 	) async {
 		Global.shared.librarian_is_merging = true
@@ -167,11 +167,11 @@ extension Librarian {
 			}
 		} else {
 			for uSong in to_add {
-				await AppleCatalog.shared.cache_mkSong(uSong: uSong) // This repeatedly updates an `@Observable` property, but SwiftUI doesn’t redraw dependent views for every update; maybe only once per turn of the run loop.
+				await AppleCatalog.shared.cache_mkSong(for_uSong: uSong) // This repeatedly updates an `@Observable` property, but SwiftUI doesn’t redraw dependent views for every update; maybe only once per turn of the run loop.
 			}
 			let to_add_sorted = to_add.sorted { left, right in
-				let mk_left = AppleCatalog.shared.mkSongs_cache[left]
-				let mk_right = AppleCatalog.shared.mkSongs_cache[right]
+				let mk_left = AppleCatalog.shared.mkSong_for_uSong_cache[left]
+				let mk_right = AppleCatalog.shared.mkSong_for_uSong_cache[right]
 				if nil == mk_left && nil == mk_right { return false }
 				guard let mk_right else { return true }
 				guard let mk_left else { return false }

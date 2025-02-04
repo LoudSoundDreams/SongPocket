@@ -14,11 +14,11 @@ typealias USong = MPMediaEntityPersistentID
 	private init() {}
 	
 	private(set) var mkSections_cache: [MusicItemID: MKSection] = [:]
-	@ObservationIgnored private(set) var mkSongs_cache: [USong: MKSong] = [:] { didSet {
-		signal_mkSongs += 1
 	
+	@ObservationIgnored private(set) var mkSong_for_uSong_cache: [USong: MKSong] = [:] { didSet {
+		signal_mkSong_cache += 1
 	}}
-	fileprivate(set) var signal_mkSongs = 0
+	fileprivate(set) var signal_mkSong_cache = 0
 }
 extension AppleCatalog {
 	@ObservationIgnored static let shared = AppleCatalog()
@@ -27,8 +27,8 @@ extension AppleCatalog {
 	func watch() {
 		let library = MPMediaLibrary.default()
 		library.beginGeneratingLibraryChangeNotifications()
-		NotificationCenter.default.addObserver_once(self, selector: #selector(merge_changes), name: .MPMediaLibraryDidChange, object: library)
-		merge_changes()
+		NotificationCenter.default.addObserver_once(self, selector: #selector(merge), name: .MPMediaLibraryDidChange, object: library)
+		merge()
 	}
 	
 	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
@@ -67,14 +67,14 @@ extension AppleCatalog {
 		)
 	}
 	
-	func mkSong_fetched(uSong: USong) async -> MKSong? {
-		if let cached = mkSongs_cache[uSong] { return cached }
+	func fetch_mkSong(for_uSong uSong: USong) async -> MKSong? {
+		if let cached = mkSong_for_uSong_cache[uSong] { return cached }
 		
-		await cache_mkSong(uSong: uSong)
+		await cache_mkSong(for_uSong: uSong)
 		
-		return mkSongs_cache[uSong]
+		return mkSong_for_uSong_cache[uSong]
 	}
-	func cache_mkSong(uSong: USong) async { // Slow; 11ms in 2024.
+	func cache_mkSong(for_uSong uSong: USong) async { // Slow; 11ms in 2024.
 		let _cache = Self.signposter.beginInterval("cache")
 		defer { Self.signposter.endInterval("cache", _cache) }
 		
@@ -86,10 +86,10 @@ extension AppleCatalog {
 			let mkSong = response.items.first
 		else { return }
 		
-		mkSongs_cache[uSong] = mkSong
+		mkSong_for_uSong_cache[uSong] = mkSong
 	}
 	
-	@objc private func merge_changes() {
+	@objc private func merge() {
 		Task {
 			let mkRequest = MusicLibrarySectionedRequest<MusicKit.Album, MKSong>()
 			let mpQuery = MPMediaQuery.songs() // As of iOS 18.2, accessing `MPMediaItemCollection.items` is slow, so avoid it.
@@ -106,7 +106,7 @@ extension AppleCatalog {
 			let mk_union = mkSections_cache.merging(mk_dict) { old, new in new }
 			mkSections_cache = mk_union // Show new data immediately …
 			
-			await Librarian.merge_MediaPlayer_items(mpSongs)
+			await Librarian.merge_MediaPlayer(mpSongs)
 			
 			try? await Task.sleep(for: .seconds(3)) // … but don’t hide deleted data before removing it from the screen anyway.
 			
