@@ -11,6 +11,10 @@ extension Librarian {
 		
 		defer { save() }
 		
+#if DEBUG
+		try? await Task.sleep(for: .seconds(10))
+#endif
+		
 		// Use MediaPlayer for album and song IDs.
 		// Ideally, use MusicKit for all other metadata.
 		
