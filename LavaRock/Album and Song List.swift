@@ -57,7 +57,7 @@ extension Exhibit {
 		return Librarian.the_albums.map { $0.uAlbum }
 	}
 	@objc private func merged() {
-		// Merging might have removed the spotlighted or expanded album.
+		// Merging might have deleted the spotlighted or expanded album.
 		switch focus {
 			case .covers: break
 			case .spotlight(let uA_spotlighted):
@@ -70,7 +70,7 @@ extension Exhibit {
 		
 		refresh_artifacts()
 		
-		// Merging might have removed selected items or the activated song.
+		// Merging might have deleted selected items or the activated song.
 		switch selection {
 			case .view:
 				if let activated, uSongs(with: [activated]).isEmpty {
@@ -142,7 +142,7 @@ extension Exhibit {
 		}
 	}
 	
-	func uSongs_focused() -> [USong] { // In display order.
+	func uSongs_scope() -> [USong] { // In display order.
 		let _ = signal_artifacts
 		switch selection {
 			case .mode_songs(let uSs_selected): return uSongs(with: uSs_selected)
