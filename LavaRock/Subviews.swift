@@ -3,6 +3,14 @@
 import SwiftUI
 import UIKit
 
+struct Placeholder: View {
+	var body: some View {
+		Image(systemName: SF.music_note)
+			.foregroundStyle(Color(white: .one_half))
+			.font(.title)
+	}
+}
+
 struct Separator: View {
 	var body: some View {
 		Rectangle()
@@ -40,13 +48,5 @@ struct EllipsisSelected: View {
 		Image(systemName: SF.circle_ellipsis)
 			.accessibilityLabel(InterfaceText.Select)
 			.accessibilityAddTraits(.isSelected)
-	}
-}
-
-struct Placeholder: View {
-	var body: some View {
-		Image(systemName: SF.music_note)
-			.foregroundStyle(Color(white: .one_half))
-			.font(.title)
 	}
 }

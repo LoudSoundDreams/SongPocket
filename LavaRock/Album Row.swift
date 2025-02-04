@@ -85,6 +85,37 @@ import MusicKit
 	}
 }
 
+@MainActor struct AlbumArt: View {
+	let uAlbum: UAlbum
+	let length_max: CGFloat
+	
+	private var artwork: MusicKit.Artwork? {
+		return AppleCatalog.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
+	}
+	var body: some View {
+		ZStack {
+			if let artwork {
+				/*
+				 As of iOS 17.5.1:
+				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
+				 • If you pass only width or only height, the view will always be square.
+				 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
+				 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
+				 */
+				ArtworkImage(artwork, width: length_max)
+			} else {
+				ZStack {
+					Color(white: .one_fourth)
+						.frame(width: length_max, height: length_max)
+					Placeholder()
+						.accessibilityLabel(InterfaceText.No_artwork)
+				}
+			}
+		}
+		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works.
+	}
+}
+
 @MainActor private struct AlbumLabel: View {
 	let uAlbum: UAlbum
 	let exhibit: Exhibit
@@ -195,36 +226,5 @@ import MusicKit
 			case .mode_albums(let uAs_selected):
 				return uAs_selected.contains(uAlbum)
 		}
-	}
-}
-
-@MainActor struct AlbumArt: View {
-	let uAlbum: UAlbum
-	let length_max: CGFloat
-	
-	private var artwork: MusicKit.Artwork? {
-		return AppleCatalog.shared.mkSections_cache[MusicItemID(String(uAlbum))]?.artwork
-	}
-	var body: some View {
-		ZStack {
-			if let artwork {
-				/*
-				 As of iOS 17.5.1:
-				 • If you pass both width and height, `ArtworkImage` will have exactly those dimensions.
-				 • If you pass only width or only height, the view will always be square.
-				 If the aspect ratio of the view is different than the aspect ratio of the actual art, MusicKit fits the art within the view and fills the gap with color.
-				 I can’t think of a way to figure the aspect ratio of the actual art. Therefore, always request a square view. For the square’s size, use the width or height of the viewport, whichever is smaller.
-				 */
-				ArtworkImage(artwork, width: length_max)
-			} else {
-				ZStack {
-					Color(white: .one_fourth)
-						.frame(width: length_max, height: length_max)
-					Placeholder()
-						.accessibilityLabel(InterfaceText.No_artwork)
-				}
-			}
-		}
-		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works.
 	}
 }
