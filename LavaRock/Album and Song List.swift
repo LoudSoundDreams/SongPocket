@@ -360,44 +360,38 @@ extension Exhibit {
 	
 	// MARK: Reorder
 	
-	func can_reorder(up: Bool) -> Bool {
+	func can_reorder(forward: Bool) -> Bool {
 		switch selection {
 			case .view: return false
 			case .mode_albums(let uAs_selected):
 				guard !uAs_selected.isEmpty else { return false }
 				// If the selected albums are the topmost N albums, then they’re already at the top.
 				let at_limit: [UAlbum] = {
-					if up
-					{ return Array(uAlbums().prefix(uAs_selected.count)) }
-					return uAlbums().suffix(uAs_selected.count)
+					if forward {
+						return uAlbums().suffix(uAs_selected.count)
+					}
+					return Array(uAlbums().prefix(uAs_selected.count))
 				}()
 				return !at_limit.allSatisfy { uAs_selected.contains($0) }
 			case .mode_songs(let uSs_selected):
 				guard !uSs_selected.isEmpty else { return false }
 				let at_limit: [USong] = {
-					if up
-					{ return Array(uSongs().prefix(uSs_selected.count)) }
-					return uSongs().suffix(uSs_selected.count)
+					if forward {
+						return uSongs().suffix(uSs_selected.count)
+					}
+					return Array(uSongs().prefix(uSs_selected.count))
 				}()
 				return !at_limit.allSatisfy { uSs_selected.contains($0) }
 		}
 	}
 	
-	func reorder(up: Bool, to_limit: Bool) {
+	func reorder(forward: Bool, to_limit: Bool) {
 		switch selection {
 			case .view: return
 			case .mode_albums(let uAs_selected):
-				if up {
-					Librarian.promote_albums(uAs_selected, to_limit: to_limit)
-				} else {
-					Librarian.demote_albums(uAs_selected, to_limit: to_limit)
-				}
+				Librarian.reorder_albums(uAs_selected, forward: forward, to_limit: to_limit)
 			case .mode_songs(let uSs_selected):
-				if up {
-					Librarian.promote_songs(uSs_selected, to_limit: to_limit)
-				} else {
-					Librarian.demote_songs(uSs_selected, to_limit: to_limit)
-				}
+				Librarian.reorder_songs(uSs_selected, forward: forward, to_limit: to_limit)
 		}
 		refresh_artifacts()
 		if to_limit {

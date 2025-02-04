@@ -101,42 +101,59 @@ final class LRAlbum {
 		}
 	}
 	
-	// Promote
-	static func promote_albums(
-		_ uAlbums_selected: Set<UAlbum>,
+	// MARK: Operations
+	
+	// Reorder
+	static func reorder_albums(
+		_ uAlbums_chosen: Set<UAlbum>,
+		forward: Bool,
 		to_limit: Bool
 	) {
 		defer { save() }
 		
-		let rs_to_promote = the_albums.indices(where: { album in
-			uAlbums_selected.contains(album.uAlbum)
+		let rs_chosen = the_albums.indices(where: { album in
+			uAlbums_chosen.contains(album.uAlbum)
 		})
-		let target: Int? = (
-			to_limit
+		if forward {
+			let target: Int? = to_limit
+			? the_albums.count-1
+			: target_demoting(rs_chosen, index_max: the_albums.count-1)
+			guard let target else { return }
+			the_albums.moveSubranges(rs_chosen, to: target+1) // This method puts the last in-range element before the `to:` index.
+		} else {
+			let target: Int? = to_limit
 			? 0
-			: target_promoting(rs_to_promote)
-		)
-		guard let target else { return }
-		the_albums.moveSubranges(rs_to_promote, to: target)
+			: target_promoting(rs_chosen)
+			guard let target else { return }
+			the_albums.moveSubranges(rs_chosen, to: target)
+		}
 	}
-	static func promote_songs(
-		_ uSongs_selected: Set<USong>,
+	static func reorder_songs(
+		_ uSongs_chosen: Set<USong>,
+		forward: Bool,
 		to_limit: Bool
 	) {
 		defer { save() }
 		
-		guard let album = album_containing_uSongs(uSongs_selected) else { return } // Verify that the selected songs are in the same album. Find that album.
-		let rs_to_promote = album.uSongs.indices(where: { uSong in
-			uSongs_selected.contains(uSong)
+		guard let album = album_containing_uSongs(uSongs_chosen) else { return } // Verify that the chosen songs are in the same album. Find that album.
+		let rs_chosen = album.uSongs.indices(where: { uSong in
+			uSongs_chosen.contains(uSong)
 		})
-		let target: Int? = (
-			to_limit
+		if forward {
+			let target: Int? = to_limit
+			? album.uSongs.count-1
+			: target_demoting(rs_chosen, index_max: album.uSongs.count-1)
+			guard let target else { return }
+			album.uSongs.moveSubranges(rs_chosen, to: target+1)
+		} else {
+			let target: Int? = to_limit
 			? 0
-			: target_promoting(rs_to_promote)
-		)
-		guard let target else { return }
-		album.uSongs.moveSubranges(rs_to_promote, to: target)
+			: target_promoting(rs_chosen)
+			guard let target else { return }
+			album.uSongs.moveSubranges(rs_chosen, to: target)
+		}
 	}
+	
 	private static func target_promoting(
 		_ rangeSet: RangeSet<Int>
 	) -> Int? {
@@ -146,47 +163,6 @@ final class LRAlbum {
 		} else {
 			return front // … make contiguous starting at front.
 		}
-	}
-	
-	// Demote
-	static func demote_albums(
-		_ uAlbums_selected: Set<UAlbum>,
-		to_limit: Bool
-	) {
-		defer { save() }
-		
-		let rs_to_demote = the_albums.indices(where: { album in
-			uAlbums_selected.contains(album.uAlbum)
-		})
-		let target: Int? = (
-			to_limit
-			? the_albums.count-1
-			: target_demoting(
-				rs_to_demote,
-				index_max: the_albums.count-1)
-		)
-		guard let target else { return }
-		the_albums.moveSubranges(rs_to_demote, to: target+1) // This method puts the last in-range element before the `to:` index.
-	}
-	static func demote_songs(
-		_ uSongs_selected: Set<USong>,
-		to_limit: Bool
-	) {
-		defer { save() }
-		
-		guard let album = album_containing_uSongs(uSongs_selected) else { return }
-		let rs_to_demote = album.uSongs.indices(where: { uSong in
-			uSongs_selected.contains(uSong)
-		})
-		let target: Int? = (
-			to_limit
-			? album.uSongs.count-1
-			: target_demoting(
-				rs_to_demote,
-				index_max: album.uSongs.count-1)
-		)
-		guard let target else { return }
-		album.uSongs.moveSubranges(rs_to_demote, to: target+1)
 	}
 	private static func target_demoting(
 		_ rangeSet: RangeSet<Int>,

@@ -143,36 +143,36 @@ struct BubbleBar: View {
 	@ViewBuilder private var section_reorder: some View { if let showcase {
 		ControlGroup {
 			Button {
-				showcase.reorder(up: true, to_limit: true)
+				showcase.reorder(forward: false, to_limit: true)
 			} label: {
 				Image(systemName: SF.to_top)
 					.accessibilityLabel(InterfaceText.To_Top)
-			}.disabled(!showcase.can_reorder(up: true))
+			}.disabled(!showcase.can_reorder(forward: false))
 			
 			Button {
-				showcase.reorder(up: true, to_limit: false)
+				showcase.reorder(forward: false, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_up)
 					.accessibilityLabel(InterfaceText.Move_Up)
 			}
 			.menuActionDismissBehavior(.disabled)
-			.disabled(!showcase.can_reorder(up: true))
+			.disabled(!showcase.can_reorder(forward: false))
 			
 			Button {
-				showcase.reorder(up: false, to_limit: false)
+				showcase.reorder(forward: true, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_down)
 					.accessibilityLabel(InterfaceText.Move_Down)
 			}
 			.menuActionDismissBehavior(.disabled)
-			.disabled(!showcase.can_reorder(up: false))
+			.disabled(!showcase.can_reorder(forward: true))
 			
 			Button {
-				showcase.reorder(up: false, to_limit: true)
+				showcase.reorder(forward: true, to_limit: true)
 			} label: {
 				Image(systemName: SF.to_bottom)
 					.accessibilityLabel(InterfaceText.To_Bottom)
-			}.disabled(!showcase.can_reorder(up: false))
+			}.disabled(!showcase.can_reorder(forward: true))
 		}
 		.controlGroupStyle(.compactMenu)
 		.disabled(Global.shared.librarian_is_merging)
