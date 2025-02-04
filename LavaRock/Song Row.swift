@@ -35,7 +35,6 @@ import SwiftUI
 					.imageScale(.large)
 					.dynamicType_default_to_plus_3()
 					.opacity(can_select_song ? 1 : .zero) // Keep the layout stable by never removing the view.
-					.animation(.default, value: can_select_song)
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
