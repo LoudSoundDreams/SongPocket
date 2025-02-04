@@ -63,10 +63,8 @@ struct BubbleBar: View {
 	
 	private var menu_overflow: some View {
 		Menu {
-			Group {
-				section_move
-				section_scope
-			}.disabled(Global.shared.librarian_is_merging)
+			section_move
+			section_scope
 		} label: {
 			Image(systemName: SF.circle_ellipsis)
 				.symbolRenderingMode(.hierarchical)
@@ -82,11 +80,13 @@ struct BubbleBar: View {
 				// • 2 or more
 				// • Contiguous
 				// • With useful data
-				switch showcase.focus {
-					case .spotlight: EmptyView()
-					case .covers: sections_sort_albums
-					case .expanded: sections_sort_songs
-				}
+				Group {
+					switch showcase.focus {
+						case .spotlight: EmptyView()
+						case .covers: sections_sort_albums
+						case .expanded: sections_sort_songs
+					}
+				}.disabled(Global.shared.librarian_is_merging)
 			} label: {
 				Label(InterfaceText.Arrange, systemImage: SF.arrange)
 			}
@@ -137,7 +137,7 @@ struct BubbleBar: View {
 	}
 	
 	@ViewBuilder private var section_reorder: some View {
-		if let showcase { ControlGroup {
+		ControlGroup { if let showcase {
 			Button {
 				showcase.reorder(up: true, to_limit: true)
 			} label: {
@@ -169,8 +169,9 @@ struct BubbleBar: View {
 				Image(systemName: SF.to_bottom)
 					.accessibilityLabel(InterfaceText.To_Bottom)
 			}.disabled(!showcase.can_reorder(up: false))
-		}.controlGroupStyle(.compactMenu)
-		}
+		}}
+		.controlGroupStyle(.compactMenu)
+		.disabled(Global.shared.librarian_is_merging)
 	}
 	
 	private var section_scope: some View {
@@ -192,6 +193,6 @@ struct BubbleBar: View {
 			} label: {
 				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
 			}.disabled(uSongs.isEmpty)
-		}}
+		}}.disabled(Global.shared.librarian_is_merging)
 	}
 }
