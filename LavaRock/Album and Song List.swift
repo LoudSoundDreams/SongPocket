@@ -129,16 +129,15 @@ extension Exhibit {
 			case .mode_songs(let uSs_selected):
 				return InterfaceText.NUMBER_songs_selected(uSs_selected.count)
 			case .view:
-				break
-		}
-		switch focus {
-			case .spotlight: return ""
-			case .covers:
-				let total_albums = uAlbums().count
-				return InterfaceText.NUMBER_albums(total_albums)
-			case .expanded:
-				let total_songs = uSongs().count
-				return InterfaceText.NUMBER_songs(total_songs)
+				switch focus {
+					case .spotlight: return ""
+					case .covers:
+						let total_albums = uAlbums().count
+						return InterfaceText.NUMBER_albums(total_albums)
+					case .expanded:
+						let total_songs = uSongs().count
+						return InterfaceText.NUMBER_songs(total_songs)
+				}
 		}
 	}
 	
@@ -361,7 +360,7 @@ extension Exhibit {
 	
 	// MARK: Reorder
 	
-	func can_reorder_selection(up: Bool) -> Bool {
+	func can_reorder(up: Bool) -> Bool {
 		switch selection {
 			case .view: return false
 			case .mode_albums(let uAs_selected):
@@ -384,7 +383,7 @@ extension Exhibit {
 		}
 	}
 	
-	func reorder_selection(up: Bool, to_limit: Bool) {
+	func reorder(up: Bool, to_limit: Bool) {
 		switch selection {
 			case .view: return
 			case .mode_albums(let uAs_selected):
@@ -426,7 +425,7 @@ final class ExhibitTVC: LRTableViewController {
 		super.viewDidLoad()
 		
 		Global.shared.showcase = exhibit // Ideally, whoever initializes this view should also initialize this.
-		Global.shared.gallery = self
+		Global.shared.artwork_target = self
 		
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
@@ -438,7 +437,7 @@ final class ExhibitTVC: LRTableViewController {
 	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
-		exhibit.length_artwork = Self.length_square_fitting(
+		exhibit.length_artwork = Self.length_square_inscribed_in(
 			size_frame: view.frame.size,
 			safeAreaInsets: view.safeAreaInsets)
 		refresh_contentInset(size_frame: view.frame.size)
@@ -447,13 +446,13 @@ final class ExhibitTVC: LRTableViewController {
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
 		// The `size` parameter will later become `view.frame.size`, not `view.bounds.size`.
-		exhibit.length_artwork = Self.length_square_fitting(
+		exhibit.length_artwork = Self.length_square_inscribed_in(
 			size_frame: size,
 			safeAreaInsets: view.safeAreaInsets)
 		refresh_contentInset(size_frame: size)
 	}
 	
-	private static func length_square_fitting(
+	private static func length_square_inscribed_in(
 		size_frame: CGSize,
 		safeAreaInsets: UIEdgeInsets
 	) -> CGFloat {
@@ -575,7 +574,7 @@ final class ExhibitTVC: LRTableViewController {
 	
 	// MARK: Events
 	
-	func spotlight_current() {
+	func go_to_artwork() {
 		guard
 			let uSong = LCD.shared.uSong_current,
 			let album = Librarian.album_containing_uSong[uSong]?.referencee
@@ -615,31 +614,32 @@ final class ExhibitTVC: LRTableViewController {
 			return
 		}
 		
-		guard let view_anchor: UIView = { () -> UITableViewCell? in
-			guard let row_activating = exhibit.artifacts.firstIndex(where: { switch $0 {
+		let anchor_for_popover: UIView? = { () -> UITableViewCell? in
+			guard let i_row = exhibit.artifacts.firstIndex(where: { switch $0 {
 				case .row_album: return false
 				case .row_song(let uSong): return uSong == activated
 			}}) else { return nil }
-			return tableView.cellForRow(at: IndexPath(row: row_activating, section: 0))
-		}() else { return }
+			return tableView.cellForRow(at: IndexPath(row: i_row, section: 0))
+		}()
+		guard let anchor_for_popover else { return }
 		
-		let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		sheet.popoverPresentationController?.sourceView = view_anchor
-		sheet.addAction(
+		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		alert.popoverPresentationController?.sourceView = anchor_for_popover
+		alert.addAction(
 			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
-				self.exhibit.activated = nil
 				Task {
+					self.exhibit.activated = nil
 					guard let album = Librarian.album_containing_uSong[activated]?.referencee else { return }
 					await Tape.play_now(album.uSongs, starting_at: activated)
 				}
 			}
 			// 2do: Silence VoiceOver after starting audio. `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
 		)
-		sheet.addAction(
+		alert.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
 				self.exhibit.activated = nil
 			}
 		)
-		present(sheet, animated: true)
+		present(alert, animated: true)
 	}
 }

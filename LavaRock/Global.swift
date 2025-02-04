@@ -13,7 +13,7 @@ import Foundation
 		}
 	}}
 	
-	@ObservationIgnored weak var gallery: ExhibitTVC?
+	@ObservationIgnored weak var artwork_target: ExhibitTVC?
 }
 extension Global {
 	@ObservationIgnored static let shared = Global()

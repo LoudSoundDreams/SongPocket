@@ -6,7 +6,7 @@ struct MenuTransport: View {
 	var body: some View {
 		Menu {
 			ControlGroup {
-				b_spotlight
+				b_artwork
 				b_repeat
 				b_apple_music
 			} label: {
@@ -139,9 +139,9 @@ struct MenuTransport: View {
 		.disabled(LCD.shared.is_blank)
 	}
 	
-	private var b_spotlight: some View {
+	private var b_artwork: some View {
 		Button {
-			Global.shared.gallery?.spotlight_current()
+			Global.shared.artwork_target?.go_to_artwork()
 		} label: {
 			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo_fill)
 		}.disabled({

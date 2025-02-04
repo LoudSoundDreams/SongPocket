@@ -24,18 +24,17 @@ struct BubbleBar: View {
 			switch showcase.selection {
 				case .mode_albums, .mode_songs:
 					showcase.selection_end_animated()
-					return
-				case .view: break
-			}
-			switch showcase.focus {
-				case .spotlight: return
-				case .covers:
-					withAnimation {
-						showcase.selection = .mode_albums([])
-					}
-				case .expanded:
-					withAnimation {
-						showcase.selection = .mode_songs([])
+				case .view:
+					switch showcase.focus {
+						case .spotlight: return
+						case .covers:
+							withAnimation {
+								showcase.selection = .mode_albums([])
+							}
+						case .expanded:
+							withAnimation {
+								showcase.selection = .mode_songs([])
+							}
 					}
 			}
 		} label: {
@@ -50,10 +49,8 @@ struct BubbleBar: View {
 				.accessibilityLabel({
 					guard let showcase else { return InterfaceText.Select }
 					switch showcase.selection {
-						case .view:
-							return InterfaceText.Select
-						case .mode_albums, .mode_songs:
-							return InterfaceText.Done
+						case .view: return InterfaceText.Select
+						case .mode_albums, .mode_songs: return InterfaceText.Done
 					}
 				}())
 		}.disabled({
@@ -142,36 +139,36 @@ struct BubbleBar: View {
 	@ViewBuilder private var section_reorder: some View {
 		if let showcase { ControlGroup {
 			Button {
-				showcase.reorder_selection(up: true, to_limit: true)
+				showcase.reorder(up: true, to_limit: true)
 			} label: {
 				Image(systemName: SF.to_top)
 					.accessibilityLabel(InterfaceText.To_Top)
-			}.disabled(!showcase.can_reorder_selection(up: true))
+			}.disabled(!showcase.can_reorder(up: true))
 			
 			Button {
-				showcase.reorder_selection(up: true, to_limit: false)
+				showcase.reorder(up: true, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_up)
 					.accessibilityLabel(InterfaceText.Move_Up)
 			}
 			.menuActionDismissBehavior(.disabled)
-			.disabled(!showcase.can_reorder_selection(up: true))
+			.disabled(!showcase.can_reorder(up: true))
 			
 			Button {
-				showcase.reorder_selection(up: false, to_limit: false)
+				showcase.reorder(up: false, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_down)
 					.accessibilityLabel(InterfaceText.Move_Down)
 			}
 			.menuActionDismissBehavior(.disabled)
-			.disabled(!showcase.can_reorder_selection(up: false))
+			.disabled(!showcase.can_reorder(up: false))
 			
 			Button {
-				showcase.reorder_selection(up: false, to_limit: true)
+				showcase.reorder(up: false, to_limit: true)
 			} label: {
 				Image(systemName: SF.to_bottom)
 					.accessibilityLabel(InterfaceText.To_Bottom)
-			}.disabled(!showcase.can_reorder_selection(up: false))
+			}.disabled(!showcase.can_reorder(up: false))
 		}.controlGroupStyle(.compactMenu)
 		}
 	}
