@@ -490,6 +490,7 @@ final class ExhibitTVC: LRTableViewController {
 				return UIHostingConfiguration {
 					ContentUnavailableView {
 						Text(InterfaceText._welcome_title).bold() // As of iOS 18.2 developer beta 4, the Settings app uses this for “No Fonts Installed”.
+							.foregroundStyle(.secondary)
 					} description: {
 						Text(InterfaceText._welcome_subtitle)
 					} actions: {
