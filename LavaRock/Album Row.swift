@@ -14,12 +14,12 @@ import MusicKit
 		.saturation(is_selecting_songs ? .zero : 1)
 		.overlay {
 			ZStack(alignment: .bottom) {
-				ZStack { if !is_spotlighting(uAlbum) {
+				ZStack { if is_blurred {
 					Rectangle().foregroundStyle(Material.thick)
-				}}.animation(.linear_quick(), value: is_spotlighting(uAlbum))
-				ZStack { if !is_spotlighting() {
+				}}.animation(.linear_quick(), value: is_blurred)
+				ZStack { if is_labeled {
 					AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
-				}}.animation(.linear_quick(), value: is_spotlighting())
+				}}.animation(.linear_quick(), value: is_labeled)
 			}
 		}
 		.overlay { border.accessibilityHidden(true) } // 2do: Make VoiceOver say “selected”.
@@ -28,12 +28,17 @@ import MusicKit
 		.onTapGesture { tapped() }
 		.accessibilityAddTraits(.isButton)
 	}
-	private func is_spotlighting(_ uAlbum: UAlbum? = nil) -> Bool {
+	private var is_blurred: Bool {
 		switch exhibit.focus {
-			case .covers, .expanded: return false
+			case .covers, .expanded: return true
 			case .spotlight(let uA_spotlighted):
-				guard let uAlbum else { return true }
-				return uA_spotlighted == uAlbum
+				return uA_spotlighted != uAlbum
+		}
+	}
+	private var is_labeled: Bool {
+		switch exhibit.focus {
+			case .covers, .expanded: return true
+			case .spotlight: return false
 		}
 	}
 	private var is_selecting_songs: Bool {

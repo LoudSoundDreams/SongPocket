@@ -59,7 +59,7 @@ struct BubbleBar: View {
 		}())
 	}
 	
-	// MARK: Overflow
+	// MARK: - Overflow
 	
 	private var menu_overflow: some View {
 		Menu {
@@ -72,6 +72,8 @@ struct BubbleBar: View {
 		}.menuOrder(.fixed)
 	}
 	
+	// MARK: Arrange
+	
 	@ViewBuilder private var section_move: some View { if let showcase {
 		Section(showcase.message_status()) {
 			Menu {
@@ -83,8 +85,8 @@ struct BubbleBar: View {
 				Group {
 					switch showcase.focus {
 						case .spotlight: EmptyView()
-						case .covers: sections_sort_albums
-						case .expanded: sections_sort_songs
+						case .covers: sections_arrange_albums
+						case .expanded: sections_arrange_songs
 					}
 				}.disabled(Global.shared.librarian_is_merging)
 			} label: {
@@ -94,24 +96,24 @@ struct BubbleBar: View {
 		}
 	}}
 	
-	@ViewBuilder private var sections_sort_albums: some View {
+	@ViewBuilder private var sections_arrange_albums: some View {
 		Section {
-			buttons_sort_albums([.recently_added, .recently_released])
+			buttons_arrange_albums([.recently_added, .recently_released])
 		}
 		Section {
-			buttons_sort_albums([.reverse, .random])
+			buttons_arrange_albums([.reverse, .random])
 		}
 	}
-	@ViewBuilder private var sections_sort_songs: some View {
+	@ViewBuilder private var sections_arrange_songs: some View {
 		Section {
-			buttons_sort_songs([.track])
+			buttons_arrange_songs([.track])
 		}
 		Section {
-			buttons_sort_songs([.reverse, .random])
+			buttons_arrange_songs([.reverse, .random])
 		}
 	}
 	
-	private func buttons_sort_albums(_ albumOrders: [AlbumOrder]) -> some View {
+	private func buttons_arrange_albums(_ albumOrders: [AlbumOrder]) -> some View {
 		ForEach(albumOrders, id: \.self) { order in
 			Button {
 				showcase?.arrange_albums(by: order)
@@ -123,7 +125,7 @@ struct BubbleBar: View {
 			}())
 		}
 	}
-	private func buttons_sort_songs(_ songOrders: [SongOrder]) -> some View {
+	private func buttons_arrange_songs(_ songOrders: [SongOrder]) -> some View {
 		ForEach(songOrders, id: \.self) { order in
 			Button {
 				showcase?.arrange_songs(by: order)
@@ -136,8 +138,10 @@ struct BubbleBar: View {
 		}
 	}
 	
-	@ViewBuilder private var section_reorder: some View {
-		ControlGroup { if let showcase {
+	// MARK: Reorder
+	
+	@ViewBuilder private var section_reorder: some View { if let showcase {
+		ControlGroup {
 			Button {
 				showcase.reorder(up: true, to_limit: true)
 			} label: {
@@ -169,13 +173,15 @@ struct BubbleBar: View {
 				Image(systemName: SF.to_bottom)
 					.accessibilityLabel(InterfaceText.To_Bottom)
 			}.disabled(!showcase.can_reorder(up: false))
-		}}
+		}
 		.controlGroupStyle(.compactMenu)
 		.disabled(Global.shared.librarian_is_merging)
-	}
+	}}
 	
-	private var section_scope: some View {
-		Section { if let showcase {
+	// MARK: Scope
+	
+	@ViewBuilder private var section_scope: some View { if let showcase {
+		Section {
 			let uSongs = showcase.uSongs_scope()
 			
 			Button {
@@ -193,6 +199,6 @@ struct BubbleBar: View {
 			} label: {
 				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
 			}.disabled(uSongs.isEmpty)
-		}}.disabled(Global.shared.librarian_is_merging)
-	}
+		}.disabled(Global.shared.librarian_is_merging)
+	}}
 }
