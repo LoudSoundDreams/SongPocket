@@ -200,22 +200,27 @@ extension Exhibit {
 		}
 	}
 	
-	func has_album_range(from uA_anchor: UAlbum, forward: Bool) -> Bool {
-		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor }) else { return false }
+	func can_select_range(from_uAlbum uA_anchor: UAlbum, forward: Bool) -> Bool {
+		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor })
+		else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
-		guard uAlbums().indices.contains(i_neighbor) else { return false }
+		guard uAlbums().indices.contains(i_neighbor)
+		else { return false }
 		switch selection {
-			case .mode_songs, .view: return true
+			case .mode_songs: return false
+			case .view: return true
 			case .mode_albums(let uAs_selected):
 				let anchor_is_selected = uAs_selected.contains(uA_anchor)
 				let neighbor_is_selected = uAs_selected.contains(uAlbums()[i_neighbor])
 				return anchor_is_selected == neighbor_is_selected
 		}
 	}
-	func has_song_range(from uS_anchor: USong, forward: Bool) -> Bool {
-		guard let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor }) else { return false }
+	func can_select_range(from_uSong uS_anchor: USong, forward: Bool) -> Bool {
+		guard let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor })
+		else { return false }
 		let i_neighbor: Int = forward ? (i_anchor+1) : (i_anchor-1)
-		guard uSongs().indices.contains(i_neighbor) else { return false }
+		guard uSongs().indices.contains(i_neighbor)
+		else { return false }
 		switch selection {
 			case .mode_albums: return false
 			case .view: return true
