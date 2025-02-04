@@ -133,17 +133,16 @@ import SwiftUI
 				b_below
 			}
 		} label: {
-			if exhibit.has_selected_song(uSong)
+			if is_selected
 			{ EllipsisSelected() }
 			else { EllipsisUnselected() }
 		}
 	}
-	
 	private var b_above: some View {
 		Button(
-			exhibit.has_selected_song(uSong)
+			is_selected
 			? InterfaceText.Deselect_Up : InterfaceText.Select_Up,
-			systemImage: exhibit.has_selected_song(uSong)
+			systemImage: is_selected
 			? SF.circle_triangle_up_fill : SF.circle_triangle_up_hollow
 		) {
 			exhibit.change_song_range(from: uSong, forward: false)
@@ -151,13 +150,20 @@ import SwiftUI
 	}
 	private var b_below: some View {
 		Button(
-			exhibit.has_selected_song(uSong)
+			is_selected
 			? InterfaceText.Deselect_Down : InterfaceText.Select_Down,
-			systemImage: exhibit.has_selected_song(uSong)
+			systemImage: is_selected
 			? SF.circle_triangle_down_fill : SF.circle_triangle_down_hollow
 		) {
 			exhibit.change_song_range(from: uSong, forward: true)
 		}.disabled(!exhibit.has_song_range(from: uSong, forward: true))
+	}
+	private var is_selected: Bool {
+		switch exhibit.selection {
+			case .view, .mode_albums: return false
+			case .mode_songs(let uSs_selected):
+				return uSs_selected.contains(uSong)
+		}
 	}
 	
 	private func tapped() {

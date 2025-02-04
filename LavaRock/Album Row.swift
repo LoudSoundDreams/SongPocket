@@ -11,7 +11,7 @@ import MusicKit
 		AlbumArt(
 			uAlbum: uAlbum,
 			length_max: exhibit.length_artwork)
-		.opacity(exhibit.has_selected_song() ? .one_half : 1)
+		.opacity(is_selecting_songs ? .one_half : 1)
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack { if !is_spotlighting(uAlbum) {
@@ -34,6 +34,12 @@ import MusicKit
 			case .spotlight(let uA_spotlighted):
 				guard let uAlbum else { return true }
 				return uA_spotlighted == uAlbum
+		}
+	}
+	private var is_selecting_songs: Bool {
+		switch exhibit.selection {
+			case .mode_songs: return true
+			case .view, .mode_albums: return false
 		}
 	}
 	
@@ -113,20 +119,26 @@ import MusicKit
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title_and_input_label)
 				.font_title3_bold()
-				.foregroundStyle(exhibit.has_selected_song() ? .secondary : .primary) // 2do: Make VoiceOver say “dimmed”.
+				.foregroundStyle(is_selecting_songs ? .secondary : .primary) // 2do: Make VoiceOver say “dimmed”.
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
-					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
+					.foregroundStyle(is_selecting_songs ? .tertiary : .secondary)
 			}
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
 					.font(.caption2).monospacedDigit()
-					.foregroundStyle(exhibit.has_selected_song() ? .tertiary : .secondary)
+					.foregroundStyle(is_selecting_songs ? .tertiary : .secondary)
 			}
 		}
 		.accessibilityElement(children: .combine)
 		.accessibilityInputLabels([title_and_input_label])
+	}
+	private var is_selecting_songs: Bool {
+		switch exhibit.selection {
+			case .mode_songs: return true
+			case .view, .mode_albums: return false
+		}
 	}
 	
 	private var b_spotlight: some View {

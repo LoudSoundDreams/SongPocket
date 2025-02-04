@@ -194,14 +194,6 @@ extension Exhibit {
 	
 	// MARK: Select
 	
-	func has_selected_song(_ uSong: USong? = nil) -> Bool {
-		switch selection {
-			case .view, .mode_albums: return false
-			case .mode_songs(let uSs_selected):
-				guard let uSong else { return true }
-				return uSs_selected.contains(uSong)
-		}
-	}
 	func end_selecting_animated() {
 		withAnimation {
 			selection = .view
