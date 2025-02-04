@@ -200,8 +200,8 @@ final class LRAlbum {
 		}
 	}
 	
-	// Sort
-	static func sort_albums(
+	// Arrange
+	static func arrange_albums(
 		_ uAs_chosen: Set<UAlbum>,
 		by albumOrder: AlbumOrder
 	) {
@@ -245,7 +245,7 @@ final class LRAlbum {
 		}
 		the_albums = new_albums
 	}
-	static func sort_songs(
+	static func arrange_songs(
 		_ uSs_chosen: Set<USong>,
 		by songOrder: SongOrder
 	) {

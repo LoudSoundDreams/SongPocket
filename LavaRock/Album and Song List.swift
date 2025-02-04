@@ -299,8 +299,8 @@ extension Exhibit {
 	// MARK: Arrange
 	
 	func can_arrange_albums(by albumOrder: AlbumOrder) -> Bool {
-		let to_sort = uAlbums_to_sort()
-		guard to_sort.count >= 2 else { return false }
+		let to_arrange = uAlbums_to_arrange()
+		guard to_arrange.count >= 2 else { return false }
 		
 		switch selection {
 			case .mode_songs, .view: break
@@ -313,13 +313,13 @@ extension Exhibit {
 		
 		switch albumOrder {
 			case .random, .reverse, .recently_added: return true
-			case .recently_released: return to_sort.contains {
+			case .recently_released: return to_arrange.contains {
 				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
 			}
 		}
 	}
 	func can_arrange_songs(by songOrder: SongOrder) -> Bool {
-		guard uSongs_to_sort().count >= 2 else { return false }
+		guard uSongs_to_arrange().count >= 2 else { return false }
 		
 		switch selection {
 			case .mode_albums, .view: break
@@ -333,16 +333,16 @@ extension Exhibit {
 		return true
 	}
 	
-	func sort_albums(by albumOrder: AlbumOrder) {
-		Librarian.sort_albums(uAlbums_to_sort(), by: albumOrder)
+	func arrange_albums(by albumOrder: AlbumOrder) {
+		Librarian.arrange_albums(uAlbums_to_arrange(), by: albumOrder)
 		refresh_artifacts()
 	}
-	func sort_songs(by songOrder: SongOrder) {
-		Librarian.sort_songs(uSongs_to_sort(), by: songOrder)
+	func arrange_songs(by songOrder: SongOrder) {
+		Librarian.arrange_songs(uSongs_to_arrange(), by: songOrder)
 		refresh_artifacts()
 	}
 	
-	private func uAlbums_to_sort() -> Set<UAlbum> {
+	private func uAlbums_to_arrange() -> Set<UAlbum> {
 		let _ = signal_artifacts // In case, for example, after first merge.
 		switch selection {
 			case .mode_songs: return []
@@ -350,7 +350,7 @@ extension Exhibit {
 			case .mode_albums(let uAs_selected): return uAs_selected
 		}
 	}
-	private func uSongs_to_sort() -> Set<USong> {
+	private func uSongs_to_arrange() -> Set<USong> {
 		let _ = signal_artifacts // In case, for example, focus is an expanded album with 1 song, and merging adds a 2nd song.
 		switch selection {
 			case .mode_albums: return []

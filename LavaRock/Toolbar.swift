@@ -80,8 +80,8 @@ struct BubbleBar: View {
 	@ViewBuilder private var section_move: some View { if let showcase {
 		Section(showcase.message_status()) {
 			Menu {
-				// Include sort commands depending on the type to sort: albums or songs.
-				// Enable sort commands depending on the items to sort:
+				// Include arrange commands depending on the type to arrange: albums or songs.
+				// Enable arrange commands depending on the items to arrange:
 				// • 2 or more
 				// • Contiguous
 				// • With useful data
@@ -117,7 +117,7 @@ struct BubbleBar: View {
 	private func buttons_sort_albums(_ albumOrders: [AlbumOrder]) -> some View {
 		ForEach(albumOrders, id: \.self) { order in
 			Button {
-				showcase?.sort_albums(by: order)
+				showcase?.arrange_albums(by: order)
 			} label: {
 				Label(order.name, systemImage: order.sf_symbol)
 			}.disabled({
@@ -129,7 +129,7 @@ struct BubbleBar: View {
 	private func buttons_sort_songs(_ songOrders: [SongOrder]) -> some View {
 		ForEach(songOrders, id: \.self) { order in
 			Button {
-				showcase?.sort_songs(by: order)
+				showcase?.arrange_songs(by: order)
 			} label: {
 				Label(order.name, systemImage: order.sf_symbol)
 			}.disabled({
