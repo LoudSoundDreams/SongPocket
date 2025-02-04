@@ -5,9 +5,9 @@ import SwiftUI
 struct BubbleBar: View {
 	var body: some View {
 		HStack(spacing: Self.width_border * 2) {
-			b_select_mode
-			MenuTransport()
 			menu_overflow
+			MenuTransport()
+			b_select_mode
 		}
 		.font(.largeTitle)
 		.dynamicType_default_to_plus_3()
@@ -66,7 +66,7 @@ struct BubbleBar: View {
 			section_move
 			section_scope
 		} label: {
-			Image(systemName: SF.circle_ellipsis)
+			Image(systemName: SF.circle_hamburger)
 				.symbolRenderingMode(.hierarchical)
 				.accessibilityLabel(InterfaceText.More)
 		}.menuOrder(.fixed)
@@ -88,7 +88,9 @@ struct BubbleBar: View {
 						case .covers: sections_arrange_albums
 						case .expanded: sections_arrange_songs
 					}
-				}.disabled(Global.shared.librarian_is_merging)
+				}
+				.menuActionDismissBehavior(.disabled)
+				.disabled(Global.shared.librarian_is_merging)
 			} label: {
 				Label(InterfaceText.Arrange, systemImage: SF.arrange)
 			}
