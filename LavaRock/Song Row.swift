@@ -31,10 +31,19 @@ import SwiftUI
 				stack_info(songInfo, albumInfo)
 					.padding(.leading, Self.nudge_text)
 				Spacer()
-				menu_select(songInfo, albumInfo)
-					.imageScale(.large)
-					.dynamicType_default_to_plus_3()
-					.opacity(can_select_song ? 1 : .zero) // Keep the layout stable by never removing the view.
+				ZStack { // Keep the layout stable by always including all subviews.
+					Image(systemName: "waveform")
+						.foregroundStyle(
+							LCD.shared.is_playing
+							? Color.accentColor : Color.secondary)
+						.opacity((
+							!can_select_song &&
+							LCD.shared.uSong_current == uSong
+						) ? 1 : .zero)
+					menu_select(songInfo, albumInfo)
+						.imageScale(.large)
+						.opacity(can_select_song ? 1 : .zero)
+				}.dynamicType_default_to_plus_3()
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
@@ -83,13 +92,6 @@ import SwiftUI
 		let title: String? = songInfo?._title
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title ?? InterfaceText._tilde)
-				.foregroundStyle({
-					guard uSong == LCD.shared.uSong_current
-					else { return Color.primary }
-					if LCD.shared.is_playing {
-						return Color.accentColor
-					} else { return Color.accentColor.opacity(.one_half) }
-				}())
 			if
 				let artist_song = songInfo?._artist,
 				let artist_album = albumInfo?._artist,
