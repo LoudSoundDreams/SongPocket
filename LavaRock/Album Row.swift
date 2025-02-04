@@ -11,7 +11,7 @@ import MusicKit
 		AlbumArt(
 			uAlbum: uAlbum,
 			length_max: exhibit.length_artwork)
-		.opacity(is_selecting_songs ? .one_half : 1)
+		.saturation(is_selecting_songs ? .zero : 1)
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack { if !is_spotlighting(uAlbum) {
