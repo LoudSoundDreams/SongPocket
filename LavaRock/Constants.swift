@@ -12,11 +12,7 @@ extension CGFloat {
 }
 
 extension Color {
-	static let LRAccent = Self(
-		.displayP3,
-		red: 127/255,
-		green: 191/255,
-		blue: 255/255)
+	static let LRAccent = primary
 }
 extension Animation {
 	static func linear_quick() -> Self {
