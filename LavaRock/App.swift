@@ -65,7 +65,7 @@ private final class NCMain: UINavigationController {
 		super.viewIsAppearing(animated)
 		if !Self.has_appeared {
 			Self.has_appeared = true
-			view.window!.tintColor = .denim
+			view.window!.tintColor = UIColor(Color.LRAccent)
 		}
 	}
 	private static var has_appeared = false

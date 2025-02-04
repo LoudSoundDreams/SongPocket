@@ -11,6 +11,13 @@ extension CGFloat {
 	static var eight: Self { 8 }
 }
 
+extension Color {
+	static let LRAccent = Self(
+		.displayP3,
+		red: 127/255,
+		green: 191/255,
+		blue: 255/255)
+}
 extension Animation {
 	static func linear_quick() -> Self {
 		linear(duration: .one_eighth)
