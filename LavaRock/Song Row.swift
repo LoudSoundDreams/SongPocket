@@ -32,7 +32,7 @@ import SwiftUI
 					.padding(.leading, Self.nudge_text)
 				Spacer()
 				ZStack { // Keep the layout stable by always including all subviews.
-					Image(systemName: "waveform")
+					Image(systemName: SF.waveform)
 						.foregroundStyle(
 							LCD.shared.is_playing
 							? Color.accentColor : Color.secondary)

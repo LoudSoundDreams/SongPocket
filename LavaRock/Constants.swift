@@ -225,6 +225,7 @@ enum SF {
 	static let repeat_1 = "repeat.1"
 	static let circle_repeat_1 = "repeat.1.circle.fill"
 	
+	static let waveform = "waveform"
 	static let photo_fill = "photo.fill"
 	static let circle_photo = "photo.circle.fill"
 	static let circle_ellipsis = "ellipsis.circle.fill"
