@@ -171,7 +171,7 @@ import MusicKit
 			systemImage: is_selected
 			? SF.circle_triangle_up_fill : SF.circle_triangle_up_hollow
 		) {
-			exhibit.change_album_range(from: uAlbum, forward: false)
+			exhibit.toggle_range(from_uAlbum: uAlbum, forward: false)
 		}.disabled(!exhibit.can_select_range(from_uAlbum: uAlbum, forward: false))
 	}
 	private var b_below: some View {
@@ -181,7 +181,7 @@ import MusicKit
 			systemImage: is_selected
 			? SF.circle_triangle_down_fill : SF.circle_triangle_down_hollow
 		) {
-			exhibit.change_album_range(from: uAlbum, forward: true)
+			exhibit.toggle_range(from_uAlbum: uAlbum, forward: true)
 		}.disabled(!exhibit.can_select_range(from_uAlbum: uAlbum, forward: true))
 	}
 	private var is_selected: Bool {

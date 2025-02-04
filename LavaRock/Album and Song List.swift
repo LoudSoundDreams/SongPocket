@@ -231,15 +231,19 @@ extension Exhibit {
 		}
 	}
 	
-	func change_album_range(from uA_anchor: UAlbum, forward: Bool) {
+	func toggle_range(from_uAlbum uA_anchor: UAlbum, forward: Bool) {
+		switch selection {
+			case .mode_songs: return
+			case .view, .mode_albums: break
+		}
 		guard let i_anchor = uAlbums().firstIndex(where: { $0 == uA_anchor })
 		else { return }
 		let old_selected: Set<UAlbum> = { switch selection {
 			case .mode_songs, .view: return []
 			case .mode_albums(let uAs_selected): return uAs_selected
 		}}()
-		let inserting: Bool = !old_selected.contains(uA_anchor)
 		let new_selected: Set<UAlbum> = {
+			let inserting: Bool = !old_selected.contains(uA_anchor)
 			var result = old_selected
 			var i_in_range = i_anchor
 			while true {
@@ -257,21 +261,21 @@ extension Exhibit {
 			}
 			return result
 		}()
-		switch selection {
-			case .mode_songs: return
-			case .view, .mode_albums:
-				selection = .mode_albums(new_selected)
-		}
+		selection = .mode_albums(new_selected)
 	}
-	func change_song_range(from uS_anchor: USong, forward: Bool) {
+	func toggle_range(from_uSong uS_anchor: USong, forward: Bool) {
+		switch selection {
+			case .mode_albums: return
+			case .view, .mode_songs: break
+		}
 		guard let i_anchor = uSongs().firstIndex(where: { $0 == uS_anchor })
 		else { return }
 		let old_selected: Set<USong> = { switch selection {
 			case .mode_albums, .view: return []
 			case .mode_songs(let uAs_selected): return uAs_selected
 		}}()
-		let inserting: Bool = !old_selected.contains(uS_anchor)
 		let new_selected: Set<USong> = {
+			let inserting: Bool = !old_selected.contains(uS_anchor)
 			var result = old_selected
 			var i_in_range = i_anchor
 			while true {
@@ -289,11 +293,7 @@ extension Exhibit {
 			}
 			return result
 		}()
-		switch selection {
-			case .mode_albums: return
-			case .view, .mode_songs:
-				selection = .mode_songs(new_selected)
-		}
+		selection = .mode_songs(new_selected)
 	}
 	
 	// MARK: Sort

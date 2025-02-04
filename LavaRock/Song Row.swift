@@ -145,7 +145,7 @@ import SwiftUI
 			systemImage: is_selected
 			? SF.circle_triangle_up_fill : SF.circle_triangle_up_hollow
 		) {
-			exhibit.change_song_range(from: uSong, forward: false)
+			exhibit.toggle_range(from_uSong: uSong, forward: false)
 		}.disabled(!exhibit.can_select_range(from_uSong: uSong, forward: false))
 	}
 	private var b_below: some View {
@@ -155,7 +155,7 @@ import SwiftUI
 			systemImage: is_selected
 			? SF.circle_triangle_down_fill : SF.circle_triangle_down_hollow
 		) {
-			exhibit.change_song_range(from: uSong, forward: true)
+			exhibit.toggle_range(from_uSong: uSong, forward: true)
 		}.disabled(!exhibit.can_select_range(from_uSong: uSong, forward: true))
 	}
 	private var is_selected: Bool {
