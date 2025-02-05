@@ -40,6 +40,11 @@ import MediaPlayer
 		let _ = _signal_now_playing
 		return nil == uSong_current
 	}
+	var is_at_first_track: Bool {
+		let _ = _signal_now_playing
+		guard let mpPlayer else { return false }
+		return 0 == mpPlayer.indexOfNowPlayingItem
+	}
 	/*
 	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
 	 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.

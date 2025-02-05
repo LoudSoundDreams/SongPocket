@@ -83,7 +83,7 @@ struct MenuTransport: View {
 				.accessibilityLabel(InterfaceText.Previous)
 		}
 		.menuActionDismissBehavior(.disabled)
-		.disabled(LCD.shared.is_blank) // 2do: Disable when there are no previous tracks to skip to.
+		.disabled(LCD.shared.is_blank || LCD.shared.is_at_first_track)
 	}
 	private var b_next: some View {
 		Button {
