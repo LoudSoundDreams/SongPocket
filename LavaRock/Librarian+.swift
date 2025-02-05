@@ -12,7 +12,7 @@ extension Librarian {
 		defer { save() }
 		
 #if DEBUG
-		try? await Task.sleep(for: .seconds(10))
+		try? await Task.sleep(for: .seconds(5))
 #endif
 		
 		// Use MediaPlayer for album and song IDs.

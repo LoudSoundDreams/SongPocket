@@ -73,6 +73,30 @@ struct BubbleBar: View {
 		}.menuOrder(.fixed)
 	}
 	
+	// MARK: Scope
+	
+	@ViewBuilder private var section_scope: some View { if let showcase {
+		Section(showcase.message_status()) {
+			let uSongs = showcase.uSongs_scope()
+			
+			Button {
+				showcase.selection_end_animated()
+				Task {
+					await Tape.play_now(uSongs)
+				}
+			} label: {
+				Label(InterfaceText.Play, systemImage: SF.play_hollow)
+			}.disabled(uSongs.isEmpty)
+			
+			Button {
+				showcase.selection_end_animated()
+				Tape.play_later(uSongs)
+			} label: {
+				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
+			}.disabled(uSongs.isEmpty)
+		}.disabled(Global.shared.librarian_is_merging)
+	}}
+	
 	// MARK: Arrange
 	
 	@ViewBuilder private var submenu_move: some View { if let showcase {
@@ -176,29 +200,5 @@ struct BubbleBar: View {
 		}
 		.controlGroupStyle(.compactMenu)
 		.disabled(Global.shared.librarian_is_merging)
-	}}
-	
-	// MARK: Scope
-	
-	@ViewBuilder private var section_scope: some View { if let showcase {
-		Section(showcase.message_status()) {
-			let uSongs = showcase.uSongs_scope()
-			
-			Button {
-				showcase.selection_end_animated()
-				Task {
-					await Tape.play_now(uSongs)
-				}
-			} label: {
-				Label(InterfaceText.Play, systemImage: SF.play_hollow)
-			}.disabled(uSongs.isEmpty)
-			
-			Button {
-				showcase.selection_end_animated()
-				Tape.play_later(uSongs)
-			} label: {
-				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
-			}.disabled(uSongs.isEmpty)
-		}.disabled(Global.shared.librarian_is_merging)
 	}}
 }
