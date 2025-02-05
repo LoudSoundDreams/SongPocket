@@ -47,9 +47,9 @@ struct BubbleBar: View {
 					}
 				}())
 				.accessibilityLabel({
-					guard let showcase else { return InterfaceText.Select }
+					guard let showcase else { return InterfaceText.Edit }
 					switch showcase.selection {
-						case .view: return InterfaceText.Select
+						case .view: return InterfaceText.Edit
 						case .mode_albums, .mode_songs: return InterfaceText.Done
 					}
 				}())
@@ -69,7 +69,7 @@ struct BubbleBar: View {
 		} label: {
 			Image(systemName: SF.circle_hamburger)
 				.symbolRenderingMode(.hierarchical)
-				.accessibilityLabel(InterfaceText.More)
+				.accessibilityLabel(InterfaceText.Menu)
 		}.menuOrder(.fixed)
 	}
 	

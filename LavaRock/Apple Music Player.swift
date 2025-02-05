@@ -72,7 +72,6 @@ extension LCD {
 	}
 }
 
-// 2do: Magic Tap
 // As of iOS 15.4 developer beta 4, if no responder between the VoiceOver-focused element and the app delegate implements `accessibilityPerformMagicTap`, then VoiceOver toggles audio playback. https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/SupportingAccessibility.html
 @MainActor enum Tape {
 	private static var mkPlayer: ApplicationMusicPlayer? {

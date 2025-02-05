@@ -40,13 +40,13 @@ struct EllipsisUnselected: View {
 	var body: some View {
 		Image(systemName: SF.circle_ellipsis)
 			.symbolRenderingMode(.hierarchical)
-			.accessibilityLabel(InterfaceText.Select)
+			.accessibilityLabel(InterfaceText.More)
 	}
 }
 struct EllipsisSelected: View {
 	var body: some View {
 		Image(systemName: SF.circle_ellipsis)
-			.accessibilityLabel(InterfaceText.Select)
+			.accessibilityLabel(InterfaceText.More)
 			.accessibilityAddTraits(.isSelected)
 	}
 }

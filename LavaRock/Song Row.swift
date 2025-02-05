@@ -35,14 +35,14 @@ import SwiftUI
 					Image(systemName: SF.waveform)
 						.foregroundStyle(
 							LCD.shared.is_playing
-							? Color.accentColor : Color.secondary)
-						.opacity((
+							? Color.accentColor : Color(white: .one_fourth))
+						.opacity(( // 2do: Hide from accessibility features.
 							!can_select_song &&
 							LCD.shared.uSong_current == uSong
 						) ? 1 : .zero)
 					menu_select(songInfo, albumInfo)
 						.imageScale(.large)
-						.opacity(can_select_song ? 1 : .zero)
+						.opacity(can_select_song ? 1 : .zero) // 2do: Accessibility.
 				}.dynamicType_default_to_plus_3()
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
