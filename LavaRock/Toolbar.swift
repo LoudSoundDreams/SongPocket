@@ -63,8 +63,9 @@ struct BubbleBar: View {
 	
 	private var menu_overflow: some View {
 		Menu {
-			section_move
 			section_scope
+			submenu_move
+			section_reorder
 		} label: {
 			Image(systemName: SF.circle_hamburger)
 				.symbolRenderingMode(.hierarchical)
@@ -74,27 +75,24 @@ struct BubbleBar: View {
 	
 	// MARK: Arrange
 	
-	@ViewBuilder private var section_move: some View { if let showcase {
-		Section(showcase.message_status()) {
-			Menu {
-				// Include arrange commands depending on the type to arrange: albums or songs.
-				// Enable arrange commands depending on the items to arrange:
-				// • 2 or more
-				// • Contiguous
-				// • With useful data
-				Group {
-					switch showcase.focus {
-						case .spotlight: EmptyView()
-						case .covers: sections_arrange_albums
-						case .expanded: sections_arrange_songs
-					}
+	@ViewBuilder private var submenu_move: some View { if let showcase {
+		Menu {
+			// Include arrange commands depending on the type to arrange: albums or songs.
+			// Enable arrange commands depending on the items to arrange:
+			// • 2 or more
+			// • Contiguous
+			// • With useful data
+			Group {
+				switch showcase.focus {
+					case .spotlight: EmptyView()
+					case .covers: sections_arrange_albums
+					case .expanded: sections_arrange_songs
 				}
-				.menuActionDismissBehavior(.disabled)
-				.disabled(Global.shared.librarian_is_merging)
-			} label: {
-				Label(InterfaceText.Arrange, systemImage: SF.arrange)
 			}
-			section_reorder
+			.menuActionDismissBehavior(.disabled)
+			.disabled(Global.shared.librarian_is_merging)
+		} label: {
+			Label(InterfaceText.Arrange, systemImage: SF.arrange)
 		}
 	}}
 	
@@ -183,7 +181,7 @@ struct BubbleBar: View {
 	// MARK: Scope
 	
 	@ViewBuilder private var section_scope: some View { if let showcase {
-		Section {
+		Section(showcase.message_status()) {
 			let uSongs = showcase.uSongs_scope()
 			
 			Button {
