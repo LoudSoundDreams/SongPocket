@@ -53,7 +53,7 @@ import SwiftUI
 			Separator()
 		}
 		.padding(.horizontal)
-		.background { highlight }
+		.overlay { highlight }
 		.overlay { border }
 		.frame(maxWidth: exhibit.length_artwork)
 		.frame(maxWidth: .infinity)
@@ -70,15 +70,6 @@ import SwiftUI
 			case .mode_albums, .view: return false
 		}
 	}
-	@ViewBuilder private var border: some View {
-		switch exhibit.selection {
-			case .view, .mode_albums: EmptyView()
-			case .mode_songs(let uSs_selected):
-				if uSs_selected.contains(uSong) {
-					BorderSelected()
-				} else { BorderUnselected() }
-		}
-	}
 	@ViewBuilder private var highlight: some View {
 		Color.accentColor
 			.opacity(is_highlighted ? .one_half : .zero)
@@ -90,6 +81,15 @@ import SwiftUI
 		switch exhibit.selection {
 			case .mode_albums, .mode_songs: return false
 			case .view: return uSong == exhibit.activated
+		}
+	}
+	@ViewBuilder private var border: some View {
+		switch exhibit.selection {
+			case .view, .mode_albums: EmptyView()
+			case .mode_songs(let uSs_selected):
+				if uSs_selected.contains(uSong) {
+					BorderSelected()
+				} else { BorderUnselected() }
 		}
 	}
 	
