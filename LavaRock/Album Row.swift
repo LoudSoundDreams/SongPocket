@@ -15,12 +15,12 @@ import MusicKit
 		.accessibilityAddTraits(.isButton)
 		.overlay {
 			ZStack(alignment: .bottom) {
-				ZStack { if is_blurred {
+				ZStack { if blurring {
 					Rectangle().foregroundStyle(Material.thick)
-				}}.animation(.linear_quick(), value: is_blurred)
-				ZStack { if is_labeled {
+				}}.animation(.linear_quick(), value: blurring)
+				ZStack { if labeling {
 					AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
-				}}.animation(.linear_quick(), value: is_labeled)
+				}}.animation(.linear_quick(), value: labeling)
 			}
 		}
 		.overlay { border.accessibilityHidden(true) } // 2do: Make VoiceOver say “selected”.
@@ -28,14 +28,14 @@ import MusicKit
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
 	}
-	private var is_blurred: Bool {
+	private var blurring: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
 			case .spotlight(let uA_spotlighted):
 				return uA_spotlighted != uAlbum
 		}
 	}
-	private var is_labeled: Bool {
+	private var labeling: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
 			case .spotlight: return false
@@ -111,8 +111,7 @@ import MusicKit
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
 			}
-		}
-		.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works.
+		}.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works.
 	}
 }
 

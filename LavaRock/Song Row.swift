@@ -57,6 +57,12 @@ import SwiftUI
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
 	}
+	private var can_select_song: Bool {
+		switch exhibit.selection {
+			case .mode_songs: return true
+			case .mode_albums, .view: return false
+		}
+	}
 	@ViewBuilder private var border: some View {
 		switch exhibit.selection {
 			case .view, .mode_albums: EmptyView()
@@ -77,12 +83,6 @@ import SwiftUI
 		switch exhibit.selection {
 			case .mode_albums, .mode_songs: return false
 			case .view: return uSong == exhibit.activated
-		}
-	}
-	private var can_select_song: Bool {
-		switch exhibit.selection {
-			case .mode_songs: return true
-			case .mode_albums, .view: return false
 		}
 	}
 	
