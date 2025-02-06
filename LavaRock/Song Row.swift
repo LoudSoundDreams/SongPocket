@@ -47,8 +47,13 @@ import SwiftUI
 						.imageScale(.large)
 						.opacity(can_select_song ? 1 : .zero)
 						.accessibilityHidden(!can_select_song) // 2do: VoiceOver sometimes still reads this.
-				}.dynamicType_default_to_plus_3()
-			}.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
+				}
+				.dynamicType_default_to_plus_3()
+				.padding(.top, -Self.gap_top_to_text) // Let the text determine the row height, not the accessory.
+				.padding(.bottom, -Self.gap_text_to_separator)
+			}
+			.padding(.top, Self.gap_top_to_text)
+			.padding(.bottom, Self.gap_text_to_separator)
 			Separator()
 		}
 		.padding(.horizontal)
@@ -69,6 +74,8 @@ import SwiftUI
 			case .mode_albums, .view: return false
 		}
 	}
+	private static let gap_top_to_text: CGFloat = .eight * 7/4
+	private static let gap_text_to_separator: CGFloat = .eight * 2
 	@ViewBuilder private var highlight: some View {
 		Color.accentColor
 			.opacity(is_highlighted ? .one_half : .zero)
