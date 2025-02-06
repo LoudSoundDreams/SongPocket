@@ -8,25 +8,23 @@ import MusicKit
 	let exhibit: Exhibit
 	
 	var body: some View {
-		AlbumArt(
-			uAlbum: uAlbum,
-			length_max: exhibit.length_artwork)
-		.saturation(is_selecting_songs ? .zero : 1)
-		.accessibilityAddTraits(.isButton)
-		.overlay {
-			ZStack(alignment: .bottom) {
-				ZStack { if blurring {
-					Rectangle().foregroundStyle(Material.thick)
-				}}.animation(.linear_quick(), value: blurring)
-				ZStack { if labeling {
-					AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
-				}}.animation(.linear_quick(), value: labeling)
+		AlbumArt(uAlbum: uAlbum, length_max: exhibit.length_artwork)
+			.saturation(is_selecting_songs ? .zero : 1)
+			.accessibilityAddTraits(.isButton)
+			.overlay {
+				ZStack(alignment: .bottom) {
+					ZStack { if blurring {
+						Rectangle().foregroundStyle(Material.thick)
+					}}.animation(.linear_quick(), value: blurring)
+					ZStack { if labeling {
+						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
+					}}.animation(.linear_quick(), value: labeling)
+				}
 			}
-		}
-		.overlay { border.accessibilityHidden(true) } // 2do: Make VoiceOver say “selected”.
-		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
-		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
-		.onTapGesture { tapped() }
+			.overlay { border.accessibilityHidden(true) } // 2do: Make VoiceOver say “selected”.
+			.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
+			.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
+			.onTapGesture { tapped() }
 	}
 	private var blurring: Bool {
 		switch exhibit.focus {

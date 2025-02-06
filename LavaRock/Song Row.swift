@@ -48,8 +48,7 @@ import SwiftUI
 						.opacity(can_select_song ? 1 : .zero)
 						.accessibilityHidden(!can_select_song) // 2do: VoiceOver sometimes still reads this.
 				}.dynamicType_default_to_plus_3()
-			}
-			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
+			}.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
 			Separator()
 		}
 		.padding(.horizontal)
