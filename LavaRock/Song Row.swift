@@ -37,13 +37,16 @@ import SwiftUI
 						.foregroundStyle(
 							LCD.shared.is_playing
 							? Color.accentColor : Color(white: .one_fourth))
-						.opacity(( // 2do: Hide from accessibility features.
-							!can_select_song &&
-							LCD.shared.uSong_current == uSong
-						) ? 1 : .zero)
+						.accessibilityLabel(
+							LCD.shared.is_playing
+							? InterfaceText.Now_Playing : InterfaceText.Paused)
+						.opacity(indicating_current ? 1 : .zero)
+						.accessibilityHidden(!indicating_current)
+						.accessibilitySortPriority(10)
 					menu_select(songInfo, albumInfo)
 						.imageScale(.large)
-						.opacity(can_select_song ? 1 : .zero) // 2do: Accessibility.
+						.opacity(can_select_song ? 1 : .zero)
+						.accessibilityHidden(!can_select_song) // 2do: VoiceOver sometimes still reads this.
 				}.dynamicType_default_to_plus_3()
 			}
 			.padding(.top, .eight * 3/2).padding(.bottom, .eight * 7/4)
@@ -56,6 +59,10 @@ import SwiftUI
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
+	}
+	private var indicating_current: Bool {
+		return !can_select_song &&
+		LCD.shared.uSong_current == uSong
 	}
 	private var can_select_song: Bool {
 		switch exhibit.selection {
