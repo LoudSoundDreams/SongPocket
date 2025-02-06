@@ -106,15 +106,11 @@ struct BubbleBar: View {
 			// • 2 or more
 			// • Contiguous
 			// • With useful data
-			Group {
-				switch showcase.focus {
-					case .spotlight: EmptyView()
-					case .covers: sections_arrange_albums
-					case .expanded: sections_arrange_songs
-				}
-			}
-			.menuActionDismissBehavior(.disabled)
-			.disabled(Global.shared.librarian_is_merging)
+			Group { switch showcase.focus {
+				case .spotlight: EmptyView()
+				case .covers: sections_arrange_albums
+				case .expanded: sections_arrange_songs
+			}}.disabled(Global.shared.librarian_is_merging)
 		} label: {
 			Label(InterfaceText.Arrange, systemImage: SF.arrange)
 		}
@@ -143,7 +139,9 @@ struct BubbleBar: View {
 				showcase?.arrange_albums(by: order)
 			} label: {
 				Label(order.name, systemImage: order.sf_symbol)
-			}.disabled({
+			}
+			.menuActionDismissBehavior(.disabled)
+			.disabled({
 				guard let showcase else { return true }
 				return !showcase.can_arrange_albums(by: order)
 			}())
@@ -155,7 +153,9 @@ struct BubbleBar: View {
 				showcase?.arrange_songs(by: order)
 			} label: {
 				Label(order.name, systemImage: order.sf_symbol)
-			}.disabled({
+			}
+			.menuActionDismissBehavior(.disabled)
+			.disabled({
 				guard let showcase else { return true }
 				return !showcase.can_arrange_songs(by: order)
 			}())
