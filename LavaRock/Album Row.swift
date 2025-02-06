@@ -12,6 +12,7 @@ import MusicKit
 			uAlbum: uAlbum,
 			length_max: exhibit.length_artwork)
 		.saturation(is_selecting_songs ? .zero : 1)
+		.accessibilityAddTraits(.isButton)
 		.overlay {
 			ZStack(alignment: .bottom) {
 				ZStack { if is_blurred {
@@ -26,7 +27,6 @@ import MusicKit
 		.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 		.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 		.onTapGesture { tapped() }
-		.accessibilityAddTraits(.isButton)
 	}
 	private var is_blurred: Bool {
 		switch exhibit.focus {
@@ -166,10 +166,10 @@ import MusicKit
 			}
 			Text(title_and_input_label)
 				.font_title3_bold()
-				.foregroundStyle(is_selecting_songs ? .secondary : .primary) // 2do: Make VoiceOver say “dimmed”.
+				.foregroundStyle(is_selecting_songs ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Bigger is sooner.
 		}
-		.accessibilityElement(children: .combine)
+		.disabled(is_selecting_songs) // For accessibility.
 		.accessibilityInputLabels([title_and_input_label])
 	}
 	private var is_selecting_songs: Bool {
