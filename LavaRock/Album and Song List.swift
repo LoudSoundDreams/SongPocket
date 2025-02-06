@@ -9,15 +9,15 @@ import MusicKit
 		NotificationCenter.default.addObserver(self, selector: #selector(merged), name: .librarian_merged, object: nil)
 	}
 	
-	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact] =
-	Exhibit.uAlbums_fresh().map { .row_album($0) } { didSet {
+	@ObservationIgnored fileprivate private(set) var artifacts: [Artifact]
+	= artifacts_fresh(for: focus_initial) { didSet {
 		signal_artifacts += 1
 		NotificationCenter.default.post(name: .exhibit_artifacts, object: self)
 	}}
 	private var signal_artifacts = 0 // Value is meaningless; we’re setting this property to tell SwiftUI to redraw views. (As of iOS 18.3, setting it to the same value again does trigger observers, but I’m being safe.)
 	
-	var focus: Focus = .covers { didSet {
-		artifacts = artifacts_fresh()
+	var focus: Focus = focus_initial { didSet {
+		artifacts = Self.artifacts_fresh(for: focus)
 		NotificationCenter.default.post(name: .exhibit_focus, object: self)
 	}}
 	
@@ -40,6 +40,7 @@ extension Exhibit {
 		case spotlight(UAlbum)
 		case expanded(UAlbum)
 	}
+	private static let focus_initial: Focus = .covers
 	
 	enum Selection {
 		case view
@@ -51,11 +52,6 @@ extension Exhibit {
 	
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
 	
-	private static func uAlbums_fresh() -> [UAlbum] {
-		guard MusicAuthorization.currentStatus == .authorized
-		else { return [] } // Don’t show any albums; show a placeholder.
-		return Librarian.the_albums.map { $0.uAlbum }
-	}
 	@objc private func merged() {
 		// Merging might have deleted the spotlighted or expanded album.
 		switch focus {
@@ -68,7 +64,7 @@ extension Exhibit {
 				{ focus = .covers }
 		}
 		
-		artifacts = artifacts_fresh()
+		artifacts = Self.artifacts_fresh(for: focus)
 		
 		// Merging might have deleted selected items or the activated song.
 		switch selection {
@@ -96,7 +92,12 @@ extension Exhibit {
 				}
 		}
 	}
-	private func artifacts_fresh() -> [Artifact] {
+	private static func uAlbums_fresh() -> [UAlbum] {
+		guard MusicAuthorization.currentStatus == .authorized
+		else { return [] } // Don’t show any albums; show a placeholder.
+		return Librarian.the_albums.map { $0.uAlbum }
+	}
+	private static func artifacts_fresh(for focus: Focus) -> [Artifact] {
 		let uAs_fresh = Self.uAlbums_fresh()
 		switch focus {
 			case .covers, .spotlight:
@@ -331,11 +332,11 @@ extension Exhibit {
 	
 	func arrange_albums(by albumOrder: AlbumOrder) {
 		Librarian.arrange_albums(uAlbums_to_arrange(), by: albumOrder)
-		artifacts = artifacts_fresh()
+		artifacts = Self.artifacts_fresh(for: focus)
 	}
 	func arrange_songs(by songOrder: SongOrder) {
 		Librarian.arrange_songs(uSongs_to_arrange(), by: songOrder)
-		artifacts = artifacts_fresh()
+		artifacts = Self.artifacts_fresh(for: focus)
 	}
 	
 	private func uAlbums_to_arrange() -> Set<UAlbum> {
@@ -390,7 +391,7 @@ extension Exhibit {
 			case .mode_songs(let uSs_selected):
 				Librarian.reorder_songs(uSs_selected, forward: forward, to_limit: to_limit)
 		}
-		artifacts = artifacts_fresh()
+		artifacts = Self.artifacts_fresh(for: focus)
 		if to_limit {
 			switch selection {
 				case .view: break
