@@ -62,6 +62,7 @@ struct MenuTransport: View {
 		}
 		.menuActionDismissBehavior(.disabled)
 		.disabled(LCD.shared.is_blank)
+		.accessibilityAddTraits(.startsMediaSession)
 	}
 	
 	private var b_rewind: some View {

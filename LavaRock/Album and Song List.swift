@@ -615,16 +615,15 @@ final class ExhibitTVC: LRTableViewController {
 		
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		alert.popoverPresentationController?.sourceView = anchor_for_popover
-		alert.addAction(
-			UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
-				Task {
-					self.exhibit.activated = nil
-					guard let album = Librarian.album_containing_uSong[activated]?.referencee else { return }
-					await Tape.play_now(album.uSongs, starting_at: activated)
-				}
+		let a_start = UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
+			Task {
+				self.exhibit.activated = nil
+				guard let album = Librarian.album_containing_uSong[activated]?.referencee else { return }
+				await Tape.play_now(album.uSongs, starting_at: activated)
 			}
-			// 2do: Silence VoiceOver after starting audio. `UIAlertAction.accessibilityTraits = .startsMediaSession` doesn’t do it.)
-		)
+		}
+		a_start.accessibilityTraits.formUnion(.startsMediaSession)
+		alert.addAction(a_start)
 		alert.addAction(
 			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
 				self.exhibit.activated = nil
