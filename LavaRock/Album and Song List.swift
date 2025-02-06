@@ -130,11 +130,9 @@ extension Exhibit {
 				switch focus {
 					case .spotlight: return ""
 					case .covers:
-						let total_albums = uAlbums().count
-						return InterfaceText.NUMBER_albums(total_albums)
+						return InterfaceText.NUMBER_albums(uAlbums().count)
 					case .expanded:
-						let total_songs = uSongs().count
-						return InterfaceText.NUMBER_songs(total_songs)
+						return InterfaceText.NUMBER_songs(uSongs().count)
 				}
 		}
 	}
