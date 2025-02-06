@@ -13,7 +13,8 @@ import SwiftUI
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let songInfo: SongInfo? = {
-					guard let mkSong = catalog.mkSong_for_uSong_cache[uSong] else {
+					guard let mkSong = catalog.mkSong_for_uSong_cache[uSong]
+					else {
 						let _ = catalog.signal_mkSong_cache
 						Task {
 							await catalog.cache_mkSong(for_uSong: uSong)

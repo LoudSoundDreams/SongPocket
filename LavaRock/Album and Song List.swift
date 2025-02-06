@@ -23,7 +23,7 @@ import MusicKit
 	
 	var selection: Selection = .view
 	
-	var activated: USong? { didSet { // Only use this when `selection == .view` and `focus == .expanded`.
+	var activated: USong? { didSet { // Use this only when `selection == .view` and `focus == .expanded`.
 		NotificationCenter.default.post(name: .song_activation, object: nil)
 	}}
 	
@@ -498,8 +498,7 @@ final class ExhibitTVC: LRTableViewController {
 							switch MusicAuthorization.currentStatus {
 								case .authorized: return
 								case .denied, .restricted: Task {
-									guard
-										let url_settings = URL(string: UIApplication.openSettingsURLString)
+									guard let url_settings = URL(string: UIApplication.openSettingsURLString)
 									else { return }
 									let _ = await UIApplication.shared.open(url_settings)
 								}
@@ -516,7 +515,7 @@ final class ExhibitTVC: LRTableViewController {
 					}
 				}.margins(.all, .zero) // As of iOS 17.5 developer beta 1, this prevents the content from sometimes jumping vertically.
 			}
-			if exhibit.artifacts.isEmpty {
+			guard !exhibit.artifacts.isEmpty else {
 				return UIHostingConfiguration {
 					Placeholder()
 						.accessibilityLabel(InterfaceText.No_music)
