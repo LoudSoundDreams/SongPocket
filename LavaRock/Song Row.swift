@@ -48,12 +48,12 @@ import SwiftUI
 						.opacity(can_select_song ? 1 : .zero)
 						.accessibilityHidden(!can_select_song) // 2do: VoiceOver sometimes still reads this.
 				}
-				.dynamicType_default_to_plus_3()
-				.padding(.top, -Self.gap_top_to_text) // Let the text determine the row height, not the accessory.
-				.padding(.bottom, -Self.gap_text_to_separator)
+				.dynamicType_clamped()
+				.padding(.top, -Self.padding_top) // Let the text determine the row height, not the accessory.
+				.padding(.bottom, -Self.padding_bottom)
 			}
-			.padding(.top, Self.gap_top_to_text)
-			.padding(.bottom, Self.gap_text_to_separator)
+			.padding(.top, Self.padding_top)
+			.padding(.bottom, Self.padding_bottom)
 			Separator()
 		}
 		.padding(.horizontal)
@@ -74,14 +74,12 @@ import SwiftUI
 			case .mode_albums, .view: return false
 		}
 	}
-	private static let gap_top_to_text: CGFloat = .eight * 7/4
-	private static let gap_text_to_separator: CGFloat = .eight * 2
+	private static let padding_top: CGFloat = .eight * 7/4
+	private static let padding_bottom: CGFloat = .eight * 2
 	@ViewBuilder private var highlight: some View {
 		Color.accentColor
 			.opacity(is_highlighted ? .one_half : .zero)
-			.animation(
-				is_highlighted ? nil : .default,
-				value: is_highlighted)
+			.animation(is_highlighted ? nil : .default, value: is_highlighted)
 	}
 	private var is_highlighted: Bool {
 		switch exhibit.selection {
@@ -107,12 +105,11 @@ import SwiftUI
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title ?? InterfaceText._tilde)
 			if
-				let artist_song = songInfo?._artist,
-				let artist_album = albumInfo?._artist,
-				artist_song != "", artist_album != "",
-				artist_song != artist_album
+				let artist = songInfo?._artist, let album_artist = albumInfo?._artist,
+				artist != "", album_artist != "",
+				artist != album_artist
 			{
-				Text(artist_song)
+				Text(artist)
 					.foregroundStyle(.secondary)
 					.font_footnote()
 			}
@@ -128,21 +125,22 @@ import SwiftUI
 	) -> some View {
 		Menu {
 			Section({ () -> String in
-				guard let songInfo, let albumInfo else { return InterfaceText._octothorpe }
-				let numbers: String = {
-					let f_track: String = {
-						guard let track = songInfo._track else { return InterfaceText._tilde }
-						return String(track)
-					}()
-					guard albumInfo._disc_max >= 2 else { return f_track }
+				var result: String = InterfaceText._octothorpe
+				guard let songInfo, let albumInfo else { return result }
+				result.append(" ")
+				result.append({
+					guard let track = songInfo._track else { return InterfaceText._tilde }
+					
+					let f_track = String(track)
+					if albumInfo._disc_max <= 1 { return f_track }
 					
 					let f_disc: String = {
 						guard let disc = songInfo._disc else { return InterfaceText._tilde }
 						return String(disc)
 					}()
 					return "\(f_disc)\(InterfaceText._interpunct)\(f_track)"
-				}()
-				return "\(InterfaceText._octothorpe) \(numbers)"
+				}())
+				return result
 			}()) {
 				b_above
 				b_below

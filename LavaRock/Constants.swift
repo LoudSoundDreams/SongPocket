@@ -33,7 +33,7 @@ extension View {
 	// As of iOS 16.6, Apple Music uses this for artist names on song rows.
 	func font_footnote() -> some View { font(.footnote) }
 	
-	func dynamicType_default_to_plus_3() -> some View {
+	func dynamicType_clamped() -> some View {
 		dynamicTypeSize(.large ... .xxxLarge)
 	}
 }

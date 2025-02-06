@@ -10,7 +10,7 @@ struct BubbleBar: View {
 			b_select_mode
 		}
 		.font(.largeTitle)
-		.dynamicType_default_to_plus_3()
+		.dynamicType_clamped()
 		.padding(Self.width_border) // As of iOS 18.3, an open `Menu` stays 4 points away from the view that presented it.
 		.background(Material.bar, in: .capsule)
 	}

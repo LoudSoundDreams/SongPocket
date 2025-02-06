@@ -137,7 +137,7 @@ import MusicKit
 				}
 			}
 			.font(.largeTitle)
-			.dynamicType_default_to_plus_3()
+			.dynamicType_clamped()
 			.animation(.linear_quick(), value: exhibit.focus)
 		}.padding()
 	}
