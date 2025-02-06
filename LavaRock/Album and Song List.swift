@@ -17,7 +17,7 @@ import MusicKit
 	private var signal_artifacts = 0 // Value is meaningless; we’re setting this property to tell SwiftUI to redraw views. (As of iOS 18.3, setting it to the same value again does trigger observers, but I’m being safe.)
 	
 	var focus: Focus = .covers { didSet {
-		refresh_artifacts()
+		artifacts = artifacts_fresh()
 		NotificationCenter.default.post(name: .exhibit_focus, object: self)
 	}}
 	
@@ -68,7 +68,7 @@ extension Exhibit {
 				{ focus = .covers }
 		}
 		
-		refresh_artifacts()
+		artifacts = artifacts_fresh()
 		
 		// Merging might have deleted selected items or the activated song.
 		switch selection {
@@ -96,28 +96,25 @@ extension Exhibit {
 				}
 		}
 	}
-	private func refresh_artifacts() { // 2do: Return a value instead.
-		artifacts = {
-			let uAs_fresh = Self.uAlbums_fresh()
-			switch focus {
-				case .covers, .spotlight:
-					return uAs_fresh.map { .row_album($0) }
-				case .expanded(let uA_expanded):
-					var result: [Artifact] = []
-					uAs_fresh.forEach { uAlbum in
-						result.append(.row_album(uAlbum))
-						
-						if uAlbum == uA_expanded {
-							guard
-								let album_expanded = Librarian.album_with_uAlbum[uAlbum]?.referencee
-							else { return }
-							let to_inline: [USong] = album_expanded.uSongs
-							result.append(contentsOf: to_inline.map { .row_song($0) })
-						}
+	private func artifacts_fresh() -> [Artifact] {
+		let uAs_fresh = Self.uAlbums_fresh()
+		switch focus {
+			case .covers, .spotlight:
+				return uAs_fresh.map { .row_album($0) }
+			case .expanded(let uA_expanded):
+				var result: [Artifact] = []
+				uAs_fresh.forEach { uAlbum in
+					result.append(.row_album(uAlbum))
+					
+					if uAlbum == uA_expanded {
+						guard let album_expanded = Librarian.album_with_uAlbum[uAlbum]?.referencee
+						else { return }
+						let to_inline: [USong] = album_expanded.uSongs
+						result.append(contentsOf: to_inline.map { .row_song($0) })
 					}
-					return result
-			}
-		}()
+				}
+				return result
+		}
 	}
 	
 	func message_status() -> String {
@@ -334,11 +331,11 @@ extension Exhibit {
 	
 	func arrange_albums(by albumOrder: AlbumOrder) {
 		Librarian.arrange_albums(uAlbums_to_arrange(), by: albumOrder)
-		refresh_artifacts()
+		artifacts = artifacts_fresh()
 	}
 	func arrange_songs(by songOrder: SongOrder) {
 		Librarian.arrange_songs(uSongs_to_arrange(), by: songOrder)
-		refresh_artifacts()
+		artifacts = artifacts_fresh()
 	}
 	
 	private func uAlbums_to_arrange() -> Set<UAlbum> {
@@ -393,7 +390,7 @@ extension Exhibit {
 			case .mode_songs(let uSs_selected):
 				Librarian.reorder_songs(uSs_selected, forward: forward, to_limit: to_limit)
 		}
-		refresh_artifacts()
+		artifacts = artifacts_fresh()
 		if to_limit {
 			switch selection {
 				case .view: break
