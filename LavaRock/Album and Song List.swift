@@ -18,6 +18,14 @@ import MusicKit
 	
 	var focus: Focus = focus_initial { didSet {
 		artifacts = Self.artifacts_fresh(for: focus)
+		let axNotification: AccessibilityNotification.PageScrolled? = { // As of VoiceOver in iOS 18.3, `LayoutChanged` doesn’t play a special sound, and `ScreenChanged` yanks focus to the floating toolbar.
+			switch focus {
+				case .covers: return .init(InterfaceText.Album_list)
+				case .expanded: return .init(InterfaceText.Album_expanded)
+				case .spotlight: return nil
+			}
+		}()
+		axNotification?.post()
 		NotificationCenter.default.post(name: .exhibit_focus, object: self)
 	}}
 	
@@ -331,10 +339,12 @@ extension Exhibit {
 	func arrange_albums(by albumOrder: AlbumOrder) {
 		Librarian.arrange_albums(uAlbums_to_arrange(), by: albumOrder)
 		artifacts = Self.artifacts_fresh(for: focus)
+		AccessibilityNotification.PageScrolled(InterfaceText.Rows_updated).post()
 	}
 	func arrange_songs(by songOrder: SongOrder) {
 		Librarian.arrange_songs(uSongs_to_arrange(), by: songOrder)
 		artifacts = Self.artifacts_fresh(for: focus)
+		AccessibilityNotification.PageScrolled(InterfaceText.Rows_updated).post()
 	}
 	
 	private func uAlbums_to_arrange() -> Set<UAlbum> {
@@ -390,6 +400,7 @@ extension Exhibit {
 				Librarian.reorder_songs(uSs_selected, forward: forward, to_limit: to_limit)
 		}
 		artifacts = Self.artifacts_fresh(for: focus)
+		AccessibilityNotification.PageScrolled(InterfaceText.Rows_updated).post()
 		if to_limit {
 			switch selection {
 				case .view: break

@@ -59,8 +59,12 @@ enum InterfaceText {
 	static let No_music = "No music"
 	static let _empty_library_message = "Add music to your Apple Music library."
 	static let _Updating_library_ellipsis = "Updating library…"
+	
 	static let No_artwork = "No artwork"
 	static let Show_artwork = "Show artwork"
+	static let Rows_updated = "Rows updated"
+	static let Album_list = "Album list"
+	static let Album_expanded = "Album expanded"
 	
 	static func NUMBER_albums_selected(_ num: Int) -> String {
 		let fNum = num.formatted()

@@ -46,7 +46,7 @@ import SwiftUI
 					menu_select(songInfo, albumInfo)
 						.imageScale(.large)
 						.opacity(can_select_song ? 1 : .zero)
-						.accessibilityHidden(!can_select_song) // 2do: VoiceOver sometimes still reads this.
+						.accessibilityHidden(!can_select_song)
 				}
 				.dynamicType_clamped()
 				.padding(.top, -Self.padding_top) // Let the text determine the row height, not the accessory.

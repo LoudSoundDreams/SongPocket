@@ -21,7 +21,7 @@ import MusicKit
 					}}.animation(.linear_quick(), value: labeling)
 				}
 			}
-			.overlay { border.accessibilityHidden(true) } // 2do: Make VoiceOver say “selected”.
+			.overlay { border.accessibilityHidden(true) }
 			.frame(maxWidth: .infinity) // Horizontally centers the above in wide viewport.
 			.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 			.onTapGesture { tapped() }
