@@ -427,28 +427,29 @@ final class ExhibitTVC: LRTableViewController {
 	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
+		let size_frame = view.frame.size
 		exhibit.length_artwork = Self.length_square_inscribed_in(
-			size_frame: view.frame.size,
+			size: size_frame,
 			safeAreaInsets: view.safeAreaInsets)
-		refresh_contentInset(size_frame: view.frame.size)
+		refresh_contentInset(size_frame: size_frame)
 	}
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
 		// The `size` parameter will later become `view.frame.size`, not `view.bounds.size`.
 		exhibit.length_artwork = Self.length_square_inscribed_in(
-			size_frame: size,
+			size: size,
 			safeAreaInsets: view.safeAreaInsets)
 		refresh_contentInset(size_frame: size)
 	}
 	
 	private static func length_square_inscribed_in(
-		size_frame: CGSize,
+		size: CGSize,
 		safeAreaInsets: UIEdgeInsets
 	) -> CGFloat {
 		return min(
-			size_frame.width,
-			size_frame.height - safeAreaInsets.bottom)
+			size.width,
+			size.height - safeAreaInsets.bottom) // 2do: Which sides of the safe area do we need to check?
 	}
 	
 	private func refresh_contentInset(size_frame: CGSize) {
