@@ -18,8 +18,8 @@ import MediaPlayer
 	
 	var is_playing: Bool { // UIKit views need to manually pull this value …
 		let _ = _signal_state // … but this pushes SwiftUI views that mention this property to redraw.
-		guard let mpPlayer else { return false }
-		switch mpPlayer.playbackState {
+		guard let player_old else { return false }
+		switch player_old.playbackState {
 			case .playing: return true
 			case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward: return false
 			@unknown default: return false
@@ -27,8 +27,8 @@ import MediaPlayer
 	}
 	var repeat_is_on: Bool {
 		let _ = _signal_state
-		guard let mpPlayer else { return false }
-		switch mpPlayer.repeatMode {
+		guard let player_old else { return false }
+		switch player_old.repeatMode {
 			case .one: return true
 			case .default, .none, .all: return false
 			@unknown default: return false
@@ -42,8 +42,8 @@ import MediaPlayer
 	}
 	var is_at_first_track: Bool {
 		let _ = _signal_now_playing
-		guard let mpPlayer else { return false }
-		return 0 == mpPlayer.indexOfNowPlayingItem
+		guard let player_old else { return false }
+		return 0 == player_old.indexOfNowPlayingItem
 	}
 	/*
 	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
@@ -53,21 +53,21 @@ import MediaPlayer
 	 */
 	var uSong_current: USong? {
 		let _ = _signal_now_playing
-		return mpPlayer?.nowPlayingItem?.persistentID
+		return player_old?.nowPlayingItem?.persistentID
 	}
 	private var _signal_now_playing = 0
 }
 extension LCD {
 	@ObservationIgnored static let shared = LCD()
-	private var mpPlayer: MPMusicPlayerApplicationController? {
+	private var player_old: MPMusicPlayerApplicationController? {
 		guard MPMediaLibrary.authorizationStatus() == .authorized else { return nil }
 		return MPMusicPlayerController.applicationQueuePlayer
 	}
 	func watch() {
-		guard let mpPlayer else { return }
+		guard let player_old else { return }
 		// As of iOS 18.3 RC, MusicKit only emits `objectWillChange` events. That’s only useful when we use both `@ObservedObject` and MusicKit state; otherwise, state won’t yet have changed when we check it. So observe Media Player’s “did change” notifications for these.
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: mpPlayer)
-		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: mpPlayer) // As of iOS 18.3 RC, Media Player posts this when we delete the current song, even though `MPMusicPlayerController.nowPlayingItem` still returns the same value.
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_state), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: player_old)
+		NotificationCenter.default.addObserver_once(self, selector: #selector(mp_now_playing), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: player_old) // As of iOS 18.3 RC, Media Player posts this when we delete the current song, even though `MPMusicPlayerController.nowPlayingItem` still returns the same value.
 	}
 	@objc private func mp_state() {
 		_signal_state += 1
