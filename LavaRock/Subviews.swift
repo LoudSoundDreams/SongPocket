@@ -27,7 +27,7 @@ struct BorderUnselected: View {
 }
 struct BorderSelected: View {
 	var body: some View {
-		Border().foregroundStyle(Color.accentColor.opacity(.one_half))
+		Border().foregroundStyle(Color.accentColor)
 	}
 }
 struct Border: View {
