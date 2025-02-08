@@ -145,13 +145,7 @@ struct MenuTransport: View {
 			Global.shared.go_to_artwork()
 		} label: {
 			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo_fill)
-		}.disabled({
-			guard
-				let current = LCD.shared.uSong_current, // As of iOS 18.3 RC, mentioning this triggers a redraw if we delete or re-add the current song, because that makes Media Player post a notification “now-playing item changed”.
-				Librarian.uSongs_known.contains(current)
-			else { return true }
-			return false
-		}())
+		}.disabled(nil == Librarian.album_containing_uSong_current())
 	}
 	
 	private var b_apple_music: some View {

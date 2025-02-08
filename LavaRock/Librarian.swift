@@ -24,8 +24,12 @@ final class LRAlbum {
 	
 	// Search
 	private(set) static var album_with_uAlbum: [UAlbum: WeakRef<LRAlbum>] = [:]
-	private(set) static var uSongs_known: Set<USong> = []
 	private(set) static var album_containing_uSong: [USong: WeakRef<LRAlbum>] = [:]
+	static func album_containing_uSong_current() -> LRAlbum? {
+		guard let current = LCD.shared.uSong_current
+		else { return nil }
+		return album_containing_uSong[current]?.referencee
+	}
 	
 	// Register
 	static func register_album(
@@ -40,7 +44,6 @@ final class LRAlbum {
 		_ uSong: USong,
 		with album_target: LRAlbum
 	) {
-		uSongs_known.insert(uSong)
 		album_containing_uSong[uSong] = WeakRef(album_target)
 	}
 	
@@ -53,7 +56,6 @@ final class LRAlbum {
 		}
 	}
 	static func deregister_uSong(_ uSong: USong) {
-		uSongs_known.remove(uSong)
 		album_containing_uSong[uSong] = nil
 	}
 	
@@ -88,8 +90,6 @@ final class LRAlbum {
 			}
 			Print("\(uAlbum) → \(pointee_album)")
 		}
-		
-		Print("song IDs:", uSongs_known.count)
 		
 		Print("song ID → album:", album_containing_uSong.count)
 		album_containing_uSong.forEach { (uSong, album_ref) in

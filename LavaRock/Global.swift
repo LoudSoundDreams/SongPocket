@@ -16,10 +16,7 @@ import Foundation
 extension Global {
 	@ObservationIgnored static let shared = Global()
 	func go_to_artwork() {
-		guard
-			let uSong = LCD.shared.uSong_current,
-			let album = Librarian.album_containing_uSong[uSong]?.referencee
-		else { return }
+		guard let album = Librarian.album_containing_uSong_current() else { return }
 		showcase?.focus = .spotlight(album.uAlbum)
 	}
 }
