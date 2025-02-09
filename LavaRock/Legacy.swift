@@ -56,10 +56,65 @@ enum ZZZDatabase {
 	}
 }
 
-extension NSManagedObjectContext {
-	fileprivate final func converted_to_lrAlbums() -> [LRAlbum] {
+private extension NSManagedObjectContext {
+	final func converted_to_lrAlbums() -> [LRAlbum] {
 #if DEBUG
 		//		mock_zCollections()
+		func mock_zCollections() {
+			fetch_please(ZZZSong.fetchRequest()).forEach { delete($0) }
+			fetch_please(ZZZAlbum.fetchRequest()).forEach { delete($0) }
+			fetch_please(ZZZCollection.fetchRequest()).forEach { delete($0) }
+			
+			/*
+			 Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
+			 Database created and migrated after that contain exactly one `ZZZCollection`, with this title: ~
+			 */
+			
+			let one = ZZZCollection(context: self)
+			one.index = Int64(0)
+			one.title = ""
+			
+			let two = ZZZCollection(context: self)
+			two.index = Int64(1)
+			two.title = nil
+			
+			let three = ZZZCollection(context: self)
+			three.index = Int64(2)
+			three.title = one.title // Duplicate titles allowed
+			
+			let alpha = ZZZAlbum(context: self)
+			alpha.container = one; alpha.index = Int64(0)
+			alpha.albumPersistentID = Int64.max
+			alpha.releaseDateEstimate = nil // Absence of release date allowed
+			
+			let bravo = ZZZAlbum(context: self)
+			bravo.container = one; bravo.index = Int64(1)
+			bravo.albumPersistentID = Int64.min
+			bravo.releaseDateEstimate = Date.now
+			
+			let charlie = ZZZAlbum(context: self)
+			charlie.container = two; charlie.index = Int64(0)
+			charlie.albumPersistentID = Int64.max - 1
+			bravo.releaseDateEstimate = Date.distantPast
+			
+			let delta = ZZZAlbum(context: self)
+			delta.container = three; delta.index = Int64(0)
+			delta.albumPersistentID = Int64.max - 2
+			delta.releaseDateEstimate = Date.distantFuture
+			
+			let uno = ZZZSong(context: self)
+			uno.container = alpha; uno.index = Int64(0)
+			uno.persistentID = Int64.min
+			let dos = ZZZSong(context: self)
+			dos.container = bravo; dos.index = Int64(0)
+			dos.persistentID = Int64.max
+			let tres = ZZZSong(context: self)
+			tres.container = charlie; tres.index = Int64(0)
+			tres.persistentID = Int64(42)
+			let cuatro = ZZZSong(context: self)
+			cuatro.container = delta; cuatro.index = Int64(0)
+			cuatro.persistentID = Int64(-10000)
+		}
 #endif
 		
 		let zCollections: [ZZZCollection] = {
@@ -77,65 +132,8 @@ extension NSManagedObjectContext {
 			return LRAlbum(uAlbum: uAlbum, uSongs: uSongs)
 		}
 	}
-#if DEBUG
-	private func mock_zCollections() {
-		fetch_please(ZZZSong.fetchRequest()).forEach { delete($0) }
-		fetch_please(ZZZAlbum.fetchRequest()).forEach { delete($0) }
-		fetch_please(ZZZCollection.fetchRequest()).forEach { delete($0) }
-		
-		/*
-		 Databases created before version 2.5 can contain multiple `Collection`s, each with a non-default title.
-		 Database created and migrated after that contain exactly one `ZZZCollection`, with this title: ~
-		 */
-		
-		let one = ZZZCollection(context: self)
-		one.index = Int64(0)
-		one.title = ""
-		
-		let two = ZZZCollection(context: self)
-		two.index = Int64(1)
-		two.title = nil
-		
-		let three = ZZZCollection(context: self)
-		three.index = Int64(2)
-		three.title = one.title // Duplicate titles allowed
-		
-		let alpha = ZZZAlbum(context: self)
-		alpha.container = one; alpha.index = Int64(0)
-		alpha.albumPersistentID = Int64.max
-		alpha.releaseDateEstimate = nil // Absence of release date allowed
-		
-		let bravo = ZZZAlbum(context: self)
-		bravo.container = one; bravo.index = Int64(1)
-		bravo.albumPersistentID = Int64.min
-		bravo.releaseDateEstimate = Date.now
-		
-		let charlie = ZZZAlbum(context: self)
-		charlie.container = two; charlie.index = Int64(0)
-		charlie.albumPersistentID = Int64.max - 1
-		bravo.releaseDateEstimate = Date.distantPast
-		
-		let delta = ZZZAlbum(context: self)
-		delta.container = three; delta.index = Int64(0)
-		delta.albumPersistentID = Int64.max - 2
-		delta.releaseDateEstimate = Date.distantFuture
-		
-		let uno = ZZZSong(context: self)
-		uno.container = alpha; uno.index = Int64(0)
-		uno.persistentID = Int64.min
-		let dos = ZZZSong(context: self)
-		dos.container = bravo; dos.index = Int64(0)
-		dos.persistentID = Int64.max
-		let tres = ZZZSong(context: self)
-		tres.container = charlie; tres.index = Int64(0)
-		tres.persistentID = Int64(42)
-		let cuatro = ZZZSong(context: self)
-		cuatro.container = delta; cuatro.index = Int64(0)
-		cuatro.persistentID = Int64(-10000)
-	}
-#endif
 	
-	private func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
+	final func fetch_please<T>(_ request: NSFetchRequest<T>) -> [T] {
 		var result: [T] = []
 		do {
 			result = try fetch(request)
@@ -146,14 +144,14 @@ extension NSManagedObjectContext {
 	}
 }
 
-extension ZZZCollection {
+private extension ZZZCollection {
 	final func zAlbums() -> [ZZZAlbum] {
 		guard let contents else { return [] }
 		let unsorted = contents.map { $0 as! ZZZAlbum }
 		return unsorted.sorted { $0.index < $1.index }
 	}
 }
-extension ZZZAlbum {
+private extension ZZZAlbum {
 	final func zSongs() -> [ZZZSong] {
 		guard let contents else { return [] }
 		let unsorted = contents.map { $0 as! ZZZSong }
