@@ -160,23 +160,23 @@ import MusicKit
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
 					.font(.caption2).monospacedDigit()
-					.foregroundStyle(is_selecting_songs ? .tertiary : .secondary)
+					.foregroundStyle(dimming ? .tertiary : .secondary)
 			}
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
-					.foregroundStyle(is_selecting_songs ? .tertiary : .secondary)
+					.foregroundStyle(dimming ? .tertiary : .secondary)
 					.accessibilitySortPriority(20)
 			}
 			Text(title_and_input_label)
 				.font_title3_bold()
-				.foregroundStyle(is_selecting_songs ? .secondary : .primary)
+				.foregroundStyle(dimming ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Bigger is sooner.
 		}
-		.disabled(is_selecting_songs) // For accessibility.
+		.disabled(dimming) // For accessibility.
 		.accessibilityInputLabels([title_and_input_label])
 	}
-	private var is_selecting_songs: Bool {
+	private var dimming: Bool {
 		switch exhibit.selection {
 			case .mode_songs: return true
 			case .view, .mode_albums: return false
