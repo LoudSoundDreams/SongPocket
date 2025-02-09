@@ -129,15 +129,15 @@
 				1500E98C2D13A9B600CDF5E6 /* Librarian+.swift */,
 				079B2C9424E227BF00A949FA /* Apple Music Library.swift */,
 				070056902C8275C0006F1069 /* Disk.swift */,
+				076F1C0127E66DAA00220C2B /* Apple Music Player.swift */,
+				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
+				078FDD0E2638872100779AF2 /* Helpers.swift */,
 				07E0BBFA276567F70010117E /* Legacy.swift */,
 				0768309124B42DEC0033E3CC /* LavaRock.xcdatamodeld */,
-				07FB52CA2813909400CCCBA5 /* Sorting.swift */,
-				076F1C0127E66DAA00220C2B /* Apple Music Player.swift */,
-				078FDD0E2638872100779AF2 /* Helpers.swift */,
 				076830CF24B42E510033E3CC /* Assets.xcassets */,
-				075FC9052B4677D800219146 /* Dev Assets */,
 				0768309924B42DEE0033E3CC /* Info.plist */,
 				073E97D92BA42B3900F73ADD /* PrivacyInfo.xcprivacy */,
+				075FC9052B4677D800219146 /* Dev Assets */,
 			);
 			path = LavaRock;
 			sourceTree = "<group>";
