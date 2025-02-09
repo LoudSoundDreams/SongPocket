@@ -3,13 +3,6 @@
 import MediaPlayer
 
 extension Librarian {
-#if targetEnvironment(simulator)
-	static func import_dummyAlbums(
-		_ dummyAlbums: [DummyAlbum]
-	) {
-	}
-#endif
-	
 	static func merge_MediaPlayer(
 		_ mpSongs_by_album_then_track: [MPMediaItem]
 	) async {

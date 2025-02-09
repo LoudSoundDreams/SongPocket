@@ -10,6 +10,20 @@ typealias MKSong = MusicKit.Song
 typealias UAlbum = MPMediaEntityPersistentID
 typealias USong = MPMediaEntityPersistentID
 
+struct AlbumInfo {
+	let _title: String
+	let _artist: String
+	let _date_first_added: Date?
+	let _date_released: Date?
+	let _disc_max: Int
+}
+struct SongInfo {
+	let _disc: Int?
+	let _track: Int?
+	let _title: String
+	let _artist: String
+}
+
 @MainActor @Observable final class AppleCatalog {
 	private init() {}
 	
@@ -119,3 +133,65 @@ extension AppleCatalog {
 		}
 	}
 }
+
+#if targetEnvironment(simulator)
+private extension Librarian {
+	static func import_dummyAlbums(
+		_ dummyAlbums: [DummyAlbum]
+	) {
+	}
+}
+
+@MainActor private final class DummyCatalog {
+	static let albums: [DummyAlbum] = [
+		DummyAlbum(
+			title: "Skyway",
+			artist: "Wanderer",
+			date_released: .ten_char("2024-05-31"),
+			image_file: "sky",
+			tracks: [
+				.init("Magic"),
+				.init("Robot"),
+				.init("Last"),
+			]),
+		DummyAlbum(
+			title: "Hillside",
+			artist: "Wanderer",
+			date_released: .ten_char("2024-02-29"),
+			image_file: "field",
+			tracks: [
+				.init(""),
+			]),
+		DummyAlbum(
+			title: "Dawn",
+			artist: "Wanderer",
+			date_released: .ten_char("2024-03-31"),
+			image_file: "city",
+			tracks: [
+				.init("Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.", artist: "Tony Harnell"),
+			]),
+	]
+}
+
+private struct DummyAlbum {
+	let title: String
+	let artist: String
+	let date_released: Date?
+	let image_file: String
+	let tracks: [DummySong]
+}
+private struct DummySong {
+	let title: String
+	let artist: String
+	init(_ title: String, artist: String = "") {
+		self.title = title
+		self.artist = artist
+	}
+}
+
+private extension Date {
+	static func ten_char(_ input: String) -> Self { // "1984-01-24"
+		return try! Self("\(input)T23:59:59Z", strategy: .iso8601)
+	}
+}
+#endif
