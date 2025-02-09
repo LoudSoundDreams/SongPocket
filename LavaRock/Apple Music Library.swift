@@ -107,7 +107,11 @@ extension AppleCatalog {
 			let mk_union = mkSections_cache.merging(mk_dict) { old, new in new }
 			mkSections_cache = mk_union // Show new data immediately …
 			
+#if targetEnvironment(simulator)
+			Librarian.import_dummyAlbums(DummyCatalog.albums)
+#else
 			await Librarian.merge_MediaPlayer(mpSongs)
+#endif
 			
 			try? await Task.sleep(for: .seconds(3)) // … but don’t hide deleted data before removing it from the screen anyway.
 			
