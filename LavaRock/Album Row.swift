@@ -173,13 +173,19 @@ import MusicKit
 				.foregroundStyle(dimming ? .secondary : .primary)
 				.accessibilitySortPriority(30) // Bigger is sooner.
 		}
+		.animation(.linear_quick(), value: dimming)
 		.disabled(dimming) // For accessibility.
 		.accessibilityInputLabels([title_and_input_label])
 	}
 	private var dimming: Bool {
 		switch exhibit.selection {
 			case .mode_songs: return true
-			case .view, .mode_albums: return false
+			case .mode_albums: return false
+			case .view:
+				switch exhibit.focus {
+					case .covers, .spotlight: return false
+					case .expanded(let uA_expanded): return uA_expanded != uAlbum
+				}
 		}
 	}
 	
