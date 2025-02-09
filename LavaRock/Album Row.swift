@@ -102,12 +102,19 @@ import MusicKit
 				 */
 				ArtworkImage(artwork, width: length_max)
 			} else {
+#if targetEnvironment(simulator)
+				Image("wide")
+					.resizable()
+					.scaledToFit()
+					.frame(width: length_max, height: length_max)
+#else
 				ZStack {
 					Color(white: .one_fourth)
 						.frame(width: length_max, height: length_max)
 					Placeholder()
 						.accessibilityLabel(InterfaceText.No_artwork)
 				}
+#endif
 			}
 		}.animation(nil, value: uAlbum) /* Maybe cell reuse causes laggy scrolling, and maybe this prevents that. */ .animation(.default, value: artwork) // Still works.
 	}
