@@ -121,11 +121,7 @@ extension AppleCatalog {
 			let mk_union = mkSections_cache.merging(mk_dict) { old, new in new }
 			mkSections_cache = mk_union // Show new data immediately …
 			
-#if targetEnvironment(simulator)
-			Librarian.import_dummyAlbums(DummyCatalog.albums)
-#else
 			await Librarian.merge_MediaPlayer(mpSongs)
-#endif
 			
 			try? await Task.sleep(for: .seconds(3)) // … but don’t hide deleted data before removing it from the screen anyway.
 			
@@ -135,14 +131,7 @@ extension AppleCatalog {
 }
 
 #if targetEnvironment(simulator)
-private extension Librarian {
-	static func import_dummyAlbums(
-		_ dummyAlbums: [DummyAlbum]
-	) {
-	}
-}
-
-@MainActor private final class DummyCatalog {
+@MainActor final class DummyCatalog {
 	static let albums: [DummyAlbum] = [
 		DummyAlbum(
 			title: "Skyway",
@@ -173,14 +162,14 @@ private extension Librarian {
 	]
 }
 
-private struct DummyAlbum {
+struct DummyAlbum {
 	let title: String
 	let artist: String
 	let date_released: Date?
 	let image_file: String
 	let tracks: [DummySong]
 }
-private struct DummySong {
+struct DummySong {
 	let title: String
 	let artist: String
 	init(_ title: String, artist: String = "") {

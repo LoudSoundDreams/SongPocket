@@ -13,6 +13,13 @@ extension Librarian {
 		
 #if DEBUG
 		try? await Task.sleep(for: .seconds(5))
+#if targetEnvironment(simulator)
+		import_dummyAlbums(DummyCatalog.albums)
+		func import_dummyAlbums(
+			_ dummyAlbums: [DummyAlbum]
+		) {
+		}
+#endif
 #endif
 		
 		// Use MediaPlayer for album and song IDs.
