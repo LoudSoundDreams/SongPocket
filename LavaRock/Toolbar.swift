@@ -27,7 +27,7 @@ struct BubbleBar: View {
 					showcase.selection_end_animated()
 				case .view:
 					switch showcase.focus {
-						case .spotlight: return
+						case .gallery: return
 						case .covers:
 							withAnimation {
 								showcase.selection = .mode_albums([])
@@ -107,7 +107,7 @@ struct BubbleBar: View {
 		// • Contiguous
 		// • With useful data
 		Group { switch showcase.focus {
-			case .spotlight: EmptyView()
+			case .gallery: EmptyView()
 			case .covers: sections_arrange_albums
 			case .expanded: sections_arrange_songs
 		}}.disabled(Global.shared.librarian_is_merging)

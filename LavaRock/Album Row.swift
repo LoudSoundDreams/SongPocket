@@ -29,14 +29,14 @@ import MusicKit
 	private var blurring: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
-			case .spotlight(let uA_showcased):
+			case .gallery(let uA_showcased):
 				return uA_showcased != uAlbum
 		}
 	}
 	private var labeling: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
-			case .spotlight: return false
+			case .gallery: return false
 		}
 	}
 	private var is_selecting_songs: Bool {
@@ -75,10 +75,10 @@ import MusicKit
 				if uA_expanded == uAlbum {
 					exhibit.focus = .covers
 				} else { exhibit.focus = .expanded(uAlbum) }
-			case .spotlight(let uA_showcased):
+			case .gallery(let uA_showcased):
 				if uA_showcased == uAlbum {
 					exhibit.focus = .covers
-				} else { exhibit.focus = .spotlight(uAlbum) }
+				} else { exhibit.focus = .gallery(uAlbum) }
 		}
 	}
 }
@@ -139,7 +139,7 @@ import MusicKit
 					case .view:
 						switch exhibit.focus {
 							case .expanded: EmptyView()
-							case .covers, .spotlight: b_gallery
+							case .covers, .gallery: b_gallery
 						}
 				}
 			}
@@ -183,7 +183,7 @@ import MusicKit
 			case .mode_albums: return false
 			case .view:
 				switch exhibit.focus {
-					case .covers, .spotlight: return false
+					case .covers, .gallery: return false
 					case .expanded(let uA_expanded): return uA_expanded != uAlbum
 				}
 		}
@@ -191,7 +191,7 @@ import MusicKit
 	
 	private var b_gallery: some View {
 		Button {
-			exhibit.focus = .spotlight(uAlbum)
+			exhibit.focus = .gallery(uAlbum)
 		} label: {
 			image_gallery
 				.accessibilityLabel(InterfaceText.Show_artwork)
@@ -203,7 +203,7 @@ import MusicKit
 	}
 	private var can_open_gallery: Bool {
 		switch exhibit.focus {
-			case .spotlight, .expanded: return false
+			case .gallery, .expanded: return false
 			case .covers: return true
 		}
 	}

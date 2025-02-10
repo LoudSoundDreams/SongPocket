@@ -22,7 +22,7 @@ import MusicKit
 			switch focus {
 				case .covers: return .init(InterfaceText.Album_list)
 				case .expanded: return .init(InterfaceText.Album_expanded)
-				case .spotlight: return nil
+				case .gallery: return nil
 			}
 		}()
 		axNotification?.post()
@@ -45,7 +45,7 @@ extension Exhibit {
 	
 	enum Focus {
 		case covers
-		case spotlight(UAlbum)
+		case gallery(UAlbum)
 		case expanded(UAlbum)
 	}
 	private static let focus_initial: Focus = .covers
@@ -64,7 +64,7 @@ extension Exhibit {
 		// Merging might have deleted the emphasized album.
 		switch focus {
 			case .covers: break
-			case .spotlight(let uA_showcased):
+			case .gallery(let uA_showcased):
 				if !Self.uAlbums_fresh().contains(uA_showcased)
 				{ focus = .covers }
 			case .expanded(let uA_expanded):
@@ -108,7 +108,7 @@ extension Exhibit {
 	private static func artifacts_fresh(for focus: Focus) -> [Artifact] {
 		let uAs_fresh = Self.uAlbums_fresh()
 		switch focus {
-			case .covers, .spotlight:
+			case .covers, .gallery:
 				return uAs_fresh.map { .row_album($0) }
 			case .expanded(let uA_expanded):
 				var result: [Artifact] = []
@@ -136,7 +136,7 @@ extension Exhibit {
 				return InterfaceText.NUMBER_songs_selected(uSs_selected.count)
 			case .view:
 				switch focus {
-					case .spotlight: return ""
+					case .gallery: return ""
 					case .covers:
 						return InterfaceText.NUMBER_albums(uAlbums().count)
 					case .expanded:
@@ -161,7 +161,7 @@ extension Exhibit {
 				break
 		}
 		switch focus {
-			case .spotlight: return []
+			case .gallery: return []
 			case .expanded: return uSongs()
 			case .covers:
 				var result: [USong] = []
@@ -554,7 +554,7 @@ final class ExhibitTVC: LRTableViewController {
 				return cell
 			case .row_song(let uSong):
 				switch exhibit.focus {
-					case .covers, .spotlight: return UITableViewCell() // Should never run
+					case .covers, .gallery: return UITableViewCell() // Should never run
 					case .expanded(let uAlbum):
 						// The cell in the storyboard is completely default except for the reuse identifier.
 						let cell = tableView.dequeueReusableCell(withIdentifier: "Inline Song", for: indexPath)
@@ -586,7 +586,7 @@ final class ExhibitTVC: LRTableViewController {
 			switch exhibit.focus {
 				case .covers: return nil
 				case .expanded: return nil
-				case .spotlight(let uA_showcased): return .row_album(uA_showcased)
+				case .gallery(let uA_showcased): return .row_album(uA_showcased)
 			}
 		}()
 		guard

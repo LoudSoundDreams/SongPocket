@@ -17,6 +17,6 @@ extension Global {
 	@ObservationIgnored static let shared = Global()
 	func go_to_artwork() {
 		guard let album = Librarian.album_containing_uSong_current() else { return }
-		showcase?.focus = .spotlight(album.uAlbum)
+		showcase?.focus = .gallery(album.uAlbum)
 	}
 }

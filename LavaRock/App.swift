@@ -42,7 +42,7 @@ import MusicKit
 	private var in_gallery: Bool {
 		guard let showcase = Global.shared.showcase else { return false }
 		switch showcase.focus {
-			case .spotlight: return true
+			case .gallery: return true
 			case .covers, .expanded: return false
 		}
 	}
