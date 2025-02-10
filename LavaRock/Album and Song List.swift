@@ -425,8 +425,7 @@ final class ExhibitTVC: LRTableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		Global.shared.showcase = exhibit // Ideally, whoever initializes this view should also initialize this.
-		Global.shared.artwork_target = self
+		Global.shared.showcase = exhibit
 		
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none
@@ -575,14 +574,6 @@ final class ExhibitTVC: LRTableViewController {
 	override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
 	
 	// MARK: Events
-	
-	func go_to_artwork() {
-		guard
-			let uSong = LCD.shared.uSong_current,
-			let album = Librarian.album_containing_uSong[uSong]?.referencee
-		else { return }
-		exhibit.focus = .spotlight(album.uAlbum)
-	}
 	
 	@objc private func reflect_artifacts() {
 		Task {

@@ -142,7 +142,7 @@ struct MenuTransport: View {
 	
 	private var b_artwork: some View {
 		Button {
-			Global.shared.artwork_target?.go_to_artwork()
+			Global.shared.go_to_artwork()
 		} label: {
 			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo_fill)
 		}.disabled({
