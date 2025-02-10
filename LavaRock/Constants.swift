@@ -43,7 +43,6 @@ enum InterfaceText {
 	static let Start = "Start"
 	static let Edit = "Edit"
 	static let Done = "Done"
-	static let Menu = "Menu"
 	static let More = "More"
 	
 	static let _interpunct = "·"
@@ -200,7 +199,7 @@ extension Notification.Name {
 }
 
 enum SF {
-	static let circle_pencil = "pencil.circle.fill"
+	static let circle_check = "checkmark.circle.fill"
 	static let circle_triangle_up_hollow = "arrowtriangle.up.circle"
 	static let circle_triangle_down_hollow = "arrowtriangle.down.circle"
 	static let circle_triangle_up_fill = "arrowtriangle.up.circle.fill"
@@ -231,7 +230,6 @@ enum SF {
 	static let waveform = "waveform"
 	static let photo_fill = "photo.fill"
 	static let circle_photo = "photo.circle.fill"
-	static let circle_hamburger = "line.3.horizontal.circle.fill"
 	static let circle_ellipsis = "ellipsis.circle.fill"
 	static let app_external = "arrow.up.forward.app"
 	static let music_note = "music.note"
