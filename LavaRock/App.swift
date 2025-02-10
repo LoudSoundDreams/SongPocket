@@ -25,21 +25,21 @@ import MusicKit
 							startPoint: .top, endPoint: .bottom)
 					}
 					.ignoresSafeArea()
-				ZStack { if !spotlighting {
+				ZStack { if !in_gallery {
 					BubbleBar()
 						.padding(.horizontal)
 						.padding(.horizontal, -BubbleBar.width_border)
 						.transition(.move(edge: .bottom))
-				}}.animation(.linear_quick(), value: spotlighting)
+				}}.animation(.linear_quick(), value: in_gallery)
 			}
-			.persistentSystemOverlays(spotlighting ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
+			.persistentSystemOverlays(in_gallery ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
 			.task {
 				guard MusicAuthorization.currentStatus == .authorized else { return }
 				Self.integrate_Apple_Music()
 			}
 		}
 	}
-	private var spotlighting: Bool {
+	private var in_gallery: Bool {
 		guard let showcase = Global.shared.showcase else { return false }
 		switch showcase.focus {
 			case .spotlight: return true

@@ -132,14 +132,14 @@ import MusicKit
 				.padding(.trailing, .eight) // Leave room before the buttons.
 			Spacer()
 			ZStack {
-				image_spotlight.hidden() // Keeps the layout stable.
+				image_gallery.hidden() // Keeps the layout stable.
 				switch exhibit.selection {
 					case .mode_songs: EmptyView()
 					case .mode_albums: menu_select
 					case .view:
 						switch exhibit.focus {
 							case .expanded: EmptyView()
-							case .covers, .spotlight: b_spotlight
+							case .covers, .spotlight: b_gallery
 						}
 				}
 			}
@@ -189,19 +189,19 @@ import MusicKit
 		}
 	}
 	
-	private var b_spotlight: some View {
+	private var b_gallery: some View {
 		Button {
 			exhibit.focus = .spotlight(uAlbum)
 		} label: {
-			image_spotlight
+			image_gallery
 				.accessibilityLabel(InterfaceText.Show_artwork)
-		}.disabled(!can_spotlight) // Lets you rapid-tap to exit spotlight mode, by making this button immediately start ignoring touches and passing them to the view behind it, while animating away.
+		}.disabled(!can_open_gallery) // Lets you rapid-tap to exit gallery, by making this button immediately start ignoring touches and passing them to the view behind it, while animating away.
 	}
-	private var image_spotlight: some View {
+	private var image_gallery: some View {
 		Image(systemName: SF.circle_photo)
 			.symbolRenderingMode(.hierarchical)
 	}
-	private var can_spotlight: Bool {
+	private var can_open_gallery: Bool {
 		switch exhibit.focus {
 			case .spotlight, .expanded: return false
 			case .covers: return true
