@@ -138,8 +138,8 @@ import MusicKit
 					case .mode_albums: menu_select
 					case .view:
 						switch exhibit.focus {
-							case .spotlight, .expanded: EmptyView()
-							case .covers: b_spotlight
+							case .expanded: EmptyView()
+							case .covers, .spotlight: b_spotlight
 						}
 				}
 			}
@@ -195,11 +195,17 @@ import MusicKit
 		} label: {
 			image_spotlight
 				.accessibilityLabel(InterfaceText.Show_artwork)
-		}
+		}.disabled(!can_spotlight) // Lets you rapid-tap to exit spotlight mode, by making this button immediately start ignoring touches and passing them to the view behind it, while animating away.
 	}
 	private var image_spotlight: some View {
 		Image(systemName: SF.circle_photo)
 			.symbolRenderingMode(.hierarchical)
+	}
+	private var can_spotlight: Bool {
+		switch exhibit.focus {
+			case .spotlight, .expanded: return false
+			case .covers: return true
+		}
 	}
 	
 	private var menu_select: some View {
