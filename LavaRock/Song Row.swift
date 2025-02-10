@@ -39,7 +39,7 @@ import SwiftUI
 							? Color.accentColor : Color(white: .one_fourth))
 						.accessibilityLabel(
 							LCD.shared.is_playing
-							? InterfaceText.Now_Playing : InterfaceText.Paused)
+							? InterfaceText.Now_playing : InterfaceText.Paused)
 						.opacity(indicating_current ? 1 : .zero)
 						.accessibilityHidden(!indicating_current)
 						.accessibilitySortPriority(10)

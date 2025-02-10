@@ -128,7 +128,7 @@ extension Exhibit {
 	
 	func message_status() -> String {
 		guard !Global.shared.librarian_is_merging
-		else { return InterfaceText._Updating_library_ellipsis }
+		else { return InterfaceText._message_updating }
 		switch selection {
 			case .mode_albums(let uAs_selected):
 				return InterfaceText.NUMBER_albums_selected(uAs_selected.count)

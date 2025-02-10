@@ -44,26 +44,24 @@ enum InterfaceText {
 	static let Edit = "Edit"
 	static let Done = "Done"
 	static let More = "More"
+	static let Apple_Music = "Apple Music"
 	
 	static let _interpunct = "·"
 	static let _octothorpe = "#"
 	static let _tilde = "~"
-	
-	static let Now_Playing = "Now Playing"
-	static let Paused = "Paused"
-	static let Apple_Music = "Apple Music"
-	
 	static let _welcome_title = "Hi!"
 	static let _welcome_subtitle = "SongPocket shows and plays your Apple Music library."
-	static let No_music = "No music"
-	static let _empty_library_message = "Add music to your Apple Music library."
-	static let _Updating_library_ellipsis = "Updating library…"
+	static let _message_empty = "Add music to your Apple Music library."
+	static let _message_updating = "Updating library…"
 	
+	static let No_music = "No music"
 	static let No_artwork = "No artwork"
-	static let Show_artwork = "Show artwork"
-	static let Rows_updated = "Rows updated"
 	static let Album_list = "Album list"
 	static let Album_expanded = "Album expanded"
+	static let Show_artwork = "Show artwork"
+	static let Rows_updated = "Rows updated"
+	static let Now_playing = "Now playing"
+	static let Paused = "Paused"
 	
 	static func NUMBER_albums_selected(_ num: Int) -> String {
 		return NUMBER_albums(num) + " selected"

@@ -19,7 +19,7 @@ final class LRAlbum {
 		else { return nil }
 		guard the_albums.isEmpty
 		else { return nil }
-		return InterfaceText._empty_library_message
+		return InterfaceText._message_empty
 	}
 	
 	// Search
