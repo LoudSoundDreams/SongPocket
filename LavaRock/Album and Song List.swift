@@ -61,11 +61,11 @@ extension Exhibit {
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
 	
 	@objc private func merged() {
-		// Merging might have deleted the spotlighted or expanded album.
+		// Merging might have deleted the emphasized album.
 		switch focus {
 			case .covers: break
-			case .spotlight(let uA_spotlighted):
-				if !Self.uAlbums_fresh().contains(uA_spotlighted)
+			case .spotlight(let uA_showcased):
+				if !Self.uAlbums_fresh().contains(uA_showcased)
 				{ focus = .covers }
 			case .expanded(let uA_expanded):
 				if !Self.uAlbums_fresh().contains(uA_expanded)
@@ -586,7 +586,7 @@ final class ExhibitTVC: LRTableViewController {
 			switch exhibit.focus {
 				case .covers: return nil
 				case .expanded: return nil
-				case .spotlight(let uA_spotlighted): return .row_album(uA_spotlighted)
+				case .spotlight(let uA_showcased): return .row_album(uA_showcased)
 			}
 		}()
 		guard

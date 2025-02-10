@@ -29,8 +29,8 @@ import MusicKit
 	private var blurring: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
-			case .spotlight(let uA_spotlighted):
-				return uA_spotlighted != uAlbum
+			case .spotlight(let uA_showcased):
+				return uA_showcased != uAlbum
 		}
 	}
 	private var labeling: Bool {
@@ -75,8 +75,8 @@ import MusicKit
 				if uA_expanded == uAlbum {
 					exhibit.focus = .covers
 				} else { exhibit.focus = .expanded(uAlbum) }
-			case .spotlight(let uA_spotlighted):
-				if uA_spotlighted == uAlbum {
+			case .spotlight(let uA_showcased):
+				if uA_showcased == uAlbum {
 					exhibit.focus = .covers
 				} else { exhibit.focus = .spotlight(uAlbum) }
 		}
