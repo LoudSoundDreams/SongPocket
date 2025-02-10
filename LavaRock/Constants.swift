@@ -41,7 +41,6 @@ extension View {
 enum InterfaceText {
 	static let Cancel = "Cancel"
 	static let Start = "Start"
-	static let Edit = "Edit"
 	static let Done = "Done"
 	static let More = "More"
 	static let Apple_Music = "Apple Music"
@@ -105,6 +104,7 @@ enum InterfaceText {
 	
 	// MARK: Editing
 	
+	static let Select = "Select"
 	static let Select_Up = "Select Up"
 	static let Select_Down = "Select Down"
 	static let Selected = "Selected"

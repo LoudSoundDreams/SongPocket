@@ -48,9 +48,9 @@ struct BubbleBar: View {
 					}
 				}())
 				.accessibilityLabel({
-					guard let showcase else { return InterfaceText.Edit }
+					guard let showcase else { return InterfaceText.Select }
 					switch showcase.selection {
-						case .view: return InterfaceText.Edit
+						case .view: return InterfaceText.Select
 						case .mode_albums, .mode_songs: return InterfaceText.Done
 					}
 				}())
