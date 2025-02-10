@@ -66,32 +66,27 @@ enum InterfaceText {
 	static let Album_expanded = "Album expanded"
 	
 	static func NUMBER_albums_selected(_ num: Int) -> String {
-		let fNum = num.formatted()
-		if num == 1 {
-			return "\(fNum) album selected"
-		}
-		return "\(fNum) albums selected"
+		return NUMBER_albums(num) + " selected"
 	}
 	static func NUMBER_albums(_ num: Int) -> String {
-		let fNum = num.formatted()
-		if num == 1 {
-			return "\(fNum) album"
-		}
-		return "\(fNum) albums"
+		return _eng_NUM_noun(num, one: "album", "albums")
 	}
 	static func NUMBER_songs_selected(_ num: Int) -> String {
-		let fNum = num.formatted()
-		if num == 1 {
-			return "\(fNum) song selected"
-		}
-		return "\(fNum) songs selected"
+		return NUMBER_songs(num) + " selected"
 	}
 	static func NUMBER_songs(_ num: Int) -> String {
-		let fNum = num.formatted()
-		if num == 1 {
-			return "\(fNum) song"
+		return _eng_NUM_noun(num, one: "song", "songs")
+	}
+	
+	private static func _eng_NUM_noun(
+		_ number: Int,
+		one singular: String, _ plural: String
+	) -> String {
+		let fNumber = number.formatted()
+		if number == 1 {
+			return "\(fNumber) \(singular)"
 		}
-		return "\(fNum) songs"
+		return "\(fNumber) \(plural)"
 	}
 	
 	// MARK: Playback
