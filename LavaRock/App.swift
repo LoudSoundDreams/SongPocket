@@ -40,8 +40,8 @@ import MusicKit
 		}
 	}
 	private var in_gallery: Bool {
-		guard let showcase = Global.shared.showcase else { return false }
-		switch showcase.focus {
+		guard let spotlight = Global.shared.spotlight else { return false }
+		switch spotlight.focus {
 			case .gallery: return true
 			case .covers, .expanded: return false
 		}

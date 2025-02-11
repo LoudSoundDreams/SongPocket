@@ -425,7 +425,7 @@ final class ExhibitTVC: LRTableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		Global.shared.showcase = exhibit
+		Global.shared.spotlight = exhibit
 		
 		view.backgroundColor = .clear
 		tableView.separatorStyle = .none

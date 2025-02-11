@@ -36,8 +36,8 @@ struct MenuTransport: View {
 		.disabled(is_selecting)
 	}
 	private var is_selecting: Bool {
-		guard let showcase = Global.shared.showcase else { return false }
-		switch showcase.selection {
+		guard let spotlight = Global.shared.spotlight else { return false }
+		switch spotlight.selection {
 			case .view: return false
 			case .mode_albums, .mode_songs: return true
 		}
@@ -142,7 +142,7 @@ struct MenuTransport: View {
 	
 	private var b_artwork: some View {
 		Button {
-			Global.shared.go_to_artwork()
+			Global.shared.spotlight_artwork()
 		} label: {
 			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo_fill)
 		}.disabled(nil == Librarian.album_containing_uSong_current())

@@ -17,46 +17,46 @@ struct BubbleBar: View {
 		.background(Material.bar, in: .capsule)
 	}
 	
-	private var showcase: Exhibit? { Global.shared.showcase }
+	private var spotlight: Exhibit? { Global.shared.spotlight }
 	
 	private var b_select_mode: some View {
 		Button {
-			guard let showcase else { return }
-			switch showcase.selection {
+			guard let spotlight else { return }
+			switch spotlight.selection {
 				case .mode_albums, .mode_songs:
-					showcase.selection_end_animated()
+					spotlight.selection_end_animated()
 				case .view:
-					switch showcase.focus {
+					switch spotlight.focus {
 						case .gallery: return
 						case .covers:
 							withAnimation {
-								showcase.selection = .mode_albums([])
+								spotlight.selection = .mode_albums([])
 							}
 						case .expanded:
 							withAnimation {
-								showcase.selection = .mode_songs([])
+								spotlight.selection = .mode_songs([])
 							}
 					}
 			}
 		} label: {
 			Image(systemName: SF.circle_check)
 				.symbolRenderingMode({
-					guard let showcase else { return .hierarchical }
-					switch showcase.selection {
+					guard let spotlight else { return .hierarchical }
+					switch spotlight.selection {
 						case .view: return .hierarchical
 						case .mode_albums, .mode_songs: return .monochrome
 					}
 				}())
 				.accessibilityLabel({
-					guard let showcase else { return InterfaceText.Select }
-					switch showcase.selection {
+					guard let spotlight else { return InterfaceText.Select }
+					switch spotlight.selection {
 						case .view: return InterfaceText.Select
 						case .mode_albums, .mode_songs: return InterfaceText.Done
 					}
 				}())
 		}.disabled({
-			guard let showcase else { return true }
-			return showcase.uAlbums().isEmpty
+			guard let spotlight else { return true }
+			return spotlight.uAlbums().isEmpty
 		}())
 	}
 	
@@ -76,12 +76,12 @@ struct BubbleBar: View {
 	
 	// MARK: Scope
 	
-	@ViewBuilder private var section_scope: some View { if let showcase {
-		Section(showcase.message_status()) {
-			let uSongs = showcase.uSongs_scope()
+	@ViewBuilder private var section_scope: some View { if let spotlight {
+		Section(spotlight.message_status()) {
+			let uSongs = spotlight.uSongs_scope()
 			
 			Button {
-				showcase.selection_end_animated()
+				spotlight.selection_end_animated()
 				Task {
 					await Tape.play_now(uSongs)
 				}
@@ -90,7 +90,7 @@ struct BubbleBar: View {
 			}.disabled(uSongs.isEmpty)
 			
 			Button {
-				showcase.selection_end_animated()
+				spotlight.selection_end_animated()
 				Tape.play_later(uSongs)
 			} label: {
 				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
@@ -100,13 +100,13 @@ struct BubbleBar: View {
 	
 	// MARK: Arrange
 	
-	@ViewBuilder private var sections_move: some View { if let showcase {
+	@ViewBuilder private var sections_move: some View { if let spotlight {
 		// Include arrange commands depending on the type to arrange: albums or songs.
 		// Enable arrange commands depending on the items to arrange:
 		// • 2 or more
 		// • Contiguous
 		// • With useful data
-		Group { switch showcase.focus {
+		Group { switch spotlight.focus {
 			case .gallery: EmptyView()
 			case .covers: sections_arrange_albums
 			case .expanded: sections_arrange_songs
@@ -133,67 +133,67 @@ struct BubbleBar: View {
 	private func buttons_arrange_albums(_ albumOrders: [AlbumOrder]) -> some View {
 		ForEach(albumOrders, id: \.self) { order in
 			Button {
-				showcase?.arrange_albums(by: order)
+				spotlight?.arrange_albums(by: order)
 			} label: {
 				Label(order.name, systemImage: order.sf_symbol)
 			}
 			.menuActionDismissBehavior(.disabled)
 			.disabled({
-				guard let showcase else { return true }
-				return !showcase.can_arrange_albums(by: order)
+				guard let spotlight else { return true }
+				return !spotlight.can_arrange_albums(by: order)
 			}())
 		}
 	}
 	private func buttons_arrange_songs(_ songOrders: [SongOrder]) -> some View {
 		ForEach(songOrders, id: \.self) { order in
 			Button {
-				showcase?.arrange_songs(by: order)
+				spotlight?.arrange_songs(by: order)
 			} label: {
 				Label(order.name, systemImage: order.sf_symbol)
 			}
 			.menuActionDismissBehavior(.disabled)
 			.disabled({
-				guard let showcase else { return true }
-				return !showcase.can_arrange_songs(by: order)
+				guard let spotlight else { return true }
+				return !spotlight.can_arrange_songs(by: order)
 			}())
 		}
 	}
 	
 	// MARK: Reorder
 	
-	@ViewBuilder private var section_reorder: some View { if let showcase {
+	@ViewBuilder private var section_reorder: some View { if let spotlight {
 		ControlGroup {
 			Button {
-				showcase.reorder(forward: false, to_limit: true)
+				spotlight.reorder(forward: false, to_limit: true)
 			} label: {
 				Image(systemName: SF.to_top)
 					.accessibilityLabel(InterfaceText.To_Top)
-			}.disabled(!showcase.can_reorder(forward: false))
+			}.disabled(!spotlight.can_reorder(forward: false))
 			
 			Button {
-				showcase.reorder(forward: false, to_limit: false)
+				spotlight.reorder(forward: false, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_up)
 					.accessibilityLabel(InterfaceText.Move_Up)
 			}
 			.menuActionDismissBehavior(.disabled)
-			.disabled(!showcase.can_reorder(forward: false))
+			.disabled(!spotlight.can_reorder(forward: false))
 			
 			Button {
-				showcase.reorder(forward: true, to_limit: false)
+				spotlight.reorder(forward: true, to_limit: false)
 			} label: {
 				Image(systemName: SF.move_down)
 					.accessibilityLabel(InterfaceText.Move_Down)
 			}
 			.menuActionDismissBehavior(.disabled)
-			.disabled(!showcase.can_reorder(forward: true))
+			.disabled(!spotlight.can_reorder(forward: true))
 			
 			Button {
-				showcase.reorder(forward: true, to_limit: true)
+				spotlight.reorder(forward: true, to_limit: true)
 			} label: {
 				Image(systemName: SF.to_bottom)
 					.accessibilityLabel(InterfaceText.To_Bottom)
-			}.disabled(!showcase.can_reorder(forward: true))
+			}.disabled(!spotlight.can_reorder(forward: true))
 		}
 		.controlGroupStyle(.compactMenu)
 		.disabled(Global.shared.librarian_is_merging)
