@@ -14,8 +14,11 @@ import MusicKit
 			.overlay {
 				ZStack(alignment: .bottom) {
 					ZStack { if blurring {
-						Rectangle().foregroundStyle(Material.thick)
+						Rectangle().foregroundStyle(Material.regular)
 					}}.animation(.linear_quick(), value: blurring)
+					ZStack { if dimming {
+						Color.black.opacity(.one_half)
+					}}.animation(.linear_quick(), value: dimming)
 					ZStack { if labeling {
 						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
 					}}.animation(.linear_quick(), value: labeling)
@@ -29,6 +32,13 @@ import MusicKit
 	private var blurring: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
+			case .gallery(let uA_showcased):
+				return uA_showcased != uAlbum
+		}
+	}
+	private var dimming: Bool {
+		switch exhibit.focus {
+			case .covers, .expanded: return false
 			case .gallery(let uA_showcased):
 				return uA_showcased != uAlbum
 		}
