@@ -449,7 +449,7 @@ final class ExhibitTVC: LRTableViewController {
 		// The `size` parameter will later become `view.frame.size`, not `view.bounds.size`.
 		exhibit.length_artwork = Self.length_square_inscribed_in(
 			size: size,
-			safeAreaInsets: view.safeAreaInsets)
+			safeAreaInsets: view.safeAreaInsets) // Technically incorrect; can change after the transition. We could override `viewSafeAreaInsetsDidChange`, but currently don’t need to.
 		refresh_contentInset(size_frame: size)
 	}
 	
@@ -458,8 +458,8 @@ final class ExhibitTVC: LRTableViewController {
 		safeAreaInsets: UIEdgeInsets
 	) -> CGFloat {
 		return min(
-			size.width,
-			size.height - safeAreaInsets.bottom) // 2do: Which sides of the safe area do we need to check?
+			size.width - safeAreaInsets.left - safeAreaInsets.right,
+			size.height - safeAreaInsets.top - safeAreaInsets.bottom)
 	}
 	
 	private func refresh_contentInset(size_frame: CGSize) {

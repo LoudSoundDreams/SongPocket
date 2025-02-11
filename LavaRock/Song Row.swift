@@ -46,7 +46,7 @@ import SwiftUI
 					menu_select(songInfo, albumInfo)
 						.imageScale(.large)
 						.opacity(can_select_song ? 1 : .zero)
-						.accessibilityHidden(!can_select_song)
+						.accessibilityHidden(!can_select_song) // As of iOS 18.3.1, VoiceOver sometimes unnecessarily reads this, even with `accessibilityHidden(true)`.
 				}
 				.dynamicType_clamped()
 				.padding(.trailing, .eight * 1/8)
