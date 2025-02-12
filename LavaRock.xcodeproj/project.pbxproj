@@ -30,6 +30,7 @@
 		157249F52D45A6C4004C3AAF /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157249F42D45A6B9004C3AAF /* Toolbar.swift */; };
 		158BACCD2D3A47F8002A4025 /* Song Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158BACCC2D3A47F7002A4025 /* Song Row.swift */; };
 		158C8E132D4DA36400AF5A1C /* Transport Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158C8E122D4DA35F00AF5A1C /* Transport Menu.swift */; };
+		158E255A2D5D53AC00C3033A /* Album and Song List 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158E25592D5D538700C3033A /* Album and Song List 2.swift */; };
 		15EA28B22D4A3A1A004ADEE7 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EA28B12D4A3A17004ADEE7 /* Global.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		157249F42D45A6B9004C3AAF /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		158BACCC2D3A47F7002A4025 /* Song Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Song Row.swift"; sourceTree = "<group>"; };
 		158C8E122D4DA35F00AF5A1C /* Transport Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transport Menu.swift"; sourceTree = "<group>"; };
+		158E25592D5D538700C3033A /* Album and Song List 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Album and Song List 2.swift"; sourceTree = "<group>"; };
 		15EA28B12D4A3A17004ADEE7 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,6 +123,7 @@
 				157249F42D45A6B9004C3AAF /* Toolbar.swift */,
 				158C8E122D4DA35F00AF5A1C /* Transport Menu.swift */,
 				076830BE24B42E3E0033E3CC /* Album and Song List.swift */,
+				158E25592D5D538700C3033A /* Album and Song List 2.swift */,
 				07934CF927CDBEB0002B2444 /* ExhibitTVC.storyboard */,
 				07755A57294821860056E90C /* Album Row.swift */,
 				158BACCC2D3A47F7002A4025 /* Song Row.swift */,
@@ -253,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				158E255A2D5D53AC00C3033A /* Album and Song List 2.swift in Sources */,
 				157249F52D45A6C4004C3AAF /* Toolbar.swift in Sources */,
 				071B30942C88CD3400239BF3 /* Librarian.swift in Sources */,
 				070056912C8275C0006F1069 /* Disk.swift in Sources */,

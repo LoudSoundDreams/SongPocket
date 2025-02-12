@@ -15,6 +15,7 @@ import MusicKit
 	var body: some Scene {
 		WindowGroup {
 			ZStack(alignment: .bottomTrailing) {
+//				ExhibitList()
 				RepNCMain()
 					.background {
 						LinearGradient(
