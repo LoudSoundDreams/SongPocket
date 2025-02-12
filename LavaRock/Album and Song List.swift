@@ -61,7 +61,7 @@ extension Exhibit {
 	@ObservationIgnored fileprivate var rowIDs: [AnyHashable] { artifacts }
 	
 	@objc private func merged() {
-		// Merging might have deleted the emphasized album.
+		// Merging might have deleted the showcased or expanded album.
 		switch focus {
 			case .covers: break
 			case .gallery(let uA_showcased):

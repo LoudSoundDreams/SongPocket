@@ -1,7 +1,6 @@
 // 2024-11-22
 
 import SwiftUI
-import UIKit
 
 struct Placeholder: View {
 	var body: some View {

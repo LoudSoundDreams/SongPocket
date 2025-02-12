@@ -1,7 +1,5 @@
 // 2022-04-22
 
-import UIKit
-
 enum AlbumOrder {
 	case reverse
 	case random
