@@ -429,6 +429,9 @@ final class ExhibitTVC: LRTableViewController {
 	
 	override func viewIsAppearing(_ animated: Bool) {
 		super.viewIsAppearing(animated)
+		
+		view.window!.tintColor = UIColor(Color.LRAccent) // For the “Start Playing” confirmation.
+		
 		let size_frame = view.frame.size
 		exhibit.length_artwork = Self.length_square_inscribed_in(
 			size: size_frame,

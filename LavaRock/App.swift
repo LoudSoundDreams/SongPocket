@@ -16,7 +16,7 @@ import MusicKit
 		WindowGroup {
 			ZStack(alignment: .bottomTrailing) {
 //				ExhibitList()
-				RepNCMain()
+				ExhibitTVCRep()
 					.background {
 						LinearGradient(
 							gradient: Gradient(stops: [
@@ -54,23 +54,10 @@ import MusicKit
 	}
 }
 
-private struct RepNCMain: UIViewControllerRepresentable {
-	func makeUIViewController(context: Context) -> NCMain { NCMain.create() }
-	func updateUIViewController(_ vc: NCMain, context: Context) {}
-}
-private final class NCMain: UINavigationController {
-	static func create() -> Self {
-		let result = Self(rootViewController: ExhibitTVC.init_please())
-		result.setNavigationBarHidden(true, animated: false)
-		return result
+private struct ExhibitTVCRep: UIViewControllerRepresentable {
+	typealias VCType = ExhibitTVC
+	func makeUIViewController(context: Context) -> VCType {
+		return ExhibitTVC.init_please()
 	}
-	
-	override func viewIsAppearing(_ animated: Bool) {
-		super.viewIsAppearing(animated)
-		if !Self.has_appeared {
-			Self.has_appeared = true
-			view.window!.tintColor = UIColor(Color.LRAccent)
-		}
-	}
-	private static var has_appeared = false
+	func updateUIViewController(_ vc: VCType, context: Context) {}
 }
