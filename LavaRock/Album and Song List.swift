@@ -31,10 +31,6 @@ import MusicKit
 	
 	var selection: Selection = .view
 	
-	var activated: USong? { didSet { // Use this only when `selection == .view` and `focus == .expanded`.
-		NotificationCenter.default.post(name: .song_activation, object: nil)
-	}}
-	
 	fileprivate(set) var length_artwork: CGFloat!
 }
 extension Exhibit {
@@ -74,12 +70,9 @@ extension Exhibit {
 		
 		artifacts = Self.artifacts_fresh(for: focus)
 		
-		// Merging might have deleted selected items or the activated song.
+		// Merging might have deleted selected items.
 		switch selection {
-			case .view:
-				if let activated, uSongs(with: [activated]).isEmpty {
-					self.activated = nil
-				}
+			case .view: break
 			case .mode_albums(let old_selected):
 				guard !uAlbums().isEmpty else {
 					selection = .view
@@ -432,7 +425,6 @@ final class ExhibitTVC: LRTableViewController {
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_artifacts), name: .exhibit_artifacts, object: exhibit)
 		NotificationCenter.default.addObserver(self, selector: #selector(reflect_focus), name: .exhibit_focus, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(reflect_activation), name: .song_activation, object: nil)
 	}
 	
 	override func viewIsAppearing(_ animated: Bool) {
@@ -599,39 +591,5 @@ final class ExhibitTVC: LRTableViewController {
 				at: .top,
 				animated: true)
 		}
-	}
-	
-	@objc private func reflect_activation() {
-		guard let activated = exhibit.activated else {
-			dismiss(animated: true) // Should be the “Start Playing” action sheet.
-			return
-		}
-		
-		let anchor_for_popover: UIView? = { () -> UITableViewCell? in
-			guard let i_row = exhibit.artifacts.firstIndex(where: { switch $0 {
-				case .row_album: return false
-				case .row_song(let uSong): return uSong == activated
-			}}) else { return nil }
-			return tableView.cellForRow(at: IndexPath(row: i_row, section: 0))
-		}()
-		guard let anchor_for_popover else { return }
-		
-		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		alert.popoverPresentationController?.sourceView = anchor_for_popover
-		let a_start = UIAlertAction(title: InterfaceText.Start_Playing, style: .default) { _ in
-			Task {
-				self.exhibit.activated = nil
-				guard let album = Librarian.album_containing_uSong[activated]?.referencee else { return }
-				await Tape.play_now(album.uSongs, starting_at: activated)
-			}
-		}
-		a_start.accessibilityTraits.formUnion(.startsMediaSession)
-		alert.addAction(a_start)
-		alert.addAction(
-			UIAlertAction(title: InterfaceText.Cancel, style: .cancel) { _ in
-				self.exhibit.activated = nil
-			}
-		)
-		present(alert, animated: true)
 	}
 }

@@ -188,7 +188,6 @@ extension Notification.Name {
 	static let librarian_merged = Self("LR_Merged")
 	static let exhibit_artifacts = Self("LR_Artifacts")
 	static let exhibit_focus = Self("LR_Focus")
-	static let song_activation = Self("LR_Song_Activation")
 }
 
 enum SF {

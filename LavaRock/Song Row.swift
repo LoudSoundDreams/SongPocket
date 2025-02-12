@@ -64,6 +64,13 @@ import SwiftUI
 		.frame(maxWidth: .infinity)
 		.contentShape(Rectangle())
 		.onTapGesture { tapped() }
+		.confirmationDialog("", isPresented: $confirming) {
+			Button(InterfaceText.Start_Playing) { Task {
+				guard let album = Librarian.album_containing_uSong[uSong]?.referencee
+				else { return }
+				await Tape.play_now(album.uSongs, starting_at: uSong)
+			}}.accessibilityAddTraits(.startsMediaSession)
+		}
 	}
 	private var indicating_current: Bool {
 		return !can_select_song &&
@@ -79,14 +86,8 @@ import SwiftUI
 	private static let padding_bottom: CGFloat = .eight * 2
 	@ViewBuilder private var highlight: some View {
 		Color.accentColor
-			.opacity(is_highlighted ? .one_half : .zero)
-			.animation(is_highlighted ? nil : .default, value: is_highlighted)
-	}
-	private var is_highlighted: Bool {
-		switch exhibit.selection {
-			case .mode_albums, .mode_songs: return false
-			case .view: return uSong == exhibit.activated
-		}
+			.opacity(confirming ? .one_half : .zero)
+			.animation(confirming ? nil : .default, value: confirming)
 	}
 	@ViewBuilder private var border: some View {
 		switch exhibit.selection {
@@ -184,7 +185,7 @@ import SwiftUI
 		switch exhibit.selection {
 			case .mode_albums: return
 			case .view:
-				exhibit.activated = uSong
+				confirming = true
 			case .mode_songs(let old_selected):
 				var new_selected = old_selected
 				if old_selected.contains(uSong) {
@@ -193,4 +194,5 @@ import SwiftUI
 				exhibit.selection = .mode_songs(new_selected)
 		}
 	}
+	@State private var confirming = false
 }
