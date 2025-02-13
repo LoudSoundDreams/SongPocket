@@ -176,8 +176,7 @@ import SwiftUI
 	private var is_selected: Bool {
 		switch exhibit.selection {
 			case .view, .mode_albums: return false
-			case .mode_songs(let uSs_selected):
-				return uSs_selected.contains(uSong)
+			case .mode_songs(let uSs_selected): return uSs_selected.contains(uSong)
 		}
 	}
 	

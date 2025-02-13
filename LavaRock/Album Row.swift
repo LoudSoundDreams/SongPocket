@@ -32,15 +32,13 @@ import MusicKit
 	private var blurring: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
-			case .gallery(let uA_showcased):
-				return uA_showcased != uAlbum
+			case .gallery(let uA_showcased): return uA_showcased != uAlbum
 		}
 	}
 	private var dimming: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return false
-			case .gallery(let uA_showcased):
-				return uA_showcased != uAlbum
+			case .gallery(let uA_showcased): return uA_showcased != uAlbum
 		}
 	}
 	private var labeling: Bool {
@@ -187,8 +185,8 @@ import MusicKit
 	}
 	private var dimming: Bool {
 		switch exhibit.selection {
-			case .mode_songs: return true
 			case .mode_albums: return false
+			case .mode_songs: return true
 			case .view:
 				switch exhibit.focus {
 					case .covers, .gallery: return false
@@ -249,8 +247,7 @@ import MusicKit
 	private var is_selected: Bool {
 		switch exhibit.selection {
 			case .view, .mode_songs: return false
-			case .mode_albums(let uAs_selected):
-				return uAs_selected.contains(uAlbum)
+			case .mode_albums(let uAs_selected): return uAs_selected.contains(uAlbum)
 		}
 	}
 }
