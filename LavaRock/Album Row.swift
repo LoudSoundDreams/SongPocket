@@ -167,21 +167,19 @@ import MusicKit
 			return title_album
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
+			Text(title_and_input_label)
+				.font_title3_bold()
+				.foregroundStyle(dimming ? .secondary : .primary)
+			if let artist_album = albumInfo?._artist, artist_album != "" {
+				Text(artist_album)
+					.font_caption2_bold()
+					.foregroundStyle(dimming ? .tertiary : .secondary)
+			}
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
 					.font(.caption2).monospacedDigit()
 					.foregroundStyle(dimming ? .tertiary : .secondary)
 			}
-			if let artist_album = albumInfo?._artist, artist_album != "" {
-				Text(artist_album)
-					.font_caption2_bold()
-					.foregroundStyle(dimming ? .tertiary : .secondary)
-					.accessibilitySortPriority(20)
-			}
-			Text(title_and_input_label)
-				.font_title3_bold()
-				.foregroundStyle(dimming ? .secondary : .primary)
-				.accessibilitySortPriority(30) // Bigger is sooner.
 		}
 		.animation(.linear_quick(), value: dimming)
 		.disabled(dimming) // For accessibility.
