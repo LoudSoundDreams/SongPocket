@@ -43,8 +43,9 @@ import MusicKit
 	}
 	private var labeling: Bool {
 		switch exhibit.focus {
-			case .covers, .expanded: return true
+			case .covers: return true
 			case .gallery: return false
+			case .expanded(let uA_expanded): return uA_expanded == uAlbum
 		}
 	}
 	private var is_selecting_songs: Bool {
