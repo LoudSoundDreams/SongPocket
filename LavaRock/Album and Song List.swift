@@ -580,7 +580,7 @@ final class ExhibitTVC: LRTableViewController {
 		let artifact_target: Exhibit.Artifact? = {
 			switch exhibit.focus {
 				case .covers: return nil
-				case .expanded: return nil
+				case .expanded(let uA_expanded): return .row_album(uA_expanded)
 				case .gallery(let uA_showcased): return .row_album(uA_showcased)
 			}
 		}()
