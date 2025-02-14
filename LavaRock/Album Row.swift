@@ -17,7 +17,7 @@ import MusicKit
 						Rectangle().foregroundStyle(Material.regular)
 					}}.animation(.linear_quick(), value: blurring)
 					ZStack { if dimming {
-						Color.black.opacity(.one_half)
+						Color.black.opacity(.one_half + .one_fourth)
 					}}.animation(.linear_quick(), value: dimming)
 					ZStack { if labeling {
 						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
@@ -37,7 +37,8 @@ import MusicKit
 	}
 	private var dimming: Bool {
 		switch exhibit.focus {
-			case .covers, .expanded: return false
+			case .covers: return false
+			case .expanded(let uA_expanded): return uA_expanded != uAlbum
 			case .gallery(let uA_showcased): return uA_showcased != uAlbum
 		}
 	}
