@@ -144,18 +144,12 @@ import MusicKit
 			ZStack {
 				image_gallery.hidden() // Keeps the layout stable.
 				switch exhibit.selection {
-					case .mode_songs: EmptyView()
 					case .mode_albums: menu_select
-					case .view:
-						switch exhibit.focus {
-							case .expanded: EmptyView()
-							case .covers, .gallery: b_gallery
-						}
+					case .view, .mode_songs: b_gallery
 				}
 			}
 			.font(.largeTitle)
 			.dynamicType_clamped()
-			.animation(.linear_quick(), value: exhibit.focus)
 		}.padding()
 	}
 	
@@ -203,16 +197,22 @@ import MusicKit
 		} label: {
 			image_gallery
 				.accessibilityLabel(InterfaceText.Show_artwork)
-		}.disabled(!can_open_gallery) // Disable in gallery to allow rapid-tap to exit. Disabling makes the button ignore touches and pass them to the view behind, while we animate the button away.
+		}
+		.disabled(!can_open_gallery) // Disable in gallery to allow rapid-tap to exit. Disabling makes the button ignore touches and pass them to the view behind, while we animate the button away.
+		.animation(.linear_quick(), value: can_open_gallery)
 	}
 	private var image_gallery: some View {
 		Image(systemName: SF.circle_photo)
 			.symbolRenderingMode(.hierarchical)
 	}
 	private var can_open_gallery: Bool {
+		switch exhibit.selection {
+			case .mode_albums, .mode_songs: return false
+			case .view: break
+		}
 		switch exhibit.focus {
-			case .gallery, .expanded: return false
-			case .covers: return true
+			case .gallery: return false
+			case .covers, .expanded: return true
 		}
 	}
 	
@@ -224,8 +224,15 @@ import MusicKit
 			if is_selected
 			{ EllipsisSelected() }
 			else { EllipsisUnselected() }
+		}.disabled(is_selecting_songs)
+	}
+	private var is_selecting_songs: Bool {
+		switch exhibit.selection {
+			case .mode_songs: return true
+			case .mode_albums, .view: return false
 		}
 	}
+	
 	private var b_above: some View {
 		Button(
 			is_selected
