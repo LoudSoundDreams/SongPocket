@@ -3,19 +3,18 @@
 import SwiftUI
 
 struct BubbleBar: View {
-	static let width_border: CGFloat = .eight * 1/2
-	
 	var body: some View {
 		HStack(spacing: Self.width_border * 2) {
+			menu_overflow
 			MenuTransport()
 			b_select_mode
-			menu_overflow
 		}
 		.font(.largeTitle)
 		.dynamicType_clamped()
 		.padding(Self.width_border) // As of iOS 18.3, an open `Menu` stays 4 points away from the view that presented it.
 		.background(Material.bar, in: .capsule)
 	}
+	static let width_border: CGFloat = .eight * 1/2
 	
 	private var spotlight: Exhibit? { Global.shared.spotlight }
 	
@@ -68,9 +67,9 @@ struct BubbleBar: View {
 			sections_move
 			section_reorder
 		} label: {
-			Image(systemName: SF.circle_ellipsis)
+			Image(systemName: SF.circle_menu)
 				.symbolRenderingMode(.hierarchical)
-				.accessibilityLabel(InterfaceText.More)
+				.accessibilityLabel(InterfaceText.Menu)
 		}.menuOrder(.fixed)
 	}
 	

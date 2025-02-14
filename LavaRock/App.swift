@@ -14,7 +14,7 @@ import MusicKit
 	}
 	var body: some Scene {
 		WindowGroup {
-			ZStack(alignment: .bottomTrailing) {
+			ZStack(alignment: .bottom) {
 //				ExhibitList()
 				ExhibitTVCRep()
 					.background {
@@ -27,10 +27,7 @@ import MusicKit
 					}
 					.ignoresSafeArea()
 				ZStack { if !in_gallery {
-					BubbleBar()
-						.padding(.horizontal)
-						.padding(.horizontal, -BubbleBar.width_border)
-						.transition(.move(edge: .bottom))
+					BubbleBar().transition(.move(edge: .bottom))
 				}}.animation(.linear_quick(), value: in_gallery)
 			}
 			.persistentSystemOverlays(in_gallery ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.

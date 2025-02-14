@@ -42,6 +42,7 @@ enum InterfaceText {
 	static let Cancel = "Cancel"
 	static let Start = "Start"
 	static let Done = "Done"
+	static let Menu = "Menu"
 	static let More = "More"
 	static let Apple_Music = "Apple Music"
 	
@@ -222,6 +223,7 @@ enum SF {
 	static let waveform = "waveform"
 	static let photo_fill = "photo.fill"
 	static let circle_photo = "photo.circle.fill"
+	static let circle_menu = "line.3.horizontal.circle.fill"
 	static let circle_ellipsis = "ellipsis.circle.fill"
 	static let app_external = "arrow.up.forward.app"
 	static let music_note = "music.note"
