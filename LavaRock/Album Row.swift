@@ -32,7 +32,7 @@ import MusicKit
 	private var is_selecting_songs: Bool {
 		switch exhibit.selection {
 			case .mode_songs: return true
-			case .view, .mode_albums: return false
+			case .mode_albums, .view: return false
 		}
 	}
 	private var blurring: Bool {
@@ -203,7 +203,7 @@ import MusicKit
 		} label: {
 			image_gallery
 				.accessibilityLabel(InterfaceText.Show_artwork)
-		}.disabled(!can_open_gallery) // Lets you rapid-tap to exit gallery, by making this button immediately start ignoring touches and passing them to the view behind it, while animating away.
+		}.disabled(!can_open_gallery) // Disable in gallery to allow rapid-tap to exit. Disabling makes the button ignore touches and pass them to the view behind, while we animate the button away.
 	}
 	private var image_gallery: some View {
 		Image(systemName: SF.circle_photo)
