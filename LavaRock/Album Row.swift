@@ -16,9 +16,9 @@ import MusicKit
 					ZStack { if blurring {
 						Rectangle().foregroundStyle(Material.regular)
 					}}.animation(.linear_quick(), value: blurring)
-					ZStack { if dimming {
+					ZStack { if darkening {
 						Color.black.opacity(.one_half + .one_fourth)
-					}}.animation(.linear_quick(), value: dimming)
+					}}.animation(.linear_quick(), value: darkening)
 					ZStack { if labeling {
 						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
 					}}.animation(.linear_quick(), value: labeling)
@@ -29,13 +29,19 @@ import MusicKit
 			.contentShape(Rectangle()) // Makes blank space tappable in wide viewport.
 			.onTapGesture { tapped() }
 	}
+	private var is_selecting_songs: Bool {
+		switch exhibit.selection {
+			case .mode_songs: return true
+			case .view, .mode_albums: return false
+		}
+	}
 	private var blurring: Bool {
 		switch exhibit.focus {
 			case .covers, .expanded: return true
 			case .gallery(let uA_showcased): return uA_showcased != uAlbum
 		}
 	}
-	private var dimming: Bool {
+	private var darkening: Bool {
 		switch exhibit.focus {
 			case .covers: return false
 			case .expanded(let uA_expanded): return uA_expanded != uAlbum
@@ -47,12 +53,6 @@ import MusicKit
 			case .covers: return true
 			case .gallery: return false
 			case .expanded(let uA_expanded): return uA_expanded == uAlbum
-		}
-	}
-	private var is_selecting_songs: Bool {
-		switch exhibit.selection {
-			case .mode_songs: return true
-			case .view, .mode_albums: return false
 		}
 	}
 	
