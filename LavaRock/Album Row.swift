@@ -12,7 +12,7 @@ import MusicKit
 			.saturation(is_selecting_songs ? .zero : 1)
 			.accessibilityAddTraits(.isButton)
 			.overlay {
-				ZStack(alignment: .bottom) {
+				ZStack(alignment: .topLeading) {
 					ZStack { if blurring {
 						Rectangle().foregroundStyle(Material.regular)
 					}}.animation(.linear_quick(), value: blurring)
@@ -136,20 +136,26 @@ import MusicKit
 	
 	private let catalog: AppleCatalog = .shared
 	var body: some View {
-		HStack(alignment: .bottom) {
+		HStack(alignment: .top) {
 			stack_info
 				.padding(.leading, SongRow.nudge_text)
-				.padding(.trailing, .eight) // Leave room before the buttons.
 			Spacer()
-			ZStack {
-				image_gallery.hidden() // Keeps the layout stable.
-				switch exhibit.selection {
-					case .mode_albums: menu_select
-					case .view, .mode_songs: b_gallery
+			VStack {
+				Spacer()
+				ZStack {
+					ZStack {
+						image_gallery
+						EllipsisUnselected()
+					}.hidden() // Keeps the layout stable.
+					switch exhibit.selection {
+						case .mode_albums: menu_select
+						case .view, .mode_songs: b_gallery
+					}
 				}
+				.font(.largeTitle)
+				.dynamicType_clamped()
+				.padding(.eight * -1/4)
 			}
-			.font(.largeTitle)
-			.dynamicType_clamped()
 		}.padding()
 	}
 	
@@ -164,10 +170,13 @@ import MusicKit
 			Text(title_and_input_label)
 				.font_title3_bold()
 				.foregroundStyle(dimming ? .secondary : .primary)
+				.padding(.bottom, .eight * 1/4)
+				.accessibilitySortPriority(30) // Bigger is sooner.
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
 					.font_caption2_bold()
 					.foregroundStyle(dimming ? .tertiary : .secondary)
+					.accessibilitySortPriority(20)
 			}
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))
@@ -202,7 +211,7 @@ import MusicKit
 		.animation(.linear_quick(), value: can_open_gallery)
 	}
 	private var image_gallery: some View {
-		Image(systemName: SF.circle_photo)
+		Image(systemName: SF.square_full_screen_fill)
 			.symbolRenderingMode(.hierarchical)
 	}
 	private var can_open_gallery: Bool {

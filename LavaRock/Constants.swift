@@ -221,8 +221,8 @@ enum SF {
 	static let circle_repeat_1 = "repeat.1.circle.fill"
 	
 	static let waveform = "waveform"
-	static let photo_fill = "photo.fill"
-	static let circle_photo = "photo.circle.fill"
+	static let square_full_screen_fill = "arrow.up.backward.and.arrow.down.forward.square.fill"
+	static let square_full_screen_hollow = "arrow.up.backward.and.arrow.down.forward.square"
 	static let circle_menu = "line.3.horizontal.circle.fill"
 	static let circle_ellipsis = "ellipsis.circle.fill"
 	static let app_external = "arrow.up.forward.app"
