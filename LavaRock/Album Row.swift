@@ -136,25 +136,30 @@ import MusicKit
 	
 	private let catalog: AppleCatalog = .shared
 	var body: some View {
-		VStack(alignment: .leading) {
+		HStack(alignment: .top) {
 			stack_info
 				.padding(.leading, SongRow.nudge_text)
 			Spacer()
-			ZStack {
+			VStack(alignment: .trailing) {
+				Spacer()
 				ZStack {
-					image_gallery
-					EllipsisUnselected()
-				}.hidden() // Keeps the layout stable.
-				switch exhibit.selection {
-					case .mode_albums: menu_select
-					case .view, .mode_songs:
-						switch exhibit.focus {
-							case .covers, .gallery: EmptyView()
-							case .expanded(let uA_expanded):
-								if uA_expanded == uAlbum
-								{ b_gallery }
-								else { EmptyView() }
-						}
+					ZStack {
+						image_gallery
+						EllipsisUnselected()
+					}.hidden() // Keeps the layout stable.
+					switch exhibit.selection {
+						case .mode_albums: menu_select
+						case .view, .mode_songs:
+							switch exhibit.focus {
+								case .covers: EmptyView()
+								case .gallery:
+									b_gallery // Include but disable it, to enable rapid-tap.
+								case .expanded(let uA_expanded):
+									if uA_expanded == uAlbum
+									{ b_gallery }
+									else { EmptyView() }
+							}
+					}
 				}
 			}
 			.font(.largeTitle)
