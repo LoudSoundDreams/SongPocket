@@ -87,7 +87,7 @@ import MusicKit
 				} else { exhibit.focus = .expanded(uAlbum) }
 			case .gallery(let uA_showcased):
 				if uA_showcased == uAlbum {
-					exhibit.focus = .covers
+					exhibit.focus = .expanded(uAlbum)
 				} else { exhibit.focus = .gallery(uAlbum) }
 		}
 	}
@@ -136,26 +136,31 @@ import MusicKit
 	
 	private let catalog: AppleCatalog = .shared
 	var body: some View {
-		HStack(alignment: .top) {
+		VStack(alignment: .leading) {
 			stack_info
 				.padding(.leading, SongRow.nudge_text)
 			Spacer()
-			VStack {
-				Spacer()
+			ZStack {
 				ZStack {
-					ZStack {
-						image_gallery
-						EllipsisUnselected()
-					}.hidden() // Keeps the layout stable.
-					switch exhibit.selection {
-						case .mode_albums: menu_select
-						case .view, .mode_songs: b_gallery
-					}
+					image_gallery
+					EllipsisUnselected()
+				}.hidden() // Keeps the layout stable.
+				switch exhibit.selection {
+					case .mode_albums: menu_select
+					case .view, .mode_songs:
+						switch exhibit.focus {
+							case .covers, .gallery: EmptyView()
+							case .expanded(let uA_expanded):
+								if uA_expanded == uAlbum
+								{ b_gallery }
+								else { EmptyView() }
+						}
 				}
-				.font(.largeTitle)
-				.dynamicType_clamped()
-				.padding(.eight * -1/4)
 			}
+			.font(.largeTitle)
+			.dynamicType_clamped()
+			.padding(.eight * -1/4)
+			.animation(.linear_quick(), value: exhibit.focus)
 		}.padding()
 	}
 	
