@@ -211,7 +211,7 @@ import MusicKit
 		.animation(.linear_quick(), value: can_open_gallery)
 	}
 	private var image_gallery: some View {
-		Image(systemName: SF.square_full_screen_fill)
+		Image(systemName: SF.circle_full_screen_fill)
 			.symbolRenderingMode(.hierarchical)
 	}
 	private var can_open_gallery: Bool {
