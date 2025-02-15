@@ -160,11 +160,10 @@ import MusicKit
 									else { EmptyView() }
 							}
 					}
-				}
+				}.padding([.trailing, .bottom], .eight * -1/4)
 			}
 			.font(.largeTitle)
 			.dynamicType_clamped()
-			.padding(.eight * -1/4)
 			.animation(.linear_quick(), value: exhibit.focus)
 		}.padding()
 	}
@@ -178,15 +177,12 @@ import MusicKit
 		}()
 		VStack(alignment: .leading, spacing: .eight * 1/2) {
 			Text(title_and_input_label)
-				.font_title3_bold()
+				.font(.title2).fontWeight(.semibold)
 				.foregroundStyle(dimming ? .secondary : .primary)
-				.padding(.bottom, .eight * 1/4)
-				.accessibilitySortPriority(30) // Bigger is sooner.
 			if let artist_album = albumInfo?._artist, artist_album != "" {
 				Text(artist_album)
-					.font_caption2_bold()
+					.font(.caption).bold()
 					.foregroundStyle(dimming ? .tertiary : .secondary)
-					.accessibilitySortPriority(20)
 			}
 			if let date = albumInfo?._date_released {
 				Text(date.formatted(date: .numeric, time: .omitted))

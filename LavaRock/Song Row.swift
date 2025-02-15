@@ -49,7 +49,6 @@ import SwiftUI
 						.accessibilityHidden(!can_select_song) // As of iOS 18.3.1, VoiceOver sometimes unnecessarily reads this, even with `accessibilityHidden(true)`.
 				}
 				.dynamicType_clamped()
-				.padding(.trailing, .eight * 1/8)
 				.padding(.top, -Self.padding_top) // Let the text determine the row height, not the accessory.
 				.padding(.bottom, -Self.padding_bottom)
 			}
