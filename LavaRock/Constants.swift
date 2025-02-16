@@ -50,7 +50,7 @@ enum InterfaceText {
 	static let _tilde = "~"
 	static let _welcome_title = "Hi!"
 	static let _welcome_subtitle = "SongPocket shows and plays your Apple Music library."
-	static let _message_empty = "Add music to your Apple Music library."
+	static let _message_empty = "Add songs to your Apple Music library. Download them, or keep your device online."
 	static let _message_updating = "Updating library…"
 	
 	static let No_music = "No music"
