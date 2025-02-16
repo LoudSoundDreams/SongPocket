@@ -44,7 +44,6 @@ enum InterfaceText {
 	static let Done = "Done"
 	static let Menu = "Menu"
 	static let More = "More"
-	static let Apple_Music = "Apple Music"
 	
 	static let _interpunct = "·"
 	static let _octothorpe = "#"
@@ -227,6 +226,5 @@ enum SF {
 	static let photo = "photo.fill"
 	static let circle_menu = "line.3.horizontal.circle.fill"
 	static let circle_ellipsis = "ellipsis.circle.fill"
-	static let app_external = "arrow.up.forward.app"
 	static let music_note = "music.note"
 }

@@ -6,9 +6,10 @@ struct MenuTransport: View {
 	var body: some View {
 		Menu {
 			ControlGroup {
-				b_artwork
 				b_repeat
-				b_apple_music
+				b_previous
+				b_next
+				b_artwork
 			} label: {
 				let _ = Global.shared.librarian_is_merging
 				if let message = Librarian.message_if_empty {
@@ -16,14 +17,10 @@ struct MenuTransport: View {
 				}
 			}
 			ControlGroup {
-				b_previous
 				b_rewind
-				b_next
-			}
-			ControlGroup {
 				b_jump_back
-				b_play_pause
 				b_jump_forward
+				b_play_pause
 			}
 		} label: {
 			Image(
@@ -146,14 +143,5 @@ struct MenuTransport: View {
 		} label: {
 			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
 		}.disabled(nil == Librarian.album_containing_uSong_current())
-	}
-	
-	private var b_apple_music: some View {
-		Button {
-			guard let url = URL(string: "music://") else { return }
-			UIApplication.shared.open(url)
-		} label: {
-			Label(InterfaceText.Apple_Music, systemImage: SF.app_external)
-		}
 	}
 }
