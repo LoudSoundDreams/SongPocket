@@ -189,7 +189,7 @@ extension Exhibit {
 	// MARK: Select
 	
 	func selection_end_animated() {
-		withAnimation {
+		withAnimation(.linear_quick()) {
 			selection = .view
 		}
 	}

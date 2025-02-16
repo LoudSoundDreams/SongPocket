@@ -29,11 +29,11 @@ struct BubbleBar: View {
 					switch spotlight.focus {
 						case .gallery: return
 						case .covers:
-							withAnimation {
+							withAnimation(.linear_quick()) {
 								spotlight.selection = .mode_albums([])
 							}
 						case .expanded:
-							withAnimation {
+							withAnimation(.linear_quick()) {
 								spotlight.selection = .mode_songs([])
 							}
 					}
