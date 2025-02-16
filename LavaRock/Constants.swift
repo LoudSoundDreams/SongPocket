@@ -209,8 +209,7 @@ enum SF {
 	static let play_hollow = "play"
 	static let add_to_queue = "text.line.last.and.arrowtriangle.forward"
 	
-	static let circle_play = "play.circle.fill"
-	static let circle_pause = "pause.circle.fill"
+	static let circle_waveform = "waveform.circle.fill"
 	static let play_bold = "play.fill"
 	static let pause_bold = "pause.fill"
 	static let rewind = "arrow.counterclockwise"
