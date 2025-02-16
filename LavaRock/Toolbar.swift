@@ -14,7 +14,7 @@ struct BubbleBar: View {
 		.padding(Self.width_border) // As of iOS 18.3, an open `Menu` stays 4 points away from the view that presented it.
 		.background(Material.bar, in: .capsule)
 	}
-	static let width_border: CGFloat = .eight * 1/2
+	private static let width_border: CGFloat = .eight * 1/2
 	
 	private var spotlight: Exhibit? { Global.shared.spotlight }
 	
@@ -105,11 +105,13 @@ struct BubbleBar: View {
 		// • 2 or more
 		// • Contiguous
 		// • With useful data
-		Group { switch spotlight.focus {
-			case .gallery: EmptyView()
-			case .covers: sections_arrange_albums
-			case .expanded: sections_arrange_songs
-		}}.disabled(Global.shared.librarian_is_merging)
+		Menu(InterfaceText.Arrange, systemImage: SF.arrange) {
+			Group { switch spotlight.focus {
+				case .gallery: EmptyView()
+				case .covers: sections_arrange_albums
+				case .expanded: sections_arrange_songs
+			}}.disabled(Global.shared.librarian_is_merging)
+		}
 	}}
 	
 	@ViewBuilder private var sections_arrange_albums: some View {

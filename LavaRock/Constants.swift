@@ -112,6 +112,7 @@ enum InterfaceText {
 	static let Deselect_Up = "Deselect Up"
 	static let Deselect_Down = "Deselect Down"
 	
+	static let Arrange = "Arrange"
 	static let Reverse = "Reverse"
 	static let Shuffle = "Shuffle"
 	static let Recently_Added = "Recently Added"
@@ -198,6 +199,7 @@ enum SF {
 	static let circle_triangle_up_fill = "arrowtriangle.up.circle.fill"
 	static let circle_triangle_down_fill = "arrowtriangle.down.circle.fill"
 	
+	static let arrange = "arrow.up.arrow.down"
 	static let reverse = "arrow.uturn.up"
 	static let shuffle = "shuffle"
 	static let move_up = "arrow.up"
