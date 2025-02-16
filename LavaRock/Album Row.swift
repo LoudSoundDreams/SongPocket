@@ -17,7 +17,7 @@ import MusicKit
 						Rectangle().foregroundStyle(Material.regular)
 					}}.animation(.linear_quick(), value: blurring)
 					ZStack { if darkening {
-						Color.black.opacity(.one_half + .one_fourth)
+						Color.black.opacity(.one_half)
 					}}.animation(.linear_quick(), value: darkening)
 					ZStack { if labeling {
 						AlbumLabel(uAlbum: uAlbum, exhibit: exhibit)
@@ -217,7 +217,7 @@ import MusicKit
 		.animation(.linear_quick(), value: can_open_gallery)
 	}
 	private var image_gallery: some View {
-		Image(systemName: SF.circle_full_screen_fill)
+		Image(systemName: SF.circle_photo)
 			.symbolRenderingMode(.hierarchical)
 	}
 	private var can_open_gallery: Bool {

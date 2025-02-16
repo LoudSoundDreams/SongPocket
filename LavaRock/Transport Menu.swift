@@ -144,7 +144,7 @@ struct MenuTransport: View {
 		Button {
 			Global.shared.spotlight_artwork()
 		} label: {
-			Label(InterfaceText.Go_to_Artwork, systemImage: SF.square_full_screen_hollow)
+			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
 		}.disabled(nil == Librarian.album_containing_uSong_current())
 	}
 	
