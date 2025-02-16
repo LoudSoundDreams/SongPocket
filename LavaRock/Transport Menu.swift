@@ -10,11 +10,6 @@ struct MenuTransport: View {
 				b_previous
 				b_next
 				b_artwork
-			} label: {
-				let _ = Global.shared.librarian_is_merging
-				if let message = Librarian.message_if_empty {
-					Text(message)
-				}
 			}
 			ControlGroup {
 				b_rewind

@@ -1,6 +1,7 @@
 // 2025-01-25
 
 import SwiftUI
+import MusicKit
 
 struct BubbleBar: View {
 	var body: some View {
@@ -76,7 +77,18 @@ struct BubbleBar: View {
 	// MARK: Scope
 	
 	@ViewBuilder private var section_scope: some View { if let spotlight {
-		Section(spotlight.message_status()) {
+		Section({ () -> String in
+			guard MusicAuthorization.currentStatus == .authorized
+			else { return InterfaceText.NUMBER_albums(0) }
+			
+			guard !Global.shared.librarian_is_merging
+			else { return InterfaceText._message_updating }
+			
+			guard !Librarian.the_albums.isEmpty
+			else { return InterfaceText._message_empty }
+			
+			return spotlight.message_status()
+		}()) {
 			let uSongs = spotlight.uSongs_scope()
 			
 			Button {

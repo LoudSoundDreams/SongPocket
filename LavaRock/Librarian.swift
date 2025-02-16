@@ -1,7 +1,5 @@
 // 2024-09-04
 
-import MusicKit
-
 final class LRAlbum {
 	let uAlbum: UAlbum
 	var uSongs: [USong] = []
@@ -14,13 +12,6 @@ final class LRAlbum {
 @MainActor struct Librarian {
 	// Browse
 	static var the_albums: [LRAlbum] = []
-	static var message_if_empty: String? {
-		guard MusicAuthorization.currentStatus == .authorized
-		else { return nil }
-		guard the_albums.isEmpty
-		else { return nil }
-		return InterfaceText._message_empty
-	}
 	
 	// Search
 	private(set) static var album_with_uAlbum: [UAlbum: WeakRef<LRAlbum>] = [:]
