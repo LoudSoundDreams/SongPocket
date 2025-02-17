@@ -223,11 +223,11 @@ import MusicKit
 	private var can_open_gallery: Bool {
 		switch exhibit.selection {
 			case .mode_albums, .mode_songs: return false
-			case .view: break
-		}
-		switch exhibit.focus {
-			case .gallery: return false
-			case .covers, .expanded: return true
+			case .view:
+				switch exhibit.focus {
+					case .gallery: return false
+					case .covers, .expanded: return true
+				}
 		}
 	}
 	
