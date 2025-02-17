@@ -6,16 +6,16 @@ struct MenuTransport: View {
 	var body: some View {
 		Menu {
 			ControlGroup {
+				b_artwork
 				b_repeat
 				b_previous
 				b_next
-				b_artwork
 			}
 			ControlGroup {
+				b_play_pause
 				b_rewind
 				b_jump_back
 				b_jump_forward
-				b_play_pause
 			}
 		} label: {
 			Image(systemName: LCD.shared.is_playing

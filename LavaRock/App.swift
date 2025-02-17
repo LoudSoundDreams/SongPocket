@@ -27,7 +27,8 @@ import MusicKit
 					}
 					.ignoresSafeArea()
 				ZStack { if !in_gallery {
-					BubbleBar().transition(.move(edge: .bottom))
+					BubbleBar()
+						.transition(.move(edge: .bottom)) // Actually incorrect because the view disappears after traveling only its own height, not offscreen; but it looks good enough.
 				}}.animation(.linear_quick(), value: in_gallery)
 			}
 			.persistentSystemOverlays(in_gallery ? .hidden : .automatic) // As of iOS 18.3 RC, even if we hard-code this to `.hidden`, iOS still shows the Home indicator when we change which artwork is focused.
