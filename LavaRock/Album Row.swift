@@ -149,7 +149,11 @@ import MusicKit
 					}.hidden() // Keeps the layout stable.
 					switch exhibit.selection {
 						case .mode_albums: menu_select
-						case .view, .mode_songs: b_gallery
+						case .view, .mode_songs:
+							switch exhibit.focus {
+								case .expanded: EmptyView()
+								case .covers, .gallery: b_gallery // In gallery, include but disable it, to enable rapid-tap.
+							}
 					}
 				}.padding([.trailing, .bottom], .eight * -1/4)
 			}
