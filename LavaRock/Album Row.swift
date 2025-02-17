@@ -87,7 +87,7 @@ import MusicKit
 				} else { exhibit.focus = .expanded(uAlbum) }
 			case .gallery(let uA_showcased):
 				if uA_showcased == uAlbum {
-					exhibit.focus = .expanded(uAlbum)
+					exhibit.focus = .covers
 				} else { exhibit.focus = .gallery(uAlbum) }
 		}
 	}
@@ -149,16 +149,7 @@ import MusicKit
 					}.hidden() // Keeps the layout stable.
 					switch exhibit.selection {
 						case .mode_albums: menu_select
-						case .view, .mode_songs:
-							switch exhibit.focus {
-								case .covers: EmptyView()
-								case .gallery:
-									b_gallery // Include but disable it, to enable rapid-tap.
-								case .expanded(let uA_expanded):
-									if uA_expanded == uAlbum
-									{ b_gallery }
-									else { EmptyView() }
-							}
+						case .view, .mode_songs: b_gallery
 					}
 				}.padding([.trailing, .bottom], .eight * -1/4)
 			}
@@ -225,8 +216,8 @@ import MusicKit
 			case .mode_albums, .mode_songs: return false
 			case .view:
 				switch exhibit.focus {
-					case .gallery: return false
-					case .covers, .expanded: return true
+					case .gallery, .expanded: return false
+					case .covers: return true
 				}
 		}
 	}
