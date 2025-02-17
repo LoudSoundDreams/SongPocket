@@ -16,7 +16,7 @@ extension Color {
 }
 extension Animation {
 	static func linear_quick() -> Self {
-		linear(duration: .one_fourth) // As of iOS 18.3.1, this is around how long table view updates take.
+		linear(duration: .one_eighth)
 	}
 }
 extension View {
