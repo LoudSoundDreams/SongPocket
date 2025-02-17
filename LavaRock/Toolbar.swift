@@ -97,7 +97,7 @@ struct BubbleBar: View {
 					await Tape.play_now(uSongs)
 				}
 			} label: {
-				Label(InterfaceText.Play, systemImage: SF.play_hollow)
+				Label(InterfaceText.Play_All, systemImage: SF.play_hollow)
 			}.disabled(uSongs.isEmpty)
 			
 			Button {

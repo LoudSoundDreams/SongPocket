@@ -89,9 +89,10 @@ enum InterfaceText {
 	// MARK: Playback
 	
 	static let Start_Playing = "Start Playing"
-	static let Play = "Play"
+	static let Play_All = "Play All"
 	static let Play_Later = "Play Later"
 	
+	static let Play = "Play"
 	static let Pause = "Pause"
 	static let Restart = "Restart"
 	static let Skip_back_15_seconds = "Skip back 15 seconds" // As of iOS 16.5 RC 1, picture-in-picture videos use “Skip back 10 seconds” and “Skip forward 10 seconds”.
