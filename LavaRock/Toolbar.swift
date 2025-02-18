@@ -106,13 +106,6 @@ struct BubbleBar: View {
 					}}(),
 					systemImage: SF.play_hollow)
 			}.disabled(uSongs.isEmpty)
-			
-			Button {
-				spotlight.selection_end_animated()
-				Tape.play_later(uSongs)
-			} label: {
-				Label(InterfaceText.Play_Later, systemImage: SF.add_to_queue)
-			}.disabled(uSongs.isEmpty)
 		}.disabled(Global.shared.librarian_is_merging)
 	}}
 	

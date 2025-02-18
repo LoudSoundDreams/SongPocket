@@ -108,31 +108,6 @@ extension LCD {
 		repeat_off() // As of iOS 18.1 developer beta 7, do this after calling `play`, not before; otherwise, it might do nothing.
 	}
 	
-	static func play_later(_ uSs_to_append: [USong]) {
-		Task {
-			guard let mkPlayer else { return }
-			
-			let mk_to_append: [MKSong] = await {
-				var result: [MKSong] = []
-				for uSong in uSs_to_append {
-					guard let mkSong = await AppleCatalog.shared.fetch_mkSong(for_uSong: uSong) else { continue }
-					result.append(mkSong)
-				}
-				return result
-			}()
-			
-			if nil == mkPlayer.queue.currentEntry {
-				mkPlayer.queue = ApplicationMusicPlayer.Queue(for: mk_to_append)
-				guard let _ = try? await mkPlayer.prepareToPlay() else { return }
-			} else {
-				guard let _ = try? await mkPlayer.queue.insert(mk_to_append, position: .tail) else { return }
-			}
-			
-			let rumbler = UINotificationFeedbackGenerator()
-			rumbler.notificationOccurred(.success)
-		}
-	}
-	
 	static func resume() async {
 		try? await mkPlayer?.play()
 	}

@@ -91,7 +91,6 @@ enum InterfaceText {
 	static let Start_Playing = "Start Playing"
 	static let Play_All = "Play All"
 	static let Play_Selected = "Play Selected"
-	static let Play_Later = "Play Later"
 	
 	static let Play = "Play"
 	static let Pause = "Pause"
@@ -209,7 +208,6 @@ enum SF {
 	static let to_bottom = "arrow.down.to.line"
 	
 	static let play_hollow = "play"
-	static let add_to_queue = "text.line.last.and.arrowtriangle.forward"
 	
 	static let circle_play = "play.circle.fill"
 	static let circle_pause = "pause.circle.fill"
