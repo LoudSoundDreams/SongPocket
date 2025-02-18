@@ -13,6 +13,14 @@ import SwiftUI
 		VStack(spacing: .zero) {
 			HStack(alignment: .firstTextBaseline) {
 				let songInfo: SongInfo? = {
+#if targetEnvironment(simulator)
+					let dSong = DummyCatalog.dummySongs[Int(uSong)]
+					return SongInfo(
+						_disc: nil,
+						_track: nil,
+						_title: dSong.title,
+						_artist: dSong.artist)
+#else
 					guard let mkSong = catalog.mkSong_for_uSong_cache[uSong]
 					else {
 						let _ = catalog.signal_mkSong_cache
@@ -26,8 +34,13 @@ import SwiftUI
 						_track: mkSong.trackNumber,
 						_title: mkSong.title,
 						_artist: mkSong.artistName)
+#endif
 				}()
+#if targetEnvironment(simulator)
+				let albumInfo: AlbumInfo? = DummyCatalog.dummy_albumInfo(uAlbum)
+#else
 				let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum)
+#endif
 				
 				stack_info(songInfo, albumInfo)
 					.padding(.leading, Self.nudge_text)

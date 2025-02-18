@@ -137,6 +137,15 @@ extension AppleCatalog {
 
 #if targetEnvironment(simulator)
 @MainActor enum DummyCatalog {
+	static func dummy_albumInfo(_ uAlbum: UInt64) -> AlbumInfo? {
+		let dAlbum = dummyAlbums[Int(uAlbum)]
+		return AlbumInfo(
+			_title: dAlbum.title,
+			_artist: dAlbum.artist,
+			_date_first_added: nil,
+			_date_released: dAlbum.date,
+			_disc_max: 0)
+	}
 	static let dummyAlbums: [DummyAlbum] = [
 		DummyAlbum(
 			title: "The Good Witch",

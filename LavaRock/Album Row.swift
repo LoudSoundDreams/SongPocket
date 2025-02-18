@@ -166,13 +166,7 @@ import MusicKit
 	
 	@ViewBuilder private var stack_info: some View {
 #if targetEnvironment(simulator)
-		let dAlbum = DummyCatalog.dummyAlbums[Int(uAlbum)]
-		let albumInfo: AlbumInfo? = AlbumInfo(
-			_title: dAlbum.title,
-			_artist: dAlbum.artist,
-			_date_first_added: nil,
-			_date_released: dAlbum.date,
-			_disc_max: 0)
+		let albumInfo = DummyCatalog.dummy_albumInfo(uAlbum)
 #else
 		let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum)
 #endif
