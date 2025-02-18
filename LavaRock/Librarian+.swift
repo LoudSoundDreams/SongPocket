@@ -3,6 +3,29 @@
 import MediaPlayer
 
 extension Librarian {
+#if targetEnvironment(simulator)
+	static func merge_DummyCatalog() async {
+		// Match `merge_MediaPlayer` on some stuff.
+		Global.shared.librarian_is_merging = true
+		defer { Global.shared.librarian_is_merging = false }
+		defer { save() }
+		
+		Librarian.the_albums.removeAll()
+		let dAlbums = DummyCatalog.dummyAlbums
+		dAlbums.indices.forEach { i_dAlbum in
+			let dAlbum = dAlbums[i_dAlbum]
+			let lrAlbum = LRAlbum(
+				uAlbum: UInt64(i_dAlbum),
+				uSongs: dAlbum.indices_dummySongs.map { i_dSong in
+					UInt64(i_dSong)
+				}
+			)
+			Librarian.the_albums.append(lrAlbum)
+			Librarian.register_album(lrAlbum)
+		}
+	}
+#endif
+	
 	static func merge_MediaPlayer(
 		_ mpSongs_by_album_then_track: [MPMediaItem]
 	) async {
@@ -13,13 +36,6 @@ extension Librarian {
 		
 #if DEBUG
 		try? await Task.sleep(for: .seconds(5))
-#if targetEnvironment(simulator)
-		import_dummyAlbums(DummyCatalog.albums)
-		func import_dummyAlbums(
-			_ dummyAlbums: [DummyAlbum]
-		) {
-		}
-#endif
 #endif
 		
 		// Use MediaPlayer for album and song IDs.

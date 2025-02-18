@@ -113,7 +113,8 @@ import MusicKit
 				ArtworkImage(artwork, width: length_max)
 			} else {
 #if targetEnvironment(simulator)
-				Image("wide")
+				let dAlbum = DummyCatalog.dummyAlbums[Int(uAlbum)]
+				Image(dAlbum.image)
 					.resizable()
 					.scaledToFit()
 					.frame(width: length_max, height: length_max)
@@ -164,7 +165,17 @@ import MusicKit
 	}
 	
 	@ViewBuilder private var stack_info: some View {
+#if targetEnvironment(simulator)
+		let dAlbum = DummyCatalog.dummyAlbums[Int(uAlbum)]
+		let albumInfo: AlbumInfo? = AlbumInfo(
+			_title: dAlbum.title,
+			_artist: dAlbum.artist,
+			_date_first_added: nil,
+			_date_released: dAlbum.date,
+			_disc_max: 0)
+#else
 		let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum: uAlbum)
+#endif
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""
 			else { return InterfaceText._tilde }

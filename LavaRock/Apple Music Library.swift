@@ -112,7 +112,12 @@ extension AppleCatalog {
 			guard
 				let mk_array: [MKSection] =  try? await mkRequest.response().sections,
 				let mpSongs = mpQuery.items
-			else { return }
+			else {
+#if targetEnvironment(simulator)
+				await Librarian.merge_DummyCatalog()
+#endif
+				return
+			}
 			
 			let mk_dict: [MusicItemID: MKSection] = {
 				let tuples = mk_array.map { section in (section.id, section) }
@@ -131,43 +136,42 @@ extension AppleCatalog {
 }
 
 #if targetEnvironment(simulator)
-@MainActor final class DummyCatalog {
-	static let albums: [DummyAlbum] = [
+@MainActor enum DummyCatalog {
+	static let dummyAlbums: [DummyAlbum] = [
 		DummyAlbum(
-			title: "Skyway",
-			artist: "Wanderer",
-			date_released: .ten_char("2024-05-31"),
-			image_file: "sky",
-			tracks: [
-				.init("Magic"),
-				.init("Robot"),
-				.init("Last"),
-			]),
+			title: "The Good Witch",
+			artist: "Maisie Peters",
+			date: .ten_char("2023-06-23"),
+			image: "Maisie",
+			indices_dummySongs: [1, 2]),
 		DummyAlbum(
-			title: "Hillside",
-			artist: "Wanderer",
-			date_released: .ten_char("2024-02-29"),
-			image_file: "field",
-			tracks: [
-				.init(""),
-			]),
+			title: "Beautiful Dreamer",
+			artist: "fhána",
+			date: .ten_char("2023-12-20"),
+			image: "fhana",
+			indices_dummySongs: [0]),
 		DummyAlbum(
-			title: "Dawn",
-			artist: "Wanderer",
-			date_released: .ten_char("2024-03-31"),
-			image_file: "city",
-			tracks: [
-				.init("Amazingly few discotheques provide jukeboxes. The five boxing wizards jump quickly. Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog.", artist: "Tony Harnell"),
-			]),
+			title: "Berry",
+			artist: "Chano",
+			date: .ten_char("2015-01-10"),
+			image: "Chano",
+			indices_dummySongs: [3]),
+	]
+	
+	static let dummySongs: [DummySong] = [
+		DummySong("Hikarimau Fuyunohi Ni"),
+		DummySong("You’re Just A Boy (And I’m Kinda The Man)"),
+		DummySong("The Last One"),
+		DummySong("The Magical Robot and the Boy"),
 	]
 }
 
 struct DummyAlbum {
 	let title: String
 	let artist: String
-	let date_released: Date?
-	let image_file: String
-	let tracks: [DummySong]
+	let date: Date?
+	let image: String
+	let indices_dummySongs: [Int]
 }
 struct DummySong {
 	let title: String
