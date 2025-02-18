@@ -97,7 +97,14 @@ struct BubbleBar: View {
 					await Tape.play_now(uSongs)
 				}
 			} label: {
-				Label(InterfaceText.Play_All, systemImage: SF.play_hollow)
+				Label(
+					{ switch spotlight.selection {
+						case .view: return
+							InterfaceText.Play_All
+						case .mode_albums, .mode_songs: return
+							InterfaceText.Play_Selected
+					}}(),
+					systemImage: SF.play_hollow)
 			}.disabled(uSongs.isEmpty)
 			
 			Button {
