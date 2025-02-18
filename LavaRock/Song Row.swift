@@ -27,7 +27,7 @@ import SwiftUI
 						_title: mkSong.title,
 						_artist: mkSong.artistName)
 				}()
-				let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum: uAlbum)
+				let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum)
 				
 				stack_info(songInfo, albumInfo)
 					.padding(.leading, Self.nudge_text)

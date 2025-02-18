@@ -174,7 +174,7 @@ import MusicKit
 			_date_released: dAlbum.date,
 			_disc_max: 0)
 #else
-		let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum: uAlbum)
+		let albumInfo: AlbumInfo? = catalog.albumInfo(uAlbum)
 #endif
 		let title_and_input_label: String = {
 			guard let title_album = albumInfo?._title, title_album != ""

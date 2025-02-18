@@ -307,8 +307,8 @@ extension Exhibit {
 		
 		switch albumOrder {
 			case .random, .reverse, .recently_added: return true
-			case .recently_released: return to_arrange.contains {
-				nil != AppleCatalog.shared.albumInfo(uAlbum: $0)?._date_released
+			case .recently_released: return to_arrange.contains { uA_to_arrange in
+				nil != AppleCatalog.shared.albumInfo(uA_to_arrange)?._date_released
 			}
 		}
 	}

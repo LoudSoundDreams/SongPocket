@@ -45,7 +45,7 @@ extension AppleCatalog {
 		merge()
 	}
 	
-	func albumInfo(uAlbum: UAlbum) -> AlbumInfo? {
+	func albumInfo(_ uAlbum: UAlbum) -> AlbumInfo? {
 		guard let mkSection = mkSections_cache[MusicItemID(String(uAlbum))]
 		else { return nil }
 		let mkSongs = mkSection.items // Slow.

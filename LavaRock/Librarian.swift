@@ -183,8 +183,8 @@ final class LRAlbum {
 				case .random: return chosen_unsorted.in_any_other_order { $0.uAlbum == $1.uAlbum }
 				case .recently_added:
 					return chosen_unsorted.sorted { left, right in
-						let date_left = AppleCatalog.shared.albumInfo(uAlbum: left.uAlbum)?._date_first_added
-						let date_right = AppleCatalog.shared.albumInfo(uAlbum: right.uAlbum)?._date_first_added
+						let date_left = AppleCatalog.shared.albumInfo(left.uAlbum)?._date_first_added
+						let date_right = AppleCatalog.shared.albumInfo(right.uAlbum)?._date_first_added
 						if date_left == date_right { return false }
 						guard let date_right else { return true }
 						guard let date_left else { return false }
@@ -192,8 +192,8 @@ final class LRAlbum {
 					}
 				case .recently_released:
 					return chosen_unsorted.sorted { left, right in
-						let date_left = AppleCatalog.shared.albumInfo(uAlbum: left.uAlbum)?._date_released
-						let date_right = AppleCatalog.shared.albumInfo(uAlbum: right.uAlbum)?._date_released
+						let date_left = AppleCatalog.shared.albumInfo(left.uAlbum)?._date_released
+						let date_right = AppleCatalog.shared.albumInfo(right.uAlbum)?._date_released
 						if date_left == date_right { return false }
 						guard let date_right else { return true }
 						guard let date_left else { return false }
