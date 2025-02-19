@@ -6,8 +6,8 @@ import MusicKit
 struct BubbleBar: View {
 	var body: some View {
 		HStack(spacing: Self.width_border * 2) {
-			MenuTransport()
 			menu_overflow
+			MenuTransport()
 			b_select_mode
 		}
 		.font(.largeTitle)
