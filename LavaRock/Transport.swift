@@ -6,15 +6,15 @@ struct MenuTransport: View {
 	var body: some View {
 		Menu {
 			ControlGroup {
-				b_artwork
-				b_repeat
 				b_previous
+				b_rewind
+				b_repeat
 				b_next
 			}
 			ControlGroup {
-				b_play_pause
-				b_rewind
 				b_jump_back
+				b_play_pause
+				b_artwork
 				b_jump_forward
 			}
 		} label: {
