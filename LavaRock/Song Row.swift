@@ -49,7 +49,9 @@ import SwiftUI
 					Image(systemName: SF.waveform)
 						.foregroundStyle(
 							LCD.shared.is_playing
-							? Color.accentColor : Color(white: .one_fourth))
+							? Color(white: .one_half + .one_fourth)
+							: Color(white: .one_eighth)
+						)
 						.accessibilityLabel(
 							LCD.shared.is_playing
 							? InterfaceText.Now_playing : InterfaceText.Paused)
