@@ -18,12 +18,16 @@ import MediaPlayer
 	
 	var is_playing: Bool { // UIKit views need to manually pull this value …
 		let _ = _signal_state // … but this pushes SwiftUI views that mention this property to redraw.
+#if targetEnvironment(simulator)
+		return true
+#else
 		guard let player_old else { return false }
 		switch player_old.playbackState {
 			case .playing: return true
 			case .stopped, .paused, .interrupted, .seekingBackward, .seekingForward: return false
 			@unknown default: return false
 		}
+#endif
 	}
 	var repeat_is_on: Bool {
 		let _ = _signal_state
@@ -38,7 +42,11 @@ import MediaPlayer
 	
 	var is_blank: Bool {
 		let _ = _signal_now_playing
+#if targetEnvironment(simulator)
+		return false
+#else
 		return nil == uSong_current
+#endif
 	}
 	var is_at_first_track: Bool {
 		let _ = _signal_now_playing
@@ -53,7 +61,11 @@ import MediaPlayer
 	 */
 	var uSong_current: USong? {
 		let _ = _signal_now_playing
+#if targetEnvironment(simulator)
+		return 1
+#else
 		return player_old?.nowPlayingItem?.persistentID
+#endif
 	}
 	private var _signal_now_playing = 0
 }

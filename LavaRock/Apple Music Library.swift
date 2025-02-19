@@ -152,13 +152,13 @@ extension AppleCatalog {
 			artist: "Maisie Peters",
 			date: .ten_char("2023-06-23"),
 			image: "Maisie",
-			indices_dummySongs: [1, 2]),
+			indices_dummySongs: [0, 1]),
 		DummyAlbum(
 			title: "Beautiful Dreamer",
 			artist: "fhána",
 			date: .ten_char("2023-12-20"),
 			image: "fhana",
-			indices_dummySongs: [0]),
+			indices_dummySongs: [2]),
 		DummyAlbum(
 			title: "Berry",
 			artist: "Chano",
@@ -168,9 +168,9 @@ extension AppleCatalog {
 	]
 	
 	static let dummySongs: [DummySong] = [
-		DummySong("Hikarimau Fuyunohi Ni"),
 		DummySong("You’re Just A Boy (And I’m Kinda The Man)"),
 		DummySong("The Last One"),
+		DummySong("Hikarimau Fuyunohi Ni"),
 		DummySong("The Magical Robot and the Boy"),
 	]
 }

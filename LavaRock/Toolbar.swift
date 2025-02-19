@@ -152,8 +152,12 @@ struct BubbleBar: View {
 			}
 			.menuActionDismissBehavior(.disabled)
 			.disabled({
+#if targetEnvironment(simulator)
+				return false
+#else
 				guard let spotlight else { return true }
 				return !spotlight.can_arrange_albums(by: order)
+#endif
 			}())
 		}
 	}

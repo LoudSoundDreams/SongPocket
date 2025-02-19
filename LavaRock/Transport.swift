@@ -136,6 +136,12 @@ struct MenuTransport: View {
 			Global.shared.spotlight_artwork()
 		} label: {
 			Label(InterfaceText.Go_to_Artwork, systemImage: SF.photo)
-		}.disabled(nil == Librarian.album_containing_uSong_current())
+		}.disabled({
+#if targetEnvironment(simulator)
+			return false
+#else
+			return nil == Librarian.album_containing_uSong_current()
+#endif
+		}())
 	}
 }
