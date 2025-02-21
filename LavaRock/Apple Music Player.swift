@@ -85,7 +85,7 @@ import MediaPlayer
 	var uSong_current: USong? {
 		let _ = _signal_now_playing
 #if targetEnvironment(simulator)
-		return 1
+		return DummyCatalog.i_dummySong_current
 #else
 		return player_old?.nowPlayingItem?.persistentID
 #endif

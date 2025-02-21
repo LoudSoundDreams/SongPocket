@@ -147,31 +147,38 @@ extension AppleCatalog {
 			_disc_max: 0)
 	}
 	static let dummyAlbums: [DummyAlbum] = [
-		DummyAlbum(
-			title: "The Good Witch",
-			artist: "Maisie Peters",
-			date: .ten_char("2023-06-23"),
-			image: "Maisie",
-			indices_dummySongs: [0, 1]),
-		DummyAlbum(
-			title: "Beautiful Dreamer",
-			artist: "fhána",
-			date: .ten_char("2023-12-20"),
-			image: "fhana",
-			indices_dummySongs: [2]),
-		DummyAlbum(
+		.init(
 			title: "Berry",
 			artist: "Chano",
 			date: .ten_char("2015-01-10"),
 			image: "Chano",
-			indices_dummySongs: [3]),
+			indices_dummySongs: [
+				0
+			]),
+		.init(
+			title: "Beautiful Dreamer",
+			artist: "fhána",
+			date: .ten_char("2023-12-20"),
+			image: "fhana",
+			indices_dummySongs: [
+				1, 2
+			]),
+		.init(
+			title: "The Good Witch",
+			artist: "Maisie Peters",
+			date: .ten_char("2023-06-23"),
+			image: "Maisie",
+			indices_dummySongs: [
+				3
+			]),
 	]
 	
+	static let i_dummySong_current: UInt64 = 1
 	static let dummySongs: [DummySong] = [
-		DummySong("You’re Just A Boy (And I’m Kinda The Man)"),
-		DummySong("The Last One"),
-		DummySong("Hikarimau Fuyunohi Ni"),
-		DummySong("The Magical Robot and the Boy"),
+		.init("The Magical Robot and the Boy"),
+		.init("Hikarimau Fuyunohi Ni"),
+		.init("Last Pages"),
+		.init("The Last One"),
 	]
 }
 
