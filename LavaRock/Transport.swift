@@ -13,8 +13,8 @@ struct MenuTransport: View {
 			}
 			ControlGroup {
 				b_jump_back
-				b_play_pause
 				b_artwork
+				b_play_pause
 				b_jump_forward
 			}
 		} label: {
