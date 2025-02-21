@@ -103,6 +103,10 @@ enum InterfaceText {
 	static let Repeat_One = "Repeat One"
 	static let Go_to_Artwork = "Go to Artwork"
 	
+	static func Playing_P_of_Q(_ p: Int, _ q: Int) -> String {
+		return "Playing \(p) of \(q)"
+	}
+	
 	// MARK: Editing
 	
 	static let Select = "Select"

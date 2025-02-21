@@ -53,6 +53,29 @@ import MediaPlayer
 		guard let player_old else { return false }
 		return 0 == player_old.indexOfNowPlayingItem
 	}
+	var message_queue: String {
+		let _ = _signal_now_playing
+#if targetEnvironment(simulator)
+		return InterfaceText.Playing_P_of_Q(2, 4)
+#else
+		var result: String = InterfaceText.Playing_P_of_Q(0, 0)
+		guard let player_old else { return result }
+		
+		player_old.perform { mut_queue in
+			let items_queue = mut_queue.items
+			guard
+				!items_queue.isEmpty,
+				let item_current = player_old.nowPlayingItem,
+				let i_current = items_queue.firstIndex(of: item_current)
+			else { return }
+			
+			let p = i_current + 1
+			let q = items_queue.count
+			result = InterfaceText.Playing_P_of_Q(p, q)
+		} completionHandler: { queue, error in }
+		return result
+#endif
+	}
 	/*
 	 As of iOS 18.3 developer beta 1, a `MusicKit.Song.id` looks like this: i.KoDG5DYT3ZP1NWD
 	 But a `queue.currentEntry.id` never matches that, and looks like “pXBAgpg1z::o9WiHejiP”. It changes each time the program runs.

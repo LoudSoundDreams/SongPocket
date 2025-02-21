@@ -5,7 +5,7 @@ import SwiftUI
 struct MenuTransport: View {
 	var body: some View {
 		Menu {
-			ControlGroup {
+			ControlGroup(LCD.shared.message_queue) {
 				b_previous
 				b_rewind
 				b_repeat
