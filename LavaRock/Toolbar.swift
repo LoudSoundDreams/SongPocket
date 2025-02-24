@@ -54,6 +54,7 @@ struct BubbleBar: View {
 						case .mode_albums, .mode_songs: return InterfaceText.Done
 					}
 				}())
+				.accessibilityRemoveTraits(.isSelected) // This code looks wrong, but as of iOS 18.4 developer beta 1, VoiceOver presumtuously reads the SF Symbol "checkmark.circle.fill" as “selected”.
 		}.disabled({
 			guard let spotlight else { return true }
 			return spotlight.uAlbums().isEmpty

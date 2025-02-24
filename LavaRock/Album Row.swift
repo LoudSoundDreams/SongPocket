@@ -11,6 +11,7 @@ import MusicKit
 		AlbumArt(uAlbum: uAlbum, length_max: exhibit.length_artwork)
 			.saturation(is_selecting_songs ? .zero : 1)
 			.accessibilityAddTraits(.isButton)
+			.disabled(is_selecting_songs) // For accessibility.
 			.overlay {
 				ZStack(alignment: .topLeading) {
 					ZStack { if blurring {
@@ -191,7 +192,6 @@ import MusicKit
 			}
 		}
 		.animation(.linear_quick(), value: dimming)
-		.disabled(dimming) // For accessibility.
 		.accessibilityInputLabels([title_and_input_label])
 	}
 	private var dimming: Bool {
