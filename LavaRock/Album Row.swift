@@ -196,13 +196,8 @@ import MusicKit
 	}
 	private var dimming: Bool {
 		switch exhibit.selection {
-			case .mode_albums: return false
+			case .mode_albums, .view: return false
 			case .mode_songs: return true
-			case .view:
-				switch exhibit.focus {
-					case .covers, .gallery: return false
-					case .expanded(let uA_expanded): return uA_expanded != uAlbum
-				}
 		}
 	}
 	
